@@ -1,25 +1,22 @@
 rule index_bam:
     input:
-        "{folder}/{sample}_{type}.bam"
+        "{folder}/{sample}_{type}.{chrom}.bam"
     output:
-        bai = "{folder}/{sample}_{type}.bai",
-        stats = "{folder}/{sample}_{type}.bam.stats"
+        "{folder}/{sample}_{type}.{chrom}.bai"
     threads:
         config['bamindex']['threads']
     conda:
         "../env/align-env.yml"
     shell:
         "picard BuildBamIndex INPUT={input}; "
-        "picard BamIndexStats I={input} > {output.stats}"
-
 
 
 rule tag_bam_with_umi:
     input:
-        "mapped/{sample}_{type}.bam"
+        "mapped/{sample}_{type}.{chrom}.bam"
     output:
-        "mapped/{sample}_{type}.umi.bam",
-        "mapped/{sample}_{type}.umi.bai"
+        "mapped/{sample}_{type}.{chrom}.umi.bam",
+        "mapped/{sample}_{type}.{chrom}.umi.bai"
     conda:
         "../env/fgbio-env.yml"
     threads:
@@ -33,13 +30,13 @@ rule tag_bam_with_umi:
 
 rule dedup:
     input:
-        "mapped/{sample}_{type}.bam"
+        "mapped/{sample}_{type}.{chrom}.bam"
     output:
-        "deduped/{sample}_{type}.bam"
+        "deduped/{sample}_{type}.{chrom}.bam"
     log:
-        "logs/dedup/{sample}_{type}.log"
+        "logs/dedup/{sample}_{type}.{chrom}.log"
     params:
-        metric = lambda w: f"deduped/{w.sample}_{w.type}_metric.txt"
+        metric = lambda w: f"deduped/{w.sample}_{w.type}.{w.chrom}.metric.txt"
     threads:
         config['dedup']['threads']
     conda:
@@ -50,24 +47,22 @@ rule dedup:
 
 rule dedup_umi:
     input:
-        "mapped/{sample}_{type}.umi.bam"
+        "mapped/{sample}_{type}.{chrom}.umi.bam"
     output:
-        "deduped/{sample}_{type}.umi.bam",
-        "deduped/{sample}_{type}.umi.bai"
+        "deduped/{sample}_{type}.{chrom}.umi.bam"
     params:
-        metric = lambda w: f"deduped/{w.sample}_{w.type}_metric.txt",
-        umi_metrics = lambda w: f"deduped/{w.sample}_{w.type}_umi_metric.txt",
+        metric = lambda w: f"deduped/{w.sample}_{w.type}.{w.chrom}.metric.txt",
+        umi_metrics = lambda w: f"deduped/{w.sample}_{w.type}.{w.chrom}.umi_metric.txt",
         max_mem = config['dedup_umi']['max_mem'],
         remove_dups = "false" if config['dedup_umi']['keep_dups'] else "true"
     threads:
         math.ceil(int(config['dedup_umi']['max_mem'].strip('g')) / 2)
     log:
-        "logs/dedup/{sample}_{type}.log"
+        "logs/dedup/{sample}_{type}.{chrom}.log"
     conda:
         "../env/align-env.yml"
     shell:
-        "picard UmiAwareMarkDuplicatesWithMateCigar -Xms500m -Xmx{params.max_mem} UMI_METRICS={params.umi_metrics} I={input} O={output[0]} M={params.metric} ASSUME_SORT_ORDER=coordinate REMOVE_DUPLICATES={params.remove_dups} &>{log}; " #  
-        "picard BuildBamIndex INPUT={output[0]}"
+        "picard UmiAwareMarkDuplicatesWithMateCigar -Xms500m -Xmx{params.max_mem} UMI_METRICS={params.umi_metrics} I={input} O={output[0]} M={params.metric} ASSUME_SORTED=true REMOVE_DUPLICATES={params.remove_dups} &>{log}; "
 
 
 
@@ -106,13 +101,13 @@ rule create_GATK_target_list:
 
 rule realignGATK:
     input:
-        bam = lambda w: f"deduped/{w.sample}_{w.type}.umi.bam" if config['tag_bam']['run'] else f"deduped/{w.sample}_{w.type}.bam",
-        bai = lambda w: f"deduped/{w.sample}_{w.type}.umi.bai" if config['tag_bam']['run'] else f"deduped/{w.sample}_{w.type}.bai",
+        bam = lambda w: f"deduped/{w.sample}_{w.type}.{w.chrom}.umi.bam" if config['tag_bam']['run'] else f"deduped/{w.sample}_{w.type}.{w.chrom}.bam",
+        bai = lambda w: f"deduped/{w.sample}_{w.type}.{w.chrom}.umi.bai" if config['tag_bam']['run'] else f"deduped/{w.sample}_{w.type}.{w.chrom}.bai",
         intervals = "realigned/GATK_targets.intervals"
     output:
-        "realigned/{sample}_{type}.bam"
+        "realigned/{sample}_{type}.{chrom}.bam"
     log:
-        "logs/realign/{sample}_{type}.log"
+        "logs/realign/{sample}_{type}.{chrom}.log"
     threads:
         config['realignGATK']['threads']
     conda:
@@ -133,12 +128,12 @@ def recalib_ref():
 
 rule base_recalibrator:
     input:
-        bam = "realigned/{sample}_{type}.bam",
-        bai = "realigned/{sample}_{type}.bai"
+        bam = "realigned/{sample}_{type}.{chrom}.bam",
+        bai = "realigned/{sample}_{type}.{chrom}.bai"
     output:
-        "recalib/{sample}_{type}.bam"
+        "recalib/{sample}_{type}.{chrom}.bam"
     log:
-        "logs/recalib/{sample}_{type}.log"
+        "logs/recalib/{sample}_{type}.{chrom}.log"
     params:
         gatk = config['tools']['gatk'],
         recalib = lambda w: f"{recalib_ref()} -O recalib/{w.sample}_{w.type}.recal_table",
@@ -156,8 +151,7 @@ rule base_recalibrator:
 
 rule cover_BED:
     input:
-        sample = "recalib/{sample}_{type}.bam",
-        index = "recalib/{sample}_{type}.bai",
+        sample = "mapped/{sample}_{type}.bam",
         ref_gen = os.path.join(full_path('genome_path'), 'gen_ref.done')
     output:
         "coverBED/{sample}_{type}.txt"

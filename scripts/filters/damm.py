@@ -209,7 +209,7 @@ def resort_cols(df):
     print('New columns: ', new_cols)
     return df[new_cols]    
 
-
+ 
 def get_clinical_scores(df):
     '''
     extract, score and realign clinical columns
