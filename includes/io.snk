@@ -1,0 +1,184 @@
+def get_files(input_folder, sample_sheet):
+    '''
+    retrieves the path to all the files in the sample_sheet
+    '''
+
+    fastq_list = []
+    for folder, subfolders, files in os.walk(config['inputdir']):
+        for file in files:
+            if '.fastq.' in file and not '.md5' in file and not 'trim' in file and not 'sub' in file:
+                fastq_list.append(os.path.join(folder,file))
+
+    # import the sample sheet
+    samples = pd.read_csv(sample_sheet, sep='\t', index_col=0)        
+    def get_fastq_paths(row):
+        for file in fastq_list:
+            if row['sample'] in file:
+                if 'index' in file:
+                    row['index'] = file
+                elif 'barcode' in file:
+                    row['barcode'] = file
+                elif '_R1' in file:
+                    row['R1'] = file
+                elif '_R2' in file:
+                    row['R2'] = file
+        return row[['name', 'Lane', 'R1', 'R2', 'barcode', 'index']]
+
+    samples = samples.apply(get_fastq_paths, axis=1)
+    return samples
+
+
+def get_tumor_normal_pairs(samples):
+    '''
+    turns valid_file_info into tuples of valid tumor normal pairs
+    '''
+
+    # extract the tumor-normal suffix
+    samples[['sample', 'TN']] = samples['name'].str.extract('(?P<sample>^[^_]+)_(?P<TN>[^_]+)$')
+    tumor = config['samples']['tumor'][0]
+    normal = config['samples']['normal'][0]
+
+    def TN_pair(group):
+        if tumor in list(group['TN']) and normal in list(group['TN']):
+            return f"{group['sample'].iloc[0]}_{tumor}-{normal}"
+        
+    TN_df = pd.DataFrame()
+    TN_df['pairs'] = samples.groupby('sample').apply(TN_pair)
+    return list(TN_df['pairs'])
+
+
+
+def get_fastqs(w):
+    sample_name = f"{w.sample}_{w.type}"
+    fastq_path = file_df.query('name == @sample_name')[w.read]
+    return list(fastq_path)
+
+
+def get_bwa_fastqs(w):
+    '''
+    retrieve either ...fastq or fastq.trim pairs depending on config:trim:trimming value for bwa alignment
+    '''
+
+    if config['trim']['trimming']:
+        trim_suffix = config['trim']['suffix'][0]
+        return [f"fastq/trimmed/{w.sample}_{w.type}_{read}.{trim_suffix}.fastq.gz" for read in config['samples']['reads']]
+    else:
+        return [f"fastq/{w.sample}_{w.type}_{read}.fastq.gz" for read in config['samples']['reads']]
+
+
+
+def get_fastq_input(w):
+    '''
+    retrieve either ...fastq or fastq.trim for fastQC
+    '''
+    trim_suffix = config['trim']['suffix'][0]
+    # readtrim is either R1.trim or R1
+    # and stands for active or disabled trimming
+    if trim_suffix in w.readtrim:
+        return f"fastq/trimmed/{w.sample}_{w.type}_{w.readtrim}.fastq.gz"
+    else:
+        return f"fastq/{w.sample}_{w.type}_{w.readtrim}.fastq.gz"
+
+
+def get_fastqc_list(_):
+    '''
+    returns the complete list of required fastqc files depending on trim option
+    '''
+
+    fastqc_list = []
+    trim_suffix = config['trim']['suffix'][0]
+    read1 = config['samples']['reads'][0]
+    read2 = config['samples']['reads'][1]
+    # create file list from the included_files tuple list
+    for file_name in file_df['name']:
+        fastqc_list.append(f"fastQC/{file_name}_{read1}_fastqc.zip")
+        fastqc_list.append(f"fastQC/{file_name}_{read2}_fastqc.zip")
+        if config['trim']['trimming']:
+            fastqc_list.append(f"fastQC/{file_name}_{read1}.{trim_suffix}_fastqc.zip")
+            fastqc_list.append(f"fastQC/{file_name}_{read2}.{trim_suffix}_fastqc.zip")
+    return fastqc_list
+
+
+
+def get_UMI_fastq(w):
+    '''
+    retrieves the fastq containing the UMI-barcode information for tagging the aligned bam-file
+    '''
+
+    sample_name = f"{w.sample}_{w.type}"
+    index_name = config['setup']['UMI'] # is UMI named as 'barcode' or as 'index'
+    index_path = file_df.query('name == @sample_name').iloc[0][index_name]
+    return index_path
+
+
+
+def get_script(script_name):
+    return os.path.join(config['snakedir'], config['paths']['scripts'], config['scripts'][script_name])
+
+
+def get_filter(filter_dict):
+    '''
+    get the full path to the filter script with the name filter_name
+    '''
+    return os.path.join(config['snakedir'], config['paths']['scripts'], 'filters', filter_dict['path'])
+
+
+
+def get_bed_file(covered_or_padded):
+    '''
+    returns the appropriate bed_file depending on build and library
+    '''
+    
+    build = config['ref']['build']
+    lib = config['setup']['library']
+    lib_version = config['setup']['library_version']
+    prefix = 'SS' if lib == 'SureSelect' else lib
+    suffix = '_nochr' if build == 'hg19' else ''
+    bed_name = f"{prefix}_{lib_version}_{build}_{covered_or_padded}{suffix}.bed"
+    bed_file = os.path.join(config['paths']['mystatic'], 'bed_files', lib, build,bed_name)
+    return bed_file
+
+
+def full_path(file):
+
+    '''
+    returns the full path to a reference
+    '''
+
+    build = config['ref']['build']
+    full_ref_path = os.path.join(config['paths']['mystatic'], config['ref'][build][file])
+    return full_ref_path
+
+
+def static_path(file):
+    '''
+    returns the absolute path when given relative to static folder
+    '''
+
+    return os.path.join(config['paths']['mystatic'], file)
+
+
+def get_fastq_origin(w):
+    '''
+    returns the path to the original fastq file
+    '''
+    path = os.path.join(config['inputdir'], "fastq")
+    return f"{path}/{w.sample}_{w.type}_R{w.read}.fastq"
+
+
+def get_fastq_link(w):
+    '''
+    returns the path to the fastq-symlink in the work directory
+    '''
+    return f"fastq/{w.sample}_{w.type}_R{w.read}.fastq"
+
+
+def get_fastq_pair(w):
+    return [f"fastq/{w.sample}_{w.type}_R{read}.fastq" for read in [1, 2]]
+
+
+def get_pileup_input(w):
+    file_name = f"{w.sample}_{w.type}.bam"
+    if config['recalib']['run']:
+        return "recalib/" + file_name
+    return "realigned/" + file_name

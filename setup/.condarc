@@ -1,0 +1,11 @@
+channels:
+  - conda-forge
+  - bioconda
+  - default
+  - defaults
+
+show_channel_urls: True
+
+auto_update_conda: True
+
+always_yes: True

@@ -1,0 +1,130 @@
+rule anno2EB:
+    input:
+        table = "table/{sample}_{tumor}-{norm}.csv",
+        tumor_bam = "recalib/{sample}_{tumor}.bam",
+        tumor_bai = "recalib/{sample}_{tumor}.bai"
+    output:
+        "eb/{sample}_{tumor}-{norm}-{chrom}.EB"
+    log:
+        "logs/eb/{sample}_{tumor}-{norm}-{chrom}.log"
+    threads:
+        config['EBFilter']['threads']['EBscore']
+    conda:
+        "../env/eb-env.yml"
+    params:
+        cleanpileup = get_script('cleanpileup'),
+        csv2bed = get_script('csv2bed'),
+        pon2cols = get_script('pon2cols'),
+        pile2count = get_script('pile2count'),
+        matrix2EBinput = get_script('matrix2EBinput')
+        # refgen = full_path('genome')
+    script:
+        "../scripts/eb.py"
+        # should I repileup the target with separate Q and q --> ask Kenyishi
+
+
+def get_chrom(c, use_chr=True):
+    if c > 21:
+        if c == 22:
+            chrom = "X"
+        if c == 23:
+            chrom = "Y"
+    else:
+        chrom = c + 1        
+    return f"chr{chrom}" if use_chr else chrom
+
+# get the chrom list for  
+chrom_list = [get_chrom(chrom, (config['ref']['build'] == 'hg38')) for chrom in range(24)]  # set use_chr to False if using hg19
+# print(chrom_list)
+
+
+def get_cache(w):
+    '''
+    retrieves path to chrom.cache from the wildcards.chrom
+    '''
+
+    chrom = w.chrom
+    EBcache_path = static_path(config['EBFilter']['pon_list'])
+    cache_folder = os.path.join(config['paths']['mystatic'], config['EBFilter']['cache_folder'])
+    EBcache_folder = os.path.join(cache_folder, "EBcache")
+    return os.path.join(EBcache_folder, f"{chrom}.cache")
+
+
+rule anno2EB_EBcache:
+    input:
+        table = "table/{sample}_{tumor}-{norm}.csv",
+        tumor_bam = "recalib/{sample}_{tumor}.bam",
+        tumor_bai = "recalib/{sample}_{tumor}.bai",
+        cache = get_cache
+    output:
+        "eb/{sample}_{tumor}-{norm}-{chrom}.cachedEB"
+    log:
+        "logs/eb/{sample}_{tumor}-{norm}-{chrom}.log"
+    threads:
+        config['EBFilter']['threads']['EBscore']
+    conda:
+        "../env/eb-env.yml"
+    params:
+        cleanpileup = get_script('cleanpileup'),
+        csv2bed = get_script('csv2bed'),
+        pon2cols = get_script('pon2cols'),
+        pile2count = get_script('pile2count'),
+        matrix2EBinput = get_script('matrix2EBinput')
+        # refgen = full_path('genome')
+    script:
+        "../scripts/ebfromcache.py"
+
+
+######################### MERGE ####################################################
+
+def get_mergeEBscore_input(w):
+    '''
+    performs the input switch for mergeEBscore
+    '''
+
+    if config['EBFilter']['use_cache']:
+        input_list = [f"eb/{w.sample}_{w.tumor}-{w.norm}-{chrom}.cachedEB" for chrom in chrom_list]
+    else:
+        input_list = [f"eb/{w.sample}_{w.tumor}-{w.norm}-{chrom}.EB" for chrom in chrom_list]
+    return input_list
+
+
+rule mergeEBscore:
+    input:
+        get_mergeEBscore_input   
+         # input switch for cached eb-files
+    output:
+        "table/{sample}_{tumor}-{norm}.EB.csv"
+    threads:
+        4
+    run:
+        anno_df = pd.read_csv(input[0], sep='\t', index_col=False)
+        # maybe arrange columns so that EB is not last column?
+        # anno_cols = anno_df.columns[5:]
+
+        # concatenate matrix file
+        if not config['EBFilter']['use_cache']:
+            matrix_dfs = []
+            for EB_file in input:
+                matrix_file = EB_file.replace('.EB', '.mutmatrix')
+                matrix_df = pd.read_csv(matrix_file, sep='\t', index_col=False)
+                # cleanup after
+                shell(f"rm {matrix_file}")
+                matrix_dfs.append(matrix_df)
+            matrix_merge = pd.concat(matrix_dfs).sort_values(['Chr', 'Start'])
+            matrix_file = output[0].replace('csv', 'matrix')
+            matrix_merge.to_csv(matrix_file, sep='\t', index=False)
+            show_output(f"Written matrix_file to {matrix_file}", color='success')
+            # load in the input files (starting with 2nd input (1st is anno_file))
+
+
+        EB_dfs = []
+        for EB_file in input:
+            EB_df = pd.read_csv(EB_file, sep='\t', index_col=False)
+            # cleanup after
+            shell(f"rm {EB_file}")
+            EB_dfs.append(EB_df)
+        EB_merge = pd.concat(EB_dfs).sort_values(['Chr', 'Start'])
+        EB_merge.to_csv(output[0], sep='\t', index=False)
+        show_output(f"Written EB-annotated file to {output[0]}", color='success')
+

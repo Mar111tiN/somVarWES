@@ -1,0 +1,82 @@
+import numpy as np
+from os.path import getsize as filesize
+
+rule splitBedFile:
+    input:
+        get_bed_file('Padded')
+    output:
+        expand("bed/{{chrom}}-{i}.bed", i=range(split_factor))
+    threads:
+        1
+    run:
+        # create split bed files as a base file for the cache computations
+        chrom = wildcards.chrom
+        bed_df = pd.read_csv(input[0], sep='\t', skiprows=2, header=None).iloc[:,:-1]
+        bed_chr_df = bed_df[bed_df.iloc[:,0] == chrom]
+        bed_chr_splits = np.array_split(bed_chr_df, split_factor)
+        for i, bed_chr in enumerate(bed_chr_splits):
+            bed_file = f"bed/{chrom}-{i}.bed"
+            print(f'Writing to {bed_file} ')
+            bed_chr.to_csv(bed_file, sep='\t', index=False, header=None)
+
+
+rule EBcache_pileup:
+    input:
+        "bed/{chrom}-{i}.bed"
+    output:
+        "matrix/{chrom}-{i}.matrix"
+    log:
+        "logs/{chrom}-{i}.matrix.log"
+    threads:
+        2
+    conda:
+        "../env/eb-env.yml"
+    params:
+        pon_list = static_path(config['EBFilter']['pon_list']),
+        cleanpileup = get_script('cleanpileup'),
+        pon2cols = get_script('pon2cols'),
+        pile2count = get_script('pile2count')
+    script:
+        "../scripts/ebmatrix.py"
+
+
+rule EBcache:
+    input:
+        "matrix/{chrom}-{i}.matrix"
+    output:
+        "cache/{chrom}-{i}.cache"
+    log:
+        "logs/{chrom}-{i}.AB.log"
+    threads:
+        config['EBFilter']['threads']['makeEBcache']
+    conda:
+        "../env/eb-env.yml"
+    params:
+        pon_list = static_path(config['EBFilter']['pon_list']),
+        cleanpileup = get_script('cleanpileup'),
+        pon2cols = get_script('pon2cols'),
+        pile2count = get_script('pile2count')
+    script:
+        "../scripts/ebcache.py"
+        
+
+rule mergeEBcache:
+    input:
+        expand("cache/{{chrom}}-{i}.cache", i=range(config['EBFilter']['threads']['EBsplit_factor'])), 
+    output:
+        "{chrom}.cache"
+    threads:
+        4
+    run:
+        # load in the input files (starting with 2nd input (1st is anno_file))
+        EBcache_dfs = []
+        for EBcache_file in input:
+            # check for empty file
+            if filesize(EBcache_file):
+                EBcache_df = pd.read_csv(EBcache_file, sep='\t', compression='gzip', index_col=False)
+                EBcache_dfs.append(EBcache_df)
+                # cleanup
+            # shell('rm -f {EBcache_file}')
+        EBcache_df = pd.concat(EBcache_dfs).sort_values(['Chr', 'Start'])
+        EBcache_df.to_csv(output[0], sep='\t', compression='gzip', index=False)
+        show_output(f"Written EBcache for {wildcards.chrom} to {output[0]}", color='success')

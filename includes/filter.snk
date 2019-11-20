@@ -1,0 +1,12 @@
+# ################# FILTER ###################################################
+rule filter_variants:
+    input: "filter/{sample}_{tumor_norm}.raw.csv"
+    output: "filter/{sample}_{tumor_norm}.{filter}.csv"
+    wildcard_constraints:
+        sample = "[^_]+"
+    conda:
+        "../env/filter-env.yml"
+    threads:
+        config['filter']['threads']
+    script:
+        "../scripts/filter.py"

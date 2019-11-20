@@ -1,0 +1,176 @@
+rule index_bam:
+    input:
+        "{folder}/{sample}_{type}.bam"
+    output:
+        bai = "{folder}/{sample}_{type}.bai",
+        stats = "{folder}/{sample}_{type}.bam.stats"
+    threads:
+        config['bamindex']['threads']
+    conda:
+        "../env/align-env.yml"
+    shell:
+        "picard BuildBamIndex INPUT={input}; "
+        "picard BamIndexStats I={input} > {output.stats}"
+
+
+
+rule tag_bam_with_umi:
+    input:
+        "mapped/{sample}_{type}.bam"
+    output:
+        "mapped/{sample}_{type}.umi.bam",
+        "mapped/{sample}_{type}.umi.bai"
+    conda:
+        "../env/fgbio-env.yml"
+    threads:
+        math.ceil(int(config['tag_bam']['max_mem'].strip('g')) / 2)
+    params:
+        index = get_UMI_fastq,
+        max_mem = config['tag_bam']['max_mem']
+    shell:
+        "fgbio AnnotateBamWithUmis -Xms500m -Xmx{params.max_mem} -i {input} -f {params.index} -o {output[0]}"
+
+
+rule dedup:
+    input:
+        "mapped/{sample}_{type}.bam"
+    output:
+        "deduped/{sample}_{type}.bam"
+    log:
+        "logs/dedup/{sample}_{type}.log"
+    params:
+        metric = lambda w: f"deduped/{w.sample}_{w.type}_metric.txt"
+    threads:
+        config['dedup']['threads']
+    conda:
+        "../env/align-env.yml"
+    shell:
+        "picard MarkDuplicates I={input} O={output} M={params.metric} REMOVE_DUPLICATES=true &>{log}"
+
+
+rule dedup_umi:
+    input:
+        "mapped/{sample}_{type}.umi.bam"
+    output:
+        "deduped/{sample}_{type}.umi.bam",
+        "deduped/{sample}_{type}.umi.bai"
+    params:
+        metric = lambda w: f"deduped/{w.sample}_{w.type}_metric.txt",
+        umi_metrics = lambda w: f"deduped/{w.sample}_{w.type}_umi_metric.txt",
+        max_mem = config['dedup_umi']['max_mem'],
+        remove_dups = "false" if config['dedup_umi']['keep_dups'] else "true"
+    threads:
+        math.ceil(int(config['dedup_umi']['max_mem'].strip('g')) / 2)
+    log:
+        "logs/dedup/{sample}_{type}.log"
+    conda:
+        "../env/align-env.yml"
+    shell:
+        "picard UmiAwareMarkDuplicatesWithMateCigar -Xms500m -Xmx{params.max_mem} UMI_METRICS={params.umi_metrics} I={input} O={output[0]} M={params.metric} ASSUME_SORT_ORDER=coordinate REMOVE_DUPLICATES={params.remove_dups} &>{log}; " #  
+        "picard BuildBamIndex INPUT={output[0]}"
+
+
+
+def realign_ref():
+    '''
+    returns ref parameters for realign-refs gatk tools
+    '''
+
+    return f"-R {full_path('genome')} -known {full_path('gold_standard_indels')} -known {full_path('phase1k_indels')}"
+
+
+def ir_params(_, input, output):
+    '''
+    params for realignGATK
+    '''
+
+    return f"{realign_ref()} -targetIntervals {input.intervals} -I {input.bam} -o {output}"
+
+
+rule create_GATK_target_list:
+    # the target has to be created only once and can be stored at the original REF position
+    output:
+        "realigned/GATK_targets.intervals"
+    threads:
+        config['realignGATK']['threads']
+    log:
+        "logs/realign/targetList"
+    conda:
+        "../env/gatk3-env.yml"
+    params:
+        gatk = config['tools']['gatk3'],
+        realign = lambda _, output: f"{realign_ref()} -nt {config['realignGATK']['threads']} -o {output}"
+    shell:
+        "{params.gatk} RealignerTargetCreator {params.realign} &>{log}"
+
+
+rule realignGATK:
+    input:
+        bam = lambda w: f"deduped/{w.sample}_{w.type}.umi.bam" if config['tag_bam']['run'] else f"deduped/{w.sample}_{w.type}.bam",
+        bai = lambda w: f"deduped/{w.sample}_{w.type}.umi.bai" if config['tag_bam']['run'] else f"deduped/{w.sample}_{w.type}.bai",
+        intervals = "realigned/GATK_targets.intervals"
+    output:
+        "realigned/{sample}_{type}.bam"
+    log:
+        "logs/realign/{sample}_{type}.log"
+    threads:
+        config['realignGATK']['threads']
+    conda:
+        "../env/gatk3-env.yml"
+    params:
+        gatk = config['tools']['gatk3'],
+        ir = ir_params
+    shell:
+        "{params.gatk} IndelRealigner {params.ir} &>{log}"
+
+
+def recalib_ref():
+    '''
+    returns ref parameters for gatk4 BaseRecalibrator
+    '''
+    # use the same known-sites as IndelRealigner plus the dbsnp chosen in recalib config
+    return f"-R {full_path('genome')} --known-sites {full_path('gold_standard_indels')} --known-sites {full_path('phase1k_indels')} --known-sites {full_path(config['recalib']['known_sites'])}"
+
+rule base_recalibrator:
+    input:
+        bam = "realigned/{sample}_{type}.bam",
+        bai = "realigned/{sample}_{type}.bai"
+    output:
+        "recalib/{sample}_{type}.bam"
+    log:
+        "logs/recalib/{sample}_{type}.log"
+    params:
+        gatk = config['tools']['gatk'],
+        recalib = lambda w: f"{recalib_ref()} -O recalib/{w.sample}_{w.type}.recal_table",
+        apply_table = lambda w, input, output: f"-R {full_path('genome')} --bqsr-recal-file recalib/{w.sample}_{w.type}.recal_table -I {input.bam} -O {output}"
+    threads:
+        config['recalib']['threads']
+    conda:
+        "../env/gatk4-env.yml"
+    shell:
+        "{params.gatk} BaseRecalibrator -I {input.bam} {params.recalib} &>{log}; "
+        # apply recalibration table on input
+        "gatk ApplyBQSR {params.apply_table} &>>{log}; "
+        # recreate recalibration table from output for QC
+        "gatk BaseRecalibrator -I {output} {params.recalib} &>>{log}"
+
+rule cover_BED:
+    input:
+        sample = "recalib/{sample}_{type}.bam",
+        index = "recalib/{sample}_{type}.bai",
+        ref_gen = os.path.join(full_path('genome_path'), 'gen_ref.done')
+    output:
+        "coverBED/{sample}_{type}.txt"
+    log:
+        "logs/coverBED/{sample}_{type}.log"
+    threads: 2
+    params:
+        format_coverage = get_script('format_bed_coverage'),
+        exon_cover = get_bed_file('Covered'),
+        prettifyBed = get_script('prettifyBED'),
+        fastq = get_fastq_pair,
+        refgen = full_path('genome')
+    conda:
+        "../env/bedcover-env.yml"
+    script:
+        "../scripts/bedcover.py"

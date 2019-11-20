@@ -1,0 +1,108 @@
+# #################### makeEBcache #########################################
+def get_EBcache_params(w):
+    '''
+    retrieve the relevant parameters for the generation of the EBcache
+    works per chromosome to optimally allocate resources
+    '''
+    params_list = ["-t"]
+    params.append(config['EBFilter']['threads']['generateCache'])
+    # add the bed file (here it should be padded)
+    bed_file = get_bed_file('Padded')
+    params.append(f"-bed_file {bed_file}")
+    params.append(f"-chrom {w.chrom}")
+    # add the pon list
+    params.append(static_path(config['EBFilter']['pon_list']))
+    # add the cache folder
+    params.append(static_path(config['EBFilter']['cache_folder']))
+    return ' '.join(params_list)
+
+
+rule makeEBcache:
+    output: os.path.join(static_path(config['EBFilter']['cache_folder']), "{chrom}.cache")
+    params: get_EBcache_params
+    log: "logs/ebcache/{chrom}"
+    threads:
+        config['EBFilter']['threads']['generateCache']
+    conda:
+        "../env/eb-env.yml"
+    shell:
+        "makeEBcache {params}"
+
+
+# ###################### EBscore ############################################
+
+def get_eb_params(w):
+    '''
+    return the relevant parameters for EBscore
+    in use_cache mode, it adds the cache folder which toggles cache mode ON
+    '''
+
+    eb_params = config['EBFilter']['params']
+    cmd = f"-t {config['EBFilter']['threads']['EBscore']} "
+    cmd += f"-q {eb_params['map_quality']} -Q {eb_params['base_quality']} -sep tab "
+    if config['EBFilter']['use_cache']:
+        cmd += f"-use_cache {static_path(config['EBFilter']['cache_folder'])}"
+    else:
+        cmd += f"-fit_with {eb_params['fitting_penalty']}"
+    return cmd
+
+
+def get_EB_bam_pon(w):
+    '''
+    return the tumor bam and the pon list formatted for use on EBscore CLI call
+    '''
+
+    tumor = w.tumor_norm.split('-')[0]
+    if config['recalib']['run']:
+        bam = f"recalib/{w.sample}_{tumor}.bam"
+    else:
+        bam = f"realign/{w.sample}_{tumor}.bam"
+    return f"{bam} {static_path(config['EBFilter']['pon_list'])}"
+
+
+def get_eb_input(w):
+    '''
+    returns the input list for the rule eb_filter
+    in use_cache mode, it additionally returns a cache file list for EBscore
+    required cache files are computed from the intersection of chroms in..
+    ..bed_file and pon_list (get chroms from bam files)
+    '''
+
+    anno_input = [f"annovar/{w.sample}_{w.tumor_norm}.csv"]
+    if config['EBFilter']['use_cache']:
+        # get all the chromosomes (with correct names) from the pon list
+        pon_chr_list = pon2chr_list(config['EBFilter']['pon_list'])
+        # get all the chromosomes (with correct names) from the anno_input
+        bed_df = pd.read_csv(
+                             full_path('bed_file_pad'), sep='\t',
+                             dtype={0: str}, header=None, skiprows=10
+                             )
+        # return the list of unique values from the first column (Chr column)
+        bed_chr_list = bed_df.iloc[:, 0].unique()
+        # get intersection (all chroms actually needed in the cache)
+        chr_list = list(set(pon_chr_list) & set(bed_chr_list))
+        chr_list = sorted(chr_list, key=sort_chr)
+        print(f"EBFilter: Requesting cache for {len(chr_list)} chromosomes:\n {' '.join(chr_list)}")
+        cache_folder = config['EBFilter']['cache_folder']
+        cache_files = [f"{cache_folder}/{chrom}.cache" for chrom in chr_list]
+        # print(cache_files)
+        eb_input = {'anno': anno_input, 'cache_files': cache_files}
+    else:
+        eb_input = {'anno': anno_input}
+    return eb_input
+
+
+rule eb_filter:
+    input: unpack(get_eb_input)
+    output: "eb/{sample}_{tumor_norm}.csv"
+    params:
+        eb = get_eb_params,
+        bam_pon = get_EB_bam_pon,
+    threads:
+        config['EBFilter']['threads']['EBscore']
+    conda:
+        "../env/eb-env.yml"
+    log:
+        "logs/eb/{sample}_{tumor_norm}.log"
+    shell:
+        "EBscore {params.eb} {input.anno} {params.bam_pon} {output}"

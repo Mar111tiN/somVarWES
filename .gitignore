@@ -1,0 +1,13 @@
+Bullpipe/.bpipe
+Bullpipe/.bpipe/*/
+Bullpipe/.bpipe/*/*/
+Bullpipe/.bpipe/*/*/*/
+Bullpipe/*/*/*/*/
+Bullpipe/command*
+Bullpipe/AML*
+.bpipe
+.snakemake/
+.ipynb_checkpoints
+fastq/
+dax/
+.DS_Store

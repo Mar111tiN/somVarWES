@@ -1,0 +1,67 @@
+rule mpileup:
+    input:
+        get_pileup_input
+    output:
+        "pileup/{sample}_{type}.pileup"
+    log:
+        "logs/pileup/{sample}_{type}.log"
+    threads:
+        2
+    conda:
+        "../env/align-env.yml"
+    params:
+        bedfile = get_bed_file('Covered'),
+        refgen = full_path('genome'),
+        qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}"
+    shell:
+        # bed file does not have to be padded here, I think
+        "samtools mpileup -f {params.refgen} {params.qual} -l {params.bedfile} {input} > {output} 2>{log}"
+
+
+rule varscan:
+    input:
+        tumor = "pileup/{sample}_{tumor}.pileup",
+        norm = "pileup/{sample}_{norm}.pileup"
+    output:
+        indel = "varscan/{sample}_{tumor}-{norm}.indel.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{norm}.indel",
+        snp = "varscan/{sample}_{tumor}-{norm}.snp.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{norm}.snp"
+    threads:
+        config['varscan']['threads']
+    params:
+        vcf = "--output-vcf 1 " if config['varscan']['vcf'] else "", 
+        min = f"--min-coverage {config['varscan']['min-coverage']} --min-var-freq {config['varscan']['min-var-freq']} --min-freq-for-hom {config['varscan']['min-freq-for-hom']}",
+        p = f"--p-value {config['varscan']['p-value']} --somatic-p-value {config['varscan']['somatic-p-value']}",
+        np = f"--normal-purity {config['varscan']['normal-purity']} --tumor-purity {config['varscan']['tumor-purity']}",
+    conda:
+        "../env/varscan-env.yml"
+    log:
+        "logs/varscan/{sample}_{tumor}-{norm}.log"
+    shell:
+        "varscan somatic {input.norm} {input.tumor} {params.vcf}"
+        "--output-snp {output.snp} --output-indel {output.indel} {params.min} {params.p} {params.np}"
+        # " &>{log}"
+
+
+def get_anno_input(_):
+    if config['varscan']['vcf']:
+        indel = "varscan/{sample}_{tumor}-{norm}.indel.vcf"
+        snp = "varscan/{sample}_{tumor}-{norm}.snp.vcf"
+    else:
+        indel = "varscan/{sample}_{tumor}-{norm}.indel"
+        snp = "varscan/{sample}_{tumor}-{norm}.snp"
+    return {'indel': indel, 'snp': snp}
+
+
+rule varscan2table:
+    input:
+        unpack(get_anno_input)
+    output:
+        "table/{sample}_{tumor}-{norm}.csv"
+    threads: 2
+    conda:
+        "../env/vcf-env.yml"
+    params:
+        vcf2table = get_script('vcf2table'),
+        varscan2table = get_script('varscan2table')
+    script:
+        "../scripts/varscan2table.py"

@@ -1,0 +1,10 @@
+channels:
+  - conda-forge
+  - bioconda
+  - default
+  - defaults
+dependencies:
+  - libgcc-ng=8.2.0
+  - openjdk=11.0.1
+  - varscan=2.4.3
+  - zlib=1.2.11
