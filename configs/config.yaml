@@ -55,6 +55,7 @@ tools:
   annovar: perl /fast/users/szyskam_c/tools/annovar2018
   # annovar: perl /fast/users/szyskam_c/tools/annovar2019
 scripts:
+  split_fastq: shell/split_fastq.mawk
   prettifyBED : shell/prettify_BEDcoverage.awk
   anno_format: shell/anno_format.mawk
   vcf2table: shell/vcf2table.mawk
@@ -75,6 +76,7 @@ scripts:
 fastq:
   threads: 4
   subsample_normal_factor: 1  # for testing purpose
+  split_factor: 20 # split fastqs and run pipeline on split files --> merge before deduplication
 qc:
   samplefactor: 1
 trim:

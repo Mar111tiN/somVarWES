@@ -13,19 +13,19 @@ rule index_bam:
 
 rule tag_bam_with_umi:
     input:
-        "mapped/{sample}_{type}.{chrom}.bam"
+        "mapped/{sample}_{type}.{split}.bam",
+        "fastq/{sample}_{type}_index.{split}.fastq.gz"
     output:
-        "mapped/{sample}_{type}.{chrom}.umi.bam",
-        "mapped/{sample}_{type}.{chrom}.umi.bai"
+        "mapped/{sample}_{type}.{split}.umi.bam",
+        "mapped/{sample}_{type}.{split}.umi.bai"
     conda:
         "../env/fgbio-env.yml"
     threads:
         math.ceil(int(config['tag_bam']['max_mem'].strip('g')) / 2)
     params:
-        index = get_UMI_fastq,
         max_mem = config['tag_bam']['max_mem']
     shell:
-        "fgbio AnnotateBamWithUmis -Xms500m -Xmx{params.max_mem} -i {input} -f {params.index} -o {output[0]}"
+        "fgbio AnnotateBamWithUmis -Xms500m -Xmx{params.max_mem} -i {input[0]} -f {input[1]} -o {output[0]}"
 
 
 rule dedup:

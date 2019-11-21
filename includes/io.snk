@@ -50,8 +50,9 @@ def get_tumor_normal_pairs(samples):
 
 def get_fastqs(w):
     sample_name = f"{w.sample}_{w.type}"
-    fastq_path = file_df.query('name == @sample_name')[w.read]
+    fastq_path = file_df.query('name == @sample_name')[w.read_or_index]
     return list(fastq_path)
+
 
 
 def get_bwa_fastqs(w):
@@ -61,10 +62,9 @@ def get_bwa_fastqs(w):
 
     if config['trim']['trimming']:
         trim_suffix = config['trim']['suffix'][0]
-        return [f"fastq/trimmed/{w.sample}_{w.type}_{read}.{trim_suffix}.fastq.gz" for read in config['samples']['reads']]
+        return [f"trim/{w.sample}_{w.type}_{read}.{w.split}.{trim_suffix}.fastq.gz" for read in config['samples']['reads']]
     else:
-        return [f"fastq/{w.sample}_{w.type}_{read}.fastq.gz" for read in config['samples']['reads']]
-
+        return [f"fastq/{w.sample}_{w.type}_{read}.{w.split}.fastq.gz" for read in config['samples']['reads']]
 
 
 def get_fastq_input(w):

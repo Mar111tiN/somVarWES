@@ -46,9 +46,9 @@ rule align_bwa:
         get_bwa_fastqs,
         os.path.join(full_path('genome_path'), 'gen_ref.done')
     output:
-        "mapped/{sample}_{type}.bam"
+        "mapped/{sample}_{type}.{split}.bam"
     log:
-        "logs/mapped/{sample}_{type}.log"
+        "logs/mapped/{sample}_{type}.{split}.log"
     params:
         bwa = get_bwa_params,
         picard = lambda w, output: f"SortSam I=/dev/stdin O={output} SORT_ORDER=coordinate"
