@@ -88,6 +88,6 @@ rule combine_annotations:
         fisher = "table/{sample}_{tumor_norm}.fisher.csv",
         eb_score = "table/{sample}_{tumor_norm}.EB.csv"
     output:
-        "filter/{sample}_{tumor_norm}.raw.csv"
+        "table/{sample}_{tumor_norm}.raw.csv"
     script:
         "../scripts/format_table.py"

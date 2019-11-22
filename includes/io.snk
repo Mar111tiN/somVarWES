@@ -62,7 +62,7 @@ def get_bwa_fastqs(w):
 
     if config['trim']['trimming']:
         trim_suffix = config['trim']['suffix'][0]
-        return [f"trim/{w.sample}_{w.type}_{read}.{w.split}.{trim_suffix}.fastq.gz" for read in config['samples']['reads']]
+        return [f"fastq_trimmed/{w.sample}_{w.type}_{read}.{w.split}.{trim_suffix}.fastq.gz" for read in config['samples']['reads']]
     else:
         return [f"fastq/{w.sample}_{w.type}_{read}.{w.split}.fastq.gz" for read in config['samples']['reads']]
 
@@ -75,7 +75,7 @@ def get_fastq_input(w):
     # readtrim is either R1.trim or R1
     # and stands for active or disabled trimming
     if trim_suffix in w.readtrim:
-        return f"fastq/trimmed/{w.sample}_{w.type}_{w.readtrim}.fastq.gz"
+        return f"fastq_trimmed/{w.sample}_{w.type}_{w.readtrim}.fastq.gz"
     else:
         return f"fastq/{w.sample}_{w.type}_{w.readtrim}.fastq.gz"
 
@@ -178,7 +178,7 @@ def get_fastq_pair(w):
 
 
 def get_pileup_input(w):
-    file_name = f"{w.sample}_{w.type}.bam"
+    file_name = f"{w.sample}_{w.type}.{w.chrom}.bam"
     if config['recalib']['run']:
         return "recalib/" + file_name
     return "realigned/" + file_name

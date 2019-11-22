@@ -4,7 +4,6 @@ w = snakemake.wildcards
 config = snakemake.config
 
 
-file_name = f"{w.sample}_{w.tumor}_{w.norm}"
 input_files = snakemake.input
 output = snakemake.output
 params = snakemake.params

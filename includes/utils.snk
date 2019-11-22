@@ -44,6 +44,17 @@ def show_command(command, config, multi=True):
     return
 
                                                               
+def get_chrom(c, use_chr=True):
+    if c > 21:
+        if c == 22:
+            chrom = "X"
+        if c == 23:
+            chrom = "Y"
+    else:
+        chrom = c + 1        
+    return f"chr{chrom}" if use_chr else chrom
+
+
 def validate(file, message):
     '''
     file existence checks

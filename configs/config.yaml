@@ -1,8 +1,8 @@
 inputdir: /fast/projects/damm_establish_ht_xs/work/demux_results/190905_A00643_0015_AHL3KHDMXX/  # source of fastq files (subfolders allowed)
-workdir: /fast/users/szyskam_c/scratch/projects/FDAH190905 # here your results are created
-snakedir: /fast/users/szyskam_c/snakes/projects/AML
+workdir: /fast/users/szyskam_c/scratch/projects/FDAHsplit # here your results are created
+snakedir: /fast/users/szyskam_c/snakes/projects/somVarWES
 samples: # here go all your samples
-  samplesheet: /fast/users/szyskam_c/snakes/projects/AML/configs/sample_sheet.csv
+  samplesheet: /fast/users/szyskam_c/snakes/projects/AML/configs/sample005.csv
   tumor:
     - A  # 
   normal:
@@ -100,10 +100,12 @@ bamindex:
 tag_bam: # needs enough RAM for loading entire uncompressed index fastq into memory
   run: True
   max_mem: 30g # memory for java VM (30g seems neccessary - needs to be smaller than threads * vmem/thread)
+resplit_bam:
+  threads: 4
 dedup:
   threads: 4
 dedup_umi:
-  max_mem: 30g
+  max_mem: 10g
   keep_dups: True # keep dups if you want to perform UMI-correction
 realignGATK:
   threads: 16

@@ -1,3 +1,17 @@
+rule concat_fastq:
+    '''
+    fastq are concatenated for use in fastQC
+    '''
+    input:
+        expand("fastq_trimmed/{{sample}}_{{type}}_{{read}}.{split}.{{trim}}.fastq.gz", split=list(range(config['fastq']['split_factor'])))
+    output:
+        "fastq_trimmed/{sample}_{type}_{read}.{trim}.fastq.gz"
+
+    threads: 1
+    shell:
+        "zcat fastq_trimmed/{wildcards.sample}_{wildcards.type}_{wildcards.read}.*.{wildcards.trim}.fastq.gz | gzip > {output}"
+
+
 rule fastqc:
     input: get_fastq_input
     output: 

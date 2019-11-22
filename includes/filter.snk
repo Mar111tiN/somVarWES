@@ -1,7 +1,7 @@
 # ################# FILTER ###################################################
 rule filter_variants:
-    input: "filter/{sample}_{tumor_norm}.raw.csv"
-    output: "filter/{sample}_{tumor_norm}.{filter}.csv"
+    input: "table/{sample}_{tumor}-{norm}.raw.csv"
+    output: "filter/{sample}_{tumor}-{norm}.{filter}.csv"
     wildcard_constraints:
         sample = "[^_]+"
     conda:

@@ -40,10 +40,11 @@ rule split_fastq:
     threads: 1
     params:
         split_factor=config['fastq']['split_factor'],
-        split_tool=get_script(config['scripts']['split_fastq']),
-        output_base=lambda w: "fastq/{w.sample}_{w.type}_{w.read_or_index}"
+        split_tool=get_script('split_fastq'),
+        output_base=lambda w: f"fastq/{w.sample}_{w.type}_{w.read_or_index}"
     shell:
         "{params.split_tool} {input} {params.split_factor} {params.output_base}"
+
 
 
 rule compress_split_fastq:
@@ -62,21 +63,22 @@ def get_trim_params(w, input, output, threads):
     retrieves settings from config file and translates into Trimmomatic call
     '''
 
-    run = config["setup"]["run"]
     if config['trim']['program'] == 'trimmomatic':
         trim_mode = ' '.join(config['trim']['mode']) # concatenate trim mode options
         adapter_file = os.path.join(config['snakedir'], config['trim']['adapters'])
         trim_mode = trim_mode.replace('<adapter>', adapter_file)
         files = list(input)
         files += list(output)
-        return {'run': f"{run} -phred{config['setup']['phred']}", 'files': " ".join(files), 'trim_mode': trim_mode}
+        files = " ".join(files)
+        return f"{files} {trim_mode}"
+
 
 
 rule trim_fastq_PE:
     input: 
         expand("fastq/{{sample}}_{{type}}_{read}.{{split}}.fastq.gz", read=config['samples']['reads'])
     output: 
-        expand("trim/{{sample}}_{{type}}_{read}.{{split}}.{trim}.fastq.gz", read=config['samples']['reads'], trim=config['trim']['suffix'])
+        expand("fastq_trimmed/{{sample}}_{{type}}_{read}.{{split}}.{trim}.fastq.gz", read=config['samples']['reads'], trim=config['trim']['suffix'])
     conda:
         "../env/trim-env.yml"
     threads:
@@ -84,6 +86,7 @@ rule trim_fastq_PE:
     log:
         "logs/trim/{sample}_{type}.{split}.log"
     params: 
-        unpack(get_trim_params)
+        run = f"{config['setup']['run']} -phred{config['setup']['phred']}",
+        files_n_mode = get_trim_params
     shell:
-        "trimmomatic {params.run} -threads {threads} -trimlog {log} {params.files} {params.trim_mode}"
+        "trimmomatic {params.run} -threads {threads} -trimlog {log} {params.files_n_mode}"

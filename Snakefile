@@ -25,6 +25,8 @@ include: "includes/utils.snk"
 # retrieve the file_df with all the file paths from the samplesheet
 file_df = get_files(config['inputdir'], config['samples']['samplesheet'])
 print(file_df)
+chrom_list = [get_chrom(chrom, (config['ref']['build'] == 'hg38')) for chrom in range(24)]
+
 
 # ############ INCLUDES ##############################
 include: "includes/fastq.snk"
@@ -45,10 +47,24 @@ wildcard_constraints:
     sample = "[^_/.]+",
     type = "[^_/.]+",
     read = "[^_/.]+",
-    tumor_norm = "[^_/.]+"
+    tumor_norm = "[^_/.]+",
+    tumor = "[A-Za-z]+",
+    norm = "[A-Za-z]+",
+    split = "[0-9]+",
+    read_or_index = "[^_/.]+",
+    trim = "[^_/.]+",
+    chrom = "[^_/.]*[0-9XY]+",
+    filter = "[A-Za-z]+"
     
 # extract the filter list for active filters
 active_filter_list = [f for f in config['filter']['filters'].keys() if config['filter']['filters'][f]['run']]
+
+
+# get the chrom list for  
+
+
+############### MASTER RULE ##############################################
+
 
 rule all:
     input:
@@ -58,7 +74,10 @@ rule all:
         expand("filter/{file}.{filter}.csv", file=get_tumor_normal_pairs(file_df), filter=active_filter_list)
 
 
-# print out of thnstalled tools
+###########################################################################
+
+
+# print out of installed tools
 onstart:
     print("    EXOM SEQUENCING PIPELINE STARTING.......")
     print('file_df', file_df[['name', 'R1']])
