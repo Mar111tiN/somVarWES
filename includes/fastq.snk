@@ -73,7 +73,6 @@ def get_trim_params(w, input, output, threads):
         return f"{files} {trim_mode}"
 
 
-
 rule trim_fastq_PE:
     input: 
         expand("fastq/{{sample}}_{{type}}_{read}.{{split}}.fastq.gz", read=config['samples']['reads'])

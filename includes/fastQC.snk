@@ -1,13 +1,14 @@
 rule concat_fastq:
     '''
     fastq are concatenated for use in fastQC
+    takes a long time
     '''
     input:
         expand("fastq_trimmed/{{sample}}_{{type}}_{{read}}.{split}.{{trim}}.fastq.gz", split=list(range(config['fastq']['split_factor'])))
     output:
         "fastq_trimmed/{sample}_{type}_{read}.{trim}.fastq.gz"
 
-    threads: 1
+    threads: 2
     shell:
         "zcat fastq_trimmed/{wildcards.sample}_{wildcards.type}_{wildcards.read}.*.{wildcards.trim}.fastq.gz | gzip > {output}"
 
@@ -17,8 +18,8 @@ rule fastqc:
     output: 
         "fastQC/{sample}_{type}_{readtrim}_fastqc.zip"
     threads: 4
-    log: "logs/fastQC/{sample}_{type}_{readtrim}.log"
-
+    log: 
+        "logs/fastQC/{sample}_{type}_{readtrim}.log"
     conda:
         "../env/fastQC-env.yml"
     script:

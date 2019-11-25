@@ -25,7 +25,7 @@ include: "includes/utils.snk"
 # retrieve the file_df with all the file paths from the samplesheet
 file_df = get_files(config['inputdir'], config['samples']['samplesheet'])
 print(file_df)
-chrom_list = [get_chrom(chrom, (config['ref']['build'] == 'hg38')) for chrom in range(24)]
+chrom_list = get_chrom_list(config)
 
 
 # ############ INCLUDES ##############################

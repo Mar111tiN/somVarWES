@@ -43,16 +43,27 @@ def show_command(command, config, multi=True):
         print(proc + command)
     return
 
-                                                              
-def get_chrom(c, use_chr=True):
-    if c > 21:
-        if c == 22:
-            chrom = "X"
-        if c == 23:
-            chrom = "Y"
-    else:
-        chrom = c + 1        
-    return f"chr{chrom}" if use_chr else chrom
+
+def get_chrom_list(config):
+    '''
+    returns a list of all valid chromosomes determined by build version
+    '''
+                                                         
+    def get_chrom(c, use_chr=True):
+        if c > 21:
+            if c == 22:
+                chrom = "X"
+            if c == 23:
+                chrom = "Y"
+        else:
+            chrom = c + 1        
+        return f"chr{chrom}" if use_chr else chrom
+
+    # switch for use of "chr"-prefix
+    is_hg38 = (config['ref']['build'] == 'hg38')
+
+    chrom_list = [get_chrom(chrom, is_hg38) for chrom in range(24)]
+    return chrom_list
 
 
 def validate(file, message):

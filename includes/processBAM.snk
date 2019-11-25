@@ -28,10 +28,9 @@ rule tag_bam_with_umi:
         "fgbio AnnotateBamWithUmis -Xms500m -Xmx{params.max_mem} -i {input[0]} -f {input[1]} -o {output[0]}"
 
 
-
 rule resplit_bam:
     '''
-    here the split and umified bams are merged and then again split into bams split by chromosome
+    here the split and umified bams are merged and then again chromosome-split into bams
     '''
     input: # here I need a switch if no UMI is involved
         expand("mapped/{{sample}}_{{type}}.{split}.umi.bam", split=list(range(config['fastq']['split_factor'])))
