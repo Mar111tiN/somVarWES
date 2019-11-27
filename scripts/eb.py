@@ -220,7 +220,7 @@ csv2bed = params.csv2bed
 pon2cols = params.pon2cols
 pile2count = params.pile2count
 matrix2EBinput = params.matrix2EBinput
-
+makeponlist = params.makeponlist
 
 ############### LOAD DATA ###############################
 # get the sceleton mutation file
@@ -235,8 +235,9 @@ shell(f"{csv2bed} < {mut_file} > {bed_file}")
 
 # create the pon_list containing the tumor-bam as first file
 sample_list = f"{base_file}.pon"
-shell(f"echo {tumor_bam} > {sample_list}; cat {pon_list} >> {sample_list}")
+shell(f"{makeponlist} {tumor_bam} {pon_list} {sample_list}")
 
+shell(f"cat {sample_list}")
 # do the pileup into the matrix file
 matrix_file = f"{base_file}.matrix"
 pileup_cmd = f"samtools mpileup -B -q {EBparams['MAPQ']} -Q {EBparams['Q']} -l {bed_file} -r {chrom} -b {sample_list}"

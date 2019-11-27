@@ -10,3 +10,20 @@ rule filter_variants:
         config['filter']['threads']
     script:
         "../scripts/filter.py"
+
+# rule make_filter_bam:
+#     input: 
+#         "filter/{sample}_{tumor}-{norm}.{filter}.csv",
+#         "recalib/{sample}_{tumor}.{chrom}.bam",
+#         "recalib/{sample}_{norm}.{chrom}.bam"
+#     output:
+#         "filterbam/{sample}_{tumor}.{chrom}.bam",
+#         "filterbam/{sample}_{norm}.{chrom}.bam"
+#     run:
+#         def get_bed(mut_df, padding = 100, sample=1):
+#             mut = mut_df.iloc[:,:5]
+#             mut['Start'] = mut['Start'] - padding
+#             mut['End'] = mut['End'] + padding
+#             mut_sample = mut.query('sample == @sample')
+#             mut_sample.iloc[:,1:4].to_csv(f'sample{sample}.bed', sep='\t', index=False, header=False)
+    

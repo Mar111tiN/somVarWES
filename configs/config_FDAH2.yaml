@@ -68,7 +68,6 @@ scripts:
   cleanpileup: shell/cleanpileup.mawk
   pile2count: shell/pile2count.mawk
   matrix2EBinput: shell/matrix2EBinput.mawk
-  makeponlist: shell/makeponlist.sh
 
   # merge_anno: merge_anno.py
   # expand_info: shell/expand_info.sh

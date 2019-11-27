@@ -8,7 +8,7 @@ rule index_bam:
     conda:
         "../env/align-env.yml"
     shell:
-        "picard BuildBamIndex INPUT={input}; "
+        "picard BuildBamIndex INPUT={input}"
 
 
 rule tag_bam_with_umi:
@@ -16,8 +16,8 @@ rule tag_bam_with_umi:
         "mapped/{sample}_{type}.{split}.bam",
         "fastq/{sample}_{type}_index.{split}.fastq.gz"
     output:
-        "mapped/{sample}_{type}.{split}.umi.bam",
-        "mapped/{sample}_{type}.{split}.umi.bai"
+        "umi/{sample}_{type}.{split}.bam",
+        "umi/{sample}_{type}.{split}.bai"
     conda:
         "../env/fgbio-env.yml"
     threads:
@@ -28,28 +28,50 @@ rule tag_bam_with_umi:
         "fgbio AnnotateBamWithUmis -Xms500m -Xmx{params.max_mem} -i {input[0]} -f {input[1]} -o {output[0]}"
 
 
-rule resplit_bam:
+
+rule merge_bam:
     '''
-    here the split and umified bams are merged and then again chromosome-split into bams
+    here the split and umified bams are merged
+    depending on input required by recalib, this can be umi/X-Y.bam or mapped
     '''
+
     input: # here I need a switch if no UMI is involved
-        expand("mapped/{{sample}}_{{type}}.{split}.umi.bam", split=list(range(config['fastq']['split_factor'])))
+        expand("{folder}/{{sample}}_{{type}}.{split}.bam", split=list(range(config['fastq']['split_factor'])), folder="umi" if config['tag_bam']['run'] else "mapped")
     output:
-        "resplit/{sample}_{type}.umi.bam",
-        expand("resplit/{{sample}}_{{type}}.{chrom}.umi.bam", chrom=chrom_list)
+        "bam_merge/{sample}_{type}.bam"
     threads:
         config['resplit_bam']['threads']
-    run:
+    params:
+        folder = "umi" if config['tag_bam']['run'] else "mapped"
+    conda:
+        "../env/align-env.yml"
+    shell:
         # merge all split bams into one bam using samtools merge (also sorts the merged bam)
-        shell("samtools merge {output[0]} mapped/{sample}_{type}.*.umi.bam ")
-        for chrom in chrom_list:
-            out_file = output[0].replace(".umi.bam", f".{chrom}.umi.bam")
-            shell("samtools view -hb {output[0]} {chrom} > {out_file}")
+        "samtools merge {output[0]} {params.folder}/{wildcards.sample}_{wildcards.type}.*.bam; "
+        "picard BuildBamIndex INPUT={output}"
+
+
+rule resplit_bam:
+    '''
+    chromosome-split merged bams into chromosome-split bams (one split per job) with index
+    '''
+
+    input:
+        "bam_merge/{sample}_{type}.bam"
+    output:
+        "bam_merge/{sample}_{type}.{chrom}.bam"
+    threads:
+        config['resplit_bam']['threads']
+    conda:
+        "../env/align-env.yml"
+    shell:
+        "samtools view -hb {input} {wildcards.chrom} > {output}; "
+        "picard BuildBamIndex INPUT={output}"
 
 
 rule dedup:
     input:
-        "resplit/{sample}_{type}.{chrom}.bam"
+        "bam_merge/{sample}_{type}.{chrom}.bam"
     output:
         "deduped/{sample}_{type}.{chrom}.bam"
     log:
@@ -66,23 +88,22 @@ rule dedup:
 
 rule dedup_umi:
     input:
-        "resplit/{sample}_{type}.{chrom}.umi.bam"
+        "bam_merge/{sample}_{type}.{chrom}.bam"
     output:
-        "deduped/{sample}_{type}.{chrom}.umi.bam"
+        "umi_deduped/{sample}_{type}.{chrom}.bam"
     params:
-        metric = lambda w: f"deduped/{w.sample}_{w.type}.{w.chrom}.metric.txt",
-        umi_metrics = lambda w: f"deduped/{w.sample}_{w.type}.{w.chrom}.umi_metric.txt",
+        metric = lambda w: f"umi_deduped/{w.sample}_{w.type}.{w.chrom}.metric.txt",
+        umi_metrics = lambda w: f"umi_deduped/{w.sample}_{w.type}.{w.chrom}.umi_metric.txt",
         max_mem = config['dedup_umi']['max_mem'],
         remove_dups = "false" if config['dedup_umi']['keep_dups'] else "true"
     threads:
-        math.ceil(int(config['dedup_umi']['max_mem'].strip('g')) / 2)
+        int(config['dedup_umi']['max_mem'].strip('g'))
     log:
         "logs/dedup/{sample}_{type}.{chrom}.log"
     conda:
         "../env/align-env.yml"
     shell:
-        "picard UmiAwareMarkDuplicatesWithMateCigar -Xms500m -Xmx{params.max_mem} UMI_METRICS={params.umi_metrics} I={input} O={output[0]} M={params.metric} ASSUME_SORTED=true REMOVE_DUPLICATES={params.remove_dups} &>{log}; "
-
+        "picard UmiAwareMarkDuplicatesWithMateCigar -Xms500m -Xmx{params.max_mem} UMI_METRICS={params.umi_metrics} I={input} O={output[0]} M={params.metric} ASSUME_SORTED=true REMOVE_DUPLICATES={params.remove_dups}; " # &>{log}
 
 
 def realign_ref():
@@ -120,8 +141,8 @@ rule create_GATK_target_list:
 
 rule realignGATK:
     input:
-        bam = lambda w: f"deduped/{w.sample}_{w.type}.{w.chrom}.umi.bam" if config['tag_bam']['run'] else f"deduped/{w.sample}_{w.type}.{w.chrom}.bam",
-        bai = lambda w: f"deduped/{w.sample}_{w.type}.{w.chrom}.umi.bai" if config['tag_bam']['run'] else f"deduped/{w.sample}_{w.type}.{w.chrom}.bai",
+        bam = lambda w: f"umi_deduped/{w.sample}_{w.type}.{w.chrom}.bam" if config['tag_bam']['run'] else f"deduped/{w.sample}_{w.type}.{w.chrom}.bam",
+        bai = lambda w: f"umi_deduped/{w.sample}_{w.type}.{w.chrom}.bai" if config['tag_bam']['run'] else f"deduped/{w.sample}_{w.type}.{w.chrom}.bai",
         intervals = "realigned/GATK_targets.intervals"
     output:
         "realigned/{sample}_{type}.{chrom}.bam"
@@ -138,40 +159,35 @@ rule realignGATK:
         "{params.gatk} IndelRealigner {params.ir} &>{log}"
 
 
-def recalib_ref():
-    '''
-    returns ref parameters for gatk4 BaseRecalibrator
-    '''
-    # use the same known-sites as IndelRealigner plus the dbsnp chosen in recalib config
-    return f"-R {full_path('genome')} --known-sites {full_path('gold_standard_indels')} --known-sites {full_path('phase1k_indels')} --known-sites {full_path(config['recalib']['known_sites'])}"
-
 rule base_recalibrator:
     input:
         bam = "realigned/{sample}_{type}.{chrom}.bam",
         bai = "realigned/{sample}_{type}.{chrom}.bai"
     output:
-        "recalib/{sample}_{type}.{chrom}.bam"
+        bam = "recalib/{sample}_{type}.{chrom}.bam",
+        table = "recalib/{sample}_{type}.{chrom}.recal_table"
     log:
         "logs/recalib/{sample}_{type}.{chrom}.log"
     params:
         gatk = config['tools']['gatk'],
-        recalib = lambda w: f"{recalib_ref()} -O recalib/{w.sample}_{w.type}.recal_table",
-        apply_table = lambda w, input, output: f"-R {full_path('genome')} --bqsr-recal-file recalib/{w.sample}_{w.type}.recal_table -I {input.bam} -O {output}"
+        genome = f"-R {full_path('genome')}",
+        known_sites = f"--known-sites {full_path('gold_standard_indels')} --known-sites {full_path('phase1k_indels')} --known-sites {full_path(config['recalib']['known_sites'])}",
+        apply_table = lambda w, input, output: f"--bqsr-recal-file recalib/{w.sample}_{w.type}.recal_table -O {output}"
     threads:
         config['recalib']['threads']
     conda:
         "../env/gatk4-env.yml"
     shell:
-        "{params.gatk} BaseRecalibrator -I {input.bam} {params.recalib} &>{log}; "
+        "{params.gatk} BaseRecalibrator -I {input.bam} {params.genome} {params.known_sites} -O {output.table} &>{log}; " #  
         # apply recalibration table on input
-        "gatk ApplyBQSR {params.apply_table} &>>{log}; "
+        "{params.gatk} ApplyBQSR -I {input.bam} {params.genome} --bqsr-recal-file {output.table} -O {output.bam} &>>{log}; " # 
         # recreate recalibration table from output for QC
-        "gatk BaseRecalibrator -I {output} {params.recalib} &>>{log}"
+        "{params.gatk} BaseRecalibrator -I {output.bam} {params.genome} {params.known_sites} -O {output.table} &>>{log}"  #  
 
 
 rule cover_BED:
     input:
-        sample = "resplit/{sample}_{type}.umi.bam",
+        sample = "bam_merge/{sample}_{type}.bam",
         ref_gen = os.path.join(full_path('genome_path'), 'gen_ref.done')
     output:
         "coverBED/{sample}_{type}.txt"
@@ -188,3 +204,4 @@ rule cover_BED:
         "../env/bedcover-env.yml"
     script:
         "../scripts/bedcover.py"
+

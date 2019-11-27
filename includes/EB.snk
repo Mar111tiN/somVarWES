@@ -16,7 +16,8 @@ rule anno2EB:
         csv2bed = get_script('csv2bed'),
         pon2cols = get_script('pon2cols'),
         pile2count = get_script('pile2count'),
-        matrix2EBinput = get_script('matrix2EBinput')
+        matrix2EBinput = get_script('matrix2EBinput'),
+        makeponlist = get_script('makeponlist')
         # refgen = full_path('genome')
     script:
         "../scripts/eb.py"
