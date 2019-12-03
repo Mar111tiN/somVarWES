@@ -76,11 +76,11 @@ rule mergeEBcache:
                 EBcache_df = pd.read_csv(EBcache_file, sep='\t', compression='gzip', index_col=False)
                 EBcache_dfs.append(EBcache_df)
                 # cleanup
-            #   shell('rm -f {EBcache_file}')
-        del EBcache_dfs
+            #   shell('rm -f {EBcache_file}'
         EBcache_df = pd.concat(EBcache_dfs).sort_values(['Chr', 'Start'])
         EBcache_df.to_csv(output[0], sep='\t', compression='gzip', index=False)
         show_output(f"Written EBcache for {wildcards.chrom} to {output[0]}", color='success')
+
 
 rule mergeMatrix:
     input: 
@@ -97,7 +97,6 @@ rule mergeMatrix:
                 matrix_df = pd.read_csv(matrix_file, sep='\t', compression='gzip', index_col=False)
                 matrix_dfs.append(matrix_df)
         matrix_df = pd.concat(matrix_dfs).sort_values(['Chr', 'Start'])
-        del matrix_dfs
         matrix_df.to_csv(output[0], sep='\t', index=False, compression='gzip')
         show_output(f"Written matrix-cache for {wildcards.chrom} to {output[0]}", color='success')
 

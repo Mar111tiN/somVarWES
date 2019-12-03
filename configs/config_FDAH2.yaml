@@ -194,3 +194,4 @@ filter:
         keep_syn: True
 filter_bam:
     threads: 4
+    padding: 100

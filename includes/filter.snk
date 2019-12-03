@@ -41,7 +41,17 @@ def mut2bed(mut_file, padding, bed_file):
     # remove Chr index
     bed = bed.reset_index().drop(columns='level_1')
     bed.to_csv(bed_file, index=False, sep='\t', header=False)
-    return bed
+    return bed_file
+
+
+get_bed_file(w, input):
+    '''
+    serves as a params function creating and returning the bed file for the samtools view
+    '''
+    padding = config['filter_bam']['padding']
+    bed_file = mut2bed(input[0], padding, f"filter_bam/{w.sample}_{w.type}.bed")
+    return bed_file
+
 
 # rule filter_bam:
 #     input: 
@@ -53,7 +63,9 @@ def mut2bed(mut_file, padding, bed_file):
 #         "filter_bam/{sample}_{type}.bai"
 #     threads:
 #         config['filter_bam']['threads']
-#     run:
+#       params:
+#            bed = get_bed_file
+#     :
 #         
 #
 #

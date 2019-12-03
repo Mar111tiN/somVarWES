@@ -42,7 +42,8 @@ wildcard_constraints:
 
 rule all:
     input:
-        expand("{chrom}.cache", chrom=chrom_list)
+        expand("{chrom}.cache", chrom=chrom_list),
+        expand("{chrom}.matrix", chrom=chrom_list)
 
 onstart:
     print(f" Generating Cache files in {work_dir}.......")
