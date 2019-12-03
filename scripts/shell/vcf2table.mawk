@@ -49,12 +49,28 @@ BEGIN {
     HEADER[13] = "NR2+";
     HEADER[14] = "somaticP";
     HEADER[15] = "variantP";
+
+
+    ######## HEADER OUTPUT #############
+    printf("Chr\tStart\tEnd\tRef\tAlt");
+    # all output 
+    if (ALL == 1) {
+        for (i in Data) {
+            printf("%s\t",i);
+        }
+    # SELECT output
+    } else {
+        for (i = 4; i++ < 15;) {
+            printf("\t%s",HEADER[i]);
+        }
+    }
+    printf("\n");
 }
 
 
 
 ##### PROCESS LINES #################
-/^[^##]/ {
+/^[^#]/ {
     lines++;
     start=$2;
     R=$4
@@ -138,36 +154,16 @@ BEGIN {
     }
 
     ######## OUTPUT #################
-
-    ######## HEADER #############
-    if (lines == 1) {
-        printf("Chr\tStart\tEnd\tRef\tAlt");
-        # all output 
-        if (ALL == 1) {
-            for (i in Data) {
-                printf("%s\t",i);
-            }
-        # SELECT output
-        } else {
-            for (i = 4; i++ < 15;) {
-                printf("\t%s",HEADER[i]);
-            }
+    printf("%s\t%s\t%s\t%s\t%s",$1,start,end,R,A);
+    if (ALL == 1) {
+        for (i in Data) {
+            printf("\t%s",Data[i]);
         }
-        printf("\n");
-
-    ####### LINE OUTPUT #############
     } else {
-        printf("%s\t%s\t%s\t%s\t%s",$1,start,end,R,A);
-        if (ALL == 1) {
-            for (i in Data) {
-                printf("\t%s",Data[i]);
-            }
-        } else {
-            for (i = 4; i++ < 15;) {
-            printf("\t%s",Data[VCF[HEADER[i]]]);
-            }
+        for (i = 4; i++ < 15;) {
+        printf("\t%s",Data[VCF[HEADER[i]]]);
         }
-        printf("\n");
     }
+    printf("\n");
 
 }'

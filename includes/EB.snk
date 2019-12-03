@@ -48,7 +48,8 @@ def get_cache(w):
     EBcache_path = static_path(config['EBFilter']['pon_list'])
     cache_folder = os.path.join(config['paths']['mystatic'], config['EBFilter']['cache_folder'])
     EBcache_folder = os.path.join(cache_folder, "EBcache")
-    return os.path.join(EBcache_folder, f"{chrom}.cache")
+    EB_cache_file = os.path.join(EBcache_folder, f"{chrom}.cache")
+    return EB_cache_file
 
 
 rule anno2EB_EBcache:
@@ -56,7 +57,7 @@ rule anno2EB_EBcache:
         table = "table/{sample}_{tumor}-{norm}.csv",
         tumor_bam = "recalib/{sample}_{tumor}.{chrom}.bam",
         tumor_bai = "recalib/{sample}_{tumor}.{chrom}.bai",
-        cache = get_cache
+        EBcache = get_cache
     output:
         "eb/{sample}_{tumor}-{norm}-{chrom}.cachedEB"
     log:
@@ -70,7 +71,8 @@ rule anno2EB_EBcache:
         csv2bed = get_script('csv2bed'),
         pon2cols = get_script('pon2cols'),
         pile2count = get_script('pile2count'),
-        matrix2EBinput = get_script('matrix2EBinput')
+        matrix2EBinput = get_script('matrix2EBinput'),
+        reducematrix = get_script('reducematrix')
         # refgen = full_path('genome')
     script:
         "../scripts/ebfromcache.py"

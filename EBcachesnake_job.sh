@@ -27,7 +27,7 @@ DRMAA=" -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g"
 DRMAA="$DRMAA -V -o $LOGDIR/ -j yes"
 snakemake --snakefile EBcacheSnakefile --unlock --rerun-incomplete
 snakemake --snakefile EBcacheSnakefile --dag | dot -Tsvg > dax/EBcache_dag.svg
-snakemake --snakefile EBcacheSnakefile --use-conda --rerun-incomplete --drmaa "$DRMAA" -j 2000 -p -r -k
+snakemake --snakefile EBcacheSnakefile --use-conda --rerun-incomplete --drmaa "$DRMAA" -j 3000 -p -r -k
 # -k ..keep going if job fails
 # -p ..print out shell commands
 # -P medium

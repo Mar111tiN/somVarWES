@@ -11,7 +11,7 @@ samples: # here go all your samples
     - R1
     - R2
   separation: '_'
-setup:  
+setup: 
   run: PE
   phred: 33
   readlength: 150  # neccessary???
@@ -166,11 +166,11 @@ EBFilter:
   run: True
   pon_list: PoN/HAEv7_hg38_NovaSeq/Pon_list.txt # path relative to mystatic path
   use_cache: False
-  cache_folder: PoN/HAEv7_hg38_NovaSeq_q20 # path relative to mystatic path
+  cache_folder: PoN/HAEv7_hg38_NovaSeq # path relative to mystatic path
   threads: 
-    makeEBcache: 20
+    makeEBcache: 24
     EBscore: 20
-    EBsplit_factor: 20 # into how many jobs is makeEBcache divided per chromosome
+    EBsplit_factor: 24 # into how many jobs is makeEBcache divided per chromosome
   params:
     sep: tab
     MAPQ: 20   # I guess this should be lower than the mapping quality used for mpileup or not?

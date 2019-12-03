@@ -191,7 +191,7 @@ def  computeEBcache(mat_df):
 
 
 def matrix2AB_multi(matrix_file, output, threads):
-    matrix_df = pd.read_csv(matrix_file, sep='\t', index_col=False)
+    matrix_df = pd.read_csv(matrix_file, sep='\t', compression='gzip', index_col=False)
     cache_pool = Pool(threads)
     matrix_split = np.array_split(matrix_df, threads)
     cache_dfs = cache_pool.map(computeEBcache, matrix_split)
@@ -200,7 +200,7 @@ def matrix2AB_multi(matrix_file, output, threads):
     return output
 
 ##############################################################################
-########################## SNAKE PARAMETERS ##################################
+########################## SNAKE PARAMETERS ################################s##
 
 w = snakemake.wildcards
 config = snakemake.config

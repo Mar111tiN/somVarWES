@@ -81,7 +81,7 @@ base_file = bed_file.replace(".bed", "").replace("bed/", "")
 show_output(f"Performing pileup and read matrix generation for split {i} of {chrom}", color='normal', time=True)
 pileup_cmd = f"samtools mpileup -B -q {EBparams['MAPQ']} -Q {EBparams['Q']} -l {bed_file} -r {chrom} -b {pon_list}"
 # cut -f $({pon2cols}< {sample_list}) creates a cut command only including the desired
-pipe_cmd = f"{pileup_cmd} | cut -f $({pon2cols} < {pon_list}) | {cleanpileup} | {pile2count} > {matrix_file}"
+pipe_cmd = f"{pileup_cmd} | cut -f $({pon2cols} < {pon_list}) | {cleanpileup} | {pile2count} | gzip > {matrix_file}"
 # do the pileup to matrix_file
 show_command(pipe_cmd, multi=False)
 shell(pipe_cmd)

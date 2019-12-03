@@ -193,7 +193,8 @@ EBparams = snakemake.config['EBFilter']['params']
 fit_pen = EBparams['fitting_penalty']
 mut_file = snakemake.input.anno
 tumor_bam = snakemake.input.tumor_bam
-cache_file = snakemake.input.cache
+cache_file = snakemake.input.EBcache
+matrix_cache = cache_file.replace('.cache', '.matrix')
 chrom = w.chrom
 
 # import the scripts
@@ -201,6 +202,8 @@ cleanpileup = params.cleanpileup
 csv2bed = params.csv2bed
 pon2cols = params.pon2cols
 pile2count = params.pile2count
+matrix2EBinput = params.matrix2EBinput
+reduce_matrix = params.reducematrix
 matrix2EBinput = params.matrix2EBinput
 
 
@@ -218,7 +221,6 @@ mut_cols = list(mut_df.columns)
 base_file = output[0].replace(".cachedEB","")
 
 
-
 ############### TARGET PILEUP --> MATRIX FILE ##################
 mut_chr_file = f"{base_file}.csv"
 mut_df.to_csv(mut_chr_file, sep='\t', index=False)
@@ -227,46 +229,134 @@ bed_file = f"{base_file}.bed"
 shell(f"{csv2bed} < {mut_chr_file} > {bed_file}")
 
 # do the pileup into the matrix file
-matrix_file = f"{base_file}.matrix"
+tumor_matrix_file = f"{base_file}.matrix"
 pileup_cmd = f"samtools mpileup -B -q {EBparams['MAPQ']} -Q {EBparams['Q']} -l {bed_file} -r {chrom} {tumor_bam}"
-pipe_cmd = f"{pileup_cmd} | cut -f 1,2,5 | {cleanpileup} | {pile2count} > {matrix_file}"
-show_output(f"Piling up tumor target and merging with EBcache", color='normal', time=True)
+pipe_cmd = f"{pileup_cmd} | cut -f 1,2,5 | {cleanpileup} | {pile2count} > {tumor_matrix_file}"
+show_output(f"Piling up tumor bam {tumor_bam}", color='normal', time=True)
 # do the pileup to matrix_file
 show_command(pipe_cmd, multi=False)
 shell(pipe_cmd)
 # cleanup
 shell(f"rm -f {bed_file} {mut_chr_file}")
-show_output(f"Pileup matrix for for chrom {chrom} of {tumor_bam} finished. Merging with cache file...", color='normal', time=True)
+
+
+show_output(f"Pileup matrix for chrom {chrom} of {tumor_bam} completed. Merging with cache file...", color='normal', time=True)
+
 ############### LOAD AND MERGE CACHE INTO MATRIX FILE #####
-# get the mutation file for the chromosome
-cache_df = pd.read_csv(cache_file, compression='gzip', sep='\t')
-matrix_df = pd.read_csv(matrix_file, sep='\t', index_col=False)
-pileAB_file = f"{base_file}.pileAB"
-pileAB_df = matrix_df.merge(cache_df, on=['Chr', 'Start'])
-# change coords for merge with start
-mut_df.loc[mut_df['Alt'] == "-",'Start'] = mut_df['Start'] -1
-pileAB_df = mut_df.merge(pileAB_df, on=['Chr', 'Start'])
-pileAB_df.loc[pileAB_df['Alt'] == "-",'Start'] = pileAB_df['Start'] + 1
 
-# save for debugging
-pileAB_df.to_csv(pileAB_file, sep='\t', index=False)
-show_output(f"Pileup matrix for for chrom {chrom} of {tumor_bam} merged with AB matrix.\n Written matrix file to {pileAB_file}.\n Going on with EB computation...", color='normal', time=True)
+## check if sample is included in PoN ######
+ def checkPon4sample(row, bam):
+    '''
+    per row of Pon_list checks whether sample name occurs in Pon_list
+    if yes, returns the row number (zero-based)
+    '''
+    if os.path.basename(bam).split('_')[0] in row.iloc[0]: 
+        print(row[0], row.name) 
+        return row.name
+    return 0
+
+def get_sample_pos(pon_list, bam_file):
+    '''
+    returns the zero-based position of corresponding normal sample in Pon_list
+    '''
+
+    pon_df = pd.read(pon_list)
+    sample_pos = pon_df.apply(checkPon4sample, axis=1, bam=tumor_bam).sum()
+    return sample_pos
+
+# if sample_inpon == 0, then sample is not in PoN
+# else, pon matrix has to be acquired from cache and used in EBscore
+sample_in_pon = get_sample_pos(pon_list, tumor_bam)
+
+
+if sample_in_pon:
+    ############################################ CACHE FROM MATRIX #####################################
+
+    show_output(f"Corresponding normal sample for {tumor_bam} has been found in Panel of Normals. EBcache cannot be used!", color='warning')
+    show_output(f"Falling back to cached matrix file reduced by corresponding normal..", color='normal')
+    # get the cached matrix file reduced by the sample
+    # EBcache cannot be used directly
+    reduced_matrix_file = f"{base_file}.ponmatrix"
+    reduce_matrix_cmd = f"gunzip < {matrix_file} | {reduce_matrix} {sample_in_pon} > {reduced_matrix_file}"
+
+    ############# LOAD AND MERGE MATRIX FILES INTO MUTFILE
+
+    # change mutation positions for deletions in mutation file
+    mut_df.loc[mut_df['Alt'] == "-",'Start'] = mut_df['Start'] -1
+
+    # load in the target matrix file as df
+    tumor_matrix_df = pd.read_csv(tumor_matrix_file, sep='\t', index_col=False)
+    # merge
+    mut_matrix = mut_df.merge(tumor_matrix_df, on=['Chr', 'Start'], how='inner')
+    # reset deletion positions
+    mut_matrix.loc[mut_matrix['Alt'] == "-",'Start'] = mut_matrix['Start'] + 1
+
+    # load in the pon_matrix file as df
+    pon_matrix_df = pd.read_csv(reduced_matrix_file, sep='\t', index_col=False)
+    # merge
+    mut_matrix = mut_df.merge(pon_matrix_df, on=['Chr', 'Start'], how='inner')
+
+    # write to file
+    mutmatrix_file = f"{base_file}.mutmatrix"
+    mut_matrix.to_csv(mutmatrix_file, sep='\t', index=False)
+
+
+    ## CONTINUE LIKE UNCACHED EBscore
+    # convert mutmatrix to direct EBinput
+    EB_matrix_input_file = f"{base_file}.EB.matrix"
+    shell(f"cat {mutmatrix_file} | {matrix2EBinput} > {EB_matrix_input_file}")
+
+    # load in the EB.matrix file
+    eb_matrix = pd.read_csv(EB_matrix_input_file, sep='\t')
+
+    # multithreaded computation
+    def  computeEB2(df):
+        show_output(f"Computing EBscore for {len(df.index)} lines", multi=True, time=True)
+        df['EBscore'] = df.apply(partial(get_EB_score2, fit_pen), axis=1)
+        show_output("Finished!", multi=True, time=True)
+        return df
+
+    eb_pool = Pool(threads)
+    # minimal length of 1000 lines
+    split_factor = min(math.ceil(len(eb_matrix.index) / 1000), threads)
+    mut_split = np.array_split(eb_matrix, split_factor)
+    EB_dfs = eb_pool.map(computeEB2, mut_split)
+    
+else:
+    ############################################ CACHE FROM ABcache #####################################
+
+    # get the mutation file for the chromosome
+    cache_df = pd.read_csv(cache_file, compression='gzip', sep='\t')
+    matrix_df = pd.read_csv(matrix_file, sep='\t', index_col=False)
+    pileAB_file = f"{base_file}.pileAB"
+    pileAB_df = matrix_df.merge(cache_df, on=['Chr', 'Start'])
+    # change coords for merge with start
+    mut_df.loc[mut_df['Alt'] == "-",'Start'] = mut_df['Start'] -1
+    pileAB_df = mut_df.merge(pileAB_df, on=['Chr', 'Start'])
+    pileAB_df.loc[pileAB_df['Alt'] == "-",'Start'] = pileAB_df['Start'] + 1
+
+    # save for debugging
+    pileAB_df.to_csv(pileAB_file, sep='\t', index=False)
+    show_output(f"Pileup matrix for for chrom {chrom} of {tumor_bam} merged with AB matrix.\n Written matrix file to {pileAB_file}.\n Going on with EB computation...", color='normal', time=True)
+
+
+    ############### EBSCORE COMPUTATION  ########
+    # multithreaded computation
+    def  computeEB(df):
+        show_output(f"Computing EBscore for {len(df.index)} lines", multi=True, time=True)
+        df['EBscore'] = df.apply(AB2EBscore, axis=1)
+        show_output("Finished!", multi=True, time=True)
+        return df
+
+    eb_pool = Pool(threads)
+    # minimal length of 2000 lines
+    split_factor = min(math.ceil(len(pileAB_df.index) / 2000), threads)
+    pileAB_split = np.array_split(pileAB_df, split_factor)
+    EB_dfs = eb_pool.map(computeEB, pileAB_split)
 
 
 
-############### EBSCORE COMPUTATION  ########
-# multithreaded computation
-def  computeEB(df):
-    show_output(f"Computing EBscore for {len(df.index)} lines", multi=True, time=True)
-    df['EBscore'] = df.apply(AB2EBscore, axis=1)
-    show_output("Finished!", multi=True, time=True)
-    return df
-
-eb_pool = Pool(threads)
-# minimal length of 2000 lines
-split_factor = min(math.ceil(len(pileAB_df.index) / 2000), threads)
-pileAB_split = np.array_split(pileAB_df, split_factor)
-EB_dfs = eb_pool.map(computeEB, pileAB_split)
+##### CONCAT AND WRITE TO FILE
 EB_df = pd.concat(EB_dfs).sort_values(['Chr', 'Start'])
 
 ########## WRITE TO FILE ##############################################

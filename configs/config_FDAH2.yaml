@@ -1,8 +1,8 @@
-inputdir: /fast/projects/damm_establish_ht_xs/work/demux_results/190905_A00643_0015_AHL3KHDMXX/  # source of fastq files (subfolders allowed)
-workdir: /fast/users/szyskam_c/scratch/projects/FDAHsplit # here your results are created
+inputdir: /fast/projects/damm_establish_ht_xs/scratch/191115_A00643_0025_BHHGH2DRXX/  # source of fastq files (subfolders allowed)
+workdir: /fast/users/szyskam_c/scratch/projects/FDAH2 # here your results are created
 snakedir: /fast/users/szyskam_c/snakes/projects/somVarWES
 samples: # here go all your samples
-  samplesheet: /fast/users/szyskam_c/snakes/projects/AML/configs/sample005.csv
+  samplesheet: /fast/users/szyskam_c/snakes/projects/somVarWES/configs/FDAH2_sheet.csv
   tumor:
     - A  # 
   normal:
@@ -68,6 +68,7 @@ scripts:
   cleanpileup: shell/cleanpileup.mawk
   pile2count: shell/pile2count.mawk
   matrix2EBinput: shell/matrix2EBinput.mawk
+  makeponlist: shell/makeponlist.sh
 
   # merge_anno: merge_anno.py
   # expand_info: shell/expand_info.sh
@@ -191,3 +192,5 @@ filter:
         candidate_list: annotation/damm_lists/AML_candidates.txt
         driver_list: annotation/damm_lists/AML_drivers.txt
         keep_syn: True
+filter_bam:
+    threads: 4
