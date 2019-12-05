@@ -4362,3 +4362,473 @@ Finished job 41.
 [Thu Dec  5 08:53:11 2019]
 Finished job 43.
 42 of 51 steps (82%) done
+[Thu Dec  5 08:54:31 2019]
+Finished job 26.
+43 of 51 steps (84%) done
+Exiting because a job execution failed. Look above for error message
+Complete log: /fast/home/users/szyskam_c/snakes/projects/somVarWES/.snakemake/log/2019-12-05T084415.322056.snakemake.log
+ Generating Cache files in /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache.......
+You are now in an execute node
++ DRMAA=' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g'
++ DRMAA=' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/EBcache/9151427/ -j yes'
++ snakemake --snakefile EBcacheSnakefile --unlock --rerun-incomplete
+Building DAG of jobs...
+Unlocking working directory.
++ snakemake --snakefile EBcacheSnakefile --dag
++ dot -Tsvg
+Building DAG of jobs...
++ snakemake --snakefile EBcacheSnakefile --use-conda --rerun-incomplete --drmaa ' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/EBcache/9151427/ -j yes' -j 3000 -p -r -k
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cluster nodes: 3000
+Job counts:
+	count	jobs
+	19	EBcache
+	9	EBcache_pileup
+	1	all
+	1	mergeEBcache
+	30
+
+[Thu Dec  5 17:23:01 2019]
+rule EBcache:
+    input: matrix/chrY-11.matrix
+    output: cache/chrY-11.cache
+    log: logs/chrY-11.AB.log
+    jobid: 1140
+    reason: Missing output files: cache/chrY-11.cache
+    wildcards: chrom=chrY, i=11
+    threads: 24
+
+Submitted DRMAA job 1140 with external jobid 9151428.
+
+[Thu Dec  5 17:23:01 2019]
+rule EBcache:
+    input: matrix/chrY-9.matrix
+    output: cache/chrY-9.cache
+    log: logs/chrY-9.AB.log
+    jobid: 1138
+    reason: Missing output files: cache/chrY-9.cache
+    wildcards: chrom=chrY, i=9
+    threads: 24
+
+Submitted DRMAA job 1138 with external jobid 9151429.
+
+[Thu Dec  5 17:23:01 2019]
+rule EBcache_pileup:
+    input: bed/chrY-6.bed
+    output: matrix/chrY-6.matrix
+    log: logs/chrY-6.matrix.log
+    jobid: 1159
+    reason: Missing output files: matrix/chrY-6.matrix
+    wildcards: chrom=chrY, i=6
+    threads: 2
+
+Submitted DRMAA job 1159 with external jobid 9151430.
+
+[Thu Dec  5 17:23:01 2019]
+rule EBcache:
+    input: matrix/chrY-16.matrix
+    output: cache/chrY-16.cache
+    log: logs/chrY-16.AB.log
+    jobid: 1145
+    reason: Missing output files: cache/chrY-16.cache
+    wildcards: chrom=chrY, i=16
+    threads: 24
+
+Submitted DRMAA job 1145 with external jobid 9151431.
+
+[Thu Dec  5 17:23:01 2019]
+rule EBcache:
+    input: matrix/chrY-12.matrix
+    output: cache/chrY-12.cache
+    log: logs/chrY-12.AB.log
+    jobid: 1141
+    reason: Missing output files: cache/chrY-12.cache
+    wildcards: chrom=chrY, i=12
+    threads: 24
+
+Submitted DRMAA job 1141 with external jobid 9151432.
+
+[Thu Dec  5 17:23:01 2019]
+rule EBcache:
+    input: matrix/chrY-20.matrix
+    output: cache/chrY-20.cache
+    log: logs/chrY-20.AB.log
+    jobid: 1149
+    reason: Missing output files: cache/chrY-20.cache
+    wildcards: chrom=chrY, i=20
+    threads: 24
+
+Submitted DRMAA job 1149 with external jobid 9151433.
+
+[Thu Dec  5 17:23:01 2019]
+rule EBcache_pileup:
+    input: bed/chrY-22.bed
+    output: matrix/chrY-22.matrix
+    log: logs/chrY-22.matrix.log
+    jobid: 1175
+    reason: Missing output files: matrix/chrY-22.matrix
+    wildcards: chrom=chrY, i=22
+    threads: 2
+
+Submitted DRMAA job 1175 with external jobid 9151434.
+
+[Thu Dec  5 17:23:01 2019]
+rule EBcache_pileup:
+    input: bed/chrY-7.bed
+    output: matrix/chrY-7.matrix
+    log: logs/chrY-7.matrix.log
+    jobid: 1160
+    reason: Missing output files: matrix/chrY-7.matrix
+    wildcards: chrom=chrY, i=7
+    threads: 2
+
+Submitted DRMAA job 1160 with external jobid 9151435.
+
+[Thu Dec  5 17:23:01 2019]
+rule EBcache_pileup:
+    input: bed/chrY-4.bed
+    output: matrix/chrY-4.matrix
+    log: logs/chrY-4.matrix.log
+    jobid: 1157
+    reason: Missing output files: matrix/chrY-4.matrix
+    wildcards: chrom=chrY, i=4
+    threads: 2
+
+Submitted DRMAA job 1157 with external jobid 9151436.
+
+[Thu Dec  5 17:23:01 2019]
+rule EBcache_pileup:
+    input: bed/chrY-21.bed
+    output: matrix/chrY-21.matrix
+    log: logs/chrY-21.matrix.log
+    jobid: 1174
+    reason: Missing output files: matrix/chrY-21.matrix
+    wildcards: chrom=chrY, i=21
+    threads: 2
+
+Submitted DRMAA job 1174 with external jobid 9151437.
+
+[Thu Dec  5 17:23:02 2019]
+rule EBcache_pileup:
+    input: bed/chrY-19.bed
+    output: matrix/chrY-19.matrix
+    log: logs/chrY-19.matrix.log
+    jobid: 1172
+    reason: Missing output files: matrix/chrY-19.matrix
+    wildcards: chrom=chrY, i=19
+    threads: 2
+
+Submitted DRMAA job 1172 with external jobid 9151438.
+
+[Thu Dec  5 17:23:02 2019]
+rule EBcache:
+    input: matrix/chrY-14.matrix
+    output: cache/chrY-14.cache
+    log: logs/chrY-14.AB.log
+    jobid: 1143
+    reason: Missing output files: cache/chrY-14.cache
+    wildcards: chrom=chrY, i=14
+    threads: 24
+
+Submitted DRMAA job 1143 with external jobid 9151439.
+
+[Thu Dec  5 17:23:02 2019]
+rule EBcache:
+    input: matrix/chrY-13.matrix
+    output: cache/chrY-13.cache
+    log: logs/chrY-13.AB.log
+    jobid: 1142
+    reason: Missing output files: cache/chrY-13.cache
+    wildcards: chrom=chrY, i=13
+    threads: 24
+
+Submitted DRMAA job 1142 with external jobid 9151440.
+
+[Thu Dec  5 17:23:02 2019]
+rule EBcache_pileup:
+    input: bed/chrY-5.bed
+    output: matrix/chrY-5.matrix
+    log: logs/chrY-5.matrix.log
+    jobid: 1158
+    reason: Missing output files: matrix/chrY-5.matrix
+    wildcards: chrom=chrY, i=5
+    threads: 2
+
+Submitted DRMAA job 1158 with external jobid 9151441.
+
+[Thu Dec  5 17:23:02 2019]
+rule EBcache_pileup:
+    input: bed/chrY-18.bed
+    output: matrix/chrY-18.matrix
+    log: logs/chrY-18.matrix.log
+    jobid: 1171
+    reason: Missing output files: matrix/chrY-18.matrix
+    wildcards: chrom=chrY, i=18
+    threads: 2
+
+Submitted DRMAA job 1171 with external jobid 9151442.
+
+[Thu Dec  5 17:23:02 2019]
+rule EBcache:
+    input: matrix/chrY-15.matrix
+    output: cache/chrY-15.cache
+    log: logs/chrY-15.AB.log
+    jobid: 1144
+    reason: Missing output files: cache/chrY-15.cache
+    wildcards: chrom=chrY, i=15
+    threads: 24
+
+Submitted DRMAA job 1144 with external jobid 9151443.
+
+[Thu Dec  5 17:23:02 2019]
+rule EBcache:
+    input: matrix/chrY-10.matrix
+    output: cache/chrY-10.cache
+    log: logs/chrY-10.AB.log
+    jobid: 1139
+    reason: Missing output files: cache/chrY-10.cache
+    wildcards: chrom=chrY, i=10
+    threads: 24
+
+Submitted DRMAA job 1139 with external jobid 9151444.
+
+[Thu Dec  5 17:23:02 2019]
+rule EBcache_pileup:
+    input: bed/chrY-8.bed
+    output: matrix/chrY-8.matrix
+    log: logs/chrY-8.matrix.log
+    jobid: 1161
+    reason: Missing output files: matrix/chrY-8.matrix
+    wildcards: chrom=chrY, i=8
+    threads: 2
+
+Submitted DRMAA job 1161 with external jobid 9151445.
+
+[Thu Dec  5 17:23:02 2019]
+rule EBcache:
+    input: matrix/chrY-17.matrix
+    output: cache/chrY-17.cache
+    log: logs/chrY-17.AB.log
+    jobid: 1146
+    reason: Missing output files: cache/chrY-17.cache
+    wildcards: chrom=chrY, i=17
+    threads: 24
+
+Submitted DRMAA job 1146 with external jobid 9151446.
+[Thu Dec  5 17:23:34 2019]
+Error in rule EBcache:
+    jobid: 1143
+    output: cache/chrY-14.cache
+    log: logs/chrY-14.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 1143, external: 9151439, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.vttfmj_w/snakejob.EBcache.1143.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 17:23:34 2019]
+Error in rule EBcache:
+    jobid: 1142
+    output: cache/chrY-13.cache
+    log: logs/chrY-13.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 1142, external: 9151440, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.vttfmj_w/snakejob.EBcache.1142.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 17:23:34 2019]
+Error in rule EBcache:
+    jobid: 1139
+    output: cache/chrY-10.cache
+    log: logs/chrY-10.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 1139, external: 9151444, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.vttfmj_w/snakejob.EBcache.1139.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 17:23:44 2019]
+Finished job 1145.
+1 of 30 steps (3%) done
+[Thu Dec  5 17:23:44 2019]
+Error in rule EBcache:
+    jobid: 1141
+    output: cache/chrY-12.cache
+    log: logs/chrY-12.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 1141, external: 9151432, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.vttfmj_w/snakejob.EBcache.1141.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 17:23:44 2019]
+Finished job 1149.
+2 of 30 steps (7%) done
+[Thu Dec  5 17:23:44 2019]
+Finished job 1174.
+3 of 30 steps (10%) done
+
+[Thu Dec  5 17:23:44 2019]
+rule EBcache:
+    input: matrix/chrY-21.matrix
+    output: cache/chrY-21.cache
+    log: logs/chrY-21.AB.log
+    jobid: 1150
+    reason: Missing output files: cache/chrY-21.cache; Input files updated by another job: matrix/chrY-21.matrix
+    wildcards: chrom=chrY, i=21
+    threads: 24
+
+Submitted DRMAA job 1150 with external jobid 9151447.
+[Thu Dec  5 17:23:45 2019]
+Finished job 1172.
+4 of 30 steps (13%) done
+
+[Thu Dec  5 17:23:45 2019]
+rule EBcache:
+    input: matrix/chrY-19.matrix
+    output: cache/chrY-19.cache
+    log: logs/chrY-19.AB.log
+    jobid: 1148
+    reason: Missing output files: cache/chrY-19.cache; Input files updated by another job: matrix/chrY-19.matrix
+    wildcards: chrom=chrY, i=19
+    threads: 24
+
+Submitted DRMAA job 1148 with external jobid 9151448.
+[Thu Dec  5 17:23:45 2019]
+Finished job 1171.
+5 of 30 steps (17%) done
+[Thu Dec  5 17:23:45 2019]
+Error in rule EBcache:
+    jobid: 1144
+    output: cache/chrY-15.cache
+    log: logs/chrY-15.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 1144, external: 9151443, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.vttfmj_w/snakejob.EBcache.1144.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Thu Dec  5 17:23:45 2019]
+rule EBcache:
+    input: matrix/chrY-18.matrix
+    output: cache/chrY-18.cache
+    log: logs/chrY-18.AB.log
+    jobid: 1147
+    reason: Missing output files: cache/chrY-18.cache; Input files updated by another job: matrix/chrY-18.matrix
+    wildcards: chrom=chrY, i=18
+    threads: 24
+
+Job failed, going on with independent jobs.
+Submitted DRMAA job 1147 with external jobid 9151449.
+[Thu Dec  5 17:23:55 2019]
+Error in rule EBcache:
+    jobid: 1140
+    output: cache/chrY-11.cache
+    log: logs/chrY-11.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 1140, external: 9151428, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.vttfmj_w/snakejob.EBcache.1140.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 17:23:55 2019]
+Error in rule EBcache:
+    jobid: 1138
+    output: cache/chrY-9.cache
+    log: logs/chrY-9.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 1138, external: 9151429, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.vttfmj_w/snakejob.EBcache.1138.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 17:23:55 2019]
+Finished job 1159.
+6 of 30 steps (20%) done
+
+[Thu Dec  5 17:23:55 2019]
+rule EBcache:
+    input: matrix/chrY-6.matrix
+    output: cache/chrY-6.cache
+    log: logs/chrY-6.AB.log
+    jobid: 1135
+    reason: Missing output files: cache/chrY-6.cache; Input files updated by another job: matrix/chrY-6.matrix
+    wildcards: chrom=chrY, i=6
+    threads: 24
+
+[Thu Dec  5 17:23:55 2019]
+Finished job 1175.
+7 of 30 steps (23%) done
+Submitted DRMAA job 1135 with external jobid 9151450.
+[Thu Dec  5 17:23:55 2019]
+Finished job 1160.
+8 of 30 steps (27%) done
+
+[Thu Dec  5 17:23:55 2019]
+rule EBcache:
+    input: matrix/chrY-7.matrix
+    output: cache/chrY-7.cache
+    log: logs/chrY-7.AB.log
+    jobid: 1136
+    reason: Missing output files: cache/chrY-7.cache; Input files updated by another job: matrix/chrY-7.matrix
+    wildcards: chrom=chrY, i=7
+    threads: 24
+
+[Thu Dec  5 17:23:55 2019]
+Finished job 1157.
+9 of 30 steps (30%) done
+Submitted DRMAA job 1136 with external jobid 9151451.
+
+[Thu Dec  5 17:23:55 2019]
+rule EBcache:
+    input: matrix/chrY-22.matrix
+    output: cache/chrY-22.cache
+    log: logs/chrY-22.AB.log
+    jobid: 1151
+    reason: Missing output files: cache/chrY-22.cache; Input files updated by another job: matrix/chrY-22.matrix
+    wildcards: chrom=chrY, i=22
+    threads: 24
+
+[Thu Dec  5 17:23:55 2019]
+Finished job 1158.
+10 of 30 steps (33%) done
+Submitted DRMAA job 1151 with external jobid 9151452.
+[Thu Dec  5 17:23:55 2019]
+Finished job 1161.
+11 of 30 steps (37%) done
+
+[Thu Dec  5 17:23:55 2019]
+rule EBcache:
+    input: matrix/chrY-4.matrix
+    output: cache/chrY-4.cache
+    log: logs/chrY-4.AB.log
+    jobid: 1133
+    reason: Missing output files: cache/chrY-4.cache; Input files updated by another job: matrix/chrY-4.matrix
+    wildcards: chrom=chrY, i=4
+    threads: 24
+
+Submitted DRMAA job 1133 with external jobid 9151453.
+
+[Thu Dec  5 17:23:55 2019]
+rule EBcache:
+    input: matrix/chrY-8.matrix
+    output: cache/chrY-8.cache
+    log: logs/chrY-8.AB.log
+    jobid: 1137
+    reason: Missing output files: cache/chrY-8.cache; Input files updated by another job: matrix/chrY-8.matrix
+    wildcards: chrom=chrY, i=8
+    threads: 24
+
+Submitted DRMAA job 1137 with external jobid 9151454.
+
+[Thu Dec  5 17:23:56 2019]
+rule EBcache:
+    input: matrix/chrY-5.matrix
+    output: cache/chrY-5.cache
+    log: logs/chrY-5.AB.log
+    jobid: 1134
+    reason: Missing output files: cache/chrY-5.cache; Input files updated by another job: matrix/chrY-5.matrix
+    wildcards: chrom=chrY, i=5
+    threads: 24
+
+Submitted DRMAA job 1134 with external jobid 9151455.
+[Thu Dec  5 17:23:56 2019]
+Finished job 1146.
+12 of 30 steps (40%) done
+[Thu Dec  5 17:24:06 2019]
+Finished job 1150.
+13 of 30 steps (43%) done
+[Thu Dec  5 17:24:06 2019]
+Finished job 1148.
+14 of 30 steps (47%) done
+[Thu Dec  5 17:24:06 2019]
+Finished job 1147.
+15 of 30 steps (50%) done

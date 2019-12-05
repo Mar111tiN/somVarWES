@@ -219,7 +219,7 @@ i = w.i
 ############### MATRIX FILE --> EBcache ##################
 
 show_output(f"Performing AB-parameter computation for split {i} of {chrom}", color='normal', time=True)
-if filesize(matrix_file):
+if filesize(matrix_file) > 20:
     cache_file = matrix2AB_multi(matrix_file, cache_file, threads)
     show_output(f"EBcache for split {i} of {chrom} done! Gzipped cache saved to {cache_file}", color='success', time=True)
 else:

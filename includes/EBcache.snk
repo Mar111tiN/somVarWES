@@ -62,15 +62,18 @@ rule EBcache:
 
 rule mergeEBcache:
     input:
-        expand("cache/{{chrom}}-{i}.cache", i=range(config['EBFilter']['threads']['EBsplit_factor'])), 
+        EBcache = expand("cache/{{chrom}}-{i}.cache", i=range(config['EBFilter']['threads']['EBsplit_factor'])),
+        matrix = expand("matrix/{{chrom}}-{i}.matrix", i=range(config['EBFilter']['threads']['EBsplit_factor']))
     output:
-        "{chrom}.cache"
+        "{chrom}.cache",
+        "{chrom}.matrix"
     threads:
         4
     run:
+        ######## MERGE EBCACHE ##################################
         # load in the input files (starting with 2nd input (1st is anno_file))
         EBcache_dfs = []
-        for EBcache_file in input:
+        for EBcache_file in input.EBcache:
             # check for empty file
             if filesize(EBcache_file):
                 EBcache_df = pd.read_csv(EBcache_file, sep='\t', compression='gzip', index_col=False)
@@ -79,26 +82,21 @@ rule mergeEBcache:
                 shell('rm -f {EBcache_file}')
         EBcache_df = pd.concat(EBcache_dfs).sort_values(['Chr', 'Start'])
 
+        ######### MERGE MATRIX ##################################
         EBcache_df.to_csv(output[0], sep='\t', compression='gzip', index=False)
         show_output(f"Written EBcache for {wildcards.chrom} to {output[0]}", color='success')
 
-
-rule mergeMatrix:
-    input: 
-        expand("matrix/{{chrom}}-{i}.matrix", i=range(config['EBFilter']['threads']['EBsplit_factor']))
-    output:
-        "{chrom}.matrix"
-    threads:
-        4
-    run:
         #### merge matrix files
         matrix_dfs = []
-        for matrix_file in input:
-            if filesize(matrix_file):
+        for matrix_file in input.matrix:
+            try:
+                print(f"Loading matrix file {matrix_file}")
                 matrix_df = pd.read_csv(matrix_file, sep='\t', compression='gzip', index_col=False)
                 matrix_dfs.append(matrix_df)
-                shell("rm -f {matrix_file}")
+            except:
+                print(f"Matrix file {matrix_file} is empty! Skipping..")
+            else:
+                shell('rm -f {matrix_file}')
         matrix_df = pd.concat(matrix_dfs).sort_values(['Chr', 'Start'])
-        matrix_df.to_csv(output[0], sep='\t', index=False, compression='gzip')
+        matrix_df.to_csv(output[1], sep='\t', index=False, compression='gzip')
         show_output(f"Written matrix-cache for {wildcards.chrom} to {output[0]}", color='success')
-
