@@ -1,0 +1,4364 @@
+You are now in an execute node
++ DRMAA=' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g'
++ DRMAA=' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/EBcache/9148843/ -j yes'
++ snakemake --snakefile EBcacheSnakefile --unlock --rerun-incomplete
+Building DAG of jobs...
+Unlocking working directory.
++ snakemake --snakefile EBcacheSnakefile --dag
++ dot -Tsvg
+Building DAG of jobs...
++ snakemake --snakefile EBcacheSnakefile --use-conda --rerun-incomplete --drmaa ' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/EBcache/9148843/ -j yes' -j 3000 -p -r -k
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cluster nodes: 3000
+Job counts:
+	count	jobs
+	19	EBcache
+	1	all
+	10	mergeEBcache
+	24	mergeMatrix
+	54
+
+[Thu Dec  5 06:50:12 2019]
+rule mergeMatrix:
+    input: matrix/chr16-0.matrix, matrix/chr16-1.matrix, matrix/chr16-2.matrix, matrix/chr16-3.matrix, matrix/chr16-4.matrix, matrix/chr16-5.matrix, matrix/chr16-6.matrix, matrix/chr16-7.matrix, matrix/chr16-8.matrix, matrix/chr16-9.matrix, matrix/chr16-10.matrix, matrix/chr16-11.matrix, matrix/chr16-12.matrix, matrix/chr16-13.matrix, matrix/chr16-14.matrix, matrix/chr16-15.matrix, matrix/chr16-16.matrix, matrix/chr16-17.matrix, matrix/chr16-18.matrix, matrix/chr16-19.matrix, matrix/chr16-20.matrix, matrix/chr16-21.matrix, matrix/chr16-22.matrix, matrix/chr16-23.matrix
+    output: chr16.matrix
+    jobid: 40
+    reason: Missing output files: chr16.matrix
+    wildcards: chrom=chr16
+    threads: 4
+
+Submitted DRMAA job 40 with external jobid 9148844.
+
+[Thu Dec  5 06:50:12 2019]
+rule EBcache:
+    input: matrix/chr1-15.matrix
+    output: cache/chr1-15.cache
+    log: logs/chr1-15.AB.log
+    jobid: 64
+    reason: Missing output files: cache/chr1-15.cache
+    wildcards: chrom=chr1, i=15
+    threads: 24
+
+Submitted DRMAA job 64 with external jobid 9148845.
+
+[Thu Dec  5 06:50:12 2019]
+rule mergeMatrix:
+    input: matrix/chr12-0.matrix, matrix/chr12-1.matrix, matrix/chr12-2.matrix, matrix/chr12-3.matrix, matrix/chr12-4.matrix, matrix/chr12-5.matrix, matrix/chr12-6.matrix, matrix/chr12-7.matrix, matrix/chr12-8.matrix, matrix/chr12-9.matrix, matrix/chr12-10.matrix, matrix/chr12-11.matrix, matrix/chr12-12.matrix, matrix/chr12-13.matrix, matrix/chr12-14.matrix, matrix/chr12-15.matrix, matrix/chr12-16.matrix, matrix/chr12-17.matrix, matrix/chr12-18.matrix, matrix/chr12-19.matrix, matrix/chr12-20.matrix, matrix/chr12-21.matrix, matrix/chr12-22.matrix, matrix/chr12-23.matrix
+    output: chr12.matrix
+    jobid: 36
+    reason: Missing output files: chr12.matrix
+    wildcards: chrom=chr12
+    threads: 4
+
+Submitted DRMAA job 36 with external jobid 9148846.
+
+[Thu Dec  5 06:50:12 2019]
+rule EBcache:
+    input: matrix/chrY-3.matrix
+    output: cache/chrY-3.cache
+    log: logs/chrY-3.AB.log
+    jobid: 604
+    reason: Missing output files: cache/chrY-3.cache
+    wildcards: chrom=chrY, i=3
+    threads: 24
+
+Submitted DRMAA job 604 with external jobid 9148847.
+
+[Thu Dec  5 06:50:12 2019]
+rule mergeMatrix:
+    input: matrix/chr2-0.matrix, matrix/chr2-1.matrix, matrix/chr2-2.matrix, matrix/chr2-3.matrix, matrix/chr2-4.matrix, matrix/chr2-5.matrix, matrix/chr2-6.matrix, matrix/chr2-7.matrix, matrix/chr2-8.matrix, matrix/chr2-9.matrix, matrix/chr2-10.matrix, matrix/chr2-11.matrix, matrix/chr2-12.matrix, matrix/chr2-13.matrix, matrix/chr2-14.matrix, matrix/chr2-15.matrix, matrix/chr2-16.matrix, matrix/chr2-17.matrix, matrix/chr2-18.matrix, matrix/chr2-19.matrix, matrix/chr2-20.matrix, matrix/chr2-21.matrix, matrix/chr2-22.matrix, matrix/chr2-23.matrix
+    output: chr2.matrix
+    jobid: 26
+    reason: Missing output files: chr2.matrix
+    wildcards: chrom=chr2
+    threads: 4
+
+Submitted DRMAA job 26 with external jobid 9148848.
+
+[Thu Dec  5 06:50:12 2019]
+rule EBcache:
+    input: matrix/chr2-20.matrix
+    output: cache/chr2-20.cache
+    log: logs/chr2-20.AB.log
+    jobid: 93
+    reason: Missing output files: cache/chr2-20.cache
+    wildcards: chrom=chr2, i=20
+    threads: 24
+
+Submitted DRMAA job 93 with external jobid 9148849.
+
+[Thu Dec  5 06:50:12 2019]
+rule mergeMatrix:
+    input: matrix/chr20-0.matrix, matrix/chr20-1.matrix, matrix/chr20-2.matrix, matrix/chr20-3.matrix, matrix/chr20-4.matrix, matrix/chr20-5.matrix, matrix/chr20-6.matrix, matrix/chr20-7.matrix, matrix/chr20-8.matrix, matrix/chr20-9.matrix, matrix/chr20-10.matrix, matrix/chr20-11.matrix, matrix/chr20-12.matrix, matrix/chr20-13.matrix, matrix/chr20-14.matrix, matrix/chr20-15.matrix, matrix/chr20-16.matrix, matrix/chr20-17.matrix, matrix/chr20-18.matrix, matrix/chr20-19.matrix, matrix/chr20-20.matrix, matrix/chr20-21.matrix, matrix/chr20-22.matrix, matrix/chr20-23.matrix
+    output: chr20.matrix
+    jobid: 44
+    reason: Missing output files: chr20.matrix
+    wildcards: chrom=chr20
+    threads: 4
+
+Submitted DRMAA job 44 with external jobid 9148850.
+
+[Thu Dec  5 06:50:12 2019]
+rule mergeEBcache:
+    input: cache/chrX-0.cache, cache/chrX-1.cache, cache/chrX-2.cache, cache/chrX-3.cache, cache/chrX-4.cache, cache/chrX-5.cache, cache/chrX-6.cache, cache/chrX-7.cache, cache/chrX-8.cache, cache/chrX-9.cache, cache/chrX-10.cache, cache/chrX-11.cache, cache/chrX-12.cache, cache/chrX-13.cache, cache/chrX-14.cache, cache/chrX-15.cache, cache/chrX-16.cache, cache/chrX-17.cache, cache/chrX-18.cache, cache/chrX-19.cache, cache/chrX-20.cache, cache/chrX-21.cache, cache/chrX-22.cache, cache/chrX-23.cache
+    output: chrX.cache
+    jobid: 23
+    reason: Missing output files: chrX.cache
+    wildcards: chrom=chrX
+    threads: 4
+
+Submitted DRMAA job 23 with external jobid 9148851.
+
+[Thu Dec  5 06:50:12 2019]
+rule EBcache:
+    input: matrix/chrY-23.matrix
+    output: cache/chrY-23.cache
+    log: logs/chrY-23.AB.log
+    jobid: 624
+    reason: Missing output files: cache/chrY-23.cache
+    wildcards: chrom=chrY, i=23
+    threads: 24
+
+Submitted DRMAA job 624 with external jobid 9148852.
+
+[Thu Dec  5 06:50:12 2019]
+rule EBcache:
+    input: matrix/chr1-12.matrix
+    output: cache/chr1-12.cache
+    log: logs/chr1-12.AB.log
+    jobid: 61
+    reason: Missing output files: cache/chr1-12.cache
+    wildcards: chrom=chr1, i=12
+    threads: 24
+
+Submitted DRMAA job 61 with external jobid 9148853.
+
+[Thu Dec  5 06:50:13 2019]
+rule EBcache:
+    input: matrix/chr2-15.matrix
+    output: cache/chr2-15.cache
+    log: logs/chr2-15.AB.log
+    jobid: 88
+    reason: Missing output files: cache/chr2-15.cache
+    wildcards: chrom=chr2, i=15
+    threads: 24
+
+Submitted DRMAA job 88 with external jobid 9148854.
+
+[Thu Dec  5 06:50:13 2019]
+rule mergeMatrix:
+    input: matrix/chr7-0.matrix, matrix/chr7-1.matrix, matrix/chr7-2.matrix, matrix/chr7-3.matrix, matrix/chr7-4.matrix, matrix/chr7-5.matrix, matrix/chr7-6.matrix, matrix/chr7-7.matrix, matrix/chr7-8.matrix, matrix/chr7-9.matrix, matrix/chr7-10.matrix, matrix/chr7-11.matrix, matrix/chr7-12.matrix, matrix/chr7-13.matrix, matrix/chr7-14.matrix, matrix/chr7-15.matrix, matrix/chr7-16.matrix, matrix/chr7-17.matrix, matrix/chr7-18.matrix, matrix/chr7-19.matrix, matrix/chr7-20.matrix, matrix/chr7-21.matrix, matrix/chr7-22.matrix, matrix/chr7-23.matrix
+    output: chr7.matrix
+    jobid: 31
+    reason: Missing output files: chr7.matrix
+    wildcards: chrom=chr7
+    threads: 4
+
+Submitted DRMAA job 31 with external jobid 9148855.
+
+[Thu Dec  5 06:50:13 2019]
+rule mergeEBcache:
+    input: cache/chr21-0.cache, cache/chr21-1.cache, cache/chr21-2.cache, cache/chr21-3.cache, cache/chr21-4.cache, cache/chr21-5.cache, cache/chr21-6.cache, cache/chr21-7.cache, cache/chr21-8.cache, cache/chr21-9.cache, cache/chr21-10.cache, cache/chr21-11.cache, cache/chr21-12.cache, cache/chr21-13.cache, cache/chr21-14.cache, cache/chr21-15.cache, cache/chr21-16.cache, cache/chr21-17.cache, cache/chr21-18.cache, cache/chr21-19.cache, cache/chr21-20.cache, cache/chr21-21.cache, cache/chr21-22.cache, cache/chr21-23.cache
+    output: chr21.cache
+    jobid: 21
+    reason: Missing output files: chr21.cache
+    wildcards: chrom=chr21
+    threads: 4
+
+Submitted DRMAA job 21 with external jobid 9148856.
+
+[Thu Dec  5 06:50:13 2019]
+rule mergeMatrix:
+    input: matrix/chr10-0.matrix, matrix/chr10-1.matrix, matrix/chr10-2.matrix, matrix/chr10-3.matrix, matrix/chr10-4.matrix, matrix/chr10-5.matrix, matrix/chr10-6.matrix, matrix/chr10-7.matrix, matrix/chr10-8.matrix, matrix/chr10-9.matrix, matrix/chr10-10.matrix, matrix/chr10-11.matrix, matrix/chr10-12.matrix, matrix/chr10-13.matrix, matrix/chr10-14.matrix, matrix/chr10-15.matrix, matrix/chr10-16.matrix, matrix/chr10-17.matrix, matrix/chr10-18.matrix, matrix/chr10-19.matrix, matrix/chr10-20.matrix, matrix/chr10-21.matrix, matrix/chr10-22.matrix, matrix/chr10-23.matrix
+    output: chr10.matrix
+    jobid: 34
+    reason: Missing output files: chr10.matrix
+    wildcards: chrom=chr10
+    threads: 4
+
+Submitted DRMAA job 34 with external jobid 9148857.
+
+[Thu Dec  5 06:50:13 2019]
+rule mergeMatrix:
+    input: matrix/chr5-0.matrix, matrix/chr5-1.matrix, matrix/chr5-2.matrix, matrix/chr5-3.matrix, matrix/chr5-4.matrix, matrix/chr5-5.matrix, matrix/chr5-6.matrix, matrix/chr5-7.matrix, matrix/chr5-8.matrix, matrix/chr5-9.matrix, matrix/chr5-10.matrix, matrix/chr5-11.matrix, matrix/chr5-12.matrix, matrix/chr5-13.matrix, matrix/chr5-14.matrix, matrix/chr5-15.matrix, matrix/chr5-16.matrix, matrix/chr5-17.matrix, matrix/chr5-18.matrix, matrix/chr5-19.matrix, matrix/chr5-20.matrix, matrix/chr5-21.matrix, matrix/chr5-22.matrix, matrix/chr5-23.matrix
+    output: chr5.matrix
+    jobid: 29
+    reason: Missing output files: chr5.matrix
+    wildcards: chrom=chr5
+    threads: 4
+
+Submitted DRMAA job 29 with external jobid 9148858.
+
+[Thu Dec  5 06:50:13 2019]
+rule mergeMatrix:
+    input: matrix/chr1-0.matrix, matrix/chr1-1.matrix, matrix/chr1-2.matrix, matrix/chr1-3.matrix, matrix/chr1-4.matrix, matrix/chr1-5.matrix, matrix/chr1-6.matrix, matrix/chr1-7.matrix, matrix/chr1-8.matrix, matrix/chr1-9.matrix, matrix/chr1-10.matrix, matrix/chr1-11.matrix, matrix/chr1-12.matrix, matrix/chr1-13.matrix, matrix/chr1-14.matrix, matrix/chr1-15.matrix, matrix/chr1-16.matrix, matrix/chr1-17.matrix, matrix/chr1-18.matrix, matrix/chr1-19.matrix, matrix/chr1-20.matrix, matrix/chr1-21.matrix, matrix/chr1-22.matrix, matrix/chr1-23.matrix
+    output: chr1.matrix
+    jobid: 25
+    reason: Missing output files: chr1.matrix
+    wildcards: chrom=chr1
+    threads: 4
+
+Submitted DRMAA job 25 with external jobid 9148859.
+
+[Thu Dec  5 06:50:13 2019]
+rule EBcache:
+    input: matrix/chr1-17.matrix
+    output: cache/chr1-17.cache
+    log: logs/chr1-17.AB.log
+    jobid: 66
+    reason: Missing output files: cache/chr1-17.cache
+    wildcards: chrom=chr1, i=17
+    threads: 24
+
+Submitted DRMAA job 66 with external jobid 9148860.
+
+[Thu Dec  5 06:50:13 2019]
+rule mergeMatrix:
+    input: matrix/chr15-0.matrix, matrix/chr15-1.matrix, matrix/chr15-2.matrix, matrix/chr15-3.matrix, matrix/chr15-4.matrix, matrix/chr15-5.matrix, matrix/chr15-6.matrix, matrix/chr15-7.matrix, matrix/chr15-8.matrix, matrix/chr15-9.matrix, matrix/chr15-10.matrix, matrix/chr15-11.matrix, matrix/chr15-12.matrix, matrix/chr15-13.matrix, matrix/chr15-14.matrix, matrix/chr15-15.matrix, matrix/chr15-16.matrix, matrix/chr15-17.matrix, matrix/chr15-18.matrix, matrix/chr15-19.matrix, matrix/chr15-20.matrix, matrix/chr15-21.matrix, matrix/chr15-22.matrix, matrix/chr15-23.matrix
+    output: chr15.matrix
+    jobid: 39
+    reason: Missing output files: chr15.matrix
+    wildcards: chrom=chr15
+    threads: 4
+
+Submitted DRMAA job 39 with external jobid 9148861.
+
+[Thu Dec  5 06:50:13 2019]
+rule EBcache:
+    input: matrix/chrY-0.matrix
+    output: cache/chrY-0.cache
+    log: logs/chrY-0.AB.log
+    jobid: 601
+    reason: Missing output files: cache/chrY-0.cache
+    wildcards: chrom=chrY, i=0
+    threads: 24
+
+Submitted DRMAA job 601 with external jobid 9148862.
+
+[Thu Dec  5 06:50:14 2019]
+rule mergeEBcache:
+    input: cache/chr22-0.cache, cache/chr22-1.cache, cache/chr22-2.cache, cache/chr22-3.cache, cache/chr22-4.cache, cache/chr22-5.cache, cache/chr22-6.cache, cache/chr22-7.cache, cache/chr22-8.cache, cache/chr22-9.cache, cache/chr22-10.cache, cache/chr22-11.cache, cache/chr22-12.cache, cache/chr22-13.cache, cache/chr22-14.cache, cache/chr22-15.cache, cache/chr22-16.cache, cache/chr22-17.cache, cache/chr22-18.cache, cache/chr22-19.cache, cache/chr22-20.cache, cache/chr22-21.cache, cache/chr22-22.cache, cache/chr22-23.cache
+    output: chr22.cache
+    jobid: 22
+    reason: Missing output files: chr22.cache
+    wildcards: chrom=chr22
+    threads: 4
+
+Submitted DRMAA job 22 with external jobid 9148863.
+
+[Thu Dec  5 06:50:14 2019]
+rule EBcache:
+    input: matrix/chr1-19.matrix
+    output: cache/chr1-19.cache
+    log: logs/chr1-19.AB.log
+    jobid: 68
+    reason: Missing output files: cache/chr1-19.cache
+    wildcards: chrom=chr1, i=19
+    threads: 24
+
+Submitted DRMAA job 68 with external jobid 9148864.
+
+[Thu Dec  5 06:50:14 2019]
+rule EBcache:
+    input: matrix/chr2-11.matrix
+    output: cache/chr2-11.cache
+    log: logs/chr2-11.AB.log
+    jobid: 84
+    reason: Missing output files: cache/chr2-11.cache
+    wildcards: chrom=chr2, i=11
+    threads: 24
+
+Submitted DRMAA job 84 with external jobid 9148865.
+
+[Thu Dec  5 06:50:14 2019]
+rule mergeMatrix:
+    input: matrix/chr3-0.matrix, matrix/chr3-1.matrix, matrix/chr3-2.matrix, matrix/chr3-3.matrix, matrix/chr3-4.matrix, matrix/chr3-5.matrix, matrix/chr3-6.matrix, matrix/chr3-7.matrix, matrix/chr3-8.matrix, matrix/chr3-9.matrix, matrix/chr3-10.matrix, matrix/chr3-11.matrix, matrix/chr3-12.matrix, matrix/chr3-13.matrix, matrix/chr3-14.matrix, matrix/chr3-15.matrix, matrix/chr3-16.matrix, matrix/chr3-17.matrix, matrix/chr3-18.matrix, matrix/chr3-19.matrix, matrix/chr3-20.matrix, matrix/chr3-21.matrix, matrix/chr3-22.matrix, matrix/chr3-23.matrix
+    output: chr3.matrix
+    jobid: 27
+    reason: Missing output files: chr3.matrix
+    wildcards: chrom=chr3
+    threads: 4
+
+Submitted DRMAA job 27 with external jobid 9148866.
+
+[Thu Dec  5 06:50:14 2019]
+rule mergeEBcache:
+    input: cache/chr13-0.cache, cache/chr13-1.cache, cache/chr13-2.cache, cache/chr13-3.cache, cache/chr13-4.cache, cache/chr13-5.cache, cache/chr13-6.cache, cache/chr13-7.cache, cache/chr13-8.cache, cache/chr13-9.cache, cache/chr13-10.cache, cache/chr13-11.cache, cache/chr13-12.cache, cache/chr13-13.cache, cache/chr13-14.cache, cache/chr13-15.cache, cache/chr13-16.cache, cache/chr13-17.cache, cache/chr13-18.cache, cache/chr13-19.cache, cache/chr13-20.cache, cache/chr13-21.cache, cache/chr13-22.cache, cache/chr13-23.cache
+    output: chr13.cache
+    jobid: 13
+    reason: Missing output files: chr13.cache
+    wildcards: chrom=chr13
+    threads: 4
+
+Submitted DRMAA job 13 with external jobid 9148867.
+
+[Thu Dec  5 06:50:14 2019]
+rule mergeEBcache:
+    input: cache/chr18-0.cache, cache/chr18-1.cache, cache/chr18-2.cache, cache/chr18-3.cache, cache/chr18-4.cache, cache/chr18-5.cache, cache/chr18-6.cache, cache/chr18-7.cache, cache/chr18-8.cache, cache/chr18-9.cache, cache/chr18-10.cache, cache/chr18-11.cache, cache/chr18-12.cache, cache/chr18-13.cache, cache/chr18-14.cache, cache/chr18-15.cache, cache/chr18-16.cache, cache/chr18-17.cache, cache/chr18-18.cache, cache/chr18-19.cache, cache/chr18-20.cache, cache/chr18-21.cache, cache/chr18-22.cache, cache/chr18-23.cache
+    output: chr18.cache
+    jobid: 18
+    reason: Missing output files: chr18.cache
+    wildcards: chrom=chr18
+    threads: 4
+
+Submitted DRMAA job 18 with external jobid 9148868.
+
+[Thu Dec  5 06:50:14 2019]
+rule EBcache:
+    input: matrix/chr2-21.matrix
+    output: cache/chr2-21.cache
+    log: logs/chr2-21.AB.log
+    jobid: 94
+    reason: Missing output files: cache/chr2-21.cache
+    wildcards: chrom=chr2, i=21
+    threads: 24
+
+Submitted DRMAA job 94 with external jobid 9148869.
+
+[Thu Dec  5 06:50:14 2019]
+rule mergeMatrix:
+    input: matrix/chr8-0.matrix, matrix/chr8-1.matrix, matrix/chr8-2.matrix, matrix/chr8-3.matrix, matrix/chr8-4.matrix, matrix/chr8-5.matrix, matrix/chr8-6.matrix, matrix/chr8-7.matrix, matrix/chr8-8.matrix, matrix/chr8-9.matrix, matrix/chr8-10.matrix, matrix/chr8-11.matrix, matrix/chr8-12.matrix, matrix/chr8-13.matrix, matrix/chr8-14.matrix, matrix/chr8-15.matrix, matrix/chr8-16.matrix, matrix/chr8-17.matrix, matrix/chr8-18.matrix, matrix/chr8-19.matrix, matrix/chr8-20.matrix, matrix/chr8-21.matrix, matrix/chr8-22.matrix, matrix/chr8-23.matrix
+    output: chr8.matrix
+    jobid: 32
+    reason: Missing output files: chr8.matrix
+    wildcards: chrom=chr8
+    threads: 4
+
+Submitted DRMAA job 32 with external jobid 9148870.
+
+[Thu Dec  5 06:50:14 2019]
+rule mergeMatrix:
+    input: matrix/chr14-0.matrix, matrix/chr14-1.matrix, matrix/chr14-2.matrix, matrix/chr14-3.matrix, matrix/chr14-4.matrix, matrix/chr14-5.matrix, matrix/chr14-6.matrix, matrix/chr14-7.matrix, matrix/chr14-8.matrix, matrix/chr14-9.matrix, matrix/chr14-10.matrix, matrix/chr14-11.matrix, matrix/chr14-12.matrix, matrix/chr14-13.matrix, matrix/chr14-14.matrix, matrix/chr14-15.matrix, matrix/chr14-16.matrix, matrix/chr14-17.matrix, matrix/chr14-18.matrix, matrix/chr14-19.matrix, matrix/chr14-20.matrix, matrix/chr14-21.matrix, matrix/chr14-22.matrix, matrix/chr14-23.matrix
+    output: chr14.matrix
+    jobid: 38
+    reason: Missing output files: chr14.matrix
+    wildcards: chrom=chr14
+    threads: 4
+
+Submitted DRMAA job 38 with external jobid 9148871.
+
+[Thu Dec  5 06:50:15 2019]
+rule mergeMatrix:
+    input: matrix/chr19-0.matrix, matrix/chr19-1.matrix, matrix/chr19-2.matrix, matrix/chr19-3.matrix, matrix/chr19-4.matrix, matrix/chr19-5.matrix, matrix/chr19-6.matrix, matrix/chr19-7.matrix, matrix/chr19-8.matrix, matrix/chr19-9.matrix, matrix/chr19-10.matrix, matrix/chr19-11.matrix, matrix/chr19-12.matrix, matrix/chr19-13.matrix, matrix/chr19-14.matrix, matrix/chr19-15.matrix, matrix/chr19-16.matrix, matrix/chr19-17.matrix, matrix/chr19-18.matrix, matrix/chr19-19.matrix, matrix/chr19-20.matrix, matrix/chr19-21.matrix, matrix/chr19-22.matrix, matrix/chr19-23.matrix
+    output: chr19.matrix
+    jobid: 43
+    reason: Missing output files: chr19.matrix
+    wildcards: chrom=chr19
+    threads: 4
+
+Submitted DRMAA job 43 with external jobid 9148872.
+
+[Thu Dec  5 06:50:15 2019]
+rule EBcache:
+    input: matrix/chr1-11.matrix
+    output: cache/chr1-11.cache
+    log: logs/chr1-11.AB.log
+    jobid: 60
+    reason: Missing output files: cache/chr1-11.cache
+    wildcards: chrom=chr1, i=11
+    threads: 24
+
+Submitted DRMAA job 60 with external jobid 9148873.
+
+[Thu Dec  5 06:50:15 2019]
+rule EBcache:
+    input: matrix/chr2-23.matrix
+    output: cache/chr2-23.cache
+    log: logs/chr2-23.AB.log
+    jobid: 96
+    reason: Missing output files: cache/chr2-23.cache
+    wildcards: chrom=chr2, i=23
+    threads: 24
+
+Submitted DRMAA job 96 with external jobid 9148874.
+
+[Thu Dec  5 06:50:15 2019]
+rule mergeMatrix:
+    input: matrix/chr17-0.matrix, matrix/chr17-1.matrix, matrix/chr17-2.matrix, matrix/chr17-3.matrix, matrix/chr17-4.matrix, matrix/chr17-5.matrix, matrix/chr17-6.matrix, matrix/chr17-7.matrix, matrix/chr17-8.matrix, matrix/chr17-9.matrix, matrix/chr17-10.matrix, matrix/chr17-11.matrix, matrix/chr17-12.matrix, matrix/chr17-13.matrix, matrix/chr17-14.matrix, matrix/chr17-15.matrix, matrix/chr17-16.matrix, matrix/chr17-17.matrix, matrix/chr17-18.matrix, matrix/chr17-19.matrix, matrix/chr17-20.matrix, matrix/chr17-21.matrix, matrix/chr17-22.matrix, matrix/chr17-23.matrix
+    output: chr17.matrix
+    jobid: 41
+    reason: Missing output files: chr17.matrix
+    wildcards: chrom=chr17
+    threads: 4
+
+Submitted DRMAA job 41 with external jobid 9148875.
+
+[Thu Dec  5 06:50:15 2019]
+rule mergeMatrix:
+    input: matrix/chr21-0.matrix, matrix/chr21-1.matrix, matrix/chr21-2.matrix, matrix/chr21-3.matrix, matrix/chr21-4.matrix, matrix/chr21-5.matrix, matrix/chr21-6.matrix, matrix/chr21-7.matrix, matrix/chr21-8.matrix, matrix/chr21-9.matrix, matrix/chr21-10.matrix, matrix/chr21-11.matrix, matrix/chr21-12.matrix, matrix/chr21-13.matrix, matrix/chr21-14.matrix, matrix/chr21-15.matrix, matrix/chr21-16.matrix, matrix/chr21-17.matrix, matrix/chr21-18.matrix, matrix/chr21-19.matrix, matrix/chr21-20.matrix, matrix/chr21-21.matrix, matrix/chr21-22.matrix, matrix/chr21-23.matrix
+    output: chr21.matrix
+    jobid: 45
+    reason: Missing output files: chr21.matrix
+    wildcards: chrom=chr21
+    threads: 4
+
+Submitted DRMAA job 45 with external jobid 9148876.
+
+[Thu Dec  5 06:50:15 2019]
+rule EBcache:
+    input: matrix/chrY-2.matrix
+    output: cache/chrY-2.cache
+    log: logs/chrY-2.AB.log
+    jobid: 603
+    reason: Missing output files: cache/chrY-2.cache
+    wildcards: chrom=chrY, i=2
+    threads: 24
+
+Submitted DRMAA job 603 with external jobid 9148877.
+
+[Thu Dec  5 06:50:15 2019]
+rule mergeMatrix:
+    input: matrix/chr4-0.matrix, matrix/chr4-1.matrix, matrix/chr4-2.matrix, matrix/chr4-3.matrix, matrix/chr4-4.matrix, matrix/chr4-5.matrix, matrix/chr4-6.matrix, matrix/chr4-7.matrix, matrix/chr4-8.matrix, matrix/chr4-9.matrix, matrix/chr4-10.matrix, matrix/chr4-11.matrix, matrix/chr4-12.matrix, matrix/chr4-13.matrix, matrix/chr4-14.matrix, matrix/chr4-15.matrix, matrix/chr4-16.matrix, matrix/chr4-17.matrix, matrix/chr4-18.matrix, matrix/chr4-19.matrix, matrix/chr4-20.matrix, matrix/chr4-21.matrix, matrix/chr4-22.matrix, matrix/chr4-23.matrix
+    output: chr4.matrix
+    jobid: 28
+    reason: Missing output files: chr4.matrix
+    wildcards: chrom=chr4
+    threads: 4
+
+Submitted DRMAA job 28 with external jobid 9148878.
+
+[Thu Dec  5 06:50:16 2019]
+rule mergeMatrix:
+    input: matrix/chr6-0.matrix, matrix/chr6-1.matrix, matrix/chr6-2.matrix, matrix/chr6-3.matrix, matrix/chr6-4.matrix, matrix/chr6-5.matrix, matrix/chr6-6.matrix, matrix/chr6-7.matrix, matrix/chr6-8.matrix, matrix/chr6-9.matrix, matrix/chr6-10.matrix, matrix/chr6-11.matrix, matrix/chr6-12.matrix, matrix/chr6-13.matrix, matrix/chr6-14.matrix, matrix/chr6-15.matrix, matrix/chr6-16.matrix, matrix/chr6-17.matrix, matrix/chr6-18.matrix, matrix/chr6-19.matrix, matrix/chr6-20.matrix, matrix/chr6-21.matrix, matrix/chr6-22.matrix, matrix/chr6-23.matrix
+    output: chr6.matrix
+    jobid: 30
+    reason: Missing output files: chr6.matrix
+    wildcards: chrom=chr6
+    threads: 4
+
+Submitted DRMAA job 30 with external jobid 9148879.
+
+[Thu Dec  5 06:50:16 2019]
+rule mergeEBcache:
+    input: cache/chr20-0.cache, cache/chr20-1.cache, cache/chr20-2.cache, cache/chr20-3.cache, cache/chr20-4.cache, cache/chr20-5.cache, cache/chr20-6.cache, cache/chr20-7.cache, cache/chr20-8.cache, cache/chr20-9.cache, cache/chr20-10.cache, cache/chr20-11.cache, cache/chr20-12.cache, cache/chr20-13.cache, cache/chr20-14.cache, cache/chr20-15.cache, cache/chr20-16.cache, cache/chr20-17.cache, cache/chr20-18.cache, cache/chr20-19.cache, cache/chr20-20.cache, cache/chr20-21.cache, cache/chr20-22.cache, cache/chr20-23.cache
+    output: chr20.cache
+    jobid: 20
+    reason: Missing output files: chr20.cache
+    wildcards: chrom=chr20
+    threads: 4
+
+Submitted DRMAA job 20 with external jobid 9148880.
+
+[Thu Dec  5 06:50:16 2019]
+rule mergeMatrix:
+    input: matrix/chrX-0.matrix, matrix/chrX-1.matrix, matrix/chrX-2.matrix, matrix/chrX-3.matrix, matrix/chrX-4.matrix, matrix/chrX-5.matrix, matrix/chrX-6.matrix, matrix/chrX-7.matrix, matrix/chrX-8.matrix, matrix/chrX-9.matrix, matrix/chrX-10.matrix, matrix/chrX-11.matrix, matrix/chrX-12.matrix, matrix/chrX-13.matrix, matrix/chrX-14.matrix, matrix/chrX-15.matrix, matrix/chrX-16.matrix, matrix/chrX-17.matrix, matrix/chrX-18.matrix, matrix/chrX-19.matrix, matrix/chrX-20.matrix, matrix/chrX-21.matrix, matrix/chrX-22.matrix, matrix/chrX-23.matrix
+    output: chrX.matrix
+    jobid: 47
+    reason: Missing output files: chrX.matrix
+    wildcards: chrom=chrX
+    threads: 4
+
+Submitted DRMAA job 47 with external jobid 9148881.
+
+[Thu Dec  5 06:50:16 2019]
+rule EBcache:
+    input: matrix/chrY-1.matrix
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log
+    jobid: 602
+    reason: Missing output files: cache/chrY-1.cache
+    wildcards: chrom=chrY, i=1
+    threads: 24
+
+Submitted DRMAA job 602 with external jobid 9148882.
+
+[Thu Dec  5 06:50:16 2019]
+rule mergeMatrix:
+    input: matrix/chrY-0.matrix, matrix/chrY-1.matrix, matrix/chrY-2.matrix, matrix/chrY-3.matrix, matrix/chrY-4.matrix, matrix/chrY-5.matrix, matrix/chrY-6.matrix, matrix/chrY-7.matrix, matrix/chrY-8.matrix, matrix/chrY-9.matrix, matrix/chrY-10.matrix, matrix/chrY-11.matrix, matrix/chrY-12.matrix, matrix/chrY-13.matrix, matrix/chrY-14.matrix, matrix/chrY-15.matrix, matrix/chrY-16.matrix, matrix/chrY-17.matrix, matrix/chrY-18.matrix, matrix/chrY-19.matrix, matrix/chrY-20.matrix, matrix/chrY-21.matrix, matrix/chrY-22.matrix, matrix/chrY-23.matrix
+    output: chrY.matrix
+    jobid: 48
+    reason: Missing output files: chrY.matrix
+    wildcards: chrom=chrY
+    threads: 4
+
+Submitted DRMAA job 48 with external jobid 9148883.
+
+[Thu Dec  5 06:50:16 2019]
+rule mergeMatrix:
+    input: matrix/chr9-0.matrix, matrix/chr9-1.matrix, matrix/chr9-2.matrix, matrix/chr9-3.matrix, matrix/chr9-4.matrix, matrix/chr9-5.matrix, matrix/chr9-6.matrix, matrix/chr9-7.matrix, matrix/chr9-8.matrix, matrix/chr9-9.matrix, matrix/chr9-10.matrix, matrix/chr9-11.matrix, matrix/chr9-12.matrix, matrix/chr9-13.matrix, matrix/chr9-14.matrix, matrix/chr9-15.matrix, matrix/chr9-16.matrix, matrix/chr9-17.matrix, matrix/chr9-18.matrix, matrix/chr9-19.matrix, matrix/chr9-20.matrix, matrix/chr9-21.matrix, matrix/chr9-22.matrix, matrix/chr9-23.matrix
+    output: chr9.matrix
+    jobid: 33
+    reason: Missing output files: chr9.matrix
+    wildcards: chrom=chr9
+    threads: 4
+
+Submitted DRMAA job 33 with external jobid 9148884.
+
+[Thu Dec  5 06:50:16 2019]
+rule mergeMatrix:
+    input: matrix/chr18-0.matrix, matrix/chr18-1.matrix, matrix/chr18-2.matrix, matrix/chr18-3.matrix, matrix/chr18-4.matrix, matrix/chr18-5.matrix, matrix/chr18-6.matrix, matrix/chr18-7.matrix, matrix/chr18-8.matrix, matrix/chr18-9.matrix, matrix/chr18-10.matrix, matrix/chr18-11.matrix, matrix/chr18-12.matrix, matrix/chr18-13.matrix, matrix/chr18-14.matrix, matrix/chr18-15.matrix, matrix/chr18-16.matrix, matrix/chr18-17.matrix, matrix/chr18-18.matrix, matrix/chr18-19.matrix, matrix/chr18-20.matrix, matrix/chr18-21.matrix, matrix/chr18-22.matrix, matrix/chr18-23.matrix
+    output: chr18.matrix
+    jobid: 42
+    reason: Missing output files: chr18.matrix
+    wildcards: chrom=chr18
+    threads: 4
+
+Submitted DRMAA job 42 with external jobid 9148885.
+
+[Thu Dec  5 06:50:16 2019]
+rule mergeMatrix:
+    input: matrix/chr11-0.matrix, matrix/chr11-1.matrix, matrix/chr11-2.matrix, matrix/chr11-3.matrix, matrix/chr11-4.matrix, matrix/chr11-5.matrix, matrix/chr11-6.matrix, matrix/chr11-7.matrix, matrix/chr11-8.matrix, matrix/chr11-9.matrix, matrix/chr11-10.matrix, matrix/chr11-11.matrix, matrix/chr11-12.matrix, matrix/chr11-13.matrix, matrix/chr11-14.matrix, matrix/chr11-15.matrix, matrix/chr11-16.matrix, matrix/chr11-17.matrix, matrix/chr11-18.matrix, matrix/chr11-19.matrix, matrix/chr11-20.matrix, matrix/chr11-21.matrix, matrix/chr11-22.matrix, matrix/chr11-23.matrix
+    output: chr11.matrix
+    jobid: 35
+    reason: Missing output files: chr11.matrix
+    wildcards: chrom=chr11
+    threads: 4
+
+Submitted DRMAA job 35 with external jobid 9148886.
+
+[Thu Dec  5 06:50:17 2019]
+rule EBcache:
+    input: matrix/chr2-18.matrix
+    output: cache/chr2-18.cache
+    log: logs/chr2-18.AB.log
+    jobid: 91
+    reason: Missing output files: cache/chr2-18.cache
+    wildcards: chrom=chr2, i=18
+    threads: 24
+
+Submitted DRMAA job 91 with external jobid 9148887.
+
+[Thu Dec  5 06:50:17 2019]
+rule EBcache:
+    input: matrix/chr2-16.matrix
+    output: cache/chr2-16.cache
+    log: logs/chr2-16.AB.log
+    jobid: 89
+    reason: Missing output files: cache/chr2-16.cache
+    wildcards: chrom=chr2, i=16
+    threads: 24
+
+Submitted DRMAA job 89 with external jobid 9148888.
+
+[Thu Dec  5 06:50:17 2019]
+rule mergeEBcache:
+    input: cache/chr8-0.cache, cache/chr8-1.cache, cache/chr8-2.cache, cache/chr8-3.cache, cache/chr8-4.cache, cache/chr8-5.cache, cache/chr8-6.cache, cache/chr8-7.cache, cache/chr8-8.cache, cache/chr8-9.cache, cache/chr8-10.cache, cache/chr8-11.cache, cache/chr8-12.cache, cache/chr8-13.cache, cache/chr8-14.cache, cache/chr8-15.cache, cache/chr8-16.cache, cache/chr8-17.cache, cache/chr8-18.cache, cache/chr8-19.cache, cache/chr8-20.cache, cache/chr8-21.cache, cache/chr8-22.cache, cache/chr8-23.cache
+    output: chr8.cache
+    jobid: 8
+    reason: Missing output files: chr8.cache
+    wildcards: chrom=chr8
+    threads: 4
+
+Submitted DRMAA job 8 with external jobid 9148889.
+
+[Thu Dec  5 06:50:17 2019]
+rule mergeMatrix:
+    input: matrix/chr22-0.matrix, matrix/chr22-1.matrix, matrix/chr22-2.matrix, matrix/chr22-3.matrix, matrix/chr22-4.matrix, matrix/chr22-5.matrix, matrix/chr22-6.matrix, matrix/chr22-7.matrix, matrix/chr22-8.matrix, matrix/chr22-9.matrix, matrix/chr22-10.matrix, matrix/chr22-11.matrix, matrix/chr22-12.matrix, matrix/chr22-13.matrix, matrix/chr22-14.matrix, matrix/chr22-15.matrix, matrix/chr22-16.matrix, matrix/chr22-17.matrix, matrix/chr22-18.matrix, matrix/chr22-19.matrix, matrix/chr22-20.matrix, matrix/chr22-21.matrix, matrix/chr22-22.matrix, matrix/chr22-23.matrix
+    output: chr22.matrix
+    jobid: 46
+    reason: Missing output files: chr22.matrix
+    wildcards: chrom=chr22
+    threads: 4
+
+Submitted DRMAA job 46 with external jobid 9148890.
+
+[Thu Dec  5 06:50:17 2019]
+rule EBcache:
+    input: matrix/chr1-14.matrix
+    output: cache/chr1-14.cache
+    log: logs/chr1-14.AB.log
+    jobid: 63
+    reason: Missing output files: cache/chr1-14.cache
+    wildcards: chrom=chr1, i=14
+    threads: 24
+
+Submitted DRMAA job 63 with external jobid 9148891.
+
+[Thu Dec  5 06:50:17 2019]
+rule EBcache:
+    input: matrix/chr1-18.matrix
+    output: cache/chr1-18.cache
+    log: logs/chr1-18.AB.log
+    jobid: 67
+    reason: Missing output files: cache/chr1-18.cache
+    wildcards: chrom=chr1, i=18
+    threads: 24
+
+Submitted DRMAA job 67 with external jobid 9148892.
+
+[Thu Dec  5 06:50:17 2019]
+rule mergeMatrix:
+    input: matrix/chr13-0.matrix, matrix/chr13-1.matrix, matrix/chr13-2.matrix, matrix/chr13-3.matrix, matrix/chr13-4.matrix, matrix/chr13-5.matrix, matrix/chr13-6.matrix, matrix/chr13-7.matrix, matrix/chr13-8.matrix, matrix/chr13-9.matrix, matrix/chr13-10.matrix, matrix/chr13-11.matrix, matrix/chr13-12.matrix, matrix/chr13-13.matrix, matrix/chr13-14.matrix, matrix/chr13-15.matrix, matrix/chr13-16.matrix, matrix/chr13-17.matrix, matrix/chr13-18.matrix, matrix/chr13-19.matrix, matrix/chr13-20.matrix, matrix/chr13-21.matrix, matrix/chr13-22.matrix, matrix/chr13-23.matrix
+    output: chr13.matrix
+    jobid: 37
+    reason: Missing output files: chr13.matrix
+    wildcards: chrom=chr13
+    threads: 4
+
+Submitted DRMAA job 37 with external jobid 9148893.
+[Thu Dec  5 06:50:52 2019]
+Error in rule mergeMatrix:
+    jobid: 40
+    output: chr16.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 40, external: 9148844, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.40.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:52 2019]
+Error in rule mergeMatrix:
+    jobid: 36
+    output: chr12.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 36, external: 9148846, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.36.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:52 2019]
+Error in rule mergeMatrix:
+    jobid: 26
+    output: chr2.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 26, external: 9148848, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.26.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:52 2019]
+Error in rule mergeMatrix:
+    jobid: 44
+    output: chr20.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 44, external: 9148850, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.44.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:53 2019]
+Error in rule mergeMatrix:
+    jobid: 31
+    output: chr7.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 31, external: 9148855, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.31.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:53 2019]
+Error in rule mergeMatrix:
+    jobid: 34
+    output: chr10.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 34, external: 9148857, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.34.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:53 2019]
+Error in rule mergeMatrix:
+    jobid: 29
+    output: chr5.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 29, external: 9148858, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.29.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:53 2019]
+Error in rule mergeMatrix:
+    jobid: 25
+    output: chr1.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 25, external: 9148859, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.25.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:53 2019]
+Error in rule mergeMatrix:
+    jobid: 39
+    output: chr15.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 39, external: 9148861, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.39.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:54 2019]
+Error in rule mergeMatrix:
+    jobid: 27
+    output: chr3.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 27, external: 9148866, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.27.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:54 2019]
+Error in rule mergeMatrix:
+    jobid: 32
+    output: chr8.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 32, external: 9148870, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.32.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:54 2019]
+Error in rule mergeMatrix:
+    jobid: 38
+    output: chr14.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 38, external: 9148871, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.38.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:54 2019]
+Error in rule mergeMatrix:
+    jobid: 43
+    output: chr19.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 43, external: 9148872, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.43.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:55 2019]
+Error in rule mergeMatrix:
+    jobid: 41
+    output: chr17.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 41, external: 9148875, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.41.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:55 2019]
+Error in rule mergeMatrix:
+    jobid: 45
+    output: chr21.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 45, external: 9148876, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.45.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:55 2019]
+Error in rule mergeMatrix:
+    jobid: 28
+    output: chr4.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 28, external: 9148878, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.28.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:55 2019]
+Error in rule mergeMatrix:
+    jobid: 30
+    output: chr6.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 30, external: 9148879, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.30.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:55 2019]
+Error in rule mergeMatrix:
+    jobid: 47
+    output: chrX.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 47, external: 9148881, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.47.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:55 2019]
+Error in rule mergeMatrix:
+    jobid: 48
+    output: chrY.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 48, external: 9148883, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.48.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:56 2019]
+Error in rule mergeMatrix:
+    jobid: 33
+    output: chr9.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 33, external: 9148884, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.33.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:56 2019]
+Error in rule mergeMatrix:
+    jobid: 42
+    output: chr18.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 42, external: 9148885, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.42.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:56 2019]
+Error in rule mergeMatrix:
+    jobid: 35
+    output: chr11.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 35, external: 9148886, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.35.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:56 2019]
+Error in rule mergeMatrix:
+    jobid: 46
+    output: chr22.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 46, external: 9148890, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.46.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:50:56 2019]
+Error in rule mergeMatrix:
+    jobid: 37
+    output: chr13.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 37, external: 9148893, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.mergeMatrix.37.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:09 2019]
+Error in rule EBcache:
+    jobid: 602
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 602, external: 9148882, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.602.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:19 2019]
+Error in rule EBcache:
+    jobid: 64
+    output: cache/chr1-15.cache
+    log: logs/chr1-15.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 64, external: 9148845, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.64.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:19 2019]
+Error in rule EBcache:
+    jobid: 604
+    output: cache/chrY-3.cache
+    log: logs/chrY-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 604, external: 9148847, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.604.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:19 2019]
+Error in rule EBcache:
+    jobid: 93
+    output: cache/chr2-20.cache
+    log: logs/chr2-20.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 93, external: 9148849, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.93.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:19 2019]
+Error in rule EBcache:
+    jobid: 624
+    output: cache/chrY-23.cache
+    log: logs/chrY-23.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 624, external: 9148852, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.624.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:19 2019]
+Error in rule EBcache:
+    jobid: 61
+    output: cache/chr1-12.cache
+    log: logs/chr1-12.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 61, external: 9148853, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.61.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:19 2019]
+Error in rule EBcache:
+    jobid: 88
+    output: cache/chr2-15.cache
+    log: logs/chr2-15.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 88, external: 9148854, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.88.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:19 2019]
+Error in rule EBcache:
+    jobid: 66
+    output: cache/chr1-17.cache
+    log: logs/chr1-17.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 66, external: 9148860, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.66.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:19 2019]
+Error in rule EBcache:
+    jobid: 601
+    output: cache/chrY-0.cache
+    log: logs/chrY-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 601, external: 9148862, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.601.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:20 2019]
+Error in rule EBcache:
+    jobid: 68
+    output: cache/chr1-19.cache
+    log: logs/chr1-19.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 68, external: 9148864, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.68.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:20 2019]
+Error in rule EBcache:
+    jobid: 84
+    output: cache/chr2-11.cache
+    log: logs/chr2-11.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 84, external: 9148865, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.84.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:20 2019]
+Error in rule EBcache:
+    jobid: 94
+    output: cache/chr2-21.cache
+    log: logs/chr2-21.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 94, external: 9148869, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.94.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:20 2019]
+Error in rule EBcache:
+    jobid: 60
+    output: cache/chr1-11.cache
+    log: logs/chr1-11.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 60, external: 9148873, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.60.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:20 2019]
+Error in rule EBcache:
+    jobid: 96
+    output: cache/chr2-23.cache
+    log: logs/chr2-23.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 96, external: 9148874, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.96.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:20 2019]
+Error in rule EBcache:
+    jobid: 603
+    output: cache/chrY-2.cache
+    log: logs/chrY-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 603, external: 9148877, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.603.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:21 2019]
+Error in rule EBcache:
+    jobid: 91
+    output: cache/chr2-18.cache
+    log: logs/chr2-18.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 91, external: 9148887, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.91.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:21 2019]
+Error in rule EBcache:
+    jobid: 89
+    output: cache/chr2-16.cache
+    log: logs/chr2-16.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 89, external: 9148888, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.89.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:21 2019]
+Error in rule EBcache:
+    jobid: 63
+    output: cache/chr1-14.cache
+    log: logs/chr1-14.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 63, external: 9148891, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.63.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:21 2019]
+Error in rule EBcache:
+    jobid: 67
+    output: cache/chr1-18.cache
+    log: logs/chr1-18.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 67, external: 9148892, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.cqmjr_93/snakejob.EBcache.67.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 06:51:41 2019]
+Finished job 21.
+1 of 54 steps (2%) done
+[Thu Dec  5 06:52:11 2019]
+Finished job 18.
+2 of 54 steps (4%) done
+[Thu Dec  5 06:52:21 2019]
+Finished job 13.
+3 of 54 steps (6%) done
+[Thu Dec  5 06:52:41 2019]
+Finished job 22.
+4 of 54 steps (7%) done
+[Thu Dec  5 06:52:42 2019]
+Finished job 20.
+5 of 54 steps (9%) done
+[Thu Dec  5 06:53:12 2019]
+Finished job 8.
+6 of 54 steps (11%) done
+[Thu Dec  5 06:53:22 2019]
+Finished job 23.
+7 of 54 steps (13%) done
+Exiting because a job execution failed. Look above for error message
+Complete log: /fast/home/users/szyskam_c/snakes/projects/somVarWES/.snakemake/log/2019-12-05T065010.439132.snakemake.log
+ Generating Cache files in /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache.......
+You are now in an execute node
++ DRMAA=' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g'
++ DRMAA=' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/EBcache/9148895/ -j yes'
++ snakemake --snakefile EBcacheSnakefile --unlock --rerun-incomplete
+Building DAG of jobs...
+Unlocking working directory.
++ snakemake --snakefile EBcacheSnakefile --dag
++ dot -Tsvg
+Building DAG of jobs...
++ snakemake --snakefile EBcacheSnakefile --use-conda --rerun-incomplete --drmaa ' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/EBcache/9148895/ -j yes' -j 3000 -p -r -k
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cluster nodes: 3000
+Job counts:
+	count	jobs
+	72	EBcache
+	72	EBcache_pileup
+	1	all
+	3	mergeEBcache
+	24	mergeMatrix
+	172
+
+[Thu Dec  5 07:01:58 2019]
+rule EBcache_pileup:
+    input: bed/chr2-20.bed
+    output: matrix/chr2-20.matrix
+    log: logs/chr2-20.matrix.log
+    jobid: 669
+    reason: Missing output files: matrix/chr2-20.matrix
+    wildcards: chrom=chr2, i=20
+    threads: 2
+
+Submitted DRMAA job 669 with external jobid 9148896.
+
+[Thu Dec  5 07:01:58 2019]
+rule mergeMatrix:
+    input: matrix/chr21-0.matrix, matrix/chr21-1.matrix, matrix/chr21-2.matrix, matrix/chr21-3.matrix, matrix/chr21-4.matrix, matrix/chr21-5.matrix, matrix/chr21-6.matrix, matrix/chr21-7.matrix, matrix/chr21-8.matrix, matrix/chr21-9.matrix, matrix/chr21-10.matrix, matrix/chr21-11.matrix, matrix/chr21-12.matrix, matrix/chr21-13.matrix, matrix/chr21-14.matrix, matrix/chr21-15.matrix, matrix/chr21-16.matrix, matrix/chr21-17.matrix, matrix/chr21-18.matrix, matrix/chr21-19.matrix, matrix/chr21-20.matrix, matrix/chr21-21.matrix, matrix/chr21-22.matrix, matrix/chr21-23.matrix
+    output: chr21.matrix
+    jobid: 45
+    reason: Missing output files: chr21.matrix
+    wildcards: chrom=chr21
+    threads: 4
+
+Submitted DRMAA job 45 with external jobid 9148897.
+
+[Thu Dec  5 07:01:58 2019]
+rule EBcache_pileup:
+    input: bed/chr1-12.bed
+    output: matrix/chr1-12.matrix
+    log: logs/chr1-12.matrix.log
+    jobid: 637
+    reason: Missing output files: matrix/chr1-12.matrix
+    wildcards: chrom=chr1, i=12
+    threads: 2
+
+Submitted DRMAA job 637 with external jobid 9148898.
+
+[Thu Dec  5 07:01:58 2019]
+rule EBcache_pileup:
+    input: bed/chrY-21.bed
+    output: matrix/chrY-21.matrix
+    log: logs/chrY-21.matrix.log
+    jobid: 1198
+    reason: Missing output files: matrix/chrY-21.matrix
+    wildcards: chrom=chrY, i=21
+    threads: 2
+
+Submitted DRMAA job 1198 with external jobid 9148899.
+
+[Thu Dec  5 07:01:58 2019]
+rule EBcache_pileup:
+    input: bed/chr1-1.bed
+    output: matrix/chr1-1.matrix
+    log: logs/chr1-1.matrix.log
+    jobid: 626
+    reason: Missing output files: matrix/chr1-1.matrix
+    wildcards: chrom=chr1, i=1
+    threads: 2
+
+Submitted DRMAA job 626 with external jobid 9148900.
+
+[Thu Dec  5 07:01:58 2019]
+rule mergeMatrix:
+    input: matrix/chrX-0.matrix, matrix/chrX-1.matrix, matrix/chrX-2.matrix, matrix/chrX-3.matrix, matrix/chrX-4.matrix, matrix/chrX-5.matrix, matrix/chrX-6.matrix, matrix/chrX-7.matrix, matrix/chrX-8.matrix, matrix/chrX-9.matrix, matrix/chrX-10.matrix, matrix/chrX-11.matrix, matrix/chrX-12.matrix, matrix/chrX-13.matrix, matrix/chrX-14.matrix, matrix/chrX-15.matrix, matrix/chrX-16.matrix, matrix/chrX-17.matrix, matrix/chrX-18.matrix, matrix/chrX-19.matrix, matrix/chrX-20.matrix, matrix/chrX-21.matrix, matrix/chrX-22.matrix, matrix/chrX-23.matrix
+    output: chrX.matrix
+    jobid: 47
+    reason: Missing output files: chrX.matrix
+    wildcards: chrom=chrX
+    threads: 4
+
+Submitted DRMAA job 47 with external jobid 9148901.
+
+[Thu Dec  5 07:01:58 2019]
+rule EBcache_pileup:
+    input: bed/chr2-1.bed
+    output: matrix/chr2-1.matrix
+    log: logs/chr2-1.matrix.log
+    jobid: 650
+    reason: Missing output files: matrix/chr2-1.matrix
+    wildcards: chrom=chr2, i=1
+    threads: 2
+
+Submitted DRMAA job 650 with external jobid 9148902.
+
+[Thu Dec  5 07:01:58 2019]
+rule EBcache_pileup:
+    input: bed/chr2-12.bed
+    output: matrix/chr2-12.matrix
+    log: logs/chr2-12.matrix.log
+    jobid: 661
+    reason: Missing output files: matrix/chr2-12.matrix
+    wildcards: chrom=chr2, i=12
+    threads: 2
+
+Submitted DRMAA job 661 with external jobid 9148903.
+
+[Thu Dec  5 07:01:58 2019]
+rule mergeMatrix:
+    input: matrix/chr9-0.matrix, matrix/chr9-1.matrix, matrix/chr9-2.matrix, matrix/chr9-3.matrix, matrix/chr9-4.matrix, matrix/chr9-5.matrix, matrix/chr9-6.matrix, matrix/chr9-7.matrix, matrix/chr9-8.matrix, matrix/chr9-9.matrix, matrix/chr9-10.matrix, matrix/chr9-11.matrix, matrix/chr9-12.matrix, matrix/chr9-13.matrix, matrix/chr9-14.matrix, matrix/chr9-15.matrix, matrix/chr9-16.matrix, matrix/chr9-17.matrix, matrix/chr9-18.matrix, matrix/chr9-19.matrix, matrix/chr9-20.matrix, matrix/chr9-21.matrix, matrix/chr9-22.matrix, matrix/chr9-23.matrix
+    output: chr9.matrix
+    jobid: 33
+    reason: Missing output files: chr9.matrix
+    wildcards: chrom=chr9
+    threads: 4
+
+Submitted DRMAA job 33 with external jobid 9148904.
+
+[Thu Dec  5 07:01:58 2019]
+rule EBcache_pileup:
+    input: bed/chrY-19.bed
+    output: matrix/chrY-19.matrix
+    log: logs/chrY-19.matrix.log
+    jobid: 1196
+    reason: Missing output files: matrix/chrY-19.matrix
+    wildcards: chrom=chrY, i=19
+    threads: 2
+
+Submitted DRMAA job 1196 with external jobid 9148905.
+
+[Thu Dec  5 07:01:59 2019]
+rule mergeMatrix:
+    input: matrix/chr15-0.matrix, matrix/chr15-1.matrix, matrix/chr15-2.matrix, matrix/chr15-3.matrix, matrix/chr15-4.matrix, matrix/chr15-5.matrix, matrix/chr15-6.matrix, matrix/chr15-7.matrix, matrix/chr15-8.matrix, matrix/chr15-9.matrix, matrix/chr15-10.matrix, matrix/chr15-11.matrix, matrix/chr15-12.matrix, matrix/chr15-13.matrix, matrix/chr15-14.matrix, matrix/chr15-15.matrix, matrix/chr15-16.matrix, matrix/chr15-17.matrix, matrix/chr15-18.matrix, matrix/chr15-19.matrix, matrix/chr15-20.matrix, matrix/chr15-21.matrix, matrix/chr15-22.matrix, matrix/chr15-23.matrix
+    output: chr15.matrix
+    jobid: 39
+    reason: Missing output files: chr15.matrix
+    wildcards: chrom=chr15
+    threads: 4
+
+Submitted DRMAA job 39 with external jobid 9148906.
+
+[Thu Dec  5 07:01:59 2019]
+rule EBcache_pileup:
+    input: bed/chrY-0.bed
+    output: matrix/chrY-0.matrix
+    log: logs/chrY-0.matrix.log
+    jobid: 1177
+    reason: Missing output files: matrix/chrY-0.matrix
+    wildcards: chrom=chrY, i=0
+    threads: 2
+
+Submitted DRMAA job 1177 with external jobid 9148907.
+
+[Thu Dec  5 07:01:59 2019]
+rule EBcache_pileup:
+    input: bed/chrY-16.bed
+    output: matrix/chrY-16.matrix
+    log: logs/chrY-16.matrix.log
+    jobid: 1193
+    reason: Missing output files: matrix/chrY-16.matrix
+    wildcards: chrom=chrY, i=16
+    threads: 2
+
+Submitted DRMAA job 1193 with external jobid 9148908.
+
+[Thu Dec  5 07:01:59 2019]
+rule EBcache_pileup:
+    input: bed/chr1-20.bed
+    output: matrix/chr1-20.matrix
+    log: logs/chr1-20.matrix.log
+    jobid: 645
+    reason: Missing output files: matrix/chr1-20.matrix
+    wildcards: chrom=chr1, i=20
+    threads: 2
+
+Submitted DRMAA job 645 with external jobid 9148909.
+
+[Thu Dec  5 07:01:59 2019]
+rule EBcache_pileup:
+    input: bed/chrY-8.bed
+    output: matrix/chrY-8.matrix
+    log: logs/chrY-8.matrix.log
+    jobid: 1185
+    reason: Missing output files: matrix/chrY-8.matrix
+    wildcards: chrom=chrY, i=8
+    threads: 2
+
+Submitted DRMAA job 1185 with external jobid 9148910.
+
+[Thu Dec  5 07:01:59 2019]
+rule EBcache_pileup:
+    input: bed/chr2-16.bed
+    output: matrix/chr2-16.matrix
+    log: logs/chr2-16.matrix.log
+    jobid: 665
+    reason: Missing output files: matrix/chr2-16.matrix
+    wildcards: chrom=chr2, i=16
+    threads: 2
+
+Submitted DRMAA job 665 with external jobid 9148911.
+
+[Thu Dec  5 07:01:59 2019]
+rule EBcache_pileup:
+    input: bed/chr2-8.bed
+    output: matrix/chr2-8.matrix
+    log: logs/chr2-8.matrix.log
+    jobid: 657
+    reason: Missing output files: matrix/chr2-8.matrix
+    wildcards: chrom=chr2, i=8
+    threads: 2
+
+Submitted DRMAA job 657 with external jobid 9148912.
+
+[Thu Dec  5 07:01:59 2019]
+rule mergeMatrix:
+    input: matrix/chr20-0.matrix, matrix/chr20-1.matrix, matrix/chr20-2.matrix, matrix/chr20-3.matrix, matrix/chr20-4.matrix, matrix/chr20-5.matrix, matrix/chr20-6.matrix, matrix/chr20-7.matrix, matrix/chr20-8.matrix, matrix/chr20-9.matrix, matrix/chr20-10.matrix, matrix/chr20-11.matrix, matrix/chr20-12.matrix, matrix/chr20-13.matrix, matrix/chr20-14.matrix, matrix/chr20-15.matrix, matrix/chr20-16.matrix, matrix/chr20-17.matrix, matrix/chr20-18.matrix, matrix/chr20-19.matrix, matrix/chr20-20.matrix, matrix/chr20-21.matrix, matrix/chr20-22.matrix, matrix/chr20-23.matrix
+    output: chr20.matrix
+    jobid: 44
+    reason: Missing output files: chr20.matrix
+    wildcards: chrom=chr20
+    threads: 4
+
+Submitted DRMAA job 44 with external jobid 9148913.
+
+[Thu Dec  5 07:01:59 2019]
+rule EBcache_pileup:
+    input: bed/chrY-12.bed
+    output: matrix/chrY-12.matrix
+    log: logs/chrY-12.matrix.log
+    jobid: 1189
+    reason: Missing output files: matrix/chrY-12.matrix
+    wildcards: chrom=chrY, i=12
+    threads: 2
+
+Submitted DRMAA job 1189 with external jobid 9148914.
+
+[Thu Dec  5 07:01:59 2019]
+rule EBcache_pileup:
+    input: bed/chr1-21.bed
+    output: matrix/chr1-21.matrix
+    log: logs/chr1-21.matrix.log
+    jobid: 646
+    reason: Missing output files: matrix/chr1-21.matrix
+    wildcards: chrom=chr1, i=21
+    threads: 2
+
+Submitted DRMAA job 646 with external jobid 9148915.
+
+[Thu Dec  5 07:02:00 2019]
+rule EBcache_pileup:
+    input: bed/chrY-1.bed
+    output: matrix/chrY-1.matrix
+    log: logs/chrY-1.matrix.log
+    jobid: 1178
+    reason: Missing output files: matrix/chrY-1.matrix
+    wildcards: chrom=chrY, i=1
+    threads: 2
+
+Submitted DRMAA job 1178 with external jobid 9148916.
+
+[Thu Dec  5 07:02:00 2019]
+rule EBcache_pileup:
+    input: bed/chr2-19.bed
+    output: matrix/chr2-19.matrix
+    log: logs/chr2-19.matrix.log
+    jobid: 668
+    reason: Missing output files: matrix/chr2-19.matrix
+    wildcards: chrom=chr2, i=19
+    threads: 2
+
+Submitted DRMAA job 668 with external jobid 9148917.
+
+[Thu Dec  5 07:02:00 2019]
+rule EBcache_pileup:
+    input: bed/chr2-0.bed
+    output: matrix/chr2-0.matrix
+    log: logs/chr2-0.matrix.log
+    jobid: 649
+    reason: Missing output files: matrix/chr2-0.matrix
+    wildcards: chrom=chr2, i=0
+    threads: 2
+
+Submitted DRMAA job 649 with external jobid 9148918.
+
+[Thu Dec  5 07:02:00 2019]
+rule mergeMatrix:
+    input: matrix/chr12-0.matrix, matrix/chr12-1.matrix, matrix/chr12-2.matrix, matrix/chr12-3.matrix, matrix/chr12-4.matrix, matrix/chr12-5.matrix, matrix/chr12-6.matrix, matrix/chr12-7.matrix, matrix/chr12-8.matrix, matrix/chr12-9.matrix, matrix/chr12-10.matrix, matrix/chr12-11.matrix, matrix/chr12-12.matrix, matrix/chr12-13.matrix, matrix/chr12-14.matrix, matrix/chr12-15.matrix, matrix/chr12-16.matrix, matrix/chr12-17.matrix, matrix/chr12-18.matrix, matrix/chr12-19.matrix, matrix/chr12-20.matrix, matrix/chr12-21.matrix, matrix/chr12-22.matrix, matrix/chr12-23.matrix
+    output: chr12.matrix
+    jobid: 36
+    reason: Missing output files: chr12.matrix
+    wildcards: chrom=chr12
+    threads: 4
+
+Submitted DRMAA job 36 with external jobid 9148919.
+
+[Thu Dec  5 07:02:00 2019]
+rule mergeMatrix:
+    input: matrix/chr19-0.matrix, matrix/chr19-1.matrix, matrix/chr19-2.matrix, matrix/chr19-3.matrix, matrix/chr19-4.matrix, matrix/chr19-5.matrix, matrix/chr19-6.matrix, matrix/chr19-7.matrix, matrix/chr19-8.matrix, matrix/chr19-9.matrix, matrix/chr19-10.matrix, matrix/chr19-11.matrix, matrix/chr19-12.matrix, matrix/chr19-13.matrix, matrix/chr19-14.matrix, matrix/chr19-15.matrix, matrix/chr19-16.matrix, matrix/chr19-17.matrix, matrix/chr19-18.matrix, matrix/chr19-19.matrix, matrix/chr19-20.matrix, matrix/chr19-21.matrix, matrix/chr19-22.matrix, matrix/chr19-23.matrix
+    output: chr19.matrix
+    jobid: 43
+    reason: Missing output files: chr19.matrix
+    wildcards: chrom=chr19
+    threads: 4
+
+Submitted DRMAA job 43 with external jobid 9148920.
+
+[Thu Dec  5 07:02:00 2019]
+rule mergeMatrix:
+    input: matrix/chr5-0.matrix, matrix/chr5-1.matrix, matrix/chr5-2.matrix, matrix/chr5-3.matrix, matrix/chr5-4.matrix, matrix/chr5-5.matrix, matrix/chr5-6.matrix, matrix/chr5-7.matrix, matrix/chr5-8.matrix, matrix/chr5-9.matrix, matrix/chr5-10.matrix, matrix/chr5-11.matrix, matrix/chr5-12.matrix, matrix/chr5-13.matrix, matrix/chr5-14.matrix, matrix/chr5-15.matrix, matrix/chr5-16.matrix, matrix/chr5-17.matrix, matrix/chr5-18.matrix, matrix/chr5-19.matrix, matrix/chr5-20.matrix, matrix/chr5-21.matrix, matrix/chr5-22.matrix, matrix/chr5-23.matrix
+    output: chr5.matrix
+    jobid: 29
+    reason: Missing output files: chr5.matrix
+    wildcards: chrom=chr5
+    threads: 4
+
+Submitted DRMAA job 29 with external jobid 9148921.
+
+[Thu Dec  5 07:02:00 2019]
+rule mergeMatrix:
+    input: matrix/chr14-0.matrix, matrix/chr14-1.matrix, matrix/chr14-2.matrix, matrix/chr14-3.matrix, matrix/chr14-4.matrix, matrix/chr14-5.matrix, matrix/chr14-6.matrix, matrix/chr14-7.matrix, matrix/chr14-8.matrix, matrix/chr14-9.matrix, matrix/chr14-10.matrix, matrix/chr14-11.matrix, matrix/chr14-12.matrix, matrix/chr14-13.matrix, matrix/chr14-14.matrix, matrix/chr14-15.matrix, matrix/chr14-16.matrix, matrix/chr14-17.matrix, matrix/chr14-18.matrix, matrix/chr14-19.matrix, matrix/chr14-20.matrix, matrix/chr14-21.matrix, matrix/chr14-22.matrix, matrix/chr14-23.matrix
+    output: chr14.matrix
+    jobid: 38
+    reason: Missing output files: chr14.matrix
+    wildcards: chrom=chr14
+    threads: 4
+
+Submitted DRMAA job 38 with external jobid 9148922.
+
+[Thu Dec  5 07:02:00 2019]
+rule mergeMatrix:
+    input: matrix/chr8-0.matrix, matrix/chr8-1.matrix, matrix/chr8-2.matrix, matrix/chr8-3.matrix, matrix/chr8-4.matrix, matrix/chr8-5.matrix, matrix/chr8-6.matrix, matrix/chr8-7.matrix, matrix/chr8-8.matrix, matrix/chr8-9.matrix, matrix/chr8-10.matrix, matrix/chr8-11.matrix, matrix/chr8-12.matrix, matrix/chr8-13.matrix, matrix/chr8-14.matrix, matrix/chr8-15.matrix, matrix/chr8-16.matrix, matrix/chr8-17.matrix, matrix/chr8-18.matrix, matrix/chr8-19.matrix, matrix/chr8-20.matrix, matrix/chr8-21.matrix, matrix/chr8-22.matrix, matrix/chr8-23.matrix
+    output: chr8.matrix
+    jobid: 32
+    reason: Missing output files: chr8.matrix
+    wildcards: chrom=chr8
+    threads: 4
+
+Submitted DRMAA job 32 with external jobid 9148923.
+
+[Thu Dec  5 07:02:00 2019]
+rule EBcache_pileup:
+    input: bed/chr2-21.bed
+    output: matrix/chr2-21.matrix
+    log: logs/chr2-21.matrix.log
+    jobid: 670
+    reason: Missing output files: matrix/chr2-21.matrix
+    wildcards: chrom=chr2, i=21
+    threads: 2
+
+Submitted DRMAA job 670 with external jobid 9148924.
+
+[Thu Dec  5 07:02:00 2019]
+rule EBcache_pileup:
+    input: bed/chr1-19.bed
+    output: matrix/chr1-19.matrix
+    log: logs/chr1-19.matrix.log
+    jobid: 644
+    reason: Missing output files: matrix/chr1-19.matrix
+    wildcards: chrom=chr1, i=19
+    threads: 2
+
+Submitted DRMAA job 644 with external jobid 9148925.
+
+[Thu Dec  5 07:02:01 2019]
+rule EBcache_pileup:
+    input: bed/chr1-0.bed
+    output: matrix/chr1-0.matrix
+    log: logs/chr1-0.matrix.log
+    jobid: 625
+    reason: Missing output files: matrix/chr1-0.matrix
+    wildcards: chrom=chr1, i=0
+    threads: 2
+
+Submitted DRMAA job 625 with external jobid 9148926.
+
+[Thu Dec  5 07:02:01 2019]
+rule EBcache_pileup:
+    input: bed/chr1-16.bed
+    output: matrix/chr1-16.matrix
+    log: logs/chr1-16.matrix.log
+    jobid: 641
+    reason: Missing output files: matrix/chr1-16.matrix
+    wildcards: chrom=chr1, i=16
+    threads: 2
+
+Submitted DRMAA job 641 with external jobid 9148927.
+
+[Thu Dec  5 07:02:01 2019]
+rule EBcache_pileup:
+    input: bed/chrY-20.bed
+    output: matrix/chrY-20.matrix
+    log: logs/chrY-20.matrix.log
+    jobid: 1197
+    reason: Missing output files: matrix/chrY-20.matrix
+    wildcards: chrom=chrY, i=20
+    threads: 2
+
+Submitted DRMAA job 1197 with external jobid 9148928.
+
+[Thu Dec  5 07:02:01 2019]
+rule EBcache_pileup:
+    input: bed/chr1-8.bed
+    output: matrix/chr1-8.matrix
+    log: logs/chr1-8.matrix.log
+    jobid: 633
+    reason: Missing output files: matrix/chr1-8.matrix
+    wildcards: chrom=chr1, i=8
+    threads: 2
+
+Submitted DRMAA job 633 with external jobid 9148929.
+
+[Thu Dec  5 07:02:01 2019]
+rule mergeMatrix:
+    input: matrix/chr7-0.matrix, matrix/chr7-1.matrix, matrix/chr7-2.matrix, matrix/chr7-3.matrix, matrix/chr7-4.matrix, matrix/chr7-5.matrix, matrix/chr7-6.matrix, matrix/chr7-7.matrix, matrix/chr7-8.matrix, matrix/chr7-9.matrix, matrix/chr7-10.matrix, matrix/chr7-11.matrix, matrix/chr7-12.matrix, matrix/chr7-13.matrix, matrix/chr7-14.matrix, matrix/chr7-15.matrix, matrix/chr7-16.matrix, matrix/chr7-17.matrix, matrix/chr7-18.matrix, matrix/chr7-19.matrix, matrix/chr7-20.matrix, matrix/chr7-21.matrix, matrix/chr7-22.matrix, matrix/chr7-23.matrix
+    output: chr7.matrix
+    jobid: 31
+    reason: Missing output files: chr7.matrix
+    wildcards: chrom=chr7
+    threads: 4
+
+Submitted DRMAA job 31 with external jobid 9148930.
+
+[Thu Dec  5 07:02:01 2019]
+rule mergeMatrix:
+    input: matrix/chr3-0.matrix, matrix/chr3-1.matrix, matrix/chr3-2.matrix, matrix/chr3-3.matrix, matrix/chr3-4.matrix, matrix/chr3-5.matrix, matrix/chr3-6.matrix, matrix/chr3-7.matrix, matrix/chr3-8.matrix, matrix/chr3-9.matrix, matrix/chr3-10.matrix, matrix/chr3-11.matrix, matrix/chr3-12.matrix, matrix/chr3-13.matrix, matrix/chr3-14.matrix, matrix/chr3-15.matrix, matrix/chr3-16.matrix, matrix/chr3-17.matrix, matrix/chr3-18.matrix, matrix/chr3-19.matrix, matrix/chr3-20.matrix, matrix/chr3-21.matrix, matrix/chr3-22.matrix, matrix/chr3-23.matrix
+    output: chr3.matrix
+    jobid: 27
+    reason: Missing output files: chr3.matrix
+    wildcards: chrom=chr3
+    threads: 4
+
+Submitted DRMAA job 27 with external jobid 9148931.
+
+[Thu Dec  5 07:02:01 2019]
+rule EBcache_pileup:
+    input: bed/chr1-4.bed
+    output: matrix/chr1-4.matrix
+    log: logs/chr1-4.matrix.log
+    jobid: 629
+    reason: Missing output files: matrix/chr1-4.matrix
+    wildcards: chrom=chr1, i=4
+    threads: 2
+
+Submitted DRMAA job 629 with external jobid 9148932.
+
+[Thu Dec  5 07:02:01 2019]
+rule EBcache_pileup:
+    input: bed/chrY-10.bed
+    output: matrix/chrY-10.matrix
+    log: logs/chrY-10.matrix.log
+    jobid: 1187
+    reason: Missing output files: matrix/chrY-10.matrix
+    wildcards: chrom=chrY, i=10
+    threads: 2
+
+Submitted DRMAA job 1187 with external jobid 9148933.
+
+[Thu Dec  5 07:02:01 2019]
+rule mergeMatrix:
+    input: matrix/chr22-0.matrix, matrix/chr22-1.matrix, matrix/chr22-2.matrix, matrix/chr22-3.matrix, matrix/chr22-4.matrix, matrix/chr22-5.matrix, matrix/chr22-6.matrix, matrix/chr22-7.matrix, matrix/chr22-8.matrix, matrix/chr22-9.matrix, matrix/chr22-10.matrix, matrix/chr22-11.matrix, matrix/chr22-12.matrix, matrix/chr22-13.matrix, matrix/chr22-14.matrix, matrix/chr22-15.matrix, matrix/chr22-16.matrix, matrix/chr22-17.matrix, matrix/chr22-18.matrix, matrix/chr22-19.matrix, matrix/chr22-20.matrix, matrix/chr22-21.matrix, matrix/chr22-22.matrix, matrix/chr22-23.matrix
+    output: chr22.matrix
+    jobid: 46
+    reason: Missing output files: chr22.matrix
+    wildcards: chrom=chr22
+    threads: 4
+
+Submitted DRMAA job 46 with external jobid 9148934.
+
+[Thu Dec  5 07:02:01 2019]
+rule EBcache_pileup:
+    input: bed/chrY-5.bed
+    output: matrix/chrY-5.matrix
+    log: logs/chrY-5.matrix.log
+    jobid: 1182
+    reason: Missing output files: matrix/chrY-5.matrix
+    wildcards: chrom=chrY, i=5
+    threads: 2
+
+Submitted DRMAA job 1182 with external jobid 9148935.
+
+[Thu Dec  5 07:02:02 2019]
+rule EBcache_pileup:
+    input: bed/chrY-15.bed
+    output: matrix/chrY-15.matrix
+    log: logs/chrY-15.matrix.log
+    jobid: 1192
+    reason: Missing output files: matrix/chrY-15.matrix
+    wildcards: chrom=chrY, i=15
+    threads: 2
+
+Submitted DRMAA job 1192 with external jobid 9148936.
+
+[Thu Dec  5 07:02:02 2019]
+rule EBcache_pileup:
+    input: bed/chrY-18.bed
+    output: matrix/chrY-18.matrix
+    log: logs/chrY-18.matrix.log
+    jobid: 1195
+    reason: Missing output files: matrix/chrY-18.matrix
+    wildcards: chrom=chrY, i=18
+    threads: 2
+
+Submitted DRMAA job 1195 with external jobid 9148937.
+
+[Thu Dec  5 07:02:02 2019]
+rule EBcache_pileup:
+    input: bed/chrY-7.bed
+    output: matrix/chrY-7.matrix
+    log: logs/chrY-7.matrix.log
+    jobid: 1184
+    reason: Missing output files: matrix/chrY-7.matrix
+    wildcards: chrom=chrY, i=7
+    threads: 2
+
+Submitted DRMAA job 1184 with external jobid 9148938.
+
+[Thu Dec  5 07:02:02 2019]
+rule EBcache_pileup:
+    input: bed/chrY-23.bed
+    output: matrix/chrY-23.matrix
+    log: logs/chrY-23.matrix.log
+    jobid: 1200
+    reason: Missing output files: matrix/chrY-23.matrix
+    wildcards: chrom=chrY, i=23
+    threads: 2
+
+Submitted DRMAA job 1200 with external jobid 9148939.
+
+[Thu Dec  5 07:02:02 2019]
+rule EBcache_pileup:
+    input: bed/chr2-9.bed
+    output: matrix/chr2-9.matrix
+    log: logs/chr2-9.matrix.log
+    jobid: 658
+    reason: Missing output files: matrix/chr2-9.matrix
+    wildcards: chrom=chr2, i=9
+    threads: 2
+
+Submitted DRMAA job 658 with external jobid 9148940.
+
+[Thu Dec  5 07:02:02 2019]
+rule EBcache_pileup:
+    input: bed/chr2-2.bed
+    output: matrix/chr2-2.matrix
+    log: logs/chr2-2.matrix.log
+    jobid: 651
+    reason: Missing output files: matrix/chr2-2.matrix
+    wildcards: chrom=chr2, i=2
+    threads: 2
+
+Submitted DRMAA job 651 with external jobid 9148941.
+
+[Thu Dec  5 07:02:02 2019]
+rule EBcache_pileup:
+    input: bed/chr2-14.bed
+    output: matrix/chr2-14.matrix
+    log: logs/chr2-14.matrix.log
+    jobid: 663
+    reason: Missing output files: matrix/chr2-14.matrix
+    wildcards: chrom=chr2, i=14
+    threads: 2
+
+Submitted DRMAA job 663 with external jobid 9148942.
+
+[Thu Dec  5 07:02:02 2019]
+rule EBcache_pileup:
+    input: bed/chrY-11.bed
+    output: matrix/chrY-11.matrix
+    log: logs/chrY-11.matrix.log
+    jobid: 1188
+    reason: Missing output files: matrix/chrY-11.matrix
+    wildcards: chrom=chrY, i=11
+    threads: 2
+
+Submitted DRMAA job 1188 with external jobid 9148943.
+
+[Thu Dec  5 07:02:02 2019]
+rule EBcache_pileup:
+    input: bed/chr1-6.bed
+    output: matrix/chr1-6.matrix
+    log: logs/chr1-6.matrix.log
+    jobid: 631
+    reason: Missing output files: matrix/chr1-6.matrix
+    wildcards: chrom=chr1, i=6
+    threads: 2
+
+Submitted DRMAA job 631 with external jobid 9148944.
+
+[Thu Dec  5 07:02:02 2019]
+rule mergeMatrix:
+    input: matrix/chr6-0.matrix, matrix/chr6-1.matrix, matrix/chr6-2.matrix, matrix/chr6-3.matrix, matrix/chr6-4.matrix, matrix/chr6-5.matrix, matrix/chr6-6.matrix, matrix/chr6-7.matrix, matrix/chr6-8.matrix, matrix/chr6-9.matrix, matrix/chr6-10.matrix, matrix/chr6-11.matrix, matrix/chr6-12.matrix, matrix/chr6-13.matrix, matrix/chr6-14.matrix, matrix/chr6-15.matrix, matrix/chr6-16.matrix, matrix/chr6-17.matrix, matrix/chr6-18.matrix, matrix/chr6-19.matrix, matrix/chr6-20.matrix, matrix/chr6-21.matrix, matrix/chr6-22.matrix, matrix/chr6-23.matrix
+    output: chr6.matrix
+    jobid: 30
+    reason: Missing output files: chr6.matrix
+    wildcards: chrom=chr6
+    threads: 4
+
+Submitted DRMAA job 30 with external jobid 9148945.
+
+[Thu Dec  5 07:02:03 2019]
+rule EBcache_pileup:
+    input: bed/chr1-3.bed
+    output: matrix/chr1-3.matrix
+    log: logs/chr1-3.matrix.log
+    jobid: 628
+    reason: Missing output files: matrix/chr1-3.matrix
+    wildcards: chrom=chr1, i=3
+    threads: 2
+
+Submitted DRMAA job 628 with external jobid 9148946.
+
+[Thu Dec  5 07:02:03 2019]
+rule EBcache_pileup:
+    input: bed/chrY-13.bed
+    output: matrix/chrY-13.matrix
+    log: logs/chrY-13.matrix.log
+    jobid: 1190
+    reason: Missing output files: matrix/chrY-13.matrix
+    wildcards: chrom=chrY, i=13
+    threads: 2
+
+Submitted DRMAA job 1190 with external jobid 9148947.
+
+[Thu Dec  5 07:02:03 2019]
+rule mergeMatrix:
+    input: matrix/chr16-0.matrix, matrix/chr16-1.matrix, matrix/chr16-2.matrix, matrix/chr16-3.matrix, matrix/chr16-4.matrix, matrix/chr16-5.matrix, matrix/chr16-6.matrix, matrix/chr16-7.matrix, matrix/chr16-8.matrix, matrix/chr16-9.matrix, matrix/chr16-10.matrix, matrix/chr16-11.matrix, matrix/chr16-12.matrix, matrix/chr16-13.matrix, matrix/chr16-14.matrix, matrix/chr16-15.matrix, matrix/chr16-16.matrix, matrix/chr16-17.matrix, matrix/chr16-18.matrix, matrix/chr16-19.matrix, matrix/chr16-20.matrix, matrix/chr16-21.matrix, matrix/chr16-22.matrix, matrix/chr16-23.matrix
+    output: chr16.matrix
+    jobid: 40
+    reason: Missing output files: chr16.matrix
+    wildcards: chrom=chr16
+    threads: 4
+
+Submitted DRMAA job 40 with external jobid 9148948.
+
+[Thu Dec  5 07:02:03 2019]
+rule EBcache_pileup:
+    input: bed/chr1-9.bed
+    output: matrix/chr1-9.matrix
+    log: logs/chr1-9.matrix.log
+    jobid: 634
+    reason: Missing output files: matrix/chr1-9.matrix
+    wildcards: chrom=chr1, i=9
+    threads: 2
+
+Submitted DRMAA job 634 with external jobid 9148949.
+
+[Thu Dec  5 07:02:03 2019]
+rule EBcache_pileup:
+    input: bed/chr1-14.bed
+    output: matrix/chr1-14.matrix
+    log: logs/chr1-14.matrix.log
+    jobid: 639
+    reason: Missing output files: matrix/chr1-14.matrix
+    wildcards: chrom=chr1, i=14
+    threads: 2
+
+Submitted DRMAA job 639 with external jobid 9148950.
+
+[Thu Dec  5 07:02:03 2019]
+rule EBcache_pileup:
+    input: bed/chr1-2.bed
+    output: matrix/chr1-2.matrix
+    log: logs/chr1-2.matrix.log
+    jobid: 627
+    reason: Missing output files: matrix/chr1-2.matrix
+    wildcards: chrom=chr1, i=2
+    threads: 2
+
+Submitted DRMAA job 627 with external jobid 9148951.
+
+[Thu Dec  5 07:02:03 2019]
+rule EBcache_pileup:
+    input: bed/chr2-6.bed
+    output: matrix/chr2-6.matrix
+    log: logs/chr2-6.matrix.log
+    jobid: 655
+    reason: Missing output files: matrix/chr2-6.matrix
+    wildcards: chrom=chr2, i=6
+    threads: 2
+
+Submitted DRMAA job 655 with external jobid 9148952.
+
+[Thu Dec  5 07:02:03 2019]
+rule EBcache_pileup:
+    input: bed/chr2-3.bed
+    output: matrix/chr2-3.matrix
+    log: logs/chr2-3.matrix.log
+    jobid: 652
+    reason: Missing output files: matrix/chr2-3.matrix
+    wildcards: chrom=chr2, i=3
+    threads: 2
+
+Submitted DRMAA job 652 with external jobid 9148953.
+
+[Thu Dec  5 07:02:04 2019]
+rule mergeMatrix:
+    input: matrix/chr4-0.matrix, matrix/chr4-1.matrix, matrix/chr4-2.matrix, matrix/chr4-3.matrix, matrix/chr4-4.matrix, matrix/chr4-5.matrix, matrix/chr4-6.matrix, matrix/chr4-7.matrix, matrix/chr4-8.matrix, matrix/chr4-9.matrix, matrix/chr4-10.matrix, matrix/chr4-11.matrix, matrix/chr4-12.matrix, matrix/chr4-13.matrix, matrix/chr4-14.matrix, matrix/chr4-15.matrix, matrix/chr4-16.matrix, matrix/chr4-17.matrix, matrix/chr4-18.matrix, matrix/chr4-19.matrix, matrix/chr4-20.matrix, matrix/chr4-21.matrix, matrix/chr4-22.matrix, matrix/chr4-23.matrix
+    output: chr4.matrix
+    jobid: 28
+    reason: Missing output files: chr4.matrix
+    wildcards: chrom=chr4
+    threads: 4
+
+Submitted DRMAA job 28 with external jobid 9148954.
+
+[Thu Dec  5 07:02:04 2019]
+rule EBcache_pileup:
+    input: bed/chr2-4.bed
+    output: matrix/chr2-4.matrix
+    log: logs/chr2-4.matrix.log
+    jobid: 653
+    reason: Missing output files: matrix/chr2-4.matrix
+    wildcards: chrom=chr2, i=4
+    threads: 2
+
+Submitted DRMAA job 653 with external jobid 9148955.
+
+[Thu Dec  5 07:02:04 2019]
+rule EBcache_pileup:
+    input: bed/chrY-22.bed
+    output: matrix/chrY-22.matrix
+    log: logs/chrY-22.matrix.log
+    jobid: 1199
+    reason: Missing output files: matrix/chrY-22.matrix
+    wildcards: chrom=chrY, i=22
+    threads: 2
+
+Submitted DRMAA job 1199 with external jobid 9148956.
+
+[Thu Dec  5 07:02:04 2019]
+rule EBcache_pileup:
+    input: bed/chrY-17.bed
+    output: matrix/chrY-17.matrix
+    log: logs/chrY-17.matrix.log
+    jobid: 1194
+    reason: Missing output files: matrix/chrY-17.matrix
+    wildcards: chrom=chrY, i=17
+    threads: 2
+
+Submitted DRMAA job 1194 with external jobid 9148957.
+
+[Thu Dec  5 07:02:04 2019]
+rule mergeMatrix:
+    input: matrix/chr11-0.matrix, matrix/chr11-1.matrix, matrix/chr11-2.matrix, matrix/chr11-3.matrix, matrix/chr11-4.matrix, matrix/chr11-5.matrix, matrix/chr11-6.matrix, matrix/chr11-7.matrix, matrix/chr11-8.matrix, matrix/chr11-9.matrix, matrix/chr11-10.matrix, matrix/chr11-11.matrix, matrix/chr11-12.matrix, matrix/chr11-13.matrix, matrix/chr11-14.matrix, matrix/chr11-15.matrix, matrix/chr11-16.matrix, matrix/chr11-17.matrix, matrix/chr11-18.matrix, matrix/chr11-19.matrix, matrix/chr11-20.matrix, matrix/chr11-21.matrix, matrix/chr11-22.matrix, matrix/chr11-23.matrix
+    output: chr11.matrix
+    jobid: 35
+    reason: Missing output files: chr11.matrix
+    wildcards: chrom=chr11
+    threads: 4
+
+Submitted DRMAA job 35 with external jobid 9148958.
+
+[Thu Dec  5 07:02:04 2019]
+rule EBcache_pileup:
+    input: bed/chrY-4.bed
+    output: matrix/chrY-4.matrix
+    log: logs/chrY-4.matrix.log
+    jobid: 1181
+    reason: Missing output files: matrix/chrY-4.matrix
+    wildcards: chrom=chrY, i=4
+    threads: 2
+
+Submitted DRMAA job 1181 with external jobid 9148959.
+
+[Thu Dec  5 07:02:04 2019]
+rule EBcache_pileup:
+    input: bed/chr1-10.bed
+    output: matrix/chr1-10.matrix
+    log: logs/chr1-10.matrix.log
+    jobid: 635
+    reason: Missing output files: matrix/chr1-10.matrix
+    wildcards: chrom=chr1, i=10
+    threads: 2
+
+Submitted DRMAA job 635 with external jobid 9148960.
+
+[Thu Dec  5 07:02:04 2019]
+rule EBcache_pileup:
+    input: bed/chr1-5.bed
+    output: matrix/chr1-5.matrix
+    log: logs/chr1-5.matrix.log
+    jobid: 630
+    reason: Missing output files: matrix/chr1-5.matrix
+    wildcards: chrom=chr1, i=5
+    threads: 2
+
+Submitted DRMAA job 630 with external jobid 9148961.
+
+[Thu Dec  5 07:02:04 2019]
+rule EBcache_pileup:
+    input: bed/chr2-22.bed
+    output: matrix/chr2-22.matrix
+    log: logs/chr2-22.matrix.log
+    jobid: 671
+    reason: Missing output files: matrix/chr2-22.matrix
+    wildcards: chrom=chr2, i=22
+    threads: 2
+
+Submitted DRMAA job 671 with external jobid 9148962.
+
+[Thu Dec  5 07:02:05 2019]
+rule EBcache_pileup:
+    input: bed/chr2-17.bed
+    output: matrix/chr2-17.matrix
+    log: logs/chr2-17.matrix.log
+    jobid: 666
+    reason: Missing output files: matrix/chr2-17.matrix
+    wildcards: chrom=chr2, i=17
+    threads: 2
+
+Submitted DRMAA job 666 with external jobid 9148963.
+
+[Thu Dec  5 07:02:05 2019]
+rule EBcache_pileup:
+    input: bed/chr1-15.bed
+    output: matrix/chr1-15.matrix
+    log: logs/chr1-15.matrix.log
+    jobid: 640
+    reason: Missing output files: matrix/chr1-15.matrix
+    wildcards: chrom=chr1, i=15
+    threads: 2
+
+Submitted DRMAA job 640 with external jobid 9148964.
+
+[Thu Dec  5 07:02:05 2019]
+rule EBcache_pileup:
+    input: bed/chr1-18.bed
+    output: matrix/chr1-18.matrix
+    log: logs/chr1-18.matrix.log
+    jobid: 643
+    reason: Missing output files: matrix/chr1-18.matrix
+    wildcards: chrom=chr1, i=18
+    threads: 2
+
+Submitted DRMAA job 643 with external jobid 9148965.
+
+[Thu Dec  5 07:02:05 2019]
+rule EBcache_pileup:
+    input: bed/chr1-7.bed
+    output: matrix/chr1-7.matrix
+    log: logs/chr1-7.matrix.log
+    jobid: 632
+    reason: Missing output files: matrix/chr1-7.matrix
+    wildcards: chrom=chr1, i=7
+    threads: 2
+
+Submitted DRMAA job 632 with external jobid 9148966.
+
+[Thu Dec  5 07:02:05 2019]
+rule EBcache_pileup:
+    input: bed/chr1-23.bed
+    output: matrix/chr1-23.matrix
+    log: logs/chr1-23.matrix.log
+    jobid: 648
+    reason: Missing output files: matrix/chr1-23.matrix
+    wildcards: chrom=chr1, i=23
+    threads: 2
+
+Submitted DRMAA job 648 with external jobid 9148967.
+
+[Thu Dec  5 07:02:05 2019]
+rule EBcache_pileup:
+    input: bed/chr1-11.bed
+    output: matrix/chr1-11.matrix
+    log: logs/chr1-11.matrix.log
+    jobid: 636
+    reason: Missing output files: matrix/chr1-11.matrix
+    wildcards: chrom=chr1, i=11
+    threads: 2
+
+Submitted DRMAA job 636 with external jobid 9148968.
+
+[Thu Dec  5 07:02:05 2019]
+rule EBcache_pileup:
+    input: bed/chrY-6.bed
+    output: matrix/chrY-6.matrix
+    log: logs/chrY-6.matrix.log
+    jobid: 1183
+    reason: Missing output files: matrix/chrY-6.matrix
+    wildcards: chrom=chrY, i=6
+    threads: 2
+
+Submitted DRMAA job 1183 with external jobid 9148969.
+
+[Thu Dec  5 07:02:05 2019]
+rule EBcache_pileup:
+    input: bed/chr1-13.bed
+    output: matrix/chr1-13.matrix
+    log: logs/chr1-13.matrix.log
+    jobid: 638
+    reason: Missing output files: matrix/chr1-13.matrix
+    wildcards: chrom=chr1, i=13
+    threads: 2
+
+Submitted DRMAA job 638 with external jobid 9148970.
+
+[Thu Dec  5 07:02:05 2019]
+rule EBcache_pileup:
+    input: bed/chrY-3.bed
+    output: matrix/chrY-3.matrix
+    log: logs/chrY-3.matrix.log
+    jobid: 1180
+    reason: Missing output files: matrix/chrY-3.matrix
+    wildcards: chrom=chrY, i=3
+    threads: 2
+
+Submitted DRMAA job 1180 with external jobid 9148971.
+
+[Thu Dec  5 07:02:05 2019]
+rule mergeMatrix:
+    input: matrix/chr18-0.matrix, matrix/chr18-1.matrix, matrix/chr18-2.matrix, matrix/chr18-3.matrix, matrix/chr18-4.matrix, matrix/chr18-5.matrix, matrix/chr18-6.matrix, matrix/chr18-7.matrix, matrix/chr18-8.matrix, matrix/chr18-9.matrix, matrix/chr18-10.matrix, matrix/chr18-11.matrix, matrix/chr18-12.matrix, matrix/chr18-13.matrix, matrix/chr18-14.matrix, matrix/chr18-15.matrix, matrix/chr18-16.matrix, matrix/chr18-17.matrix, matrix/chr18-18.matrix, matrix/chr18-19.matrix, matrix/chr18-20.matrix, matrix/chr18-21.matrix, matrix/chr18-22.matrix, matrix/chr18-23.matrix
+    output: chr18.matrix
+    jobid: 42
+    reason: Missing output files: chr18.matrix
+    wildcards: chrom=chr18
+    threads: 4
+
+Submitted DRMAA job 42 with external jobid 9148972.
+
+[Thu Dec  5 07:02:06 2019]
+rule mergeMatrix:
+    input: matrix/chr17-0.matrix, matrix/chr17-1.matrix, matrix/chr17-2.matrix, matrix/chr17-3.matrix, matrix/chr17-4.matrix, matrix/chr17-5.matrix, matrix/chr17-6.matrix, matrix/chr17-7.matrix, matrix/chr17-8.matrix, matrix/chr17-9.matrix, matrix/chr17-10.matrix, matrix/chr17-11.matrix, matrix/chr17-12.matrix, matrix/chr17-13.matrix, matrix/chr17-14.matrix, matrix/chr17-15.matrix, matrix/chr17-16.matrix, matrix/chr17-17.matrix, matrix/chr17-18.matrix, matrix/chr17-19.matrix, matrix/chr17-20.matrix, matrix/chr17-21.matrix, matrix/chr17-22.matrix, matrix/chr17-23.matrix
+    output: chr17.matrix
+    jobid: 41
+    reason: Missing output files: chr17.matrix
+    wildcards: chrom=chr17
+    threads: 4
+
+Submitted DRMAA job 41 with external jobid 9148973.
+
+[Thu Dec  5 07:02:06 2019]
+rule EBcache_pileup:
+    input: bed/chr2-23.bed
+    output: matrix/chr2-23.matrix
+    log: logs/chr2-23.matrix.log
+    jobid: 672
+    reason: Missing output files: matrix/chr2-23.matrix
+    wildcards: chrom=chr2, i=23
+    threads: 2
+
+Submitted DRMAA job 672 with external jobid 9148974.
+
+[Thu Dec  5 07:02:06 2019]
+rule EBcache_pileup:
+    input: bed/chrY-9.bed
+    output: matrix/chrY-9.matrix
+    log: logs/chrY-9.matrix.log
+    jobid: 1186
+    reason: Missing output files: matrix/chrY-9.matrix
+    wildcards: chrom=chrY, i=9
+    threads: 2
+
+Submitted DRMAA job 1186 with external jobid 9148975.
+
+[Thu Dec  5 07:02:06 2019]
+rule EBcache_pileup:
+    input: bed/chrY-14.bed
+    output: matrix/chrY-14.matrix
+    log: logs/chrY-14.matrix.log
+    jobid: 1191
+    reason: Missing output files: matrix/chrY-14.matrix
+    wildcards: chrom=chrY, i=14
+    threads: 2
+
+Submitted DRMAA job 1191 with external jobid 9148976.
+
+[Thu Dec  5 07:02:06 2019]
+rule EBcache_pileup:
+    input: bed/chrY-2.bed
+    output: matrix/chrY-2.matrix
+    log: logs/chrY-2.matrix.log
+    jobid: 1179
+    reason: Missing output files: matrix/chrY-2.matrix
+    wildcards: chrom=chrY, i=2
+    threads: 2
+
+Submitted DRMAA job 1179 with external jobid 9148977.
+
+[Thu Dec  5 07:02:06 2019]
+rule EBcache_pileup:
+    input: bed/chr2-11.bed
+    output: matrix/chr2-11.matrix
+    log: logs/chr2-11.matrix.log
+    jobid: 660
+    reason: Missing output files: matrix/chr2-11.matrix
+    wildcards: chrom=chr2, i=11
+    threads: 2
+
+Submitted DRMAA job 660 with external jobid 9148978.
+
+[Thu Dec  5 07:02:06 2019]
+rule EBcache_pileup:
+    input: bed/chr2-13.bed
+    output: matrix/chr2-13.matrix
+    log: logs/chr2-13.matrix.log
+    jobid: 662
+    reason: Missing output files: matrix/chr2-13.matrix
+    wildcards: chrom=chr2, i=13
+    threads: 2
+
+Submitted DRMAA job 662 with external jobid 9148979.
+
+[Thu Dec  5 07:02:06 2019]
+rule mergeMatrix:
+    input: matrix/chr13-0.matrix, matrix/chr13-1.matrix, matrix/chr13-2.matrix, matrix/chr13-3.matrix, matrix/chr13-4.matrix, matrix/chr13-5.matrix, matrix/chr13-6.matrix, matrix/chr13-7.matrix, matrix/chr13-8.matrix, matrix/chr13-9.matrix, matrix/chr13-10.matrix, matrix/chr13-11.matrix, matrix/chr13-12.matrix, matrix/chr13-13.matrix, matrix/chr13-14.matrix, matrix/chr13-15.matrix, matrix/chr13-16.matrix, matrix/chr13-17.matrix, matrix/chr13-18.matrix, matrix/chr13-19.matrix, matrix/chr13-20.matrix, matrix/chr13-21.matrix, matrix/chr13-22.matrix, matrix/chr13-23.matrix
+    output: chr13.matrix
+    jobid: 37
+    reason: Missing output files: chr13.matrix
+    wildcards: chrom=chr13
+    threads: 4
+
+Submitted DRMAA job 37 with external jobid 9148980.
+
+[Thu Dec  5 07:02:06 2019]
+rule mergeMatrix:
+    input: matrix/chr10-0.matrix, matrix/chr10-1.matrix, matrix/chr10-2.matrix, matrix/chr10-3.matrix, matrix/chr10-4.matrix, matrix/chr10-5.matrix, matrix/chr10-6.matrix, matrix/chr10-7.matrix, matrix/chr10-8.matrix, matrix/chr10-9.matrix, matrix/chr10-10.matrix, matrix/chr10-11.matrix, matrix/chr10-12.matrix, matrix/chr10-13.matrix, matrix/chr10-14.matrix, matrix/chr10-15.matrix, matrix/chr10-16.matrix, matrix/chr10-17.matrix, matrix/chr10-18.matrix, matrix/chr10-19.matrix, matrix/chr10-20.matrix, matrix/chr10-21.matrix, matrix/chr10-22.matrix, matrix/chr10-23.matrix
+    output: chr10.matrix
+    jobid: 34
+    reason: Missing output files: chr10.matrix
+    wildcards: chrom=chr10
+    threads: 4
+
+Submitted DRMAA job 34 with external jobid 9148981.
+
+[Thu Dec  5 07:02:07 2019]
+rule EBcache_pileup:
+    input: bed/chr2-10.bed
+    output: matrix/chr2-10.matrix
+    log: logs/chr2-10.matrix.log
+    jobid: 659
+    reason: Missing output files: matrix/chr2-10.matrix
+    wildcards: chrom=chr2, i=10
+    threads: 2
+
+Submitted DRMAA job 659 with external jobid 9148982.
+
+[Thu Dec  5 07:02:07 2019]
+rule EBcache_pileup:
+    input: bed/chr1-22.bed
+    output: matrix/chr1-22.matrix
+    log: logs/chr1-22.matrix.log
+    jobid: 647
+    reason: Missing output files: matrix/chr1-22.matrix
+    wildcards: chrom=chr1, i=22
+    threads: 2
+
+Submitted DRMAA job 647 with external jobid 9148983.
+
+[Thu Dec  5 07:02:07 2019]
+rule EBcache_pileup:
+    input: bed/chr2-5.bed
+    output: matrix/chr2-5.matrix
+    log: logs/chr2-5.matrix.log
+    jobid: 654
+    reason: Missing output files: matrix/chr2-5.matrix
+    wildcards: chrom=chr2, i=5
+    threads: 2
+
+Submitted DRMAA job 654 with external jobid 9148984.
+
+[Thu Dec  5 07:02:07 2019]
+rule EBcache_pileup:
+    input: bed/chr1-17.bed
+    output: matrix/chr1-17.matrix
+    log: logs/chr1-17.matrix.log
+    jobid: 642
+    reason: Missing output files: matrix/chr1-17.matrix
+    wildcards: chrom=chr1, i=17
+    threads: 2
+
+Submitted DRMAA job 642 with external jobid 9148985.
+
+[Thu Dec  5 07:02:07 2019]
+rule EBcache_pileup:
+    input: bed/chr2-7.bed
+    output: matrix/chr2-7.matrix
+    log: logs/chr2-7.matrix.log
+    jobid: 656
+    reason: Missing output files: matrix/chr2-7.matrix
+    wildcards: chrom=chr2, i=7
+    threads: 2
+
+Submitted DRMAA job 656 with external jobid 9148986.
+
+[Thu Dec  5 07:02:07 2019]
+rule EBcache_pileup:
+    input: bed/chr2-18.bed
+    output: matrix/chr2-18.matrix
+    log: logs/chr2-18.matrix.log
+    jobid: 667
+    reason: Missing output files: matrix/chr2-18.matrix
+    wildcards: chrom=chr2, i=18
+    threads: 2
+
+Submitted DRMAA job 667 with external jobid 9148987.
+
+[Thu Dec  5 07:02:07 2019]
+rule EBcache_pileup:
+    input: bed/chr2-15.bed
+    output: matrix/chr2-15.matrix
+    log: logs/chr2-15.matrix.log
+    jobid: 664
+    reason: Missing output files: matrix/chr2-15.matrix
+    wildcards: chrom=chr2, i=15
+    threads: 2
+
+Submitted DRMAA job 664 with external jobid 9148988.
+[Thu Dec  5 07:02:15 2019]
+Error in rule mergeMatrix:
+    jobid: 42
+    output: chr18.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 42, external: 9148972, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.42.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:15 2019]
+Error in rule mergeMatrix:
+    jobid: 41
+    output: chr17.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 41, external: 9148973, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.41.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:27 2019]
+Error in rule mergeMatrix:
+    jobid: 45
+    output: chr21.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 45, external: 9148897, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.45.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:27 2019]
+Error in rule mergeMatrix:
+    jobid: 47
+    output: chrX.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 47, external: 9148901, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.47.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:27 2019]
+Error in rule mergeMatrix:
+    jobid: 33
+    output: chr9.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 33, external: 9148904, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.33.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:28 2019]
+Error in rule mergeMatrix:
+    jobid: 39
+    output: chr15.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 39, external: 9148906, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.39.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:28 2019]
+Error in rule mergeMatrix:
+    jobid: 44
+    output: chr20.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 44, external: 9148913, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.44.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:29 2019]
+Error in rule mergeMatrix:
+    jobid: 36
+    output: chr12.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 36, external: 9148919, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.36.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:29 2019]
+Error in rule mergeMatrix:
+    jobid: 43
+    output: chr19.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 43, external: 9148920, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.43.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:29 2019]
+Error in rule mergeMatrix:
+    jobid: 29
+    output: chr5.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 29, external: 9148921, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.29.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:29 2019]
+Error in rule mergeMatrix:
+    jobid: 38
+    output: chr14.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 38, external: 9148922, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.38.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:29 2019]
+Error in rule mergeMatrix:
+    jobid: 32
+    output: chr8.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 32, external: 9148923, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.32.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:30 2019]
+Error in rule mergeMatrix:
+    jobid: 31
+    output: chr7.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 31, external: 9148930, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.31.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:30 2019]
+Error in rule mergeMatrix:
+    jobid: 27
+    output: chr3.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 27, external: 9148931, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.27.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:30 2019]
+Error in rule mergeMatrix:
+    jobid: 46
+    output: chr22.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 46, external: 9148934, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.46.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:31 2019]
+Error in rule mergeMatrix:
+    jobid: 30
+    output: chr6.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 30, external: 9148945, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.30.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:32 2019]
+Error in rule mergeMatrix:
+    jobid: 40
+    output: chr16.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 40, external: 9148948, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.40.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:32 2019]
+Error in rule mergeMatrix:
+    jobid: 28
+    output: chr4.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 28, external: 9148954, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.28.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:33 2019]
+Error in rule mergeMatrix:
+    jobid: 35
+    output: chr11.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 35, external: 9148958, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.35.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:02:46 2019]
+Finished job 1198.
+1 of 172 steps (0.58%) done
+[Thu Dec  5 07:02:46 2019]
+Finished job 1196.
+2 of 172 steps (1%) done
+[Thu Dec  5 07:02:46 2019]
+Finished job 1177.
+3 of 172 steps (2%) done
+[Thu Dec  5 07:02:46 2019]
+Finished job 1193.
+4 of 172 steps (2%) done
+
+[Thu Dec  5 07:02:46 2019]
+rule EBcache:
+    input: matrix/chrY-21.matrix
+    output: cache/chrY-21.cache
+    log: logs/chrY-21.AB.log
+    jobid: 622
+    reason: Input files updated by another job: matrix/chrY-21.matrix
+    wildcards: chrom=chrY, i=21
+    threads: 24
+
+Submitted DRMAA job 622 with external jobid 9148989.
+
+[Thu Dec  5 07:02:46 2019]
+rule EBcache:
+    input: matrix/chrY-16.matrix
+    output: cache/chrY-16.cache
+    log: logs/chrY-16.AB.log
+    jobid: 617
+    reason: Input files updated by another job: matrix/chrY-16.matrix
+    wildcards: chrom=chrY, i=16
+    threads: 24
+
+Submitted DRMAA job 617 with external jobid 9148990.
+
+[Thu Dec  5 07:02:46 2019]
+rule EBcache:
+    input: matrix/chrY-19.matrix
+    output: cache/chrY-19.cache
+    log: logs/chrY-19.AB.log
+    jobid: 620
+    reason: Input files updated by another job: matrix/chrY-19.matrix
+    wildcards: chrom=chrY, i=19
+    threads: 24
+
+Submitted DRMAA job 620 with external jobid 9148991.
+
+[Thu Dec  5 07:02:46 2019]
+rule EBcache:
+    input: matrix/chrY-0.matrix
+    output: cache/chrY-0.cache
+    log: logs/chrY-0.AB.log
+    jobid: 601
+    reason: Missing output files: cache/chrY-0.cache; Input files updated by another job: matrix/chrY-0.matrix
+    wildcards: chrom=chrY, i=0
+    threads: 24
+
+Submitted DRMAA job 601 with external jobid 9148992.
+[Thu Dec  5 07:02:47 2019]
+Finished job 1185.
+5 of 172 steps (3%) done
+[Thu Dec  5 07:02:47 2019]
+Finished job 1189.
+6 of 172 steps (3%) done
+
+[Thu Dec  5 07:02:47 2019]
+rule EBcache:
+    input: matrix/chrY-8.matrix
+    output: cache/chrY-8.cache
+    log: logs/chrY-8.AB.log
+    jobid: 609
+    reason: Input files updated by another job: matrix/chrY-8.matrix
+    wildcards: chrom=chrY, i=8
+    threads: 24
+
+[Thu Dec  5 07:02:47 2019]
+Finished job 1178.
+7 of 172 steps (4%) done
+Submitted DRMAA job 609 with external jobid 9148993.
+
+[Thu Dec  5 07:02:47 2019]
+rule EBcache:
+    input: matrix/chrY-12.matrix
+    output: cache/chrY-12.cache
+    log: logs/chrY-12.AB.log
+    jobid: 613
+    reason: Input files updated by another job: matrix/chrY-12.matrix
+    wildcards: chrom=chrY, i=12
+    threads: 24
+
+Submitted DRMAA job 613 with external jobid 9148994.
+
+[Thu Dec  5 07:02:47 2019]
+rule EBcache:
+    input: matrix/chrY-1.matrix
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log
+    jobid: 602
+    reason: Missing output files: cache/chrY-1.cache; Input files updated by another job: matrix/chrY-1.matrix
+    wildcards: chrom=chrY, i=1
+    threads: 24
+
+Submitted DRMAA job 602 with external jobid 9148995.
+[Thu Dec  5 07:02:48 2019]
+Finished job 1197.
+8 of 172 steps (5%) done
+[Thu Dec  5 07:02:48 2019]
+Finished job 1187.
+9 of 172 steps (5%) done
+
+[Thu Dec  5 07:02:48 2019]
+rule EBcache:
+    input: matrix/chrY-20.matrix
+    output: cache/chrY-20.cache
+    log: logs/chrY-20.AB.log
+    jobid: 621
+    reason: Input files updated by another job: matrix/chrY-20.matrix
+    wildcards: chrom=chrY, i=20
+    threads: 24
+
+[Thu Dec  5 07:02:48 2019]
+Finished job 1182.
+10 of 172 steps (6%) done
+Submitted DRMAA job 621 with external jobid 9148996.
+[Thu Dec  5 07:02:48 2019]
+Finished job 1192.
+11 of 172 steps (6%) done
+[Thu Dec  5 07:02:48 2019]
+Finished job 1195.
+12 of 172 steps (7%) done
+
+[Thu Dec  5 07:02:48 2019]
+rule EBcache:
+    input: matrix/chrY-10.matrix
+    output: cache/chrY-10.cache
+    log: logs/chrY-10.AB.log
+    jobid: 611
+    reason: Input files updated by another job: matrix/chrY-10.matrix
+    wildcards: chrom=chrY, i=10
+    threads: 24
+
+[Thu Dec  5 07:02:48 2019]
+Finished job 1184.
+13 of 172 steps (8%) done
+Submitted DRMAA job 611 with external jobid 9148997.
+
+[Thu Dec  5 07:02:48 2019]
+rule EBcache:
+    input: matrix/chrY-15.matrix
+    output: cache/chrY-15.cache
+    log: logs/chrY-15.AB.log
+    jobid: 616
+    reason: Input files updated by another job: matrix/chrY-15.matrix
+    wildcards: chrom=chrY, i=15
+    threads: 24
+
+Submitted DRMAA job 616 with external jobid 9148998.
+
+[Thu Dec  5 07:02:48 2019]
+rule EBcache:
+    input: matrix/chrY-5.matrix
+    output: cache/chrY-5.cache
+    log: logs/chrY-5.AB.log
+    jobid: 606
+    reason: Input files updated by another job: matrix/chrY-5.matrix
+    wildcards: chrom=chrY, i=5
+    threads: 24
+
+Submitted DRMAA job 606 with external jobid 9148999.
+
+[Thu Dec  5 07:02:48 2019]
+rule EBcache:
+    input: matrix/chrY-18.matrix
+    output: cache/chrY-18.cache
+    log: logs/chrY-18.AB.log
+    jobid: 619
+    reason: Input files updated by another job: matrix/chrY-18.matrix
+    wildcards: chrom=chrY, i=18
+    threads: 24
+
+Submitted DRMAA job 619 with external jobid 9149000.
+
+[Thu Dec  5 07:02:48 2019]
+rule EBcache:
+    input: matrix/chrY-7.matrix
+    output: cache/chrY-7.cache
+    log: logs/chrY-7.AB.log
+    jobid: 608
+    reason: Input files updated by another job: matrix/chrY-7.matrix
+    wildcards: chrom=chrY, i=7
+    threads: 24
+
+Submitted DRMAA job 608 with external jobid 9149001.
+[Thu Dec  5 07:02:49 2019]
+Finished job 1200.
+14 of 172 steps (8%) done
+
+[Thu Dec  5 07:02:49 2019]
+rule EBcache:
+    input: matrix/chrY-23.matrix
+    output: cache/chrY-23.cache
+    log: logs/chrY-23.AB.log
+    jobid: 624
+    reason: Missing output files: cache/chrY-23.cache; Input files updated by another job: matrix/chrY-23.matrix
+    wildcards: chrom=chrY, i=23
+    threads: 24
+
+[Thu Dec  5 07:02:49 2019]
+Finished job 1188.
+15 of 172 steps (9%) done
+Submitted DRMAA job 624 with external jobid 9149002.
+
+[Thu Dec  5 07:02:49 2019]
+rule EBcache:
+    input: matrix/chrY-11.matrix
+    output: cache/chrY-11.cache
+    log: logs/chrY-11.AB.log
+    jobid: 612
+    reason: Input files updated by another job: matrix/chrY-11.matrix
+    wildcards: chrom=chrY, i=11
+    threads: 24
+
+Submitted DRMAA job 612 with external jobid 9149003.
+[Thu Dec  5 07:02:49 2019]
+Finished job 1190.
+16 of 172 steps (9%) done
+
+[Thu Dec  5 07:02:49 2019]
+rule EBcache:
+    input: matrix/chrY-13.matrix
+    output: cache/chrY-13.cache
+    log: logs/chrY-13.AB.log
+    jobid: 614
+    reason: Input files updated by another job: matrix/chrY-13.matrix
+    wildcards: chrom=chrY, i=13
+    threads: 24
+
+Submitted DRMAA job 614 with external jobid 9149004.
+[Thu Dec  5 07:02:50 2019]
+Finished job 1199.
+17 of 172 steps (10%) done
+[Thu Dec  5 07:02:50 2019]
+Finished job 1194.
+18 of 172 steps (10%) done
+
+[Thu Dec  5 07:02:50 2019]
+rule EBcache:
+    input: matrix/chrY-22.matrix
+    output: cache/chrY-22.cache
+    log: logs/chrY-22.AB.log
+    jobid: 623
+    reason: Input files updated by another job: matrix/chrY-22.matrix
+    wildcards: chrom=chrY, i=22
+    threads: 24
+
+[Thu Dec  5 07:02:50 2019]
+Submitted DRMAA job 623 with external jobid 9149005.
+Finished job 1181.
+19 of 172 steps (11%) done
+
+[Thu Dec  5 07:02:50 2019]
+rule EBcache:
+    input: matrix/chrY-17.matrix
+    output: cache/chrY-17.cache
+    log: logs/chrY-17.AB.log
+    jobid: 618
+    reason: Input files updated by another job: matrix/chrY-17.matrix
+    wildcards: chrom=chrY, i=17
+    threads: 24
+
+Submitted DRMAA job 618 with external jobid 9149006.
+
+[Thu Dec  5 07:02:50 2019]
+rule EBcache:
+    input: matrix/chrY-4.matrix
+    output: cache/chrY-4.cache
+    log: logs/chrY-4.AB.log
+    jobid: 605
+    reason: Input files updated by another job: matrix/chrY-4.matrix
+    wildcards: chrom=chrY, i=4
+    threads: 24
+
+Submitted DRMAA job 605 with external jobid 9149007.
+[Thu Dec  5 07:02:51 2019]
+Finished job 1183.
+20 of 172 steps (12%) done
+[Thu Dec  5 07:02:51 2019]
+Finished job 1180.
+21 of 172 steps (12%) done
+
+[Thu Dec  5 07:02:51 2019]
+rule EBcache:
+    input: matrix/chrY-6.matrix
+    output: cache/chrY-6.cache
+    log: logs/chrY-6.AB.log
+    jobid: 607
+    reason: Input files updated by another job: matrix/chrY-6.matrix
+    wildcards: chrom=chrY, i=6
+    threads: 24
+
+Submitted DRMAA job 607 with external jobid 9149008.
+
+[Thu Dec  5 07:02:51 2019]
+rule EBcache:
+    input: matrix/chrY-3.matrix
+    output: cache/chrY-3.cache
+    log: logs/chrY-3.AB.log
+    jobid: 604
+    reason: Missing output files: cache/chrY-3.cache; Input files updated by another job: matrix/chrY-3.matrix
+    wildcards: chrom=chrY, i=3
+    threads: 24
+
+Submitted DRMAA job 604 with external jobid 9149009.
+[Thu Dec  5 07:02:52 2019]
+Finished job 1186.
+22 of 172 steps (13%) done
+[Thu Dec  5 07:02:52 2019]
+Finished job 1191.
+23 of 172 steps (13%) done
+
+[Thu Dec  5 07:02:52 2019]
+rule EBcache:
+    input: matrix/chrY-9.matrix
+    output: cache/chrY-9.cache
+    log: logs/chrY-9.AB.log
+    jobid: 610
+    reason: Input files updated by another job: matrix/chrY-9.matrix
+    wildcards: chrom=chrY, i=9
+    threads: 24
+
+[Thu Dec  5 07:02:52 2019]
+Finished job 1179.
+24 of 172 steps (14%) done
+Submitted DRMAA job 610 with external jobid 9149010.
+
+[Thu Dec  5 07:02:52 2019]
+rule mergeMatrix:
+    input: matrix/chrY-0.matrix, matrix/chrY-1.matrix, matrix/chrY-2.matrix, matrix/chrY-3.matrix, matrix/chrY-4.matrix, matrix/chrY-5.matrix, matrix/chrY-6.matrix, matrix/chrY-7.matrix, matrix/chrY-8.matrix, matrix/chrY-9.matrix, matrix/chrY-10.matrix, matrix/chrY-11.matrix, matrix/chrY-12.matrix, matrix/chrY-13.matrix, matrix/chrY-14.matrix, matrix/chrY-15.matrix, matrix/chrY-16.matrix, matrix/chrY-17.matrix, matrix/chrY-18.matrix, matrix/chrY-19.matrix, matrix/chrY-20.matrix, matrix/chrY-21.matrix, matrix/chrY-22.matrix, matrix/chrY-23.matrix
+    output: chrY.matrix
+    jobid: 48
+    reason: Missing output files: chrY.matrix; Input files updated by another job: matrix/chrY-14.matrix, matrix/chrY-2.matrix, matrix/chrY-7.matrix, matrix/chrY-4.matrix, matrix/chrY-6.matrix, matrix/chrY-20.matrix, matrix/chrY-1.matrix, matrix/chrY-9.matrix, matrix/chrY-23.matrix, matrix/chrY-15.matrix, matrix/chrY-16.matrix, matrix/chrY-5.matrix, matrix/chrY-3.matrix, matrix/chrY-10.matrix, matrix/chrY-11.matrix, matrix/chrY-18.matrix, matrix/chrY-22.matrix, matrix/chrY-0.matrix, matrix/chrY-19.matrix, matrix/chrY-21.matrix, matrix/chrY-13.matrix, matrix/chrY-8.matrix, matrix/chrY-17.matrix, matrix/chrY-12.matrix
+    wildcards: chrom=chrY
+    threads: 4
+[Thu Dec  5 07:02:52 2019]
+
+Error in rule mergeMatrix:
+    jobid: 37
+    output: chr13.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 37, external: 9148980, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.37.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+Submitted DRMAA job 48 with external jobid 9149011.
+
+[Thu Dec  5 07:02:52 2019]
+rule EBcache:
+    input: matrix/chrY-14.matrix
+    output: cache/chrY-14.cache
+    log: logs/chrY-14.AB.log
+    jobid: 615
+    reason: Input files updated by another job: matrix/chrY-14.matrix
+    wildcards: chrom=chrY, i=14
+    threads: 24
+
+Submitted DRMAA job 615 with external jobid 9149012.
+[Thu Dec  5 07:02:52 2019]
+Error in rule mergeMatrix:
+    jobid: 34
+    output: chr10.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 34, external: 9148981, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.34.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+
+[Thu Dec  5 07:02:52 2019]
+rule EBcache:
+    input: matrix/chrY-2.matrix
+    output: cache/chrY-2.cache
+    log: logs/chrY-2.AB.log
+    jobid: 603
+    reason: Missing output files: cache/chrY-2.cache; Input files updated by another job: matrix/chrY-2.matrix
+    wildcards: chrom=chrY, i=2
+    threads: 24
+
+Submitted DRMAA job 603 with external jobid 9149013.
+[Thu Dec  5 07:03:20 2019]
+Error in rule EBcache:
+    jobid: 602
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 602, external: 9148995, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.EBcache.602.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:03:21 2019]
+Error in rule EBcache:
+    jobid: 624
+    output: cache/chrY-23.cache
+    log: logs/chrY-23.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 624, external: 9149002, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.EBcache.624.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:03:22 2019]
+Error in rule mergeMatrix:
+    jobid: 48
+    output: chrY.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 48, external: 9149011, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.48.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:03:37 2019]
+Error in rule EBcache:
+    jobid: 601
+    output: cache/chrY-0.cache
+    log: logs/chrY-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 601, external: 9148992, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.EBcache.601.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:03:37 2019]
+Finished job 621.
+25 of 172 steps (15%) done
+[Thu Dec  5 07:03:38 2019]
+Finished job 619.
+26 of 172 steps (15%) done
+[Thu Dec  5 07:03:38 2019]
+Error in rule EBcache:
+    jobid: 604
+    output: cache/chrY-3.cache
+    log: logs/chrY-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 604, external: 9149009, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.EBcache.604.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:03:39 2019]
+Error in rule EBcache:
+    jobid: 603
+    output: cache/chrY-2.cache
+    log: logs/chrY-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 603, external: 9149013, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.EBcache.603.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:03:54 2019]
+Finished job 622.
+27 of 172 steps (16%) done
+[Thu Dec  5 07:03:54 2019]
+Finished job 617.
+28 of 172 steps (16%) done
+[Thu Dec  5 07:03:54 2019]
+Finished job 620.
+29 of 172 steps (17%) done
+[Thu Dec  5 07:03:54 2019]
+Finished job 613.
+30 of 172 steps (17%) done
+[Thu Dec  5 07:03:54 2019]
+Finished job 616.
+31 of 172 steps (18%) done
+[Thu Dec  5 07:03:55 2019]
+Finished job 618.
+32 of 172 steps (19%) done
+[Thu Dec  5 07:04:10 2019]
+Finished job 609.
+33 of 172 steps (19%) done
+[Thu Dec  5 07:04:11 2019]
+Finished job 623.
+34 of 172 steps (20%) done
+[Thu Dec  5 07:04:41 2019]
+Finished job 611.
+35 of 172 steps (20%) done
+[Thu Dec  5 07:04:56 2019]
+Finished job 608.
+36 of 172 steps (21%) done
+[Thu Dec  5 07:04:56 2019]
+Finished job 612.
+37 of 172 steps (22%) done
+[Thu Dec  5 07:04:56 2019]
+Finished job 605.
+38 of 172 steps (22%) done
+[Thu Dec  5 07:04:56 2019]
+Finished job 607.
+39 of 172 steps (23%) done
+[Thu Dec  5 07:04:56 2019]
+Finished job 615.
+40 of 172 steps (23%) done
+[Thu Dec  5 07:05:26 2019]
+Finished job 614.
+41 of 172 steps (24%) done
+[Thu Dec  5 07:05:41 2019]
+Finished job 606.
+42 of 172 steps (24%) done
+[Thu Dec  5 07:05:56 2019]
+Finished job 610.
+43 of 172 steps (25%) done
+[Thu Dec  5 07:14:10 2019]
+Finished job 667.
+44 of 172 steps (26%) done
+
+[Thu Dec  5 07:14:10 2019]
+rule EBcache:
+    input: matrix/chr2-18.matrix
+    output: cache/chr2-18.cache
+    log: logs/chr2-18.AB.log
+    jobid: 91
+    reason: Missing output files: cache/chr2-18.cache; Input files updated by another job: matrix/chr2-18.matrix
+    wildcards: chrom=chr2, i=18
+    threads: 24
+
+Submitted DRMAA job 91 with external jobid 9149014.
+[Thu Dec  5 07:14:36 2019]
+Finished job 658.
+45 of 172 steps (26%) done
+[Thu Dec  5 07:14:36 2019]
+Finished job 663.
+46 of 172 steps (27%) done
+
+[Thu Dec  5 07:14:36 2019]
+rule EBcache:
+    input: matrix/chr2-9.matrix
+    output: cache/chr2-9.cache
+    log: logs/chr2-9.AB.log
+    jobid: 82
+    reason: Input files updated by another job: matrix/chr2-9.matrix
+    wildcards: chrom=chr2, i=9
+    threads: 24
+
+Submitted DRMAA job 82 with external jobid 9149015.
+
+[Thu Dec  5 07:14:36 2019]
+rule EBcache:
+    input: matrix/chr2-14.matrix
+    output: cache/chr2-14.cache
+    log: logs/chr2-14.AB.log
+    jobid: 87
+    reason: Input files updated by another job: matrix/chr2-14.matrix
+    wildcards: chrom=chr2, i=14
+    threads: 24
+
+Submitted DRMAA job 87 with external jobid 9149016.
+[Thu Dec  5 07:14:51 2019]
+Finished job 652.
+47 of 172 steps (27%) done
+
+[Thu Dec  5 07:14:51 2019]
+rule EBcache:
+    input: matrix/chr2-3.matrix
+    output: cache/chr2-3.cache
+    log: logs/chr2-3.AB.log
+    jobid: 76
+    reason: Input files updated by another job: matrix/chr2-3.matrix
+    wildcards: chrom=chr2, i=3
+    threads: 24
+
+Submitted DRMAA job 76 with external jobid 9149017.
+[Thu Dec  5 07:14:52 2019]
+Finished job 660.
+48 of 172 steps (28%) done
+
+[Thu Dec  5 07:14:52 2019]
+rule EBcache:
+    input: matrix/chr2-11.matrix
+    output: cache/chr2-11.cache
+    log: logs/chr2-11.AB.log
+    jobid: 84
+    reason: Missing output files: cache/chr2-11.cache; Input files updated by another job: matrix/chr2-11.matrix
+    wildcards: chrom=chr2, i=11
+    threads: 24
+
+Submitted DRMAA job 84 with external jobid 9149018.
+[Thu Dec  5 07:14:53 2019]
+Finished job 664.
+49 of 172 steps (28%) done
+
+[Thu Dec  5 07:14:53 2019]
+rule EBcache:
+    input: matrix/chr2-15.matrix
+    output: cache/chr2-15.cache
+    log: logs/chr2-15.AB.log
+    jobid: 88
+    reason: Missing output files: cache/chr2-15.cache; Input files updated by another job: matrix/chr2-15.matrix
+    wildcards: chrom=chr2, i=15
+    threads: 24
+
+Submitted DRMAA job 88 with external jobid 9149019.
+[Thu Dec  5 07:15:03 2019]
+Finished job 661.
+50 of 172 steps (29%) done
+
+[Thu Dec  5 07:15:03 2019]
+rule EBcache:
+    input: matrix/chr2-12.matrix
+    output: cache/chr2-12.cache
+    log: logs/chr2-12.AB.log
+    jobid: 85
+    reason: Input files updated by another job: matrix/chr2-12.matrix
+    wildcards: chrom=chr2, i=12
+    threads: 24
+
+Submitted DRMAA job 85 with external jobid 9149020.
+[Thu Dec  5 07:15:06 2019]
+Finished job 671.
+51 of 172 steps (30%) done
+
+[Thu Dec  5 07:15:06 2019]
+rule EBcache:
+    input: matrix/chr2-22.matrix
+    output: cache/chr2-22.cache
+    log: logs/chr2-22.AB.log
+    jobid: 95
+    reason: Input files updated by another job: matrix/chr2-22.matrix
+    wildcards: chrom=chr2, i=22
+    threads: 24
+
+Submitted DRMAA job 95 with external jobid 9149021.
+[Thu Dec  5 07:15:21 2019]
+Finished job 662.
+52 of 172 steps (30%) done
+[Thu Dec  5 07:15:21 2019]
+Finished job 654.
+53 of 172 steps (31%) done
+
+[Thu Dec  5 07:15:21 2019]
+rule EBcache:
+    input: matrix/chr2-13.matrix
+    output: cache/chr2-13.cache
+    log: logs/chr2-13.AB.log
+    jobid: 86
+    reason: Input files updated by another job: matrix/chr2-13.matrix
+    wildcards: chrom=chr2, i=13
+    threads: 24
+
+[Thu Dec  5 07:15:21 2019]
+Finished job 656.
+54 of 172 steps (31%) done
+Submitted DRMAA job 86 with external jobid 9149022.
+
+[Thu Dec  5 07:15:21 2019]
+rule EBcache:
+    input: matrix/chr2-7.matrix
+    output: cache/chr2-7.cache
+    log: logs/chr2-7.AB.log
+    jobid: 80
+    reason: Input files updated by another job: matrix/chr2-7.matrix
+    wildcards: chrom=chr2, i=7
+    threads: 24
+
+Submitted DRMAA job 80 with external jobid 9149023.
+
+[Thu Dec  5 07:15:21 2019]
+rule EBcache:
+    input: matrix/chr2-5.matrix
+    output: cache/chr2-5.cache
+    log: logs/chr2-5.AB.log
+    jobid: 78
+    reason: Input files updated by another job: matrix/chr2-5.matrix
+    wildcards: chrom=chr2, i=5
+    threads: 24
+
+Submitted DRMAA job 78 with external jobid 9149024.
+[Thu Dec  5 07:15:33 2019]
+Finished job 655.
+55 of 172 steps (32%) done
+[Thu Dec  5 07:15:33 2019]
+Finished job 653.
+56 of 172 steps (33%) done
+
+[Thu Dec  5 07:15:33 2019]
+rule EBcache:
+    input: matrix/chr2-6.matrix
+    output: cache/chr2-6.cache
+    log: logs/chr2-6.AB.log
+    jobid: 79
+    reason: Input files updated by another job: matrix/chr2-6.matrix
+    wildcards: chrom=chr2, i=6
+    threads: 24
+
+Submitted DRMAA job 79 with external jobid 9149025.
+
+[Thu Dec  5 07:15:33 2019]
+rule EBcache:
+    input: matrix/chr2-4.matrix
+    output: cache/chr2-4.cache
+    log: logs/chr2-4.AB.log
+    jobid: 77
+    reason: Input files updated by another job: matrix/chr2-4.matrix
+    wildcards: chrom=chr2, i=4
+    threads: 24
+
+Submitted DRMAA job 77 with external jobid 9149026.
+[Thu Dec  5 07:15:48 2019]
+Finished job 666.
+57 of 172 steps (33%) done
+
+[Thu Dec  5 07:15:48 2019]
+rule EBcache:
+    input: matrix/chr2-17.matrix
+    output: cache/chr2-17.cache
+    log: logs/chr2-17.AB.log
+    jobid: 90
+    reason: Input files updated by another job: matrix/chr2-17.matrix
+    wildcards: chrom=chr2, i=17
+    threads: 24
+
+Submitted DRMAA job 90 with external jobid 9149027.
+[Thu Dec  5 07:16:15 2019]
+Finished job 651.
+58 of 172 steps (34%) done
+
+[Thu Dec  5 07:16:15 2019]
+rule EBcache:
+    input: matrix/chr2-2.matrix
+    output: cache/chr2-2.cache
+    log: logs/chr2-2.AB.log
+    jobid: 75
+    reason: Input files updated by another job: matrix/chr2-2.matrix
+    wildcards: chrom=chr2, i=2
+    threads: 24
+
+Submitted DRMAA job 75 with external jobid 9149028.
+[Thu Dec  5 07:16:42 2019]
+Finished job 650.
+59 of 172 steps (34%) done
+
+[Thu Dec  5 07:16:42 2019]
+rule EBcache:
+    input: matrix/chr2-1.matrix
+    output: cache/chr2-1.cache
+    log: logs/chr2-1.AB.log
+    jobid: 74
+    reason: Input files updated by another job: matrix/chr2-1.matrix
+    wildcards: chrom=chr2, i=1
+    threads: 24
+
+Submitted DRMAA job 74 with external jobid 9149029.
+[Thu Dec  5 07:17:24 2019]
+Finished job 668.
+60 of 172 steps (35%) done
+
+[Thu Dec  5 07:17:24 2019]
+rule EBcache:
+    input: matrix/chr2-19.matrix
+    output: cache/chr2-19.cache
+    log: logs/chr2-19.AB.log
+    jobid: 92
+    reason: Input files updated by another job: matrix/chr2-19.matrix
+    wildcards: chrom=chr2, i=19
+    threads: 24
+
+Submitted DRMAA job 92 with external jobid 9149030.
+[Thu Dec  5 07:17:25 2019]
+Finished job 670.
+61 of 172 steps (35%) done
+
+[Thu Dec  5 07:17:25 2019]
+rule EBcache:
+    input: matrix/chr2-21.matrix
+    output: cache/chr2-21.cache
+    log: logs/chr2-21.AB.log
+    jobid: 94
+    reason: Missing output files: cache/chr2-21.cache; Input files updated by another job: matrix/chr2-21.matrix
+    wildcards: chrom=chr2, i=21
+    threads: 24
+
+Submitted DRMAA job 94 with external jobid 9149031.
+[Thu Dec  5 07:17:40 2019]
+Finished job 672.
+62 of 172 steps (36%) done
+
+[Thu Dec  5 07:17:40 2019]
+rule EBcache:
+    input: matrix/chr2-23.matrix
+    output: cache/chr2-23.cache
+    log: logs/chr2-23.AB.log
+    jobid: 96
+    reason: Missing output files: cache/chr2-23.cache; Input files updated by another job: matrix/chr2-23.matrix
+    wildcards: chrom=chr2, i=23
+    threads: 24
+
+Submitted DRMAA job 96 with external jobid 9149032.
+[Thu Dec  5 07:18:20 2019]
+Finished job 669.
+63 of 172 steps (37%) done
+
+[Thu Dec  5 07:18:20 2019]
+rule EBcache:
+    input: matrix/chr2-20.matrix
+    output: cache/chr2-20.cache
+    log: logs/chr2-20.AB.log
+    jobid: 93
+    reason: Missing output files: cache/chr2-20.cache; Input files updated by another job: matrix/chr2-20.matrix
+    wildcards: chrom=chr2, i=20
+    threads: 24
+
+Submitted DRMAA job 93 with external jobid 9149033.
+[Thu Dec  5 07:18:21 2019]
+Finished job 649.
+64 of 172 steps (37%) done
+[Thu Dec  5 07:18:21 2019]
+Finished job 641.
+65 of 172 steps (38%) done
+
+[Thu Dec  5 07:18:21 2019]
+rule EBcache:
+    input: matrix/chr2-0.matrix
+    output: cache/chr2-0.cache
+    log: logs/chr2-0.AB.log
+    jobid: 73
+    reason: Input files updated by another job: matrix/chr2-0.matrix
+    wildcards: chrom=chr2, i=0
+    threads: 24
+
+Submitted DRMAA job 73 with external jobid 9149034.
+
+[Thu Dec  5 07:18:21 2019]
+rule EBcache:
+    input: matrix/chr1-16.matrix
+    output: cache/chr1-16.cache
+    log: logs/chr1-16.AB.log
+    jobid: 65
+    reason: Input files updated by another job: matrix/chr1-16.matrix
+    wildcards: chrom=chr1, i=16
+    threads: 24
+
+Submitted DRMAA job 65 with external jobid 9149035.
+[Thu Dec  5 07:18:22 2019]
+Finished job 638.
+66 of 172 steps (38%) done
+
+[Thu Dec  5 07:18:22 2019]
+rule EBcache:
+    input: matrix/chr1-13.matrix
+    output: cache/chr1-13.cache
+    log: logs/chr1-13.AB.log
+    jobid: 62
+    reason: Input files updated by another job: matrix/chr1-13.matrix
+    wildcards: chrom=chr1, i=13
+    threads: 24
+
+Submitted DRMAA job 62 with external jobid 9149036.
+[Thu Dec  5 07:18:36 2019]
+Finished job 643.
+67 of 172 steps (39%) done
+[Thu Dec  5 07:18:36 2019]
+Finished job 648.
+68 of 172 steps (40%) done
+
+[Thu Dec  5 07:18:36 2019]
+rule EBcache:
+    input: matrix/chr1-18.matrix
+    output: cache/chr1-18.cache
+    log: logs/chr1-18.AB.log
+    jobid: 67
+    reason: Missing output files: cache/chr1-18.cache; Input files updated by another job: matrix/chr1-18.matrix
+    wildcards: chrom=chr1, i=18
+    threads: 24
+
+Submitted DRMAA job 67 with external jobid 9149037.
+
+[Thu Dec  5 07:18:37 2019]
+rule EBcache:
+    input: matrix/chr1-23.matrix
+    output: cache/chr1-23.cache
+    log: logs/chr1-23.AB.log
+    jobid: 72
+    reason: Input files updated by another job: matrix/chr1-23.matrix
+    wildcards: chrom=chr1, i=23
+    threads: 24
+
+Submitted DRMAA job 72 with external jobid 9149038.
+[Thu Dec  5 07:18:50 2019]
+Finished job 657.
+69 of 172 steps (40%) done
+
+[Thu Dec  5 07:18:50 2019]
+rule EBcache:
+    input: matrix/chr2-8.matrix
+    output: cache/chr2-8.cache
+    log: logs/chr2-8.AB.log
+    jobid: 81
+    reason: Input files updated by another job: matrix/chr2-8.matrix
+    wildcards: chrom=chr2, i=8
+    threads: 24
+
+Submitted DRMAA job 81 with external jobid 9149039.
+[Thu Dec  5 07:18:51 2019]
+Finished job 640.
+70 of 172 steps (41%) done
+
+[Thu Dec  5 07:18:51 2019]
+rule EBcache:
+    input: matrix/chr1-15.matrix
+    output: cache/chr1-15.cache
+    log: logs/chr1-15.AB.log
+    jobid: 64
+    reason: Missing output files: cache/chr1-15.cache; Input files updated by another job: matrix/chr1-15.matrix
+    wildcards: chrom=chr1, i=15
+    threads: 24
+
+Submitted DRMAA job 64 with external jobid 9149040.
+[Thu Dec  5 07:18:52 2019]
+Finished job 642.
+71 of 172 steps (41%) done
+
+[Thu Dec  5 07:18:52 2019]
+rule EBcache:
+    input: matrix/chr1-17.matrix
+    output: cache/chr1-17.cache
+    log: logs/chr1-17.AB.log
+    jobid: 66
+    reason: Missing output files: cache/chr1-17.cache; Input files updated by another job: matrix/chr1-17.matrix
+    wildcards: chrom=chr1, i=17
+    threads: 24
+
+Submitted DRMAA job 66 with external jobid 9149041.
+[Thu Dec  5 07:19:18 2019]
+Finished job 665.
+72 of 172 steps (42%) done
+
+[Thu Dec  5 07:19:18 2019]
+rule EBcache:
+    input: matrix/chr2-16.matrix
+    output: cache/chr2-16.cache
+    log: logs/chr2-16.AB.log
+    jobid: 89
+    reason: Missing output files: cache/chr2-16.cache; Input files updated by another job: matrix/chr2-16.matrix
+    wildcards: chrom=chr2, i=16
+    threads: 24
+
+Submitted DRMAA job 89 with external jobid 9149042.
+[Thu Dec  5 07:19:32 2019]
+Finished job 626.
+73 of 172 steps (42%) done
+
+[Thu Dec  5 07:19:32 2019]
+rule EBcache:
+    input: matrix/chr1-1.matrix
+    output: cache/chr1-1.cache
+    log: logs/chr1-1.AB.log
+    jobid: 50
+    reason: Input files updated by another job: matrix/chr1-1.matrix
+    wildcards: chrom=chr1, i=1
+    threads: 24
+
+Submitted DRMAA job 50 with external jobid 9149043.
+[Thu Dec  5 07:19:32 2019]
+Finished job 645.
+74 of 172 steps (43%) done
+
+[Thu Dec  5 07:19:32 2019]
+rule EBcache:
+    input: matrix/chr1-20.matrix
+    output: cache/chr1-20.cache
+    log: logs/chr1-20.AB.log
+    jobid: 69
+    reason: Input files updated by another job: matrix/chr1-20.matrix
+    wildcards: chrom=chr1, i=20
+    threads: 24
+
+Submitted DRMAA job 69 with external jobid 9149044.
+[Thu Dec  5 07:19:47 2019]
+Finished job 632.
+75 of 172 steps (44%) done
+
+[Thu Dec  5 07:19:47 2019]
+rule EBcache:
+    input: matrix/chr1-7.matrix
+    output: cache/chr1-7.cache
+    log: logs/chr1-7.AB.log
+    jobid: 56
+    reason: Input files updated by another job: matrix/chr1-7.matrix
+    wildcards: chrom=chr1, i=7
+    threads: 24
+
+Submitted DRMAA job 56 with external jobid 9149045.
+[Thu Dec  5 07:19:48 2019]
+Finished job 636.
+76 of 172 steps (44%) done
+
+[Thu Dec  5 07:19:48 2019]
+rule EBcache:
+    input: matrix/chr1-11.matrix
+    output: cache/chr1-11.cache
+    log: logs/chr1-11.AB.log
+    jobid: 60
+    reason: Missing output files: cache/chr1-11.cache; Input files updated by another job: matrix/chr1-11.matrix
+    wildcards: chrom=chr1, i=11
+    threads: 24
+
+Submitted DRMAA job 60 with external jobid 9149046.
+[Thu Dec  5 07:19:48 2019]
+Finished job 659.
+77 of 172 steps (45%) done
+
+[Thu Dec  5 07:19:48 2019]
+rule mergeMatrix:
+    input: matrix/chr2-0.matrix, matrix/chr2-1.matrix, matrix/chr2-2.matrix, matrix/chr2-3.matrix, matrix/chr2-4.matrix, matrix/chr2-5.matrix, matrix/chr2-6.matrix, matrix/chr2-7.matrix, matrix/chr2-8.matrix, matrix/chr2-9.matrix, matrix/chr2-10.matrix, matrix/chr2-11.matrix, matrix/chr2-12.matrix, matrix/chr2-13.matrix, matrix/chr2-14.matrix, matrix/chr2-15.matrix, matrix/chr2-16.matrix, matrix/chr2-17.matrix, matrix/chr2-18.matrix, matrix/chr2-19.matrix, matrix/chr2-20.matrix, matrix/chr2-21.matrix, matrix/chr2-22.matrix, matrix/chr2-23.matrix
+    output: chr2.matrix
+    jobid: 26
+    reason: Missing output files: chr2.matrix; Input files updated by another job: matrix/chr2-6.matrix, matrix/chr2-17.matrix, matrix/chr2-2.matrix, matrix/chr2-10.matrix, matrix/chr2-19.matrix, matrix/chr2-16.matrix, matrix/chr2-3.matrix, matrix/chr2-15.matrix, matrix/chr2-20.matrix, matrix/chr2-9.matrix, matrix/chr2-22.matrix, matrix/chr2-7.matrix, matrix/chr2-1.matrix, matrix/chr2-23.matrix, matrix/chr2-21.matrix, matrix/chr2-11.matrix, matrix/chr2-12.matrix, matrix/chr2-18.matrix, matrix/chr2-8.matrix, matrix/chr2-5.matrix, matrix/chr2-14.matrix, matrix/chr2-4.matrix, matrix/chr2-13.matrix, matrix/chr2-0.matrix
+    wildcards: chrom=chr2
+    threads: 4
+
+Submitted DRMAA job 26 with external jobid 9149047.
+
+[Thu Dec  5 07:19:48 2019]
+rule EBcache:
+    input: matrix/chr2-10.matrix
+    output: cache/chr2-10.cache
+    log: logs/chr2-10.AB.log
+    jobid: 83
+    reason: Input files updated by another job: matrix/chr2-10.matrix
+    wildcards: chrom=chr2, i=10
+    threads: 24
+
+Submitted DRMAA job 83 with external jobid 9149048.
+[Thu Dec  5 07:20:01 2019]
+Finished job 625.
+78 of 172 steps (45%) done
+
+[Thu Dec  5 07:20:01 2019]
+rule EBcache:
+    input: matrix/chr1-0.matrix
+    output: cache/chr1-0.cache
+    log: logs/chr1-0.AB.log
+    jobid: 49
+    reason: Input files updated by another job: matrix/chr1-0.matrix
+    wildcards: chrom=chr1, i=0
+    threads: 24
+
+Submitted DRMAA job 49 with external jobid 9149049.
+[Thu Dec  5 07:20:02 2019]
+Finished job 647.
+79 of 172 steps (46%) done
+
+[Thu Dec  5 07:20:02 2019]
+rule EBcache:
+    input: matrix/chr1-22.matrix
+    output: cache/chr1-22.cache
+    log: logs/chr1-22.AB.log
+    jobid: 71
+    reason: Input files updated by another job: matrix/chr1-22.matrix
+    wildcards: chrom=chr1, i=22
+    threads: 24
+
+Submitted DRMAA job 71 with external jobid 9149050.
+[Thu Dec  5 07:20:16 2019]
+Error in rule mergeMatrix:
+    jobid: 26
+    output: chr2.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 26, external: 9149047, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.fi6el_jf/snakejob.mergeMatrix.26.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 07:20:29 2019]
+Finished job 634.
+80 of 172 steps (47%) done
+
+[Thu Dec  5 07:20:29 2019]
+rule EBcache:
+    input: matrix/chr1-9.matrix
+    output: cache/chr1-9.cache
+    log: logs/chr1-9.AB.log
+    jobid: 58
+    reason: Input files updated by another job: matrix/chr1-9.matrix
+    wildcards: chrom=chr1, i=9
+    threads: 24
+
+Submitted DRMAA job 58 with external jobid 9149051.
+[Thu Dec  5 07:20:43 2019]
+Finished job 628.
+81 of 172 steps (47%) done
+
+[Thu Dec  5 07:20:43 2019]
+rule EBcache:
+    input: matrix/chr1-3.matrix
+    output: cache/chr1-3.cache
+    log: logs/chr1-3.AB.log
+    jobid: 52
+    reason: Input files updated by another job: matrix/chr1-3.matrix
+    wildcards: chrom=chr1, i=3
+    threads: 24
+
+Submitted DRMAA job 52 with external jobid 9149052.
+[Thu Dec  5 07:20:57 2019]
+Finished job 633.
+82 of 172 steps (48%) done
+
+[Thu Dec  5 07:20:57 2019]
+rule EBcache:
+    input: matrix/chr1-8.matrix
+    output: cache/chr1-8.cache
+    log: logs/chr1-8.AB.log
+    jobid: 57
+    reason: Input files updated by another job: matrix/chr1-8.matrix
+    wildcards: chrom=chr1, i=8
+    threads: 24
+
+Submitted DRMAA job 57 with external jobid 9149053.
+[Thu Dec  5 07:21:39 2019]
+Finished job 629.
+83 of 172 steps (48%) done
+[Thu Dec  5 07:21:39 2019]
+Finished job 627.
+84 of 172 steps (49%) done
+
+[Thu Dec  5 07:21:39 2019]
+rule EBcache:
+    input: matrix/chr1-4.matrix
+    output: cache/chr1-4.cache
+    log: logs/chr1-4.AB.log
+    jobid: 53
+    reason: Input files updated by another job: matrix/chr1-4.matrix
+    wildcards: chrom=chr1, i=4
+    threads: 24
+
+Submitted DRMAA job 53 with external jobid 9149054.
+
+[Thu Dec  5 07:21:39 2019]
+rule EBcache:
+    input: matrix/chr1-2.matrix
+    output: cache/chr1-2.cache
+    log: logs/chr1-2.AB.log
+    jobid: 51
+    reason: Input files updated by another job: matrix/chr1-2.matrix
+    wildcards: chrom=chr1, i=2
+    threads: 24
+
+Submitted DRMAA job 51 with external jobid 9149055.
+[Thu Dec  5 07:22:07 2019]
+Finished job 635.
+85 of 172 steps (49%) done
+
+[Thu Dec  5 07:22:07 2019]
+rule EBcache:
+    input: matrix/chr1-10.matrix
+    output: cache/chr1-10.cache
+    log: logs/chr1-10.AB.log
+    jobid: 59
+    reason: Input files updated by another job: matrix/chr1-10.matrix
+    wildcards: chrom=chr1, i=10
+    threads: 24
+
+Submitted DRMAA job 59 with external jobid 9149056.
+[Thu Dec  5 07:24:00 2019]
+Finished job 637.
+86 of 172 steps (50%) done
+[Thu Dec  5 07:24:00 2019]
+Finished job 644.
+87 of 172 steps (51%) done
+
+[Thu Dec  5 07:24:00 2019]
+rule EBcache:
+    input: matrix/chr1-12.matrix
+    output: cache/chr1-12.cache
+    log: logs/chr1-12.AB.log
+    jobid: 61
+    reason: Missing output files: cache/chr1-12.cache; Input files updated by another job: matrix/chr1-12.matrix
+    wildcards: chrom=chr1, i=12
+    threads: 24
+
+Submitted DRMAA job 61 with external jobid 9149057.
+
+[Thu Dec  5 07:24:00 2019]
+rule EBcache:
+    input: matrix/chr1-19.matrix
+    output: cache/chr1-19.cache
+    log: logs/chr1-19.AB.log
+    jobid: 68
+    reason: Missing output files: cache/chr1-19.cache; Input files updated by another job: matrix/chr1-19.matrix
+    wildcards: chrom=chr1, i=19
+    threads: 24
+
+Submitted DRMAA job 68 with external jobid 9149058.
+[Thu Dec  5 07:24:42 2019]
+Finished job 646.
+88 of 172 steps (51%) done
+
+[Thu Dec  5 07:24:42 2019]
+rule EBcache:
+    input: matrix/chr1-21.matrix
+    output: cache/chr1-21.cache
+    log: logs/chr1-21.AB.log
+    jobid: 70
+    reason: Input files updated by another job: matrix/chr1-21.matrix
+    wildcards: chrom=chr1, i=21
+    threads: 24
+
+Submitted DRMAA job 70 with external jobid 9149059.
+[Thu Dec  5 07:25:38 2019]
+Finished job 639.
+89 of 172 steps (52%) done
+
+[Thu Dec  5 07:25:38 2019]
+rule EBcache:
+    input: matrix/chr1-14.matrix
+    output: cache/chr1-14.cache
+    log: logs/chr1-14.AB.log
+    jobid: 63
+    reason: Missing output files: cache/chr1-14.cache; Input files updated by another job: matrix/chr1-14.matrix
+    wildcards: chrom=chr1, i=14
+    threads: 24
+
+Submitted DRMAA job 63 with external jobid 9149060.
+[Thu Dec  5 07:27:31 2019]
+Finished job 630.
+90 of 172 steps (52%) done
+
+[Thu Dec  5 07:27:31 2019]
+rule EBcache:
+    input: matrix/chr1-5.matrix
+    output: cache/chr1-5.cache
+    log: logs/chr1-5.AB.log
+    jobid: 54
+    reason: Input files updated by another job: matrix/chr1-5.matrix
+    wildcards: chrom=chr1, i=5
+    threads: 24
+
+Submitted DRMAA job 54 with external jobid 9149061.
+[Thu Dec  5 07:28:54 2019]
+Finished job 631.
+91 of 172 steps (53%) done
+
+[Thu Dec  5 07:28:54 2019]
+rule EBcache:
+    input: matrix/chr1-6.matrix
+    output: cache/chr1-6.cache
+    log: logs/chr1-6.AB.log
+    jobid: 55
+    reason: Input files updated by another job: matrix/chr1-6.matrix
+    wildcards: chrom=chr1, i=6
+    threads: 24
+
+Submitted DRMAA job 55 with external jobid 9149062.
+
+[Thu Dec  5 07:28:54 2019]
+rule mergeMatrix:
+    input: matrix/chr1-0.matrix, matrix/chr1-1.matrix, matrix/chr1-2.matrix, matrix/chr1-3.matrix, matrix/chr1-4.matrix, matrix/chr1-5.matrix, matrix/chr1-6.matrix, matrix/chr1-7.matrix, matrix/chr1-8.matrix, matrix/chr1-9.matrix, matrix/chr1-10.matrix, matrix/chr1-11.matrix, matrix/chr1-12.matrix, matrix/chr1-13.matrix, matrix/chr1-14.matrix, matrix/chr1-15.matrix, matrix/chr1-16.matrix, matrix/chr1-17.matrix, matrix/chr1-18.matrix, matrix/chr1-19.matrix, matrix/chr1-20.matrix, matrix/chr1-21.matrix, matrix/chr1-22.matrix, matrix/chr1-23.matrix
+    output: chr1.matrix
+    jobid: 25
+    reason: Missing output files: chr1.matrix; Input files updated by another job: matrix/chr1-21.matrix, matrix/chr1-15.matrix, matrix/chr1-20.matrix, matrix/chr1-22.matrix, matrix/chr1-13.matrix, matrix/chr1-8.matrix, matrix/chr1-10.matrix, matrix/chr1-9.matrix, matrix/chr1-16.matrix, matrix/chr1-4.matrix, matrix/chr1-0.matrix, matrix/chr1-6.matrix, matrix/chr1-3.matrix, matrix/chr1-23.matrix, matrix/chr1-17.matrix, matrix/chr1-7.matrix, matrix/chr1-12.matrix, matrix/chr1-2.matrix, matrix/chr1-14.matrix, matrix/chr1-1.matrix, matrix/chr1-19.matrix, matrix/chr1-18.matrix, matrix/chr1-5.matrix, matrix/chr1-11.matrix
+    wildcards: chrom=chr1
+    threads: 4
+
+Submitted DRMAA job 25 with external jobid 9149063.
+[Thu Dec  5 07:39:26 2019]
+Finished job 91.
+92 of 172 steps (53%) done
+[Thu Dec  5 07:39:26 2019]
+Finished job 86.
+93 of 172 steps (54%) done
+[Thu Dec  5 07:39:39 2019]
+Finished job 75.
+94 of 172 steps (55%) done
+[Thu Dec  5 07:40:21 2019]
+Finished job 77.
+95 of 172 steps (55%) done
+[Thu Dec  5 07:40:35 2019]
+Finished job 95.
+96 of 172 steps (56%) done
+[Thu Dec  5 07:40:49 2019]
+Finished job 82.
+97 of 172 steps (56%) done
+[Thu Dec  5 07:41:16 2019]
+Finished job 73.
+98 of 172 steps (57%) done
+[Thu Dec  5 07:41:31 2019]
+Finished job 79.
+99 of 172 steps (58%) done
+[Thu Dec  5 07:41:45 2019]
+Finished job 80.
+100 of 172 steps (58%) done
+[Thu Dec  5 07:42:38 2019]
+Finished job 25.
+101 of 172 steps (59%) done
+[Thu Dec  5 07:43:20 2019]
+Finished job 92.
+102 of 172 steps (59%) done
+[Thu Dec  5 07:43:33 2019]
+Finished job 94.
+103 of 172 steps (60%) done
+[Thu Dec  5 07:44:51 2019]
+Finished job 74.
+104 of 172 steps (60%) done
+[Thu Dec  5 07:45:17 2019]
+Finished job 93.
+105 of 172 steps (61%) done
+[Thu Dec  5 07:45:17 2019]
+Finished job 62.
+106 of 172 steps (62%) done
+[Thu Dec  5 07:47:54 2019]
+Finished job 87.
+107 of 172 steps (62%) done
+[Thu Dec  5 07:48:20 2019]
+Finished job 84.
+108 of 172 steps (63%) done
+[Thu Dec  5 07:50:41 2019]
+Finished job 61.
+109 of 172 steps (63%) done
+[Thu Dec  5 07:51:34 2019]
+Finished job 49.
+110 of 172 steps (64%) done
+[Thu Dec  5 07:51:47 2019]
+Finished job 89.
+111 of 172 steps (65%) done
+[Thu Dec  5 07:52:36 2019]
+Finished job 66.
+112 of 172 steps (65%) done
+[Thu Dec  5 07:52:36 2019]
+Finished job 65.
+113 of 172 steps (66%) done
+[Thu Dec  5 07:53:12 2019]
+Finished job 64.
+114 of 172 steps (66%) done
+[Thu Dec  5 07:53:12 2019]
+Finished job 67.
+115 of 172 steps (67%) done
+[Thu Dec  5 07:53:24 2019]
+Finished job 69.
+116 of 172 steps (67%) done
+[Thu Dec  5 07:53:48 2019]
+Finished job 56.
+117 of 172 steps (68%) done
+[Thu Dec  5 07:54:11 2019]
+Finished job 52.
+118 of 172 steps (69%) done
+[Thu Dec  5 07:54:12 2019]
+Finished job 50.
+119 of 172 steps (69%) done
+[Thu Dec  5 07:54:35 2019]
+Finished job 57.
+120 of 172 steps (70%) done
+[Thu Dec  5 07:54:35 2019]
+Finished job 58.
+121 of 172 steps (70%) done
+[Thu Dec  5 07:54:36 2019]
+Finished job 60.
+122 of 172 steps (71%) done
+[Thu Dec  5 07:55:54 2019]
+Finished job 71.
+123 of 172 steps (72%) done
+[Thu Dec  5 07:56:50 2019]
+Finished job 76.
+124 of 172 steps (72%) done
+[Thu Dec  5 07:57:11 2019]
+Finished job 53.
+125 of 172 steps (73%) done
+[Thu Dec  5 07:57:33 2019]
+Finished job 81.
+126 of 172 steps (73%) done
+[Thu Dec  5 07:57:34 2019]
+Finished job 88.
+127 of 172 steps (74%) done
+[Thu Dec  5 07:58:18 2019]
+Finished job 78.
+128 of 172 steps (74%) done
+[Thu Dec  5 07:58:39 2019]
+Finished job 85.
+129 of 172 steps (75%) done
+[Thu Dec  5 07:58:50 2019]
+Finished job 83.
+130 of 172 steps (76%) done
+[Thu Dec  5 07:59:23 2019]
+Finished job 63.
+131 of 172 steps (76%) done
+[Thu Dec  5 08:00:54 2019]
+Finished job 96.
+132 of 172 steps (77%) done
+[Thu Dec  5 08:01:04 2019]
+Finished job 90.
+133 of 172 steps (77%) done
+
+[Thu Dec  5 08:01:04 2019]
+rule mergeEBcache:
+    input: cache/chr2-0.cache, cache/chr2-1.cache, cache/chr2-2.cache, cache/chr2-3.cache, cache/chr2-4.cache, cache/chr2-5.cache, cache/chr2-6.cache, cache/chr2-7.cache, cache/chr2-8.cache, cache/chr2-9.cache, cache/chr2-10.cache, cache/chr2-11.cache, cache/chr2-12.cache, cache/chr2-13.cache, cache/chr2-14.cache, cache/chr2-15.cache, cache/chr2-16.cache, cache/chr2-17.cache, cache/chr2-18.cache, cache/chr2-19.cache, cache/chr2-20.cache, cache/chr2-21.cache, cache/chr2-22.cache, cache/chr2-23.cache
+    output: chr2.cache
+    jobid: 2
+    reason: Missing output files: chr2.cache; Input files updated by another job: cache/chr2-11.cache, cache/chr2-16.cache, cache/chr2-20.cache, cache/chr2-3.cache, cache/chr2-5.cache, cache/chr2-7.cache, cache/chr2-1.cache, cache/chr2-2.cache, cache/chr2-8.cache, cache/chr2-14.cache, cache/chr2-23.cache, cache/chr2-18.cache, cache/chr2-19.cache, cache/chr2-17.cache, cache/chr2-15.cache, cache/chr2-9.cache, cache/chr2-13.cache, cache/chr2-21.cache, cache/chr2-10.cache, cache/chr2-6.cache, cache/chr2-0.cache, cache/chr2-4.cache, cache/chr2-22.cache, cache/chr2-12.cache
+    wildcards: chrom=chr2
+    threads: 4
+
+Submitted DRMAA job 2 with external jobid 9149067.
+[Thu Dec  5 08:05:44 2019]
+Finished job 55.
+134 of 172 steps (78%) done
+[Thu Dec  5 08:07:35 2019]
+Finished job 2.
+135 of 172 steps (78%) done
+[Thu Dec  5 08:13:55 2019]
+Finished job 72.
+136 of 172 steps (79%) done
+[Thu Dec  5 08:17:55 2019]
+Finished job 59.
+137 of 172 steps (80%) done
+[Thu Dec  5 08:20:26 2019]
+Finished job 51.
+138 of 172 steps (80%) done
+[Thu Dec  5 08:21:16 2019]
+Finished job 68.
+139 of 172 steps (81%) done
+[Thu Dec  5 08:24:56 2019]
+Finished job 70.
+140 of 172 steps (81%) done
+[Thu Dec  5 08:28:46 2019]
+Finished job 54.
+141 of 172 steps (82%) done
+
+[Thu Dec  5 08:28:46 2019]
+rule mergeEBcache:
+    input: cache/chr1-0.cache, cache/chr1-1.cache, cache/chr1-2.cache, cache/chr1-3.cache, cache/chr1-4.cache, cache/chr1-5.cache, cache/chr1-6.cache, cache/chr1-7.cache, cache/chr1-8.cache, cache/chr1-9.cache, cache/chr1-10.cache, cache/chr1-11.cache, cache/chr1-12.cache, cache/chr1-13.cache, cache/chr1-14.cache, cache/chr1-15.cache, cache/chr1-16.cache, cache/chr1-17.cache, cache/chr1-18.cache, cache/chr1-19.cache, cache/chr1-20.cache, cache/chr1-21.cache, cache/chr1-22.cache, cache/chr1-23.cache
+    output: chr1.cache
+    jobid: 1
+    reason: Missing output files: chr1.cache; Input files updated by another job: cache/chr1-0.cache, cache/chr1-3.cache, cache/chr1-7.cache, cache/chr1-8.cache, cache/chr1-20.cache, cache/chr1-21.cache, cache/chr1-2.cache, cache/chr1-9.cache, cache/chr1-12.cache, cache/chr1-19.cache, cache/chr1-14.cache, cache/chr1-17.cache, cache/chr1-18.cache, cache/chr1-11.cache, cache/chr1-1.cache, cache/chr1-10.cache, cache/chr1-15.cache, cache/chr1-22.cache, cache/chr1-23.cache, cache/chr1-5.cache, cache/chr1-13.cache, cache/chr1-6.cache, cache/chr1-16.cache, cache/chr1-4.cache
+    wildcards: chrom=chr1
+    threads: 4
+
+Submitted DRMAA job 1 with external jobid 9149069.
+[Thu Dec  5 08:37:47 2019]
+Finished job 1.
+142 of 172 steps (83%) done
+Exiting because a job execution failed. Look above for error message
+Complete log: /fast/home/users/szyskam_c/snakes/projects/somVarWES/.snakemake/log/2019-12-05T070156.587860.snakemake.log
+ Generating Cache files in /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache.......
+You are now in an execute node
++ DRMAA=' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g'
++ DRMAA=' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/EBcache/9149072/ -j yes'
++ snakemake --snakefile EBcacheSnakefile --unlock --rerun-incomplete
+Building DAG of jobs...
+Unlocking working directory.
++ dot -Tsvg
++ snakemake --snakefile EBcacheSnakefile --dag
+Building DAG of jobs...
++ snakemake --snakefile EBcacheSnakefile --use-conda --rerun-incomplete --drmaa ' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/EBcache/9149072/ -j yes' -j 3000 -p -r -k
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cluster nodes: 3000
+Job counts:
+	count	jobs
+	5	EBcache
+	1	all
+	22	mergeEBcache
+	23	mergeMatrix
+	51
+
+[Thu Dec  5 08:44:17 2019]
+rule mergeEBcache:
+    input: cache/chr10-0.cache, cache/chr10-1.cache, cache/chr10-2.cache, cache/chr10-3.cache, cache/chr10-4.cache, cache/chr10-5.cache, cache/chr10-6.cache, cache/chr10-7.cache, cache/chr10-8.cache, cache/chr10-9.cache, cache/chr10-10.cache, cache/chr10-11.cache, cache/chr10-12.cache, cache/chr10-13.cache, cache/chr10-14.cache, cache/chr10-15.cache, cache/chr10-16.cache, cache/chr10-17.cache, cache/chr10-18.cache, cache/chr10-19.cache, cache/chr10-20.cache, cache/chr10-21.cache, cache/chr10-22.cache, cache/chr10-23.cache
+    output: chr10.cache
+    jobid: 10
+    reason: Missing output files: chr10.cache
+    wildcards: chrom=chr10
+    threads: 4
+
+Submitted DRMAA job 10 with external jobid 9149073.
+
+[Thu Dec  5 08:44:17 2019]
+rule mergeMatrix:
+    input: matrix/chr20-0.matrix, matrix/chr20-1.matrix, matrix/chr20-2.matrix, matrix/chr20-3.matrix, matrix/chr20-4.matrix, matrix/chr20-5.matrix, matrix/chr20-6.matrix, matrix/chr20-7.matrix, matrix/chr20-8.matrix, matrix/chr20-9.matrix, matrix/chr20-10.matrix, matrix/chr20-11.matrix, matrix/chr20-12.matrix, matrix/chr20-13.matrix, matrix/chr20-14.matrix, matrix/chr20-15.matrix, matrix/chr20-16.matrix, matrix/chr20-17.matrix, matrix/chr20-18.matrix, matrix/chr20-19.matrix, matrix/chr20-20.matrix, matrix/chr20-21.matrix, matrix/chr20-22.matrix, matrix/chr20-23.matrix
+    output: chr20.matrix
+    jobid: 44
+    reason: Missing output files: chr20.matrix
+    wildcards: chrom=chr20
+    threads: 4
+
+Submitted DRMAA job 44 with external jobid 9149074.
+
+[Thu Dec  5 08:44:17 2019]
+rule mergeMatrix:
+    input: matrix/chrX-0.matrix, matrix/chrX-1.matrix, matrix/chrX-2.matrix, matrix/chrX-3.matrix, matrix/chrX-4.matrix, matrix/chrX-5.matrix, matrix/chrX-6.matrix, matrix/chrX-7.matrix, matrix/chrX-8.matrix, matrix/chrX-9.matrix, matrix/chrX-10.matrix, matrix/chrX-11.matrix, matrix/chrX-12.matrix, matrix/chrX-13.matrix, matrix/chrX-14.matrix, matrix/chrX-15.matrix, matrix/chrX-16.matrix, matrix/chrX-17.matrix, matrix/chrX-18.matrix, matrix/chrX-19.matrix, matrix/chrX-20.matrix, matrix/chrX-21.matrix, matrix/chrX-22.matrix, matrix/chrX-23.matrix
+    output: chrX.matrix
+    jobid: 47
+    reason: Missing output files: chrX.matrix
+    wildcards: chrom=chrX
+    threads: 4
+
+Submitted DRMAA job 47 with external jobid 9149075.
+
+[Thu Dec  5 08:44:17 2019]
+rule mergeMatrix:
+    input: matrix/chr12-0.matrix, matrix/chr12-1.matrix, matrix/chr12-2.matrix, matrix/chr12-3.matrix, matrix/chr12-4.matrix, matrix/chr12-5.matrix, matrix/chr12-6.matrix, matrix/chr12-7.matrix, matrix/chr12-8.matrix, matrix/chr12-9.matrix, matrix/chr12-10.matrix, matrix/chr12-11.matrix, matrix/chr12-12.matrix, matrix/chr12-13.matrix, matrix/chr12-14.matrix, matrix/chr12-15.matrix, matrix/chr12-16.matrix, matrix/chr12-17.matrix, matrix/chr12-18.matrix, matrix/chr12-19.matrix, matrix/chr12-20.matrix, matrix/chr12-21.matrix, matrix/chr12-22.matrix, matrix/chr12-23.matrix
+    output: chr12.matrix
+    jobid: 36
+    reason: Missing output files: chr12.matrix
+    wildcards: chrom=chr12
+    threads: 4
+
+Submitted DRMAA job 36 with external jobid 9149076.
+
+[Thu Dec  5 08:44:17 2019]
+rule mergeEBcache:
+    input: cache/chr14-0.cache, cache/chr14-1.cache, cache/chr14-2.cache, cache/chr14-3.cache, cache/chr14-4.cache, cache/chr14-5.cache, cache/chr14-6.cache, cache/chr14-7.cache, cache/chr14-8.cache, cache/chr14-9.cache, cache/chr14-10.cache, cache/chr14-11.cache, cache/chr14-12.cache, cache/chr14-13.cache, cache/chr14-14.cache, cache/chr14-15.cache, cache/chr14-16.cache, cache/chr14-17.cache, cache/chr14-18.cache, cache/chr14-19.cache, cache/chr14-20.cache, cache/chr14-21.cache, cache/chr14-22.cache, cache/chr14-23.cache
+    output: chr14.cache
+    jobid: 14
+    reason: Missing output files: chr14.cache
+    wildcards: chrom=chr14
+    threads: 4
+
+Submitted DRMAA job 14 with external jobid 9149077.
+
+[Thu Dec  5 08:44:17 2019]
+rule mergeMatrix:
+    input: matrix/chr2-0.matrix, matrix/chr2-1.matrix, matrix/chr2-2.matrix, matrix/chr2-3.matrix, matrix/chr2-4.matrix, matrix/chr2-5.matrix, matrix/chr2-6.matrix, matrix/chr2-7.matrix, matrix/chr2-8.matrix, matrix/chr2-9.matrix, matrix/chr2-10.matrix, matrix/chr2-11.matrix, matrix/chr2-12.matrix, matrix/chr2-13.matrix, matrix/chr2-14.matrix, matrix/chr2-15.matrix, matrix/chr2-16.matrix, matrix/chr2-17.matrix, matrix/chr2-18.matrix, matrix/chr2-19.matrix, matrix/chr2-20.matrix, matrix/chr2-21.matrix, matrix/chr2-22.matrix, matrix/chr2-23.matrix
+    output: chr2.matrix
+    jobid: 26
+    reason: Missing output files: chr2.matrix
+    wildcards: chrom=chr2
+    threads: 4
+
+Submitted DRMAA job 26 with external jobid 9149078.
+
+[Thu Dec  5 08:44:17 2019]
+rule mergeEBcache:
+    input: cache/chr8-0.cache, cache/chr8-1.cache, cache/chr8-2.cache, cache/chr8-3.cache, cache/chr8-4.cache, cache/chr8-5.cache, cache/chr8-6.cache, cache/chr8-7.cache, cache/chr8-8.cache, cache/chr8-9.cache, cache/chr8-10.cache, cache/chr8-11.cache, cache/chr8-12.cache, cache/chr8-13.cache, cache/chr8-14.cache, cache/chr8-15.cache, cache/chr8-16.cache, cache/chr8-17.cache, cache/chr8-18.cache, cache/chr8-19.cache, cache/chr8-20.cache, cache/chr8-21.cache, cache/chr8-22.cache, cache/chr8-23.cache
+    output: chr8.cache
+    jobid: 8
+    reason: Missing output files: chr8.cache
+    wildcards: chrom=chr8
+    threads: 4
+
+Submitted DRMAA job 8 with external jobid 9149079.
+
+[Thu Dec  5 08:44:17 2019]
+rule mergeEBcache:
+    input: cache/chr6-0.cache, cache/chr6-1.cache, cache/chr6-2.cache, cache/chr6-3.cache, cache/chr6-4.cache, cache/chr6-5.cache, cache/chr6-6.cache, cache/chr6-7.cache, cache/chr6-8.cache, cache/chr6-9.cache, cache/chr6-10.cache, cache/chr6-11.cache, cache/chr6-12.cache, cache/chr6-13.cache, cache/chr6-14.cache, cache/chr6-15.cache, cache/chr6-16.cache, cache/chr6-17.cache, cache/chr6-18.cache, cache/chr6-19.cache, cache/chr6-20.cache, cache/chr6-21.cache, cache/chr6-22.cache, cache/chr6-23.cache
+    output: chr6.cache
+    jobid: 6
+    reason: Missing output files: chr6.cache
+    wildcards: chrom=chr6
+    threads: 4
+
+Submitted DRMAA job 6 with external jobid 9149080.
+
+[Thu Dec  5 08:44:17 2019]
+rule mergeMatrix:
+    input: matrix/chr17-0.matrix, matrix/chr17-1.matrix, matrix/chr17-2.matrix, matrix/chr17-3.matrix, matrix/chr17-4.matrix, matrix/chr17-5.matrix, matrix/chr17-6.matrix, matrix/chr17-7.matrix, matrix/chr17-8.matrix, matrix/chr17-9.matrix, matrix/chr17-10.matrix, matrix/chr17-11.matrix, matrix/chr17-12.matrix, matrix/chr17-13.matrix, matrix/chr17-14.matrix, matrix/chr17-15.matrix, matrix/chr17-16.matrix, matrix/chr17-17.matrix, matrix/chr17-18.matrix, matrix/chr17-19.matrix, matrix/chr17-20.matrix, matrix/chr17-21.matrix, matrix/chr17-22.matrix, matrix/chr17-23.matrix
+    output: chr17.matrix
+    jobid: 41
+    reason: Missing output files: chr17.matrix
+    wildcards: chrom=chr17
+    threads: 4
+
+Submitted DRMAA job 41 with external jobid 9149081.
+
+[Thu Dec  5 08:44:17 2019]
+rule mergeEBcache:
+    input: cache/chr4-0.cache, cache/chr4-1.cache, cache/chr4-2.cache, cache/chr4-3.cache, cache/chr4-4.cache, cache/chr4-5.cache, cache/chr4-6.cache, cache/chr4-7.cache, cache/chr4-8.cache, cache/chr4-9.cache, cache/chr4-10.cache, cache/chr4-11.cache, cache/chr4-12.cache, cache/chr4-13.cache, cache/chr4-14.cache, cache/chr4-15.cache, cache/chr4-16.cache, cache/chr4-17.cache, cache/chr4-18.cache, cache/chr4-19.cache, cache/chr4-20.cache, cache/chr4-21.cache, cache/chr4-22.cache, cache/chr4-23.cache
+    output: chr4.cache
+    jobid: 4
+    reason: Missing output files: chr4.cache
+    wildcards: chrom=chr4
+    threads: 4
+
+Submitted DRMAA job 4 with external jobid 9149082.
+
+[Thu Dec  5 08:44:18 2019]
+rule mergeMatrix:
+    input: matrix/chr19-0.matrix, matrix/chr19-1.matrix, matrix/chr19-2.matrix, matrix/chr19-3.matrix, matrix/chr19-4.matrix, matrix/chr19-5.matrix, matrix/chr19-6.matrix, matrix/chr19-7.matrix, matrix/chr19-8.matrix, matrix/chr19-9.matrix, matrix/chr19-10.matrix, matrix/chr19-11.matrix, matrix/chr19-12.matrix, matrix/chr19-13.matrix, matrix/chr19-14.matrix, matrix/chr19-15.matrix, matrix/chr19-16.matrix, matrix/chr19-17.matrix, matrix/chr19-18.matrix, matrix/chr19-19.matrix, matrix/chr19-20.matrix, matrix/chr19-21.matrix, matrix/chr19-22.matrix, matrix/chr19-23.matrix
+    output: chr19.matrix
+    jobid: 43
+    reason: Missing output files: chr19.matrix
+    wildcards: chrom=chr19
+    threads: 4
+
+Submitted DRMAA job 43 with external jobid 9149083.
+
+[Thu Dec  5 08:44:18 2019]
+rule EBcache:
+    input: matrix/chrY-0.matrix
+    output: cache/chrY-0.cache
+    log: logs/chrY-0.AB.log
+    jobid: 601
+    reason: Missing output files: cache/chrY-0.cache
+    wildcards: chrom=chrY, i=0
+    threads: 24
+
+Submitted DRMAA job 601 with external jobid 9149084.
+
+[Thu Dec  5 08:44:18 2019]
+rule mergeEBcache:
+    input: cache/chr7-0.cache, cache/chr7-1.cache, cache/chr7-2.cache, cache/chr7-3.cache, cache/chr7-4.cache, cache/chr7-5.cache, cache/chr7-6.cache, cache/chr7-7.cache, cache/chr7-8.cache, cache/chr7-9.cache, cache/chr7-10.cache, cache/chr7-11.cache, cache/chr7-12.cache, cache/chr7-13.cache, cache/chr7-14.cache, cache/chr7-15.cache, cache/chr7-16.cache, cache/chr7-17.cache, cache/chr7-18.cache, cache/chr7-19.cache, cache/chr7-20.cache, cache/chr7-21.cache, cache/chr7-22.cache, cache/chr7-23.cache
+    output: chr7.cache
+    jobid: 7
+    reason: Missing output files: chr7.cache
+    wildcards: chrom=chr7
+    threads: 4
+
+Submitted DRMAA job 7 with external jobid 9149085.
+
+[Thu Dec  5 08:44:18 2019]
+rule mergeMatrix:
+    input: matrix/chr13-0.matrix, matrix/chr13-1.matrix, matrix/chr13-2.matrix, matrix/chr13-3.matrix, matrix/chr13-4.matrix, matrix/chr13-5.matrix, matrix/chr13-6.matrix, matrix/chr13-7.matrix, matrix/chr13-8.matrix, matrix/chr13-9.matrix, matrix/chr13-10.matrix, matrix/chr13-11.matrix, matrix/chr13-12.matrix, matrix/chr13-13.matrix, matrix/chr13-14.matrix, matrix/chr13-15.matrix, matrix/chr13-16.matrix, matrix/chr13-17.matrix, matrix/chr13-18.matrix, matrix/chr13-19.matrix, matrix/chr13-20.matrix, matrix/chr13-21.matrix, matrix/chr13-22.matrix, matrix/chr13-23.matrix
+    output: chr13.matrix
+    jobid: 37
+    reason: Missing output files: chr13.matrix
+    wildcards: chrom=chr13
+    threads: 4
+
+Submitted DRMAA job 37 with external jobid 9149086.
+
+[Thu Dec  5 08:44:18 2019]
+rule mergeMatrix:
+    input: matrix/chr21-0.matrix, matrix/chr21-1.matrix, matrix/chr21-2.matrix, matrix/chr21-3.matrix, matrix/chr21-4.matrix, matrix/chr21-5.matrix, matrix/chr21-6.matrix, matrix/chr21-7.matrix, matrix/chr21-8.matrix, matrix/chr21-9.matrix, matrix/chr21-10.matrix, matrix/chr21-11.matrix, matrix/chr21-12.matrix, matrix/chr21-13.matrix, matrix/chr21-14.matrix, matrix/chr21-15.matrix, matrix/chr21-16.matrix, matrix/chr21-17.matrix, matrix/chr21-18.matrix, matrix/chr21-19.matrix, matrix/chr21-20.matrix, matrix/chr21-21.matrix, matrix/chr21-22.matrix, matrix/chr21-23.matrix
+    output: chr21.matrix
+    jobid: 45
+    reason: Missing output files: chr21.matrix
+    wildcards: chrom=chr21
+    threads: 4
+
+Submitted DRMAA job 45 with external jobid 9149087.
+
+[Thu Dec  5 08:44:18 2019]
+rule mergeEBcache:
+    input: cache/chr3-0.cache, cache/chr3-1.cache, cache/chr3-2.cache, cache/chr3-3.cache, cache/chr3-4.cache, cache/chr3-5.cache, cache/chr3-6.cache, cache/chr3-7.cache, cache/chr3-8.cache, cache/chr3-9.cache, cache/chr3-10.cache, cache/chr3-11.cache, cache/chr3-12.cache, cache/chr3-13.cache, cache/chr3-14.cache, cache/chr3-15.cache, cache/chr3-16.cache, cache/chr3-17.cache, cache/chr3-18.cache, cache/chr3-19.cache, cache/chr3-20.cache, cache/chr3-21.cache, cache/chr3-22.cache, cache/chr3-23.cache
+    output: chr3.cache
+    jobid: 3
+    reason: Missing output files: chr3.cache
+    wildcards: chrom=chr3
+    threads: 4
+
+Submitted DRMAA job 3 with external jobid 9149088.
+
+[Thu Dec  5 08:44:18 2019]
+rule mergeMatrix:
+    input: matrix/chr22-0.matrix, matrix/chr22-1.matrix, matrix/chr22-2.matrix, matrix/chr22-3.matrix, matrix/chr22-4.matrix, matrix/chr22-5.matrix, matrix/chr22-6.matrix, matrix/chr22-7.matrix, matrix/chr22-8.matrix, matrix/chr22-9.matrix, matrix/chr22-10.matrix, matrix/chr22-11.matrix, matrix/chr22-12.matrix, matrix/chr22-13.matrix, matrix/chr22-14.matrix, matrix/chr22-15.matrix, matrix/chr22-16.matrix, matrix/chr22-17.matrix, matrix/chr22-18.matrix, matrix/chr22-19.matrix, matrix/chr22-20.matrix, matrix/chr22-21.matrix, matrix/chr22-22.matrix, matrix/chr22-23.matrix
+    output: chr22.matrix
+    jobid: 46
+    reason: Missing output files: chr22.matrix
+    wildcards: chrom=chr22
+    threads: 4
+
+Submitted DRMAA job 46 with external jobid 9149089.
+
+[Thu Dec  5 08:44:18 2019]
+rule mergeMatrix:
+    input: matrix/chr15-0.matrix, matrix/chr15-1.matrix, matrix/chr15-2.matrix, matrix/chr15-3.matrix, matrix/chr15-4.matrix, matrix/chr15-5.matrix, matrix/chr15-6.matrix, matrix/chr15-7.matrix, matrix/chr15-8.matrix, matrix/chr15-9.matrix, matrix/chr15-10.matrix, matrix/chr15-11.matrix, matrix/chr15-12.matrix, matrix/chr15-13.matrix, matrix/chr15-14.matrix, matrix/chr15-15.matrix, matrix/chr15-16.matrix, matrix/chr15-17.matrix, matrix/chr15-18.matrix, matrix/chr15-19.matrix, matrix/chr15-20.matrix, matrix/chr15-21.matrix, matrix/chr15-22.matrix, matrix/chr15-23.matrix
+    output: chr15.matrix
+    jobid: 39
+    reason: Missing output files: chr15.matrix
+    wildcards: chrom=chr15
+    threads: 4
+
+Submitted DRMAA job 39 with external jobid 9149090.
+
+[Thu Dec  5 08:44:18 2019]
+rule mergeEBcache:
+    input: cache/chr16-0.cache, cache/chr16-1.cache, cache/chr16-2.cache, cache/chr16-3.cache, cache/chr16-4.cache, cache/chr16-5.cache, cache/chr16-6.cache, cache/chr16-7.cache, cache/chr16-8.cache, cache/chr16-9.cache, cache/chr16-10.cache, cache/chr16-11.cache, cache/chr16-12.cache, cache/chr16-13.cache, cache/chr16-14.cache, cache/chr16-15.cache, cache/chr16-16.cache, cache/chr16-17.cache, cache/chr16-18.cache, cache/chr16-19.cache, cache/chr16-20.cache, cache/chr16-21.cache, cache/chr16-22.cache, cache/chr16-23.cache
+    output: chr16.cache
+    jobid: 16
+    reason: Missing output files: chr16.cache
+    wildcards: chrom=chr16
+    threads: 4
+
+Submitted DRMAA job 16 with external jobid 9149091.
+
+[Thu Dec  5 08:44:18 2019]
+rule EBcache:
+    input: matrix/chrY-2.matrix
+    output: cache/chrY-2.cache
+    log: logs/chrY-2.AB.log
+    jobid: 603
+    reason: Missing output files: cache/chrY-2.cache
+    wildcards: chrom=chrY, i=2
+    threads: 24
+
+Submitted DRMAA job 603 with external jobid 9149092.
+
+[Thu Dec  5 08:44:19 2019]
+rule mergeMatrix:
+    input: matrix/chr11-0.matrix, matrix/chr11-1.matrix, matrix/chr11-2.matrix, matrix/chr11-3.matrix, matrix/chr11-4.matrix, matrix/chr11-5.matrix, matrix/chr11-6.matrix, matrix/chr11-7.matrix, matrix/chr11-8.matrix, matrix/chr11-9.matrix, matrix/chr11-10.matrix, matrix/chr11-11.matrix, matrix/chr11-12.matrix, matrix/chr11-13.matrix, matrix/chr11-14.matrix, matrix/chr11-15.matrix, matrix/chr11-16.matrix, matrix/chr11-17.matrix, matrix/chr11-18.matrix, matrix/chr11-19.matrix, matrix/chr11-20.matrix, matrix/chr11-21.matrix, matrix/chr11-22.matrix, matrix/chr11-23.matrix
+    output: chr11.matrix
+    jobid: 35
+    reason: Missing output files: chr11.matrix
+    wildcards: chrom=chr11
+    threads: 4
+
+Submitted DRMAA job 35 with external jobid 9149093.
+
+[Thu Dec  5 08:44:19 2019]
+rule mergeEBcache:
+    input: cache/chr5-0.cache, cache/chr5-1.cache, cache/chr5-2.cache, cache/chr5-3.cache, cache/chr5-4.cache, cache/chr5-5.cache, cache/chr5-6.cache, cache/chr5-7.cache, cache/chr5-8.cache, cache/chr5-9.cache, cache/chr5-10.cache, cache/chr5-11.cache, cache/chr5-12.cache, cache/chr5-13.cache, cache/chr5-14.cache, cache/chr5-15.cache, cache/chr5-16.cache, cache/chr5-17.cache, cache/chr5-18.cache, cache/chr5-19.cache, cache/chr5-20.cache, cache/chr5-21.cache, cache/chr5-22.cache, cache/chr5-23.cache
+    output: chr5.cache
+    jobid: 5
+    reason: Missing output files: chr5.cache
+    wildcards: chrom=chr5
+    threads: 4
+
+Submitted DRMAA job 5 with external jobid 9149094.
+
+[Thu Dec  5 08:44:19 2019]
+rule mergeMatrix:
+    input: matrix/chr18-0.matrix, matrix/chr18-1.matrix, matrix/chr18-2.matrix, matrix/chr18-3.matrix, matrix/chr18-4.matrix, matrix/chr18-5.matrix, matrix/chr18-6.matrix, matrix/chr18-7.matrix, matrix/chr18-8.matrix, matrix/chr18-9.matrix, matrix/chr18-10.matrix, matrix/chr18-11.matrix, matrix/chr18-12.matrix, matrix/chr18-13.matrix, matrix/chr18-14.matrix, matrix/chr18-15.matrix, matrix/chr18-16.matrix, matrix/chr18-17.matrix, matrix/chr18-18.matrix, matrix/chr18-19.matrix, matrix/chr18-20.matrix, matrix/chr18-21.matrix, matrix/chr18-22.matrix, matrix/chr18-23.matrix
+    output: chr18.matrix
+    jobid: 42
+    reason: Missing output files: chr18.matrix
+    wildcards: chrom=chr18
+    threads: 4
+
+Submitted DRMAA job 42 with external jobid 9149095.
+
+[Thu Dec  5 08:44:19 2019]
+rule mergeEBcache:
+    input: cache/chr9-0.cache, cache/chr9-1.cache, cache/chr9-2.cache, cache/chr9-3.cache, cache/chr9-4.cache, cache/chr9-5.cache, cache/chr9-6.cache, cache/chr9-7.cache, cache/chr9-8.cache, cache/chr9-9.cache, cache/chr9-10.cache, cache/chr9-11.cache, cache/chr9-12.cache, cache/chr9-13.cache, cache/chr9-14.cache, cache/chr9-15.cache, cache/chr9-16.cache, cache/chr9-17.cache, cache/chr9-18.cache, cache/chr9-19.cache, cache/chr9-20.cache, cache/chr9-21.cache, cache/chr9-22.cache, cache/chr9-23.cache
+    output: chr9.cache
+    jobid: 9
+    reason: Missing output files: chr9.cache
+    wildcards: chrom=chr9
+    threads: 4
+
+Submitted DRMAA job 9 with external jobid 9149096.
+
+[Thu Dec  5 08:44:19 2019]
+rule mergeMatrix:
+    input: matrix/chrY-0.matrix, matrix/chrY-1.matrix, matrix/chrY-2.matrix, matrix/chrY-3.matrix, matrix/chrY-4.matrix, matrix/chrY-5.matrix, matrix/chrY-6.matrix, matrix/chrY-7.matrix, matrix/chrY-8.matrix, matrix/chrY-9.matrix, matrix/chrY-10.matrix, matrix/chrY-11.matrix, matrix/chrY-12.matrix, matrix/chrY-13.matrix, matrix/chrY-14.matrix, matrix/chrY-15.matrix, matrix/chrY-16.matrix, matrix/chrY-17.matrix, matrix/chrY-18.matrix, matrix/chrY-19.matrix, matrix/chrY-20.matrix, matrix/chrY-21.matrix, matrix/chrY-22.matrix, matrix/chrY-23.matrix
+    output: chrY.matrix
+    jobid: 48
+    reason: Missing output files: chrY.matrix
+    wildcards: chrom=chrY
+    threads: 4
+
+Submitted DRMAA job 48 with external jobid 9149097.
+
+[Thu Dec  5 08:44:19 2019]
+rule EBcache:
+    input: matrix/chrY-3.matrix
+    output: cache/chrY-3.cache
+    log: logs/chrY-3.AB.log
+    jobid: 604
+    reason: Missing output files: cache/chrY-3.cache
+    wildcards: chrom=chrY, i=3
+    threads: 24
+
+Submitted DRMAA job 604 with external jobid 9149098.
+
+[Thu Dec  5 08:44:19 2019]
+rule mergeMatrix:
+    input: matrix/chr4-0.matrix, matrix/chr4-1.matrix, matrix/chr4-2.matrix, matrix/chr4-3.matrix, matrix/chr4-4.matrix, matrix/chr4-5.matrix, matrix/chr4-6.matrix, matrix/chr4-7.matrix, matrix/chr4-8.matrix, matrix/chr4-9.matrix, matrix/chr4-10.matrix, matrix/chr4-11.matrix, matrix/chr4-12.matrix, matrix/chr4-13.matrix, matrix/chr4-14.matrix, matrix/chr4-15.matrix, matrix/chr4-16.matrix, matrix/chr4-17.matrix, matrix/chr4-18.matrix, matrix/chr4-19.matrix, matrix/chr4-20.matrix, matrix/chr4-21.matrix, matrix/chr4-22.matrix, matrix/chr4-23.matrix
+    output: chr4.matrix
+    jobid: 28
+    reason: Missing output files: chr4.matrix
+    wildcards: chrom=chr4
+    threads: 4
+
+Submitted DRMAA job 28 with external jobid 9149099.
+
+[Thu Dec  5 08:44:19 2019]
+rule mergeEBcache:
+    input: cache/chr19-0.cache, cache/chr19-1.cache, cache/chr19-2.cache, cache/chr19-3.cache, cache/chr19-4.cache, cache/chr19-5.cache, cache/chr19-6.cache, cache/chr19-7.cache, cache/chr19-8.cache, cache/chr19-9.cache, cache/chr19-10.cache, cache/chr19-11.cache, cache/chr19-12.cache, cache/chr19-13.cache, cache/chr19-14.cache, cache/chr19-15.cache, cache/chr19-16.cache, cache/chr19-17.cache, cache/chr19-18.cache, cache/chr19-19.cache, cache/chr19-20.cache, cache/chr19-21.cache, cache/chr19-22.cache, cache/chr19-23.cache
+    output: chr19.cache
+    jobid: 19
+    reason: Missing output files: chr19.cache
+    wildcards: chrom=chr19
+    threads: 4
+
+Submitted DRMAA job 19 with external jobid 9149100.
+
+[Thu Dec  5 08:44:19 2019]
+rule mergeMatrix:
+    input: matrix/chr14-0.matrix, matrix/chr14-1.matrix, matrix/chr14-2.matrix, matrix/chr14-3.matrix, matrix/chr14-4.matrix, matrix/chr14-5.matrix, matrix/chr14-6.matrix, matrix/chr14-7.matrix, matrix/chr14-8.matrix, matrix/chr14-9.matrix, matrix/chr14-10.matrix, matrix/chr14-11.matrix, matrix/chr14-12.matrix, matrix/chr14-13.matrix, matrix/chr14-14.matrix, matrix/chr14-15.matrix, matrix/chr14-16.matrix, matrix/chr14-17.matrix, matrix/chr14-18.matrix, matrix/chr14-19.matrix, matrix/chr14-20.matrix, matrix/chr14-21.matrix, matrix/chr14-22.matrix, matrix/chr14-23.matrix
+    output: chr14.matrix
+    jobid: 38
+    reason: Missing output files: chr14.matrix
+    wildcards: chrom=chr14
+    threads: 4
+
+Submitted DRMAA job 38 with external jobid 9149101.
+
+[Thu Dec  5 08:44:19 2019]
+rule mergeEBcache:
+    input: cache/chr17-0.cache, cache/chr17-1.cache, cache/chr17-2.cache, cache/chr17-3.cache, cache/chr17-4.cache, cache/chr17-5.cache, cache/chr17-6.cache, cache/chr17-7.cache, cache/chr17-8.cache, cache/chr17-9.cache, cache/chr17-10.cache, cache/chr17-11.cache, cache/chr17-12.cache, cache/chr17-13.cache, cache/chr17-14.cache, cache/chr17-15.cache, cache/chr17-16.cache, cache/chr17-17.cache, cache/chr17-18.cache, cache/chr17-19.cache, cache/chr17-20.cache, cache/chr17-21.cache, cache/chr17-22.cache, cache/chr17-23.cache
+    output: chr17.cache
+    jobid: 17
+    reason: Missing output files: chr17.cache
+    wildcards: chrom=chr17
+    threads: 4
+
+Submitted DRMAA job 17 with external jobid 9149102.
+
+[Thu Dec  5 08:44:20 2019]
+rule mergeMatrix:
+    input: matrix/chr6-0.matrix, matrix/chr6-1.matrix, matrix/chr6-2.matrix, matrix/chr6-3.matrix, matrix/chr6-4.matrix, matrix/chr6-5.matrix, matrix/chr6-6.matrix, matrix/chr6-7.matrix, matrix/chr6-8.matrix, matrix/chr6-9.matrix, matrix/chr6-10.matrix, matrix/chr6-11.matrix, matrix/chr6-12.matrix, matrix/chr6-13.matrix, matrix/chr6-14.matrix, matrix/chr6-15.matrix, matrix/chr6-16.matrix, matrix/chr6-17.matrix, matrix/chr6-18.matrix, matrix/chr6-19.matrix, matrix/chr6-20.matrix, matrix/chr6-21.matrix, matrix/chr6-22.matrix, matrix/chr6-23.matrix
+    output: chr6.matrix
+    jobid: 30
+    reason: Missing output files: chr6.matrix
+    wildcards: chrom=chr6
+    threads: 4
+
+Submitted DRMAA job 30 with external jobid 9149103.
+
+[Thu Dec  5 08:44:20 2019]
+rule mergeEBcache:
+    input: cache/chr20-0.cache, cache/chr20-1.cache, cache/chr20-2.cache, cache/chr20-3.cache, cache/chr20-4.cache, cache/chr20-5.cache, cache/chr20-6.cache, cache/chr20-7.cache, cache/chr20-8.cache, cache/chr20-9.cache, cache/chr20-10.cache, cache/chr20-11.cache, cache/chr20-12.cache, cache/chr20-13.cache, cache/chr20-14.cache, cache/chr20-15.cache, cache/chr20-16.cache, cache/chr20-17.cache, cache/chr20-18.cache, cache/chr20-19.cache, cache/chr20-20.cache, cache/chr20-21.cache, cache/chr20-22.cache, cache/chr20-23.cache
+    output: chr20.cache
+    jobid: 20
+    reason: Missing output files: chr20.cache
+    wildcards: chrom=chr20
+    threads: 4
+
+Submitted DRMAA job 20 with external jobid 9149104.
+
+[Thu Dec  5 08:44:20 2019]
+rule mergeMatrix:
+    input: matrix/chr8-0.matrix, matrix/chr8-1.matrix, matrix/chr8-2.matrix, matrix/chr8-3.matrix, matrix/chr8-4.matrix, matrix/chr8-5.matrix, matrix/chr8-6.matrix, matrix/chr8-7.matrix, matrix/chr8-8.matrix, matrix/chr8-9.matrix, matrix/chr8-10.matrix, matrix/chr8-11.matrix, matrix/chr8-12.matrix, matrix/chr8-13.matrix, matrix/chr8-14.matrix, matrix/chr8-15.matrix, matrix/chr8-16.matrix, matrix/chr8-17.matrix, matrix/chr8-18.matrix, matrix/chr8-19.matrix, matrix/chr8-20.matrix, matrix/chr8-21.matrix, matrix/chr8-22.matrix, matrix/chr8-23.matrix
+    output: chr8.matrix
+    jobid: 32
+    reason: Missing output files: chr8.matrix
+    wildcards: chrom=chr8
+    threads: 4
+
+Submitted DRMAA job 32 with external jobid 9149105.
+
+[Thu Dec  5 08:44:20 2019]
+rule mergeMatrix:
+    input: matrix/chr10-0.matrix, matrix/chr10-1.matrix, matrix/chr10-2.matrix, matrix/chr10-3.matrix, matrix/chr10-4.matrix, matrix/chr10-5.matrix, matrix/chr10-6.matrix, matrix/chr10-7.matrix, matrix/chr10-8.matrix, matrix/chr10-9.matrix, matrix/chr10-10.matrix, matrix/chr10-11.matrix, matrix/chr10-12.matrix, matrix/chr10-13.matrix, matrix/chr10-14.matrix, matrix/chr10-15.matrix, matrix/chr10-16.matrix, matrix/chr10-17.matrix, matrix/chr10-18.matrix, matrix/chr10-19.matrix, matrix/chr10-20.matrix, matrix/chr10-21.matrix, matrix/chr10-22.matrix, matrix/chr10-23.matrix
+    output: chr10.matrix
+    jobid: 34
+    reason: Missing output files: chr10.matrix
+    wildcards: chrom=chr10
+    threads: 4
+
+Submitted DRMAA job 34 with external jobid 9149106.
+
+[Thu Dec  5 08:44:20 2019]
+rule mergeEBcache:
+    input: cache/chrX-0.cache, cache/chrX-1.cache, cache/chrX-2.cache, cache/chrX-3.cache, cache/chrX-4.cache, cache/chrX-5.cache, cache/chrX-6.cache, cache/chrX-7.cache, cache/chrX-8.cache, cache/chrX-9.cache, cache/chrX-10.cache, cache/chrX-11.cache, cache/chrX-12.cache, cache/chrX-13.cache, cache/chrX-14.cache, cache/chrX-15.cache, cache/chrX-16.cache, cache/chrX-17.cache, cache/chrX-18.cache, cache/chrX-19.cache, cache/chrX-20.cache, cache/chrX-21.cache, cache/chrX-22.cache, cache/chrX-23.cache
+    output: chrX.cache
+    jobid: 23
+    reason: Missing output files: chrX.cache
+    wildcards: chrom=chrX
+    threads: 4
+
+Submitted DRMAA job 23 with external jobid 9149107.
+
+[Thu Dec  5 08:44:20 2019]
+rule mergeEBcache:
+    input: cache/chr12-0.cache, cache/chr12-1.cache, cache/chr12-2.cache, cache/chr12-3.cache, cache/chr12-4.cache, cache/chr12-5.cache, cache/chr12-6.cache, cache/chr12-7.cache, cache/chr12-8.cache, cache/chr12-9.cache, cache/chr12-10.cache, cache/chr12-11.cache, cache/chr12-12.cache, cache/chr12-13.cache, cache/chr12-14.cache, cache/chr12-15.cache, cache/chr12-16.cache, cache/chr12-17.cache, cache/chr12-18.cache, cache/chr12-19.cache, cache/chr12-20.cache, cache/chr12-21.cache, cache/chr12-22.cache, cache/chr12-23.cache
+    output: chr12.cache
+    jobid: 12
+    reason: Missing output files: chr12.cache
+    wildcards: chrom=chr12
+    threads: 4
+
+Submitted DRMAA job 12 with external jobid 9149108.
+
+[Thu Dec  5 08:44:20 2019]
+rule EBcache:
+    input: matrix/chrY-1.matrix
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log
+    jobid: 602
+    reason: Missing output files: cache/chrY-1.cache
+    wildcards: chrom=chrY, i=1
+    threads: 24
+
+Submitted DRMAA job 602 with external jobid 9149109.
+
+[Thu Dec  5 08:44:21 2019]
+rule EBcache:
+    input: matrix/chrY-23.matrix
+    output: cache/chrY-23.cache
+    log: logs/chrY-23.AB.log
+    jobid: 624
+    reason: Missing output files: cache/chrY-23.cache
+    wildcards: chrom=chrY, i=23
+    threads: 24
+
+Submitted DRMAA job 624 with external jobid 9149110.
+
+[Thu Dec  5 08:44:21 2019]
+rule mergeMatrix:
+    input: matrix/chr5-0.matrix, matrix/chr5-1.matrix, matrix/chr5-2.matrix, matrix/chr5-3.matrix, matrix/chr5-4.matrix, matrix/chr5-5.matrix, matrix/chr5-6.matrix, matrix/chr5-7.matrix, matrix/chr5-8.matrix, matrix/chr5-9.matrix, matrix/chr5-10.matrix, matrix/chr5-11.matrix, matrix/chr5-12.matrix, matrix/chr5-13.matrix, matrix/chr5-14.matrix, matrix/chr5-15.matrix, matrix/chr5-16.matrix, matrix/chr5-17.matrix, matrix/chr5-18.matrix, matrix/chr5-19.matrix, matrix/chr5-20.matrix, matrix/chr5-21.matrix, matrix/chr5-22.matrix, matrix/chr5-23.matrix
+    output: chr5.matrix
+    jobid: 29
+    reason: Missing output files: chr5.matrix
+    wildcards: chrom=chr5
+    threads: 4
+
+Submitted DRMAA job 29 with external jobid 9149111.
+
+[Thu Dec  5 08:44:21 2019]
+rule mergeEBcache:
+    input: cache/chr11-0.cache, cache/chr11-1.cache, cache/chr11-2.cache, cache/chr11-3.cache, cache/chr11-4.cache, cache/chr11-5.cache, cache/chr11-6.cache, cache/chr11-7.cache, cache/chr11-8.cache, cache/chr11-9.cache, cache/chr11-10.cache, cache/chr11-11.cache, cache/chr11-12.cache, cache/chr11-13.cache, cache/chr11-14.cache, cache/chr11-15.cache, cache/chr11-16.cache, cache/chr11-17.cache, cache/chr11-18.cache, cache/chr11-19.cache, cache/chr11-20.cache, cache/chr11-21.cache, cache/chr11-22.cache, cache/chr11-23.cache
+    output: chr11.cache
+    jobid: 11
+    reason: Missing output files: chr11.cache
+    wildcards: chrom=chr11
+    threads: 4
+
+Submitted DRMAA job 11 with external jobid 9149112.
+
+[Thu Dec  5 08:44:21 2019]
+rule mergeMatrix:
+    input: matrix/chr9-0.matrix, matrix/chr9-1.matrix, matrix/chr9-2.matrix, matrix/chr9-3.matrix, matrix/chr9-4.matrix, matrix/chr9-5.matrix, matrix/chr9-6.matrix, matrix/chr9-7.matrix, matrix/chr9-8.matrix, matrix/chr9-9.matrix, matrix/chr9-10.matrix, matrix/chr9-11.matrix, matrix/chr9-12.matrix, matrix/chr9-13.matrix, matrix/chr9-14.matrix, matrix/chr9-15.matrix, matrix/chr9-16.matrix, matrix/chr9-17.matrix, matrix/chr9-18.matrix, matrix/chr9-19.matrix, matrix/chr9-20.matrix, matrix/chr9-21.matrix, matrix/chr9-22.matrix, matrix/chr9-23.matrix
+    output: chr9.matrix
+    jobid: 33
+    reason: Missing output files: chr9.matrix
+    wildcards: chrom=chr9
+    threads: 4
+
+Submitted DRMAA job 33 with external jobid 9149113.
+
+[Thu Dec  5 08:44:21 2019]
+rule mergeEBcache:
+    input: cache/chr18-0.cache, cache/chr18-1.cache, cache/chr18-2.cache, cache/chr18-3.cache, cache/chr18-4.cache, cache/chr18-5.cache, cache/chr18-6.cache, cache/chr18-7.cache, cache/chr18-8.cache, cache/chr18-9.cache, cache/chr18-10.cache, cache/chr18-11.cache, cache/chr18-12.cache, cache/chr18-13.cache, cache/chr18-14.cache, cache/chr18-15.cache, cache/chr18-16.cache, cache/chr18-17.cache, cache/chr18-18.cache, cache/chr18-19.cache, cache/chr18-20.cache, cache/chr18-21.cache, cache/chr18-22.cache, cache/chr18-23.cache
+    output: chr18.cache
+    jobid: 18
+    reason: Missing output files: chr18.cache
+    wildcards: chrom=chr18
+    threads: 4
+
+Submitted DRMAA job 18 with external jobid 9149114.
+
+[Thu Dec  5 08:44:21 2019]
+rule mergeEBcache:
+    input: cache/chr21-0.cache, cache/chr21-1.cache, cache/chr21-2.cache, cache/chr21-3.cache, cache/chr21-4.cache, cache/chr21-5.cache, cache/chr21-6.cache, cache/chr21-7.cache, cache/chr21-8.cache, cache/chr21-9.cache, cache/chr21-10.cache, cache/chr21-11.cache, cache/chr21-12.cache, cache/chr21-13.cache, cache/chr21-14.cache, cache/chr21-15.cache, cache/chr21-16.cache, cache/chr21-17.cache, cache/chr21-18.cache, cache/chr21-19.cache, cache/chr21-20.cache, cache/chr21-21.cache, cache/chr21-22.cache, cache/chr21-23.cache
+    output: chr21.cache
+    jobid: 21
+    reason: Missing output files: chr21.cache
+    wildcards: chrom=chr21
+    threads: 4
+
+Submitted DRMAA job 21 with external jobid 9149115.
+
+[Thu Dec  5 08:44:21 2019]
+rule mergeMatrix:
+    input: matrix/chr3-0.matrix, matrix/chr3-1.matrix, matrix/chr3-2.matrix, matrix/chr3-3.matrix, matrix/chr3-4.matrix, matrix/chr3-5.matrix, matrix/chr3-6.matrix, matrix/chr3-7.matrix, matrix/chr3-8.matrix, matrix/chr3-9.matrix, matrix/chr3-10.matrix, matrix/chr3-11.matrix, matrix/chr3-12.matrix, matrix/chr3-13.matrix, matrix/chr3-14.matrix, matrix/chr3-15.matrix, matrix/chr3-16.matrix, matrix/chr3-17.matrix, matrix/chr3-18.matrix, matrix/chr3-19.matrix, matrix/chr3-20.matrix, matrix/chr3-21.matrix, matrix/chr3-22.matrix, matrix/chr3-23.matrix
+    output: chr3.matrix
+    jobid: 27
+    reason: Missing output files: chr3.matrix
+    wildcards: chrom=chr3
+    threads: 4
+
+Submitted DRMAA job 27 with external jobid 9149116.
+
+[Thu Dec  5 08:44:21 2019]
+rule mergeEBcache:
+    input: cache/chr13-0.cache, cache/chr13-1.cache, cache/chr13-2.cache, cache/chr13-3.cache, cache/chr13-4.cache, cache/chr13-5.cache, cache/chr13-6.cache, cache/chr13-7.cache, cache/chr13-8.cache, cache/chr13-9.cache, cache/chr13-10.cache, cache/chr13-11.cache, cache/chr13-12.cache, cache/chr13-13.cache, cache/chr13-14.cache, cache/chr13-15.cache, cache/chr13-16.cache, cache/chr13-17.cache, cache/chr13-18.cache, cache/chr13-19.cache, cache/chr13-20.cache, cache/chr13-21.cache, cache/chr13-22.cache, cache/chr13-23.cache
+    output: chr13.cache
+    jobid: 13
+    reason: Missing output files: chr13.cache
+    wildcards: chrom=chr13
+    threads: 4
+
+Submitted DRMAA job 13 with external jobid 9149117.
+
+[Thu Dec  5 08:44:21 2019]
+rule mergeMatrix:
+    input: matrix/chr7-0.matrix, matrix/chr7-1.matrix, matrix/chr7-2.matrix, matrix/chr7-3.matrix, matrix/chr7-4.matrix, matrix/chr7-5.matrix, matrix/chr7-6.matrix, matrix/chr7-7.matrix, matrix/chr7-8.matrix, matrix/chr7-9.matrix, matrix/chr7-10.matrix, matrix/chr7-11.matrix, matrix/chr7-12.matrix, matrix/chr7-13.matrix, matrix/chr7-14.matrix, matrix/chr7-15.matrix, matrix/chr7-16.matrix, matrix/chr7-17.matrix, matrix/chr7-18.matrix, matrix/chr7-19.matrix, matrix/chr7-20.matrix, matrix/chr7-21.matrix, matrix/chr7-22.matrix, matrix/chr7-23.matrix
+    output: chr7.matrix
+    jobid: 31
+    reason: Missing output files: chr7.matrix
+    wildcards: chrom=chr7
+    threads: 4
+
+Submitted DRMAA job 31 with external jobid 9149118.
+
+[Thu Dec  5 08:44:22 2019]
+rule mergeEBcache:
+    input: cache/chr22-0.cache, cache/chr22-1.cache, cache/chr22-2.cache, cache/chr22-3.cache, cache/chr22-4.cache, cache/chr22-5.cache, cache/chr22-6.cache, cache/chr22-7.cache, cache/chr22-8.cache, cache/chr22-9.cache, cache/chr22-10.cache, cache/chr22-11.cache, cache/chr22-12.cache, cache/chr22-13.cache, cache/chr22-14.cache, cache/chr22-15.cache, cache/chr22-16.cache, cache/chr22-17.cache, cache/chr22-18.cache, cache/chr22-19.cache, cache/chr22-20.cache, cache/chr22-21.cache, cache/chr22-22.cache, cache/chr22-23.cache
+    output: chr22.cache
+    jobid: 22
+    reason: Missing output files: chr22.cache
+    wildcards: chrom=chr22
+    threads: 4
+
+Submitted DRMAA job 22 with external jobid 9149119.
+
+[Thu Dec  5 08:44:22 2019]
+rule mergeEBcache:
+    input: cache/chr15-0.cache, cache/chr15-1.cache, cache/chr15-2.cache, cache/chr15-3.cache, cache/chr15-4.cache, cache/chr15-5.cache, cache/chr15-6.cache, cache/chr15-7.cache, cache/chr15-8.cache, cache/chr15-9.cache, cache/chr15-10.cache, cache/chr15-11.cache, cache/chr15-12.cache, cache/chr15-13.cache, cache/chr15-14.cache, cache/chr15-15.cache, cache/chr15-16.cache, cache/chr15-17.cache, cache/chr15-18.cache, cache/chr15-19.cache, cache/chr15-20.cache, cache/chr15-21.cache, cache/chr15-22.cache, cache/chr15-23.cache
+    output: chr15.cache
+    jobid: 15
+    reason: Missing output files: chr15.cache
+    wildcards: chrom=chr15
+    threads: 4
+
+Submitted DRMAA job 15 with external jobid 9149120.
+
+[Thu Dec  5 08:44:22 2019]
+rule mergeMatrix:
+    input: matrix/chr16-0.matrix, matrix/chr16-1.matrix, matrix/chr16-2.matrix, matrix/chr16-3.matrix, matrix/chr16-4.matrix, matrix/chr16-5.matrix, matrix/chr16-6.matrix, matrix/chr16-7.matrix, matrix/chr16-8.matrix, matrix/chr16-9.matrix, matrix/chr16-10.matrix, matrix/chr16-11.matrix, matrix/chr16-12.matrix, matrix/chr16-13.matrix, matrix/chr16-14.matrix, matrix/chr16-15.matrix, matrix/chr16-16.matrix, matrix/chr16-17.matrix, matrix/chr16-18.matrix, matrix/chr16-19.matrix, matrix/chr16-20.matrix, matrix/chr16-21.matrix, matrix/chr16-22.matrix, matrix/chr16-23.matrix
+    output: chr16.matrix
+    jobid: 40
+    reason: Missing output files: chr16.matrix
+    wildcards: chrom=chr16
+    threads: 4
+
+Submitted DRMAA job 40 with external jobid 9149121.
+[Thu Dec  5 08:44:29 2019]
+Error in rule mergeMatrix:
+    jobid: 48
+    output: chrY.matrix
+
+Error executing rule mergeMatrix on cluster (jobid: 48, external: 9149097, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.flfbhbf6/snakejob.mergeMatrix.48.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 08:44:56 2019]
+Error in rule EBcache:
+    jobid: 601
+    output: cache/chrY-0.cache
+    log: logs/chrY-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 601, external: 9149084, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.flfbhbf6/snakejob.EBcache.601.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 08:44:56 2019]
+Error in rule EBcache:
+    jobid: 603
+    output: cache/chrY-2.cache
+    log: logs/chrY-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 603, external: 9149092, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.flfbhbf6/snakejob.EBcache.603.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 08:44:57 2019]
+Error in rule EBcache:
+    jobid: 604
+    output: cache/chrY-3.cache
+    log: logs/chrY-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 604, external: 9149098, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.flfbhbf6/snakejob.EBcache.604.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 08:44:58 2019]
+Error in rule EBcache:
+    jobid: 602
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 602, external: 9149109, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.flfbhbf6/snakejob.EBcache.602.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 08:44:58 2019]
+Error in rule EBcache:
+    jobid: 624
+    output: cache/chrY-23.cache
+    log: logs/chrY-23.AB.log (check log file(s) for error message)
+    conda-env: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/conda/9a278d50
+
+Error executing rule EBcache on cluster (jobid: 624, external: 9149110, jobscript: /fast/work/groups/ag_damm/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/.snakemake/tmp.flfbhbf6/snakejob.EBcache.624.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Thu Dec  5 08:45:26 2019]
+Finished job 21.
+1 of 51 steps (2%) done
+[Thu Dec  5 08:45:52 2019]
+Finished job 45.
+2 of 51 steps (4%) done
+[Thu Dec  5 08:45:54 2019]
+Finished job 18.
+3 of 51 steps (6%) done
+[Thu Dec  5 08:45:55 2019]
+Finished job 13.
+4 of 51 steps (8%) done
+[Thu Dec  5 08:46:08 2019]
+Finished job 22.
+5 of 51 steps (10%) done
+[Thu Dec  5 08:46:33 2019]
+Finished job 20.
+6 of 51 steps (12%) done
+[Thu Dec  5 08:46:46 2019]
+Finished job 42.
+7 of 51 steps (14%) done
+[Thu Dec  5 08:46:58 2019]
+Finished job 14.
+8 of 51 steps (16%) done
+[Thu Dec  5 08:46:58 2019]
+Finished job 8.
+9 of 51 steps (18%) done
+[Thu Dec  5 08:46:59 2019]
+Finished job 37.
+10 of 51 steps (20%) done
+[Thu Dec  5 08:47:13 2019]
+Finished job 23.
+11 of 51 steps (22%) done
+[Thu Dec  5 08:47:14 2019]
+Finished job 15.
+12 of 51 steps (24%) done
+[Thu Dec  5 08:47:24 2019]
+Finished job 4.
+13 of 51 steps (25%) done
+[Thu Dec  5 08:47:25 2019]
+Finished job 46.
+14 of 51 steps (27%) done
+[Thu Dec  5 08:47:38 2019]
+Finished job 9.
+15 of 51 steps (29%) done
+[Thu Dec  5 08:47:49 2019]
+Finished job 44.
+16 of 51 steps (31%) done
+[Thu Dec  5 08:48:01 2019]
+Finished job 10.
+17 of 51 steps (33%) done
+[Thu Dec  5 08:48:01 2019]
+Finished job 6.
+18 of 51 steps (35%) done
+[Thu Dec  5 08:48:02 2019]
+Finished job 16.
+19 of 51 steps (37%) done
+[Thu Dec  5 08:48:02 2019]
+Finished job 5.
+20 of 51 steps (39%) done
+[Thu Dec  5 08:48:38 2019]
+Finished job 38.
+21 of 51 steps (41%) done
+[Thu Dec  5 08:48:38 2019]
+Finished job 17.
+22 of 51 steps (43%) done
+[Thu Dec  5 08:48:49 2019]
+Finished job 7.
+23 of 51 steps (45%) done
+[Thu Dec  5 08:48:49 2019]
+Finished job 3.
+24 of 51 steps (47%) done
+[Thu Dec  5 08:48:50 2019]
+Finished job 32.
+25 of 51 steps (49%) done
+[Thu Dec  5 08:49:01 2019]
+Finished job 19.
+26 of 51 steps (51%) done
+[Thu Dec  5 08:49:13 2019]
+Finished job 12.
+27 of 51 steps (53%) done
+[Thu Dec  5 08:49:23 2019]
+Finished job 39.
+28 of 51 steps (55%) done
+[Thu Dec  5 08:49:24 2019]
+Finished job 11.
+29 of 51 steps (57%) done
+[Thu Dec  5 08:49:34 2019]
+Finished job 47.
+30 of 51 steps (59%) done
+[Thu Dec  5 08:49:34 2019]
+Finished job 28.
+31 of 51 steps (61%) done
+[Thu Dec  5 08:49:56 2019]
+Finished job 34.
+32 of 51 steps (63%) done
+[Thu Dec  5 08:50:18 2019]
+Finished job 30.
+33 of 51 steps (65%) done
+[Thu Dec  5 08:50:29 2019]
+Finished job 40.
+34 of 51 steps (67%) done
+[Thu Dec  5 08:50:50 2019]
+Finished job 33.
+35 of 51 steps (69%) done
+[Thu Dec  5 08:51:21 2019]
+Finished job 29.
+36 of 51 steps (71%) done
+[Thu Dec  5 08:51:21 2019]
+Finished job 31.
+37 of 51 steps (73%) done
+[Thu Dec  5 08:51:31 2019]
+Finished job 36.
+38 of 51 steps (75%) done
+[Thu Dec  5 08:52:01 2019]
+Finished job 35.
+39 of 51 steps (76%) done
+[Thu Dec  5 08:52:11 2019]
+Finished job 27.
+40 of 51 steps (78%) done
+[Thu Dec  5 08:53:11 2019]
+Finished job 41.
+41 of 51 steps (80%) done
+[Thu Dec  5 08:53:11 2019]
+Finished job 43.
+42 of 51 steps (82%) done

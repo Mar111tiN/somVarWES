@@ -86,4 +86,5 @@ pipe_cmd = f"{pileup_cmd} | cut -f $({pon2cols} < {pon_list}) | {cleanpileup} | 
 show_command(pipe_cmd, multi=False)
 shell(pipe_cmd)
 # cleanup if matrix file was generated
+shell(f"rm {bed_file}")
 show_output(f"Matrix generation for split {i} of {chrom} done! File saved to {matrix_file}", color='success', time=True)
