@@ -1,0 +1,75 @@
+def get_sed(w):
+    '''
+    adjusts the sed command for the fasta.genome generation depending on the current genome build
+    '''
+
+    if config['ref']['build'] == 'hg19':
+        sed_cmd = "/^>/s/^>([^. ]*)\\.?1? [^ ]+ .*:(.*):1$/\\1\\t\\2/p"
+    elif config['ref']['build'] == 'hg38':
+        sed_cmd = "/^>.*LN.*$/s/^>([^. ]*).*LN:([0-9]+) .*$/\\1\\t\\2/p"
+    return sed_cmd
+
+
+rule make_ref_genome:
+    # creates ref-genome if not available and outputs a gen_ref.done flag in the respective folder
+    output:
+        touch(os.path.join(full_path('genome_path'), 'gen_ref.done'))
+    threads:
+        config['alignment']['threads']
+    params:
+        _dict = full_path('genome').replace('.fasta', '.dict').replace('.fa', '.dict'),
+        sed_cmd = get_sed,
+        refgen = full_path('genome')
+    conda:
+        "../env/align-env.yml"
+    message:
+        "Genome indexed by bwa"
+    shell:
+        "sed -nr '{params.sed_cmd}' < {params.refgen} > {params.refgen}.genome;"
+        "picard CreateSequenceDictionary REFERENCE={params.refgen} OUTPUT={params._dict}; "
+        "bwa index {params.refgen}; "
+        "samtools faidx {params.refgen}"
+
+rule map_ubam:
+    input:
+        bam = "ubam/{sample}_{type}.{split}.bam",
+        genome = os.path.join(full_path('genome_path'), 'gen_ref.done')
+    output:
+        "mapped/{sample}_{type}.{split}.bam"
+    log:
+        "logs/mapped/{sample}_{type}.{split}.log"
+    threads:
+        config['alignment']['threads'] + 4
+    conda:
+        "../env/align-env.yml"
+    params:
+        bwa_threads = config['alignment']['threads'],
+        refgen = full_path('genome'),
+        clip_overlap = "TRUE" if config['alignment']['clip_overlap'] else "FALSE",
+        alignment_strategy = config['alignment']['strategy'],
+        deflater = "use_jdk_deflater=true use_jdk_inflater=true" if config['alignment']['use_jdk'] else ""
+
+    shell:
+        "picard SamToFastq {params.deflater} "
+        "I={input.bam} FASTQ=/dev/stdout "
+        "ClIPPING_ATTRIBUTE=XT "        # use XT tag for clipping
+        "CLIPPING_ACTION=2 "             # base-quality of clipped bases is set to 2
+        "INTERLEAVE=TRUE "
+        "NON_PF=TRUE "
+        "TMP_DIR=$TMPDIR | "
+        # pipe to bwa mem
+        "bwa mem -M -t {params.bwa_threads} -p {params.refgen} /dev/stdin | "
+        "picard MergeBamAlignment R={params.refgen} "
+        "UNMAPPED_BAM={input.bam} "
+        "ALIGNED_BAM=/dev/stdin "
+        "O={output} "
+        "CREATE_INDEX=TRUE "
+        "ADD_MATE_CIGAR=TRUE "
+        "CLIP_ADAPTERS=FALSE "
+        "CLIP_OVERLAPPING_READS= {params.clip_overlap} "
+        "INCLUDE_SECONDARY_ALIGNMENTS=true "
+        "MAX_INSERTIONS_OR_DELETIONS=-1 "
+        "PRIMARY_ALIGNMENT_STRATEGY={params.alignment_strategy} "
+        "ATTRIBUTES_TO_RETAIN=XS "
+        "ATTRIBUTES_TO_RETAIN=RX "
+        "TMP_DIR=$TMPDIR "

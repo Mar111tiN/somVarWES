@@ -1,13 +1,31 @@
+def get_RG_info(w):
+    '''
+    gets the read-group information for SamToFastq from the config
+    '''
+    sample = f"{w.sample}_{w.type}"
+    platform = config['setup']['platform']
+    library = f"{config['setup']['library']}_{config['setup']['library_version']}"
+    # platform_unit = asdf
+    RG_info = f"--read-group-id={sample} --sample={sample} --platform={platform} --library={library}"
+    return RG_info
+
+
 rule ubamXT:
     input:
-        expand("fastq/{{sample}}_{{type}}_{read}.{{split}}.fastq.gz", read=config['samples']['reads'])
+        get_FastqToSam_input # gets two or three fastqs depending on Umi-setup
     output:
-        "ubam/{sample}_{type}_{read}.{split}.bam"
+        bam = "ubam/{sample}_{type}.{split}.bam",
+        metrix = "ubam/{sample}_{type}.{split}.metrix.txt"
     threads:
-        20
+        config['ubamXT']['threads']
+    log:
+        "logs/ubam/{sample}_{type}.{split}.log"
     conda:
-        "../env/ubam.yml"
+        "../env/ubam-env.yml"
     params:
-        umi = get_umi_params
+        read_group_info = get_RG_info,
+        read_structure = "+T +T +M" if config['setup']['UMI'] else "+T +T",
+        deflater = "use_jdk_deflater=true use_jdk_inflater=true" if config['ubamXT']['use_jdk'] else ""
     shell:
-        "picard FastqToSam FASTQ={input[0]} {input[1]} "
+        "fgbio FastqToBam -i {input} {params.read_group_info} -s --read-structure {params.read_structure} -o /dev/stdout| "
+        "picard MarkIlluminaAdapters {params.deflater} I=/dev/stdin O={output.bam} M={output.metrix} TMP_DIR=$TMPDIR"

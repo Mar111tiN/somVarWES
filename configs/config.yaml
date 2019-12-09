@@ -1,8 +1,10 @@
-inputdir: /fast/projects/damm_establish_ht_xs/work/demux_results/190905_A00643_0015_AHL3KHDMXX/  # source of fastq files (subfolders allowed)
-workdir: /fast/users/szyskam_c/scratch/projects/FDAHsplit # here your results are created
-snakedir: /fast/users/szyskam_c/snakes/projects/somVarWES
+inputdirs: 
+  - /fast/users/szyskam_c/work/testdata/somvar1
+  - /fast/users/szyskam_c/work/testdata/somvar2  # source of fastq files (subfolders allowed)
+workdir: /fast/users/szyskam_c/scratch/develop/FDAH1 # here your results are created
+snakedir: /fast/users/szyskam_c/snakes/develop/somVarWES
 samples: # here go all your samples
-  samplesheet: /fast/users/szyskam_c/snakes/projects/AML/configs/sample005.csv
+  samplesheet: /fast/users/szyskam_c/snakes/projects/somVarWES/configs/sample002.csv
   tumor:
     - A  # 
   normal:
@@ -10,14 +12,15 @@ samples: # here go all your samples
   reads:
     - R1
     - R2
-  separation: '_'
+  umi_barcode: index # suffix for the fastq containing the umi-barcode
 setup: 
-  run: PE
+  run: PE   # SE run is not implemented
   phred: 33
-  readlength: 150  # neccessary???
   library: SureSelect  # have to be found at bed_files/SureSelect/<build>/SS_<library_version>_<build>_<Padded | Covered>[_nochr].bed
   library_version: HAEv7
-  UMI: index  # suffix of the fastq file containing the UMI-barcode information | None if no Umis
+  platform: illumina
+  # platform_unit: 
+  UMI: True  # if UMI information should be used in pipeline
 
 #### ABSOLUTE PATHS ############
 paths:
@@ -48,7 +51,7 @@ ref:
     phase1k_indels: annotation/gatk/hg38/1000G_phase1.snps.high_confidence.hg38.vcf # seems to work instead of indels (acc. to GATK blog: https://gatkforums.broadinstitute.org/gatk/discussion/6800/known-sites-for-indel-realignment-and-bqsr-in-hg38-bundle)
     # bed_file: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Covered.bed
     # bed_file_pad: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Padded.bed
-#### TOOLS SECTION ##############
+#### TOOLS SECTION ##############fastq_list = []
 tools:
   gatk: gatk # 
   gatk3: java -jar /fast/users/szyskam_c/work/utils/gatk3.8/GenomeAnalysisTK.jar -T
@@ -69,39 +72,45 @@ scripts:
   pile2count: shell/pile2count.mawk
   matrix2EBinput: shell/matrix2EBinput.mawk
   makeponlist: shell/makeponlist.sh
-
+  reducematrix: shell/matrix_minus_sample.mawk
   # merge_anno: merge_anno.py
   # expand_info: shell/expand_info.sh
   
   # filter_csv: shell/filter_exome_wFlankingSeq.sh
 fastq:
-  threads: 4
+  threads: 20
   split_factor: 20 # split fastqs and run pipeline on split files --> merge before deduplication
 qc:
   samplefactor: 1
-trim:
+trim: # trimming induces misaligned fastqs (index fastq)
+  run: False # should only be used if UMI is not used
   program: trimmomatic
-  trimming: True
   threads: 24
-  adapters: configs/SureSelectXT.fa
+  adapters: info/SureSelectXT.fa
   mode: 
     - "AVGQUAL:20"
-    - "SLIDINGWINDOW:4:15"
-    - "LEADING:3"
-    - "ILLUMINACLIP:<adapter>:2:30:10"
+    # - "SLIDINGWINDOW:4:15"
+    # - "LEADING:3"
+    # - "ILLUMINACLIP:<adapter>:2:30:10"
   suffix:
     - "trim"  # suffix for paired output
     - "trim_UP" # suffix for unpaired output
+ubamXT:
+    threads: 8
+    use_jdk: True # use_jdk_in/deflater to avoid SIGSEV error
 alignment:
   tool: bwa
   threads: 16
+  clip_overlap: True
+  strategy: MostDistant  # alignment strategy for MergeBamAlignment
+  use_jdk: True
 bamindex:
   threads: 2
 tag_bam: # needs enough RAM for loading entire uncompressed index fastq into memory
   run: True
   max_mem: 30g # memory for java VM (30g seems neccessary - needs to be smaller than threads * vmem/thread)
 resplit_bam:
-  threads: 4
+  threads: 20
 dedup:
   threads: 4
 dedup_umi:
@@ -167,9 +176,9 @@ EBFilter:
   use_cache: False
   cache_folder: PoN/HAEv7_hg38_NovaSeq # path relative to mystatic path
   threads: 
-    makeEBcache: 24
+    makeEBcache: 20
     EBscore: 20
-    EBsplit_factor: 24 # into how many jobs is makeEBcache divided per chromosome
+    EBsplit_factor: 20 # into how many jobs is makeEBcache divided per chromosome
   params:
     sep: tab
     MAPQ: 20   # I guess this should be lower than the mapping quality used for mpileup or not?

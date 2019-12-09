@@ -11,12 +11,13 @@ rule filter_variants:
     script:
         "../scripts/filter.py"
 
+
 def reduce_regions(df, padding):
     '''
     takes a mutation list and returns a region list using padding
     overlapping regions are reduced to one using the gap strategy
     '''
-    
+
     df = df.sort_values('Start')
     df['Start'] = df['Start'] - padding
     df['End'] = df['End'] + padding
@@ -44,7 +45,7 @@ def mut2bed(mut_file, padding, bed_file):
     return bed_file
 
 
-get_bed_file(w, input):
+def get_bed_file(w, input):
     '''
     serves as a params function creating and returning the bed file for the samtools view
     '''
@@ -66,7 +67,7 @@ get_bed_file(w, input):
 #       params:
 #            bed = get_bed_file
 #     :
-#         
+
 #
 #
 #

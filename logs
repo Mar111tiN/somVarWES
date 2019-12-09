@@ -4832,3 +4832,1857 @@ Finished job 1148.
 [Thu Dec  5 17:24:06 2019]
 Finished job 1147.
 15 of 30 steps (50%) done
+You are now in an execute node
++ DRMAA=' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g'
++ DRMAA=' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/WES/9215258/ -j yes'
++ snakemake --unlock --rerun-incomplete
+Building DAG of jobs...
+Unlocking working directory.
++ snakemake --dag
++ dot -Tsvg
+/var/sge/default/spool/med0728/job_scripts/9215258: line 29: dax/dag.svg: No such file or directory
+Building DAG of jobs...
++ snakemake --use-conda --rerun-incomplete --drmaa ' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/WES/9215258/ -j yes' -j 4000 -p -r -k
+Building DAG of jobs...
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "/fast/users/szyskam_c/work/miniconda/envs/WES-env/lib/python3.6/threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "/fast/users/szyskam_c/work/miniconda/envs/WES-env/lib/python3.6/threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "/fast/users/szyskam_c/work/miniconda/envs/WES-env/lib/python3.6/site-packages/snakemake/executors.py", line 1207, in _wait_for_jobs
+    import drmaa
+ModuleNotFoundError: No module named 'drmaa'
+
+WorkflowError:
+Python support for DRMAA is not installed. Please install it, e.g. with easy_install3 --user drmaa
+You are now in an execute node
++ DRMAA=' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g'
++ DRMAA=' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/WES/9215260/ -j yes'
++ snakemake --unlock --rerun-incomplete
+Building DAG of jobs...
+Unlocking working directory.
++ dot -Tsvg
++ snakemake --dag
+/var/sge/default/spool/med0226/job_scripts/9215260: line 29: dax/dag.svg: No such file or directory
+Building DAG of jobs...
++ snakemake --use-conda --rerun-incomplete --drmaa ' -pe smp {threads}  -l h_rt=04:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/WES/9215260/ -j yes' -j 4000 -p -r -k
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cluster nodes: 4000
+Job counts:
+	count	jobs
+	1	all
+	37	compress_split_fastq
+	38	map_ubam
+	2	merge_bam
+	37	ubamXT
+	115
+
+[Mon Dec  9 17:28:50 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.12.fastq
+    output: fastq/002_B_index.12.fastq.gz
+    jobid: 191
+    reason: Missing output files: fastq/002_B_index.12.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=12
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.12.fastq
+Submitted DRMAA job 191 with external jobid 9215261.
+
+[Mon Dec  9 17:28:50 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.11.fastq
+    output: fastq/002_A_index.11.fastq.gz
+    jobid: 128
+    reason: Missing output files: fastq/002_A_index.11.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=11
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.11.fastq
+Submitted DRMAA job 128 with external jobid 9215262.
+
+[Mon Dec  9 17:28:50 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.0.fastq
+    output: fastq/002_A_index.0.fastq.gz
+    jobid: 95
+    reason: Missing output files: fastq/002_A_index.0.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=0
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.0.fastq
+Submitted DRMAA job 95 with external jobid 9215263.
+
+[Mon Dec  9 17:28:50 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.13.fastq
+    output: fastq/002_B_index.13.fastq.gz
+    jobid: 194
+    reason: Missing output files: fastq/002_B_index.13.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=13
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.13.fastq
+Submitted DRMAA job 194 with external jobid 9215264.
+
+[Mon Dec  9 17:28:50 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.9.fastq
+    output: fastq/002_A_index.9.fastq.gz
+    jobid: 122
+    reason: Missing output files: fastq/002_A_index.9.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=9
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.9.fastq
+Submitted DRMAA job 122 with external jobid 9215265.
+
+[Mon Dec  9 17:28:50 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.1.fastq
+    output: fastq/002_B_index.1.fastq.gz
+    jobid: 158
+    reason: Missing output files: fastq/002_B_index.1.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=1
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.1.fastq
+Submitted DRMAA job 158 with external jobid 9215266.
+
+[Mon Dec  9 17:28:50 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.15.fastq
+    output: fastq/002_B_index.15.fastq.gz
+    jobid: 200
+    reason: Missing output files: fastq/002_B_index.15.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=15
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.15.fastq
+Submitted DRMAA job 200 with external jobid 9215267.
+
+[Mon Dec  9 17:28:50 2019]
+rule map_ubam:
+    input: ubam/002_A.3.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.3.bam
+    log: logs/mapped/002_A.3.log
+    jobid: 11
+    reason: Missing output files: mapped/002_A.3.bam
+    wildcards: sample=002, type=A, split=3
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.3.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.3.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.3.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 11 with external jobid 9215268.
+
+[Mon Dec  9 17:28:50 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.14.fastq
+    output: fastq/002_A_index.14.fastq.gz
+    jobid: 137
+    reason: Missing output files: fastq/002_A_index.14.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=14
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.14.fastq
+Submitted DRMAA job 137 with external jobid 9215269.
+
+[Mon Dec  9 17:28:50 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.8.fastq
+    output: fastq/002_B_index.8.fastq.gz
+    jobid: 179
+    reason: Missing output files: fastq/002_B_index.8.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=8
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.8.fastq
+Submitted DRMAA job 179 with external jobid 9215270.
+
+[Mon Dec  9 17:28:51 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.17.fastq
+    output: fastq/002_A_index.17.fastq.gz
+    jobid: 146
+    reason: Missing output files: fastq/002_A_index.17.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=17
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.17.fastq
+Submitted DRMAA job 146 with external jobid 9215271.
+
+[Mon Dec  9 17:28:51 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.2.fastq
+    output: fastq/002_A_index.2.fastq.gz
+    jobid: 101
+    reason: Missing output files: fastq/002_A_index.2.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=2
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.2.fastq
+Submitted DRMAA job 101 with external jobid 9215272.
+
+[Mon Dec  9 17:28:51 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.19.fastq
+    output: fastq/002_A_index.19.fastq.gz
+    jobid: 152
+    reason: Missing output files: fastq/002_A_index.19.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=19
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.19.fastq
+Submitted DRMAA job 152 with external jobid 9215273.
+
+[Mon Dec  9 17:28:51 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.18.fastq
+    output: fastq/002_A_index.18.fastq.gz
+    jobid: 149
+    reason: Missing output files: fastq/002_A_index.18.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=18
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.18.fastq
+Submitted DRMAA job 149 with external jobid 9215274.
+
+[Mon Dec  9 17:28:51 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.4.fastq
+    output: fastq/002_B_index.4.fastq.gz
+    jobid: 167
+    reason: Missing output files: fastq/002_B_index.4.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=4
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.4.fastq
+Submitted DRMAA job 167 with external jobid 9215275.
+
+[Mon Dec  9 17:28:51 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.5.fastq
+    output: fastq/002_B_index.5.fastq.gz
+    jobid: 170
+    reason: Missing output files: fastq/002_B_index.5.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=5
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.5.fastq
+Submitted DRMAA job 170 with external jobid 9215276.
+
+[Mon Dec  9 17:28:51 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.16.fastq
+    output: fastq/002_A_index.16.fastq.gz
+    jobid: 143
+    reason: Missing output files: fastq/002_A_index.16.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=16
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.16.fastq
+Submitted DRMAA job 143 with external jobid 9215277.
+
+[Mon Dec  9 17:28:51 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.3.fastq
+    output: fastq/002_B_index.3.fastq.gz
+    jobid: 164
+    reason: Missing output files: fastq/002_B_index.3.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=3
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.3.fastq
+Submitted DRMAA job 164 with external jobid 9215278.
+
+[Mon Dec  9 17:28:51 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.7.fastq
+    output: fastq/002_B_index.7.fastq.gz
+    jobid: 176
+    reason: Missing output files: fastq/002_B_index.7.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=7
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.7.fastq
+Submitted DRMAA job 176 with external jobid 9215279.
+
+[Mon Dec  9 17:28:51 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.8.fastq
+    output: fastq/002_A_index.8.fastq.gz
+    jobid: 119
+    reason: Missing output files: fastq/002_A_index.8.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=8
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.8.fastq
+Submitted DRMAA job 119 with external jobid 9215280.
+
+[Mon Dec  9 17:28:52 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.14.fastq
+    output: fastq/002_B_index.14.fastq.gz
+    jobid: 197
+    reason: Missing output files: fastq/002_B_index.14.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=14
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.14.fastq
+Submitted DRMAA job 197 with external jobid 9215281.
+
+[Mon Dec  9 17:28:52 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.18.fastq
+    output: fastq/002_B_index.18.fastq.gz
+    jobid: 209
+    reason: Missing output files: fastq/002_B_index.18.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=18
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.18.fastq
+Submitted DRMAA job 209 with external jobid 9215282.
+
+[Mon Dec  9 17:28:52 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.19.fastq
+    output: fastq/002_B_index.19.fastq.gz
+    jobid: 212
+    reason: Missing output files: fastq/002_B_index.19.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=19
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.19.fastq
+Submitted DRMAA job 212 with external jobid 9215283.
+
+[Mon Dec  9 17:28:52 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.2.fastq
+    output: fastq/002_B_index.2.fastq.gz
+    jobid: 161
+    reason: Missing output files: fastq/002_B_index.2.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=2
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.2.fastq
+Submitted DRMAA job 161 with external jobid 9215284.
+
+[Mon Dec  9 17:28:52 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.17.fastq
+    output: fastq/002_B_index.17.fastq.gz
+    jobid: 206
+    reason: Missing output files: fastq/002_B_index.17.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=17
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.17.fastq
+Submitted DRMAA job 206 with external jobid 9215285.
+
+[Mon Dec  9 17:28:52 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.5.fastq
+    output: fastq/002_A_index.5.fastq.gz
+    jobid: 110
+    reason: Missing output files: fastq/002_A_index.5.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=5
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.5.fastq
+Submitted DRMAA job 110 with external jobid 9215286.
+
+[Mon Dec  9 17:28:52 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.4.fastq
+    output: fastq/002_A_index.4.fastq.gz
+    jobid: 107
+    reason: Missing output files: fastq/002_A_index.4.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=4
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.4.fastq
+Submitted DRMAA job 107 with external jobid 9215287.
+
+[Mon Dec  9 17:28:52 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.6.fastq
+    output: fastq/002_B_index.6.fastq.gz
+    jobid: 173
+    reason: Missing output files: fastq/002_B_index.6.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=6
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.6.fastq
+Submitted DRMAA job 173 with external jobid 9215288.
+
+[Mon Dec  9 17:28:52 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.7.fastq
+    output: fastq/002_A_index.7.fastq.gz
+    jobid: 116
+    reason: Missing output files: fastq/002_A_index.7.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=7
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.7.fastq
+Submitted DRMAA job 116 with external jobid 9215289.
+
+[Mon Dec  9 17:28:52 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.16.fastq
+    output: fastq/002_B_index.16.fastq.gz
+    jobid: 203
+    reason: Missing output files: fastq/002_B_index.16.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=16
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.16.fastq
+Submitted DRMAA job 203 with external jobid 9215290.
+
+[Mon Dec  9 17:28:53 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.0.fastq
+    output: fastq/002_B_index.0.fastq.gz
+    jobid: 155
+    reason: Missing output files: fastq/002_B_index.0.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=0
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.0.fastq
+Submitted DRMAA job 155 with external jobid 9215291.
+
+[Mon Dec  9 17:28:53 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.10.fastq
+    output: fastq/002_B_index.10.fastq.gz
+    jobid: 185
+    reason: Missing output files: fastq/002_B_index.10.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=10
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.10.fastq
+Submitted DRMAA job 185 with external jobid 9215292.
+
+[Mon Dec  9 17:28:53 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.12.fastq
+    output: fastq/002_A_index.12.fastq.gz
+    jobid: 131
+    reason: Missing output files: fastq/002_A_index.12.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=12
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.12.fastq
+Submitted DRMAA job 131 with external jobid 9215293.
+
+[Mon Dec  9 17:28:53 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.11.fastq
+    output: fastq/002_B_index.11.fastq.gz
+    jobid: 188
+    reason: Missing output files: fastq/002_B_index.11.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=11
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.11.fastq
+Submitted DRMAA job 188 with external jobid 9215294.
+
+[Mon Dec  9 17:28:53 2019]
+rule compress_split_fastq:
+    input: fastq/002_B_index.9.fastq
+    output: fastq/002_B_index.9.fastq.gz
+    jobid: 182
+    reason: Missing output files: fastq/002_B_index.9.fastq.gz
+    wildcards: sample=002, type=B, read=index, split=9
+    threads: 20
+
+pigz -5 -p 20 fastq/002_B_index.9.fastq
+Submitted DRMAA job 182 with external jobid 9215295.
+
+[Mon Dec  9 17:28:53 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.13.fastq
+    output: fastq/002_A_index.13.fastq.gz
+    jobid: 134
+    reason: Missing output files: fastq/002_A_index.13.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=13
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.13.fastq
+Submitted DRMAA job 134 with external jobid 9215296.
+
+[Mon Dec  9 17:28:53 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.15.fastq
+    output: fastq/002_A_index.15.fastq.gz
+    jobid: 140
+    reason: Missing output files: fastq/002_A_index.15.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=15
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.15.fastq
+Submitted DRMAA job 140 with external jobid 9215297.
+
+[Mon Dec  9 17:28:53 2019]
+rule compress_split_fastq:
+    input: fastq/002_A_index.1.fastq
+    output: fastq/002_A_index.1.fastq.gz
+    jobid: 98
+    reason: Missing output files: fastq/002_A_index.1.fastq.gz
+    wildcards: sample=002, type=A, read=index, split=1
+    threads: 20
+
+pigz -5 -p 20 fastq/002_A_index.1.fastq
+Submitted DRMAA job 98 with external jobid 9215298.
+[Mon Dec  9 17:29:26 2019]
+Finished job 191.
+1 of 115 steps (0.87%) done
+
+[Mon Dec  9 17:29:26 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.12.fastq.gz, fastq/002_B_R2.12.fastq.gz, fastq/002_B_index.12.fastq.gz
+    output: ubam/002_B.12.bam, ubam/002_B.12.metrix.txt
+    log: logs/ubam/002_B.12.log
+    jobid: 85
+    reason: Missing output files: ubam/002_B.12.bam; Input files updated by another job: fastq/002_B_index.12.fastq.gz
+    wildcards: sample=002, type=B, split=12
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.12.fastq.gz fastq/002_B_R2.12.fastq.gz fastq/002_B_index.12.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.12.bam M=ubam/002_B.12.metrix.txt TMP_DIR=$TMPDIR
+[Mon Dec  9 17:29:26 2019]
+Finished job 128.
+2 of 115 steps (2%) done
+Submitted DRMAA job 85 with external jobid 9215299.
+[Mon Dec  9 17:29:26 2019]
+Finished job 95.
+3 of 115 steps (3%) done
+
+[Mon Dec  9 17:29:26 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.11.fastq.gz, fastq/002_A_R2.11.fastq.gz, fastq/002_A_index.11.fastq.gz
+    output: ubam/002_A.11.bam, ubam/002_A.11.metrix.txt
+    log: logs/ubam/002_A.11.log
+    jobid: 64
+    reason: Missing output files: ubam/002_A.11.bam; Input files updated by another job: fastq/002_A_index.11.fastq.gz
+    wildcards: sample=002, type=A, split=11
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.11.fastq.gz fastq/002_A_R2.11.fastq.gz fastq/002_A_index.11.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.11.bam M=ubam/002_A.11.metrix.txt TMP_DIR=$TMPDIR
+[Mon Dec  9 17:29:26 2019]
+Finished job 194.
+4 of 115 steps (3%) done
+Submitted DRMAA job 64 with external jobid 9215300.
+
+[Mon Dec  9 17:29:26 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.0.fastq.gz, fastq/002_A_R2.0.fastq.gz, fastq/002_A_index.0.fastq.gz
+    output: ubam/002_A.0.bam, ubam/002_A.0.metrix.txt
+    log: logs/ubam/002_A.0.log
+    jobid: 52
+    reason: Missing output files: ubam/002_A.0.bam; Input files updated by another job: fastq/002_A_index.0.fastq.gz
+    wildcards: sample=002, type=A, split=0
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.0.fastq.gz fastq/002_A_R2.0.fastq.gz fastq/002_A_index.0.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.0.bam M=ubam/002_A.0.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 52 with external jobid 9215301.
+[Mon Dec  9 17:29:26 2019]
+Finished job 122.
+5 of 115 steps (4%) done
+
+[Mon Dec  9 17:29:26 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.13.fastq.gz, fastq/002_B_R2.13.fastq.gz, fastq/002_B_index.13.fastq.gz
+    output: ubam/002_B.13.bam, ubam/002_B.13.metrix.txt
+    log: logs/ubam/002_B.13.log
+    jobid: 86
+    reason: Missing output files: ubam/002_B.13.bam; Input files updated by another job: fastq/002_B_index.13.fastq.gz
+    wildcards: sample=002, type=B, split=13
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.13.fastq.gz fastq/002_B_R2.13.fastq.gz fastq/002_B_index.13.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.13.bam M=ubam/002_B.13.metrix.txt TMP_DIR=$TMPDIR
+[Mon Dec  9 17:29:26 2019]
+Finished job 158.
+6 of 115 steps (5%) done
+Submitted DRMAA job 86 with external jobid 9215302.
+
+[Mon Dec  9 17:29:26 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.9.fastq.gz, fastq/002_A_R2.9.fastq.gz, fastq/002_A_index.9.fastq.gz
+    output: ubam/002_A.9.bam, ubam/002_A.9.metrix.txt
+    log: logs/ubam/002_A.9.log
+    jobid: 62
+    reason: Missing output files: ubam/002_A.9.bam; Input files updated by another job: fastq/002_A_index.9.fastq.gz
+    wildcards: sample=002, type=A, split=9
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.9.fastq.gz fastq/002_A_R2.9.fastq.gz fastq/002_A_index.9.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.9.bam M=ubam/002_A.9.metrix.txt TMP_DIR=$TMPDIR
+[Mon Dec  9 17:29:26 2019]
+Finished job 200.
+7 of 115 steps (6%) done
+Submitted DRMAA job 62 with external jobid 9215303.
+[Mon Dec  9 17:29:26 2019]
+Finished job 137.
+8 of 115 steps (7%) done
+
+[Mon Dec  9 17:29:26 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.1.fastq.gz, fastq/002_B_R2.1.fastq.gz, fastq/002_B_index.1.fastq.gz
+    output: ubam/002_B.1.bam, ubam/002_B.1.metrix.txt
+    log: logs/ubam/002_B.1.log
+    jobid: 74
+    reason: Missing output files: ubam/002_B.1.bam; Input files updated by another job: fastq/002_B_index.1.fastq.gz
+    wildcards: sample=002, type=B, split=1
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.1.fastq.gz fastq/002_B_R2.1.fastq.gz fastq/002_B_index.1.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.1.bam M=ubam/002_B.1.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 74 with external jobid 9215304.
+
+[Mon Dec  9 17:29:26 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.15.fastq.gz, fastq/002_B_R2.15.fastq.gz, fastq/002_B_index.15.fastq.gz
+    output: ubam/002_B.15.bam, ubam/002_B.15.metrix.txt
+    log: logs/ubam/002_B.15.log
+    jobid: 88
+    reason: Missing output files: ubam/002_B.15.bam; Input files updated by another job: fastq/002_B_index.15.fastq.gz
+    wildcards: sample=002, type=B, split=15
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.15.fastq.gz fastq/002_B_R2.15.fastq.gz fastq/002_B_index.15.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.15.bam M=ubam/002_B.15.metrix.txt TMP_DIR=$TMPDIR
+[Mon Dec  9 17:29:26 2019]
+Finished job 179.
+9 of 115 steps (8%) done
+Submitted DRMAA job 88 with external jobid 9215305.
+
+[Mon Dec  9 17:29:26 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.14.fastq.gz, fastq/002_A_R2.14.fastq.gz, fastq/002_A_index.14.fastq.gz
+    output: ubam/002_A.14.bam, ubam/002_A.14.metrix.txt
+    log: logs/ubam/002_A.14.log
+    jobid: 67
+    reason: Missing output files: ubam/002_A.14.bam; Input files updated by another job: fastq/002_A_index.14.fastq.gz
+    wildcards: sample=002, type=A, split=14
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.14.fastq.gz fastq/002_A_R2.14.fastq.gz fastq/002_A_index.14.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.14.bam M=ubam/002_A.14.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 67 with external jobid 9215306.
+
+[Mon Dec  9 17:29:26 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.8.fastq.gz, fastq/002_B_R2.8.fastq.gz, fastq/002_B_index.8.fastq.gz
+    output: ubam/002_B.8.bam, ubam/002_B.8.metrix.txt
+    log: logs/ubam/002_B.8.log
+    jobid: 81
+    reason: Missing output files: ubam/002_B.8.bam; Input files updated by another job: fastq/002_B_index.8.fastq.gz
+    wildcards: sample=002, type=B, split=8
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.8.fastq.gz fastq/002_B_R2.8.fastq.gz fastq/002_B_index.8.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.8.bam M=ubam/002_B.8.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 81 with external jobid 9215307.
+[Mon Dec  9 17:29:27 2019]
+Finished job 146.
+10 of 115 steps (9%) done
+
+[Mon Dec  9 17:29:27 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.17.fastq.gz, fastq/002_A_R2.17.fastq.gz, fastq/002_A_index.17.fastq.gz
+    output: ubam/002_A.17.bam, ubam/002_A.17.metrix.txt
+    log: logs/ubam/002_A.17.log
+    jobid: 70
+    reason: Missing output files: ubam/002_A.17.bam; Input files updated by another job: fastq/002_A_index.17.fastq.gz
+    wildcards: sample=002, type=A, split=17
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.17.fastq.gz fastq/002_A_R2.17.fastq.gz fastq/002_A_index.17.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.17.bam M=ubam/002_A.17.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 70 with external jobid 9215308.
+[Mon Dec  9 17:29:27 2019]
+Finished job 101.
+11 of 115 steps (10%) done
+
+[Mon Dec  9 17:29:27 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.2.fastq.gz, fastq/002_A_R2.2.fastq.gz, fastq/002_A_index.2.fastq.gz
+    output: ubam/002_A.2.bam, ubam/002_A.2.metrix.txt
+    log: logs/ubam/002_A.2.log
+    jobid: 55
+    reason: Missing output files: ubam/002_A.2.bam; Input files updated by another job: fastq/002_A_index.2.fastq.gz
+    wildcards: sample=002, type=A, split=2
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.2.fastq.gz fastq/002_A_R2.2.fastq.gz fastq/002_A_index.2.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.2.bam M=ubam/002_A.2.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 55 with external jobid 9215309.
+[Mon Dec  9 17:29:27 2019]
+Finished job 152.
+12 of 115 steps (10%) done
+
+[Mon Dec  9 17:29:27 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.19.fastq.gz, fastq/002_A_R2.19.fastq.gz, fastq/002_A_index.19.fastq.gz
+    output: ubam/002_A.19.bam, ubam/002_A.19.metrix.txt
+    log: logs/ubam/002_A.19.log
+    jobid: 72
+    reason: Missing output files: ubam/002_A.19.bam; Input files updated by another job: fastq/002_A_index.19.fastq.gz
+    wildcards: sample=002, type=A, split=19
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.19.fastq.gz fastq/002_A_R2.19.fastq.gz fastq/002_A_index.19.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.19.bam M=ubam/002_A.19.metrix.txt TMP_DIR=$TMPDIR
+[Mon Dec  9 17:29:27 2019]
+Finished job 149.
+13 of 115 steps (11%) done
+Submitted DRMAA job 72 with external jobid 9215310.
+
+[Mon Dec  9 17:29:27 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.18.fastq.gz, fastq/002_A_R2.18.fastq.gz, fastq/002_A_index.18.fastq.gz
+    output: ubam/002_A.18.bam, ubam/002_A.18.metrix.txt
+    log: logs/ubam/002_A.18.log
+    jobid: 71
+    reason: Missing output files: ubam/002_A.18.bam; Input files updated by another job: fastq/002_A_index.18.fastq.gz
+    wildcards: sample=002, type=A, split=18
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.18.fastq.gz fastq/002_A_R2.18.fastq.gz fastq/002_A_index.18.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.18.bam M=ubam/002_A.18.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 71 with external jobid 9215311.
+[Mon Dec  9 17:29:27 2019]
+Finished job 167.
+14 of 115 steps (12%) done
+
+[Mon Dec  9 17:29:27 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.4.fastq.gz, fastq/002_B_R2.4.fastq.gz, fastq/002_B_index.4.fastq.gz
+    output: ubam/002_B.4.bam, ubam/002_B.4.metrix.txt
+    log: logs/ubam/002_B.4.log
+    jobid: 77
+    reason: Missing output files: ubam/002_B.4.bam; Input files updated by another job: fastq/002_B_index.4.fastq.gz
+    wildcards: sample=002, type=B, split=4
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.4.fastq.gz fastq/002_B_R2.4.fastq.gz fastq/002_B_index.4.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.4.bam M=ubam/002_B.4.metrix.txt TMP_DIR=$TMPDIR
+[Mon Dec  9 17:29:27 2019]
+Finished job 170.
+15 of 115 steps (13%) done
+Submitted DRMAA job 77 with external jobid 9215312.
+
+[Mon Dec  9 17:29:27 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.5.fastq.gz, fastq/002_B_R2.5.fastq.gz, fastq/002_B_index.5.fastq.gz
+    output: ubam/002_B.5.bam, ubam/002_B.5.metrix.txt
+    log: logs/ubam/002_B.5.log
+    jobid: 78
+    reason: Missing output files: ubam/002_B.5.bam; Input files updated by another job: fastq/002_B_index.5.fastq.gz
+    wildcards: sample=002, type=B, split=5
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.5.fastq.gz fastq/002_B_R2.5.fastq.gz fastq/002_B_index.5.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.5.bam M=ubam/002_B.5.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 78 with external jobid 9215313.
+[Mon Dec  9 17:29:27 2019]
+Finished job 143.
+16 of 115 steps (14%) done
+
+[Mon Dec  9 17:29:27 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.16.fastq.gz, fastq/002_A_R2.16.fastq.gz, fastq/002_A_index.16.fastq.gz
+    output: ubam/002_A.16.bam, ubam/002_A.16.metrix.txt
+    log: logs/ubam/002_A.16.log
+    jobid: 69
+    reason: Missing output files: ubam/002_A.16.bam; Input files updated by another job: fastq/002_A_index.16.fastq.gz
+    wildcards: sample=002, type=A, split=16
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.16.fastq.gz fastq/002_A_R2.16.fastq.gz fastq/002_A_index.16.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.16.bam M=ubam/002_A.16.metrix.txt TMP_DIR=$TMPDIR
+[Mon Dec  9 17:29:27 2019]
+Finished job 164.
+17 of 115 steps (15%) done
+Submitted DRMAA job 69 with external jobid 9215314.
+
+[Mon Dec  9 17:29:27 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.3.fastq.gz, fastq/002_B_R2.3.fastq.gz, fastq/002_B_index.3.fastq.gz
+    output: ubam/002_B.3.bam, ubam/002_B.3.metrix.txt
+    log: logs/ubam/002_B.3.log
+    jobid: 76
+    reason: Missing output files: ubam/002_B.3.bam; Input files updated by another job: fastq/002_B_index.3.fastq.gz
+    wildcards: sample=002, type=B, split=3
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.3.fastq.gz fastq/002_B_R2.3.fastq.gz fastq/002_B_index.3.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.3.bam M=ubam/002_B.3.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 76 with external jobid 9215315.
+[Mon Dec  9 17:29:27 2019]
+Finished job 176.
+18 of 115 steps (16%) done
+
+[Mon Dec  9 17:29:27 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.7.fastq.gz, fastq/002_B_R2.7.fastq.gz, fastq/002_B_index.7.fastq.gz
+    output: ubam/002_B.7.bam, ubam/002_B.7.metrix.txt
+    log: logs/ubam/002_B.7.log
+    jobid: 80
+    reason: Missing output files: ubam/002_B.7.bam; Input files updated by another job: fastq/002_B_index.7.fastq.gz
+    wildcards: sample=002, type=B, split=7
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.7.fastq.gz fastq/002_B_R2.7.fastq.gz fastq/002_B_index.7.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.7.bam M=ubam/002_B.7.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 80 with external jobid 9215316.
+[Mon Dec  9 17:29:28 2019]
+Finished job 119.
+19 of 115 steps (17%) done
+
+[Mon Dec  9 17:29:28 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.8.fastq.gz, fastq/002_A_R2.8.fastq.gz, fastq/002_A_index.8.fastq.gz
+    output: ubam/002_A.8.bam, ubam/002_A.8.metrix.txt
+    log: logs/ubam/002_A.8.log
+    jobid: 61
+    reason: Missing output files: ubam/002_A.8.bam; Input files updated by another job: fastq/002_A_index.8.fastq.gz
+    wildcards: sample=002, type=A, split=8
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.8.fastq.gz fastq/002_A_R2.8.fastq.gz fastq/002_A_index.8.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.8.bam M=ubam/002_A.8.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 61 with external jobid 9215317.
+[Mon Dec  9 17:29:28 2019]
+Finished job 197.
+20 of 115 steps (17%) done
+[Mon Dec  9 17:29:28 2019]
+Finished job 209.
+21 of 115 steps (18%) done
+[Mon Dec  9 17:29:28 2019]
+Finished job 212.
+22 of 115 steps (19%) done
+[Mon Dec  9 17:29:28 2019]
+Finished job 161.
+23 of 115 steps (20%) done
+[Mon Dec  9 17:29:28 2019]
+Finished job 206.
+24 of 115 steps (21%) done
+[Mon Dec  9 17:29:28 2019]
+Finished job 110.
+25 of 115 steps (22%) done
+[Mon Dec  9 17:29:29 2019]
+Finished job 107.
+26 of 115 steps (23%) done
+[Mon Dec  9 17:29:29 2019]
+Finished job 173.
+27 of 115 steps (23%) done
+[Mon Dec  9 17:29:29 2019]
+Finished job 116.
+28 of 115 steps (24%) done
+[Mon Dec  9 17:29:29 2019]
+Finished job 203.
+29 of 115 steps (25%) done
+
+[Mon Dec  9 17:29:29 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.14.fastq.gz, fastq/002_B_R2.14.fastq.gz, fastq/002_B_index.14.fastq.gz
+    output: ubam/002_B.14.bam, ubam/002_B.14.metrix.txt
+    log: logs/ubam/002_B.14.log
+    jobid: 87
+    reason: Missing output files: ubam/002_B.14.bam; Input files updated by another job: fastq/002_B_index.14.fastq.gz
+    wildcards: sample=002, type=B, split=14
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.14.fastq.gz fastq/002_B_R2.14.fastq.gz fastq/002_B_index.14.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.14.bam M=ubam/002_B.14.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 87 with external jobid 9215318.
+
+[Mon Dec  9 17:29:29 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.7.fastq.gz, fastq/002_A_R2.7.fastq.gz, fastq/002_A_index.7.fastq.gz
+    output: ubam/002_A.7.bam, ubam/002_A.7.metrix.txt
+    log: logs/ubam/002_A.7.log
+    jobid: 60
+    reason: Missing output files: ubam/002_A.7.bam; Input files updated by another job: fastq/002_A_index.7.fastq.gz
+    wildcards: sample=002, type=A, split=7
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.7.fastq.gz fastq/002_A_R2.7.fastq.gz fastq/002_A_index.7.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.7.bam M=ubam/002_A.7.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 60 with external jobid 9215319.
+
+[Mon Dec  9 17:29:29 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.16.fastq.gz, fastq/002_B_R2.16.fastq.gz, fastq/002_B_index.16.fastq.gz
+    output: ubam/002_B.16.bam, ubam/002_B.16.metrix.txt
+    log: logs/ubam/002_B.16.log
+    jobid: 89
+    reason: Missing output files: ubam/002_B.16.bam; Input files updated by another job: fastq/002_B_index.16.fastq.gz
+    wildcards: sample=002, type=B, split=16
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.16.fastq.gz fastq/002_B_R2.16.fastq.gz fastq/002_B_index.16.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.16.bam M=ubam/002_B.16.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 89 with external jobid 9215320.
+
+[Mon Dec  9 17:29:29 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.5.fastq.gz, fastq/002_A_R2.5.fastq.gz, fastq/002_A_index.5.fastq.gz
+    output: ubam/002_A.5.bam, ubam/002_A.5.metrix.txt
+    log: logs/ubam/002_A.5.log
+    jobid: 58
+    reason: Missing output files: ubam/002_A.5.bam; Input files updated by another job: fastq/002_A_index.5.fastq.gz
+    wildcards: sample=002, type=A, split=5
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.5.fastq.gz fastq/002_A_R2.5.fastq.gz fastq/002_A_index.5.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.5.bam M=ubam/002_A.5.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 58 with external jobid 9215321.
+
+[Mon Dec  9 17:29:29 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.4.fastq.gz, fastq/002_A_R2.4.fastq.gz, fastq/002_A_index.4.fastq.gz
+    output: ubam/002_A.4.bam, ubam/002_A.4.metrix.txt
+    log: logs/ubam/002_A.4.log
+    jobid: 57
+    reason: Missing output files: ubam/002_A.4.bam; Input files updated by another job: fastq/002_A_index.4.fastq.gz
+    wildcards: sample=002, type=A, split=4
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.4.fastq.gz fastq/002_A_R2.4.fastq.gz fastq/002_A_index.4.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.4.bam M=ubam/002_A.4.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 57 with external jobid 9215322.
+
+[Mon Dec  9 17:29:29 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.6.fastq.gz, fastq/002_B_R2.6.fastq.gz, fastq/002_B_index.6.fastq.gz
+    output: ubam/002_B.6.bam, ubam/002_B.6.metrix.txt
+    log: logs/ubam/002_B.6.log
+    jobid: 79
+    reason: Missing output files: ubam/002_B.6.bam; Input files updated by another job: fastq/002_B_index.6.fastq.gz
+    wildcards: sample=002, type=B, split=6
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.6.fastq.gz fastq/002_B_R2.6.fastq.gz fastq/002_B_index.6.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.6.bam M=ubam/002_B.6.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 79 with external jobid 9215323.
+
+[Mon Dec  9 17:29:29 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.18.fastq.gz, fastq/002_B_R2.18.fastq.gz, fastq/002_B_index.18.fastq.gz
+    output: ubam/002_B.18.bam, ubam/002_B.18.metrix.txt
+    log: logs/ubam/002_B.18.log
+    jobid: 91
+    reason: Missing output files: ubam/002_B.18.bam; Input files updated by another job: fastq/002_B_index.18.fastq.gz
+    wildcards: sample=002, type=B, split=18
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.18.fastq.gz fastq/002_B_R2.18.fastq.gz fastq/002_B_index.18.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.18.bam M=ubam/002_B.18.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 91 with external jobid 9215324.
+
+[Mon Dec  9 17:29:29 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.19.fastq.gz, fastq/002_B_R2.19.fastq.gz, fastq/002_B_index.19.fastq.gz
+    output: ubam/002_B.19.bam, ubam/002_B.19.metrix.txt
+    log: logs/ubam/002_B.19.log
+    jobid: 92
+    reason: Missing output files: ubam/002_B.19.bam; Input files updated by another job: fastq/002_B_index.19.fastq.gz
+    wildcards: sample=002, type=B, split=19
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.19.fastq.gz fastq/002_B_R2.19.fastq.gz fastq/002_B_index.19.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.19.bam M=ubam/002_B.19.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 92 with external jobid 9215325.
+
+[Mon Dec  9 17:29:29 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.2.fastq.gz, fastq/002_B_R2.2.fastq.gz, fastq/002_B_index.2.fastq.gz
+    output: ubam/002_B.2.bam, ubam/002_B.2.metrix.txt
+    log: logs/ubam/002_B.2.log
+    jobid: 75
+    reason: Missing output files: ubam/002_B.2.bam; Input files updated by another job: fastq/002_B_index.2.fastq.gz
+    wildcards: sample=002, type=B, split=2
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.2.fastq.gz fastq/002_B_R2.2.fastq.gz fastq/002_B_index.2.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.2.bam M=ubam/002_B.2.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 75 with external jobid 9215326.
+
+[Mon Dec  9 17:29:29 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.17.fastq.gz, fastq/002_B_R2.17.fastq.gz, fastq/002_B_index.17.fastq.gz
+    output: ubam/002_B.17.bam, ubam/002_B.17.metrix.txt
+    log: logs/ubam/002_B.17.log
+    jobid: 90
+    reason: Missing output files: ubam/002_B.17.bam; Input files updated by another job: fastq/002_B_index.17.fastq.gz
+    wildcards: sample=002, type=B, split=17
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.17.fastq.gz fastq/002_B_R2.17.fastq.gz fastq/002_B_index.17.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.17.bam M=ubam/002_B.17.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 90 with external jobid 9215327.
+[Mon Dec  9 17:29:29 2019]
+Finished job 155.
+30 of 115 steps (26%) done
+[Mon Dec  9 17:29:29 2019]
+Finished job 185.
+31 of 115 steps (27%) done
+[Mon Dec  9 17:29:29 2019]
+Finished job 131.
+32 of 115 steps (28%) done
+[Mon Dec  9 17:29:29 2019]
+Finished job 188.
+33 of 115 steps (29%) done
+[Mon Dec  9 17:29:29 2019]
+Finished job 182.
+34 of 115 steps (30%) done
+[Mon Dec  9 17:29:30 2019]
+Finished job 134.
+35 of 115 steps (30%) done
+[Mon Dec  9 17:29:30 2019]
+Finished job 140.
+36 of 115 steps (31%) done
+[Mon Dec  9 17:29:30 2019]
+Finished job 98.
+37 of 115 steps (32%) done
+
+[Mon Dec  9 17:29:30 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.0.fastq.gz, fastq/002_B_R2.0.fastq.gz, fastq/002_B_index.0.fastq.gz
+    output: ubam/002_B.0.bam, ubam/002_B.0.metrix.txt
+    log: logs/ubam/002_B.0.log
+    jobid: 73
+    reason: Missing output files: ubam/002_B.0.bam; Input files updated by another job: fastq/002_B_index.0.fastq.gz
+    wildcards: sample=002, type=B, split=0
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.0.fastq.gz fastq/002_B_R2.0.fastq.gz fastq/002_B_index.0.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.0.bam M=ubam/002_B.0.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 73 with external jobid 9215328.
+
+[Mon Dec  9 17:29:30 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.11.fastq.gz, fastq/002_B_R2.11.fastq.gz, fastq/002_B_index.11.fastq.gz
+    output: ubam/002_B.11.bam, ubam/002_B.11.metrix.txt
+    log: logs/ubam/002_B.11.log
+    jobid: 84
+    reason: Missing output files: ubam/002_B.11.bam; Input files updated by another job: fastq/002_B_index.11.fastq.gz
+    wildcards: sample=002, type=B, split=11
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.11.fastq.gz fastq/002_B_R2.11.fastq.gz fastq/002_B_index.11.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.11.bam M=ubam/002_B.11.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 84 with external jobid 9215329.
+
+[Mon Dec  9 17:29:30 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.12.fastq.gz, fastq/002_A_R2.12.fastq.gz, fastq/002_A_index.12.fastq.gz
+    output: ubam/002_A.12.bam, ubam/002_A.12.metrix.txt
+    log: logs/ubam/002_A.12.log
+    jobid: 65
+    reason: Missing output files: ubam/002_A.12.bam; Input files updated by another job: fastq/002_A_index.12.fastq.gz
+    wildcards: sample=002, type=A, split=12
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.12.fastq.gz fastq/002_A_R2.12.fastq.gz fastq/002_A_index.12.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.12.bam M=ubam/002_A.12.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 65 with external jobid 9215330.
+
+[Mon Dec  9 17:29:30 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.15.fastq.gz, fastq/002_A_R2.15.fastq.gz, fastq/002_A_index.15.fastq.gz
+    output: ubam/002_A.15.bam, ubam/002_A.15.metrix.txt
+    log: logs/ubam/002_A.15.log
+    jobid: 68
+    reason: Missing output files: ubam/002_A.15.bam; Input files updated by another job: fastq/002_A_index.15.fastq.gz
+    wildcards: sample=002, type=A, split=15
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.15.fastq.gz fastq/002_A_R2.15.fastq.gz fastq/002_A_index.15.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.15.bam M=ubam/002_A.15.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 68 with external jobid 9215331.
+
+[Mon Dec  9 17:29:30 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.1.fastq.gz, fastq/002_A_R2.1.fastq.gz, fastq/002_A_index.1.fastq.gz
+    output: ubam/002_A.1.bam, ubam/002_A.1.metrix.txt
+    log: logs/ubam/002_A.1.log
+    jobid: 54
+    reason: Missing output files: ubam/002_A.1.bam; Input files updated by another job: fastq/002_A_index.1.fastq.gz
+    wildcards: sample=002, type=A, split=1
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.1.fastq.gz fastq/002_A_R2.1.fastq.gz fastq/002_A_index.1.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.1.bam M=ubam/002_A.1.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 54 with external jobid 9215332.
+
+[Mon Dec  9 17:29:30 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.9.fastq.gz, fastq/002_B_R2.9.fastq.gz, fastq/002_B_index.9.fastq.gz
+    output: ubam/002_B.9.bam, ubam/002_B.9.metrix.txt
+    log: logs/ubam/002_B.9.log
+    jobid: 82
+    reason: Missing output files: ubam/002_B.9.bam; Input files updated by another job: fastq/002_B_index.9.fastq.gz
+    wildcards: sample=002, type=B, split=9
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.9.fastq.gz fastq/002_B_R2.9.fastq.gz fastq/002_B_index.9.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.9.bam M=ubam/002_B.9.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 82 with external jobid 9215333.
+
+[Mon Dec  9 17:29:30 2019]
+rule ubamXT:
+    input: fastq/002_A_R1.13.fastq.gz, fastq/002_A_R2.13.fastq.gz, fastq/002_A_index.13.fastq.gz
+    output: ubam/002_A.13.bam, ubam/002_A.13.metrix.txt
+    log: logs/ubam/002_A.13.log
+    jobid: 66
+    reason: Missing output files: ubam/002_A.13.bam; Input files updated by another job: fastq/002_A_index.13.fastq.gz
+    wildcards: sample=002, type=A, split=13
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_A_R1.13.fastq.gz fastq/002_A_R2.13.fastq.gz fastq/002_A_index.13.fastq.gz --read-group-id=002_A --sample=002_A --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_A.13.bam M=ubam/002_A.13.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 66 with external jobid 9215334.
+
+[Mon Dec  9 17:29:30 2019]
+rule ubamXT:
+    input: fastq/002_B_R1.10.fastq.gz, fastq/002_B_R2.10.fastq.gz, fastq/002_B_index.10.fastq.gz
+    output: ubam/002_B.10.bam, ubam/002_B.10.metrix.txt
+    log: logs/ubam/002_B.10.log
+    jobid: 83
+    reason: Missing output files: ubam/002_B.10.bam; Input files updated by another job: fastq/002_B_index.10.fastq.gz
+    wildcards: sample=002, type=B, split=10
+    threads: 8
+
+fgbio FastqToBam -i fastq/002_B_R1.10.fastq.gz fastq/002_B_R2.10.fastq.gz fastq/002_B_index.10.fastq.gz --read-group-id=002_B --sample=002_B --platform=illumina --library=SureSelect_HAEv7 -s --read-structure +T +T +M -o /dev/stdout| picard MarkIlluminaAdapters use_jdk_deflater=true use_jdk_inflater=true I=/dev/stdin O=ubam/002_B.10.bam M=ubam/002_B.10.metrix.txt TMP_DIR=$TMPDIR
+Submitted DRMAA job 83 with external jobid 9215335.
+[Mon Dec  9 17:30:35 2019]
+Finished job 73.
+38 of 115 steps (33%) done
+
+[Mon Dec  9 17:30:35 2019]
+rule map_ubam:
+    input: ubam/002_B.0.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.0.bam
+    log: logs/mapped/002_B.0.log
+    jobid: 28
+    reason: Missing output files: mapped/002_B.0.bam; Input files updated by another job: ubam/002_B.0.bam
+    wildcards: sample=002, type=B, split=0
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.0.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.0.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.0.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 28 with external jobid 9215336.
+[Mon Dec  9 17:30:35 2019]
+Finished job 83.
+39 of 115 steps (34%) done
+
+[Mon Dec  9 17:30:35 2019]
+rule map_ubam:
+    input: ubam/002_B.10.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.10.bam
+    log: logs/mapped/002_B.10.log
+    jobid: 38
+    reason: Missing output files: mapped/002_B.10.bam; Input files updated by another job: ubam/002_B.10.bam
+    wildcards: sample=002, type=B, split=10
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.10.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.10.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.10.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 38 with external jobid 9215337.
+[Mon Dec  9 17:30:45 2019]
+Finished job 85.
+40 of 115 steps (35%) done
+
+[Mon Dec  9 17:30:45 2019]
+rule map_ubam:
+    input: ubam/002_B.12.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.12.bam
+    log: logs/mapped/002_B.12.log
+    jobid: 40
+    reason: Missing output files: mapped/002_B.12.bam; Input files updated by another job: ubam/002_B.12.bam
+    wildcards: sample=002, type=B, split=12
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.12.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.12.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.12.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 40 with external jobid 9215338.
+[Mon Dec  9 17:30:46 2019]
+Finished job 52.
+41 of 115 steps (36%) done
+
+[Mon Dec  9 17:30:46 2019]
+rule map_ubam:
+    input: ubam/002_A.0.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.0.bam
+    log: logs/mapped/002_A.0.log
+    jobid: 8
+    reason: Missing output files: mapped/002_A.0.bam; Input files updated by another job: ubam/002_A.0.bam
+    wildcards: sample=002, type=A, split=0
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.0.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.0.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.0.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 8 with external jobid 9215339.
+[Mon Dec  9 17:30:46 2019]
+Finished job 86.
+42 of 115 steps (37%) done
+
+[Mon Dec  9 17:30:46 2019]
+rule map_ubam:
+    input: ubam/002_B.13.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.13.bam
+    log: logs/mapped/002_B.13.log
+    jobid: 41
+    reason: Missing output files: mapped/002_B.13.bam; Input files updated by another job: ubam/002_B.13.bam
+    wildcards: sample=002, type=B, split=13
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.13.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.13.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.13.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 41 with external jobid 9215340.
+[Mon Dec  9 17:30:46 2019]
+Finished job 74.
+43 of 115 steps (37%) done
+
+[Mon Dec  9 17:30:46 2019]
+rule map_ubam:
+    input: ubam/002_B.1.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.1.bam
+    log: logs/mapped/002_B.1.log
+    jobid: 29
+    reason: Missing output files: mapped/002_B.1.bam; Input files updated by another job: ubam/002_B.1.bam
+    wildcards: sample=002, type=B, split=1
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.1.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.1.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.1.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+[Mon Dec  9 17:30:46 2019]
+Finished job 88.
+44 of 115 steps (38%) done
+Submitted DRMAA job 29 with external jobid 9215341.
+[Mon Dec  9 17:30:46 2019]
+Finished job 81.
+45 of 115 steps (39%) done
+
+[Mon Dec  9 17:30:46 2019]
+rule map_ubam:
+    input: ubam/002_B.8.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.8.bam
+    log: logs/mapped/002_B.8.log
+    jobid: 36
+    reason: Missing output files: mapped/002_B.8.bam; Input files updated by another job: ubam/002_B.8.bam
+    wildcards: sample=002, type=B, split=8
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.8.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.8.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.8.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 36 with external jobid 9215342.
+
+[Mon Dec  9 17:30:46 2019]
+rule map_ubam:
+    input: ubam/002_B.15.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.15.bam
+    log: logs/mapped/002_B.15.log
+    jobid: 43
+    reason: Missing output files: mapped/002_B.15.bam; Input files updated by another job: ubam/002_B.15.bam
+    wildcards: sample=002, type=B, split=15
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.15.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.15.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.15.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 43 with external jobid 9215343.
+[Mon Dec  9 17:30:47 2019]
+Finished job 55.
+46 of 115 steps (40%) done
+
+[Mon Dec  9 17:30:47 2019]
+rule map_ubam:
+    input: ubam/002_A.2.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.2.bam
+    log: logs/mapped/002_A.2.log
+    jobid: 10
+    reason: Missing output files: mapped/002_A.2.bam; Input files updated by another job: ubam/002_A.2.bam
+    wildcards: sample=002, type=A, split=2
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.2.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.2.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.2.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 10 with external jobid 9215344.
+[Mon Dec  9 17:30:47 2019]
+Finished job 77.
+47 of 115 steps (41%) done
+
+[Mon Dec  9 17:30:47 2019]
+rule map_ubam:
+    input: ubam/002_B.4.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.4.bam
+    log: logs/mapped/002_B.4.log
+    jobid: 32
+    reason: Missing output files: mapped/002_B.4.bam; Input files updated by another job: ubam/002_B.4.bam
+    wildcards: sample=002, type=B, split=4
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.4.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.4.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.4.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 32 with external jobid 9215345.
+[Mon Dec  9 17:30:47 2019]
+Finished job 78.
+48 of 115 steps (42%) done
+
+[Mon Dec  9 17:30:47 2019]
+rule map_ubam:
+    input: ubam/002_B.5.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.5.bam
+    log: logs/mapped/002_B.5.log
+    jobid: 33
+    reason: Missing output files: mapped/002_B.5.bam; Input files updated by another job: ubam/002_B.5.bam
+    wildcards: sample=002, type=B, split=5
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.5.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.5.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.5.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 33 with external jobid 9215346.
+[Mon Dec  9 17:30:47 2019]
+Finished job 69.
+49 of 115 steps (43%) done
+
+[Mon Dec  9 17:30:47 2019]
+rule map_ubam:
+    input: ubam/002_A.16.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.16.bam
+    log: logs/mapped/002_A.16.log
+    jobid: 24
+    reason: Missing output files: mapped/002_A.16.bam; Input files updated by another job: ubam/002_A.16.bam
+    wildcards: sample=002, type=A, split=16
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.16.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.16.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.16.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 24 with external jobid 9215347.
+[Mon Dec  9 17:30:47 2019]
+Finished job 76.
+50 of 115 steps (43%) done
+
+[Mon Dec  9 17:30:47 2019]
+rule map_ubam:
+    input: ubam/002_B.3.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.3.bam
+    log: logs/mapped/002_B.3.log
+    jobid: 31
+    reason: Missing output files: mapped/002_B.3.bam; Input files updated by another job: ubam/002_B.3.bam
+    wildcards: sample=002, type=B, split=3
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.3.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.3.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.3.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 31 with external jobid 9215348.
+[Mon Dec  9 17:30:47 2019]
+Finished job 80.
+51 of 115 steps (44%) done
+
+[Mon Dec  9 17:30:47 2019]
+rule map_ubam:
+    input: ubam/002_B.7.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.7.bam
+    log: logs/mapped/002_B.7.log
+    jobid: 35
+    reason: Missing output files: mapped/002_B.7.bam; Input files updated by another job: ubam/002_B.7.bam
+    wildcards: sample=002, type=B, split=7
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.7.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.7.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.7.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 35 with external jobid 9215349.
+[Mon Dec  9 17:30:47 2019]
+Finished job 61.
+52 of 115 steps (45%) done
+
+[Mon Dec  9 17:30:47 2019]
+rule map_ubam:
+    input: ubam/002_A.8.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.8.bam
+    log: logs/mapped/002_A.8.log
+    jobid: 16
+    reason: Missing output files: mapped/002_A.8.bam; Input files updated by another job: ubam/002_A.8.bam
+    wildcards: sample=002, type=A, split=8
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.8.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.8.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.8.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 16 with external jobid 9215350.
+[Mon Dec  9 17:30:47 2019]
+Finished job 87.
+53 of 115 steps (46%) done
+
+[Mon Dec  9 17:30:47 2019]
+rule map_ubam:
+    input: ubam/002_B.14.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.14.bam
+    log: logs/mapped/002_B.14.log
+    jobid: 42
+    reason: Missing output files: mapped/002_B.14.bam; Input files updated by another job: ubam/002_B.14.bam
+    wildcards: sample=002, type=B, split=14
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.14.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.14.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.14.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 42 with external jobid 9215351.
+[Mon Dec  9 17:30:48 2019]
+Finished job 60.
+54 of 115 steps (47%) done
+
+[Mon Dec  9 17:30:48 2019]
+rule map_ubam:
+    input: ubam/002_A.7.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.7.bam
+    log: logs/mapped/002_A.7.log
+    jobid: 15
+    reason: Missing output files: mapped/002_A.7.bam; Input files updated by another job: ubam/002_A.7.bam
+    wildcards: sample=002, type=A, split=7
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.7.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.7.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.7.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 15 with external jobid 9215352.
+[Mon Dec  9 17:30:48 2019]
+Finished job 89.
+55 of 115 steps (48%) done
+
+[Mon Dec  9 17:30:48 2019]
+rule map_ubam:
+    input: ubam/002_B.16.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.16.bam
+    log: logs/mapped/002_B.16.log
+    jobid: 44
+    reason: Missing output files: mapped/002_B.16.bam; Input files updated by another job: ubam/002_B.16.bam
+    wildcards: sample=002, type=B, split=16
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.16.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.16.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.16.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 44 with external jobid 9215353.
+[Mon Dec  9 17:30:48 2019]
+Finished job 58.
+56 of 115 steps (49%) done
+
+[Mon Dec  9 17:30:48 2019]
+rule map_ubam:
+    input: ubam/002_A.5.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.5.bam
+    log: logs/mapped/002_A.5.log
+    jobid: 13
+    reason: Missing output files: mapped/002_A.5.bam; Input files updated by another job: ubam/002_A.5.bam
+    wildcards: sample=002, type=A, split=5
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.5.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.5.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.5.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 13 with external jobid 9215354.
+[Mon Dec  9 17:30:48 2019]
+Finished job 57.
+57 of 115 steps (50%) done
+
+[Mon Dec  9 17:30:48 2019]
+rule map_ubam:
+    input: ubam/002_A.4.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.4.bam
+    log: logs/mapped/002_A.4.log
+    jobid: 12
+    reason: Missing output files: mapped/002_A.4.bam; Input files updated by another job: ubam/002_A.4.bam
+    wildcards: sample=002, type=A, split=4
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.4.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.4.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.4.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 12 with external jobid 9215355.
+[Mon Dec  9 17:30:48 2019]
+Finished job 79.
+58 of 115 steps (50%) done
+
+[Mon Dec  9 17:30:48 2019]
+rule map_ubam:
+    input: ubam/002_B.6.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.6.bam
+    log: logs/mapped/002_B.6.log
+    jobid: 34
+    reason: Missing output files: mapped/002_B.6.bam; Input files updated by another job: ubam/002_B.6.bam
+    wildcards: sample=002, type=B, split=6
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.6.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.6.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.6.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 34 with external jobid 9215356.
+[Mon Dec  9 17:30:48 2019]
+Finished job 91.
+59 of 115 steps (51%) done
+
+[Mon Dec  9 17:30:48 2019]
+rule map_ubam:
+    input: ubam/002_B.18.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.18.bam
+    log: logs/mapped/002_B.18.log
+    jobid: 46
+    reason: Missing output files: mapped/002_B.18.bam; Input files updated by another job: ubam/002_B.18.bam
+    wildcards: sample=002, type=B, split=18
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.18.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.18.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.18.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 46 with external jobid 9215357.
+[Mon Dec  9 17:30:48 2019]
+Finished job 92.
+60 of 115 steps (52%) done
+
+[Mon Dec  9 17:30:48 2019]
+rule map_ubam:
+    input: ubam/002_B.19.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.19.bam
+    log: logs/mapped/002_B.19.log
+    jobid: 47
+    reason: Missing output files: mapped/002_B.19.bam; Input files updated by another job: ubam/002_B.19.bam
+    wildcards: sample=002, type=B, split=19
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.19.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.19.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.19.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 47 with external jobid 9215358.
+[Mon Dec  9 17:30:48 2019]
+Finished job 75.
+61 of 115 steps (53%) done
+
+[Mon Dec  9 17:30:48 2019]
+rule map_ubam:
+    input: ubam/002_B.2.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.2.bam
+    log: logs/mapped/002_B.2.log
+    jobid: 30
+    reason: Missing output files: mapped/002_B.2.bam; Input files updated by another job: ubam/002_B.2.bam
+    wildcards: sample=002, type=B, split=2
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.2.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.2.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.2.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 30 with external jobid 9215359.
+[Mon Dec  9 17:30:48 2019]
+Finished job 90.
+62 of 115 steps (54%) done
+
+[Mon Dec  9 17:30:48 2019]
+rule map_ubam:
+    input: ubam/002_B.17.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.17.bam
+    log: logs/mapped/002_B.17.log
+    jobid: 45
+    reason: Missing output files: mapped/002_B.17.bam; Input files updated by another job: ubam/002_B.17.bam
+    wildcards: sample=002, type=B, split=17
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.17.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.17.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.17.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 45 with external jobid 9215360.
+[Mon Dec  9 17:30:49 2019]
+Finished job 84.
+63 of 115 steps (55%) done
+
+[Mon Dec  9 17:30:49 2019]
+rule map_ubam:
+    input: ubam/002_B.11.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.11.bam
+    log: logs/mapped/002_B.11.log
+    jobid: 39
+    reason: Missing output files: mapped/002_B.11.bam; Input files updated by another job: ubam/002_B.11.bam
+    wildcards: sample=002, type=B, split=11
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.11.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.11.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.11.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 39 with external jobid 9215361.
+[Mon Dec  9 17:30:49 2019]
+Finished job 65.
+64 of 115 steps (56%) done
+
+[Mon Dec  9 17:30:49 2019]
+rule map_ubam:
+    input: ubam/002_A.12.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.12.bam
+    log: logs/mapped/002_A.12.log
+    jobid: 20
+    reason: Missing output files: mapped/002_A.12.bam; Input files updated by another job: ubam/002_A.12.bam
+    wildcards: sample=002, type=A, split=12
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.12.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.12.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.12.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 20 with external jobid 9215362.
+[Mon Dec  9 17:30:49 2019]
+Finished job 68.
+65 of 115 steps (57%) done
+
+[Mon Dec  9 17:30:49 2019]
+rule map_ubam:
+    input: ubam/002_A.15.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.15.bam
+    log: logs/mapped/002_A.15.log
+    jobid: 23
+    reason: Missing output files: mapped/002_A.15.bam; Input files updated by another job: ubam/002_A.15.bam
+    wildcards: sample=002, type=A, split=15
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.15.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.15.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.15.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 23 with external jobid 9215363.
+[Mon Dec  9 17:30:49 2019]
+Finished job 54.
+66 of 115 steps (57%) done
+
+[Mon Dec  9 17:30:49 2019]
+rule map_ubam:
+    input: ubam/002_A.1.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.1.bam
+    log: logs/mapped/002_A.1.log
+    jobid: 9
+    reason: Missing output files: mapped/002_A.1.bam; Input files updated by another job: ubam/002_A.1.bam
+    wildcards: sample=002, type=A, split=1
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.1.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.1.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.1.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 9 with external jobid 9215364.
+[Mon Dec  9 17:30:49 2019]
+Finished job 82.
+67 of 115 steps (58%) done
+
+[Mon Dec  9 17:30:49 2019]
+rule map_ubam:
+    input: ubam/002_B.9.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_B.9.bam
+    log: logs/mapped/002_B.9.log
+    jobid: 37
+    reason: Missing output files: mapped/002_B.9.bam; Input files updated by another job: ubam/002_B.9.bam
+    wildcards: sample=002, type=B, split=9
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_B.9.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_B.9.bam ALIGNED_BAM=/dev/stdin O=mapped/002_B.9.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 37 with external jobid 9215365.
+[Mon Dec  9 17:30:49 2019]
+Finished job 66.
+68 of 115 steps (59%) done
+
+[Mon Dec  9 17:30:49 2019]
+rule map_ubam:
+    input: ubam/002_A.13.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.13.bam
+    log: logs/mapped/002_A.13.log
+    jobid: 21
+    reason: Missing output files: mapped/002_A.13.bam; Input files updated by another job: ubam/002_A.13.bam
+    wildcards: sample=002, type=A, split=13
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.13.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.13.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.13.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 21 with external jobid 9215366.
+[Mon Dec  9 17:31:02 2019]
+Finished job 64.
+69 of 115 steps (60%) done
+
+[Mon Dec  9 17:31:02 2019]
+rule map_ubam:
+    input: ubam/002_A.11.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.11.bam
+    log: logs/mapped/002_A.11.log
+    jobid: 19
+    reason: Missing output files: mapped/002_A.11.bam; Input files updated by another job: ubam/002_A.11.bam
+    wildcards: sample=002, type=A, split=11
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.11.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.11.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.11.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 19 with external jobid 9215367.
+[Mon Dec  9 17:31:03 2019]
+Finished job 62.
+70 of 115 steps (61%) done
+
+[Mon Dec  9 17:31:03 2019]
+rule map_ubam:
+    input: ubam/002_A.9.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.9.bam
+    log: logs/mapped/002_A.9.log
+    jobid: 17
+    reason: Missing output files: mapped/002_A.9.bam; Input files updated by another job: ubam/002_A.9.bam
+    wildcards: sample=002, type=A, split=9
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.9.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.9.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.9.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 17 with external jobid 9215368.
+[Mon Dec  9 17:31:03 2019]
+Finished job 67.
+71 of 115 steps (62%) done
+
+[Mon Dec  9 17:31:03 2019]
+rule map_ubam:
+    input: ubam/002_A.14.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.14.bam
+    log: logs/mapped/002_A.14.log
+    jobid: 22
+    reason: Missing output files: mapped/002_A.14.bam; Input files updated by another job: ubam/002_A.14.bam
+    wildcards: sample=002, type=A, split=14
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.14.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.14.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.14.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 22 with external jobid 9215369.
+[Mon Dec  9 17:31:03 2019]
+Finished job 70.
+72 of 115 steps (63%) done
+
+[Mon Dec  9 17:31:03 2019]
+rule map_ubam:
+    input: ubam/002_A.17.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.17.bam
+    log: logs/mapped/002_A.17.log
+    jobid: 25
+    reason: Missing output files: mapped/002_A.17.bam; Input files updated by another job: ubam/002_A.17.bam
+    wildcards: sample=002, type=A, split=17
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.17.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.17.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.17.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 25 with external jobid 9215370.
+[Mon Dec  9 17:31:03 2019]
+Finished job 72.
+73 of 115 steps (63%) done
+
+[Mon Dec  9 17:31:03 2019]
+rule map_ubam:
+    input: ubam/002_A.19.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.19.bam
+    log: logs/mapped/002_A.19.log
+    jobid: 27
+    reason: Missing output files: mapped/002_A.19.bam; Input files updated by another job: ubam/002_A.19.bam
+    wildcards: sample=002, type=A, split=19
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.19.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.19.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.19.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 27 with external jobid 9215371.
+[Mon Dec  9 17:31:03 2019]
+Finished job 71.
+74 of 115 steps (64%) done
+
+[Mon Dec  9 17:31:03 2019]
+rule map_ubam:
+    input: ubam/002_A.18.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: mapped/002_A.18.bam
+    log: logs/mapped/002_A.18.log
+    jobid: 26
+    reason: Missing output files: mapped/002_A.18.bam; Input files updated by another job: ubam/002_A.18.bam
+    wildcards: sample=002, type=A, split=18
+    threads: 20
+
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/002_A.18.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR | bwa mem -M -t 16 -p /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta /dev/stdin | picard MergeBamAlignment R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/002_A.18.bam ALIGNED_BAM=/dev/stdin O=mapped/002_A.18.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS= TRUE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_INSERTIONS_OR_DELETIONS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR 
+Submitted DRMAA job 26 with external jobid 9215372.
+[Mon Dec  9 17:31:03 2019]
+Finished job 11.
+75 of 115 steps (65%) done
+[Mon Dec  9 17:32:34 2019]
+Finished job 28.
+76 of 115 steps (66%) done
+[Mon Dec  9 17:32:34 2019]
+Finished job 38.
+77 of 115 steps (67%) done
+[Mon Dec  9 17:32:44 2019]
+Finished job 40.
+78 of 115 steps (68%) done
+[Mon Dec  9 17:32:44 2019]
+Finished job 41.
+79 of 115 steps (69%) done
+[Mon Dec  9 17:32:45 2019]
+Finished job 36.
+80 of 115 steps (70%) done
+[Mon Dec  9 17:32:45 2019]
+Finished job 43.
+81 of 115 steps (70%) done
+[Mon Dec  9 17:32:45 2019]
+Finished job 33.
+82 of 115 steps (71%) done
+[Mon Dec  9 17:32:46 2019]
+Finished job 44.
+83 of 115 steps (72%) done
+[Mon Dec  9 17:32:46 2019]
+Finished job 34.
+84 of 115 steps (73%) done
+[Mon Dec  9 17:32:46 2019]
+Finished job 46.
+85 of 115 steps (74%) done
+[Mon Dec  9 17:32:46 2019]
+Finished job 45.
+86 of 115 steps (75%) done
+[Mon Dec  9 17:32:47 2019]
+Finished job 21.
+87 of 115 steps (76%) done
+[Mon Dec  9 17:32:58 2019]
+Finished job 19.
+88 of 115 steps (77%) done
+[Mon Dec  9 17:32:58 2019]
+Finished job 22.
+89 of 115 steps (77%) done
+[Mon Dec  9 17:32:58 2019]
+Finished job 25.
+90 of 115 steps (78%) done
+[Mon Dec  9 17:32:58 2019]
+Finished job 27.
+91 of 115 steps (79%) done
+[Mon Dec  9 17:32:58 2019]
+Finished job 26.
+92 of 115 steps (80%) done
+[Mon Dec  9 17:32:58 2019]
+Finished job 29.
+93 of 115 steps (81%) done
+[Mon Dec  9 17:32:59 2019]
+Finished job 31.
+94 of 115 steps (82%) done
+[Mon Dec  9 17:32:59 2019]
+Finished job 42.
+95 of 115 steps (83%) done
+[Mon Dec  9 17:32:59 2019]
+Finished job 15.
+96 of 115 steps (83%) done
+[Mon Dec  9 17:32:59 2019]
+Finished job 13.
+97 of 115 steps (84%) done
+[Mon Dec  9 17:32:59 2019]
+Finished job 12.
+98 of 115 steps (85%) done
+[Mon Dec  9 17:32:59 2019]
+Finished job 47.
+99 of 115 steps (86%) done
+[Mon Dec  9 17:32:59 2019]
+Finished job 30.
+100 of 115 steps (87%) done
+[Mon Dec  9 17:33:00 2019]
+Finished job 39.
+101 of 115 steps (88%) done
+[Mon Dec  9 17:33:00 2019]
+Finished job 20.
+102 of 115 steps (89%) done
+[Mon Dec  9 17:33:00 2019]
+Finished job 37.
+103 of 115 steps (90%) done
+[Mon Dec  9 17:33:10 2019]
+Finished job 8.
+104 of 115 steps (90%) done
+[Mon Dec  9 17:33:10 2019]
+Finished job 10.
+105 of 115 steps (91%) done
+[Mon Dec  9 17:33:10 2019]
+Finished job 32.
+106 of 115 steps (92%) done
+[Mon Dec  9 17:33:10 2019]
+Finished job 24.
+107 of 115 steps (93%) done
+[Mon Dec  9 17:33:10 2019]
+Finished job 35.
+108 of 115 steps (94%) done
+
+[Mon Dec  9 17:33:10 2019]
+rule merge_bam:
+    input: mapped/002_B.0.bam, mapped/002_B.1.bam, mapped/002_B.2.bam, mapped/002_B.3.bam, mapped/002_B.4.bam, mapped/002_B.5.bam, mapped/002_B.6.bam, mapped/002_B.7.bam, mapped/002_B.8.bam, mapped/002_B.9.bam, mapped/002_B.10.bam, mapped/002_B.11.bam, mapped/002_B.12.bam, mapped/002_B.13.bam, mapped/002_B.14.bam, mapped/002_B.15.bam, mapped/002_B.16.bam, mapped/002_B.17.bam, mapped/002_B.18.bam, mapped/002_B.19.bam
+    output: bam_merge/002_B.bam, bam_merge/002_B.bai
+    jobid: 3
+    reason: Missing output files: bam_merge/002_B.bam; Input files updated by another job: mapped/002_B.6.bam, mapped/002_B.2.bam, mapped/002_B.10.bam, mapped/002_B.14.bam, mapped/002_B.5.bam, mapped/002_B.17.bam, mapped/002_B.19.bam, mapped/002_B.11.bam, mapped/002_B.3.bam, mapped/002_B.16.bam, mapped/002_B.13.bam, mapped/002_B.8.bam, mapped/002_B.7.bam, mapped/002_B.15.bam, mapped/002_B.4.bam, mapped/002_B.12.bam, mapped/002_B.1.bam, mapped/002_B.0.bam, mapped/002_B.18.bam, mapped/002_B.9.bam
+    wildcards: sample=002, type=B
+    threads: 4
+
+samtools view -H mapped/002_B.0.bam > bam_merge/002_B.bam bam_merge/002_B.bai.header; samtools merge -h bam_merge/002_B.bam bam_merge/002_B.bai.header bam_merge/002_B.bam bam_merge/002_B.bai umi/002_B.*.bam; picard BuildBamIndex INPUT=bam_merge/002_B.bam bam_merge/002_B.bairm umi/002_B.*.bam;
+[Mon Dec  9 17:33:10 2019]
+Finished job 16.
+Submitted DRMAA job 3 with external jobid 9215373.
+109 of 115 steps (95%) done
+[Mon Dec  9 17:33:10 2019]
+Finished job 23.
+110 of 115 steps (96%) done
+[Mon Dec  9 17:33:10 2019]
+Finished job 9.
+111 of 115 steps (97%) done
+[Mon Dec  9 17:33:21 2019]
+Finished job 17.
+112 of 115 steps (97%) done
+
+[Mon Dec  9 17:33:21 2019]
+rule merge_bam:
+    input: mapped/002_A.0.bam, mapped/002_A.1.bam, mapped/002_A.2.bam, mapped/002_A.3.bam, mapped/002_A.4.bam, mapped/002_A.5.bam, mapped/002_A.6.bam, mapped/002_A.7.bam, mapped/002_A.8.bam, mapped/002_A.9.bam, mapped/002_A.10.bam, mapped/002_A.11.bam, mapped/002_A.12.bam, mapped/002_A.13.bam, mapped/002_A.14.bam, mapped/002_A.15.bam, mapped/002_A.16.bam, mapped/002_A.17.bam, mapped/002_A.18.bam, mapped/002_A.19.bam
+    output: bam_merge/002_A.bam, bam_merge/002_A.bai
+    jobid: 2
+    reason: Missing output files: bam_merge/002_A.bam; Input files updated by another job: mapped/002_A.4.bam, mapped/002_A.13.bam, mapped/002_A.16.bam, mapped/002_A.14.bam, mapped/002_A.18.bam, mapped/002_A.3.bam, mapped/002_A.0.bam, mapped/002_A.9.bam, mapped/002_A.12.bam, mapped/002_A.17.bam, mapped/002_A.1.bam, mapped/002_A.15.bam, mapped/002_A.5.bam, mapped/002_A.8.bam, mapped/002_A.11.bam, mapped/002_A.19.bam, mapped/002_A.7.bam, mapped/002_A.2.bam
+    wildcards: sample=002, type=A
+    threads: 4
+
+samtools view -H mapped/002_A.0.bam > bam_merge/002_A.bam bam_merge/002_A.bai.header; samtools merge -h bam_merge/002_A.bam bam_merge/002_A.bai.header bam_merge/002_A.bam bam_merge/002_A.bai umi/002_A.*.bam; picard BuildBamIndex INPUT=bam_merge/002_A.bam bam_merge/002_A.bairm umi/002_A.*.bam;
+Submitted DRMAA job 2 with external jobid 9215374.
+[Mon Dec  9 17:34:01 2019]
+Error in rule merge_bam:
+    jobid: 3
+    output: bam_merge/002_B.bam, bam_merge/002_B.bai
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/73584da9
+    shell:
+        samtools view -H mapped/002_B.0.bam > bam_merge/002_B.bam bam_merge/002_B.bai.header; samtools merge -h bam_merge/002_B.bam bam_merge/002_B.bai.header bam_merge/002_B.bam bam_merge/002_B.bai umi/002_B.*.bam; picard BuildBamIndex INPUT=bam_merge/002_B.bam bam_merge/002_B.bairm umi/002_B.*.bam;
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Error executing rule merge_bam on cluster (jobid: 3, external: 9215373, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.z1dib9_f/snakejob.merge_bam.3.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Mon Dec  9 17:34:01 2019]
+Error in rule merge_bam:
+    jobid: 2
+    output: bam_merge/002_A.bam, bam_merge/002_A.bai
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/73584da9
+    shell:
+        samtools view -H mapped/002_A.0.bam > bam_merge/002_A.bam bam_merge/002_A.bai.header; samtools merge -h bam_merge/002_A.bam bam_merge/002_A.bai.header bam_merge/002_A.bam bam_merge/002_A.bai umi/002_A.*.bam; picard BuildBamIndex INPUT=bam_merge/002_A.bam bam_merge/002_A.bairm umi/002_A.*.bam;
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Error executing rule merge_bam on cluster (jobid: 2, external: 9215374, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.z1dib9_f/snakejob.merge_bam.2.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+Exiting because a job execution failed. Look above for error message
+Complete log: /fast/home/users/szyskam_c/snakes/develop/somVarWES/.snakemake/log/2019-12-09T172849.494559.snakemake.log
+    EXOM SEQUENCING PIPELINE STARTING.......
+samples name
+002_A    /fast/users/szyskam_c/work/testdata/somvar1/FD...
+002_B    /fast/users/szyskam_c/work/testdata/somvar1/FD...
+Name: R1, dtype: object

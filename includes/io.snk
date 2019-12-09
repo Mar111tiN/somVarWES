@@ -1,28 +1,41 @@
-def get_files(input_folder, sample_sheet):
+import pandas as pd
+
+
+def get_files(folder_list, sample_sheet):
     '''
     retrieves the path to all the files in the sample_sheet
     '''
 
     fastq_list = []
-    for folder, subfolders, files in os.walk(config['inputdir']):
-        for file in files:
-            if '.fastq.' in file and not '.md5' in file and not 'trim' in file and not 'sub' in file:
-                fastq_list.append(os.path.join(folder,file))
-
+    for input_folder in folder_list:
+        for folder, _, files in os.walk(input_folder):
+            for file in files:
+                if '.fastq.' in file and '.md5' not in file and 'trim' not in file and 'sub' not in file:
+                    fastq_list.append(os.path.join(folder, file))
     # import the sample sheet
-    samples = pd.read_csv(sample_sheet, sep='\t', index_col=0)        
+    samples = pd.read_csv(sample_sheet, sep='\t', index_col=0).set_index('name')
+
     def get_fastq_paths(row):
+        '''
+        go through the sample list and find the respective read and index fastqs
+        '''
+
+        # get the nomenclature for the fastq files from config
+        read1 = config['samples']['reads'][0]
+        read2 = config['samples']['reads'][1]
+        index = config['samples']['umi_barcode']
+
         for file in fastq_list:
-            if row['sample'] in file and not '_S' in file:  # dirty fix for 
-                if 'index' in file:
+            if f"{row['sample']}_" in file and '_S' not in file:  # dirty fix for weird multiplex results
+                if f'_{index}_' in file:
                     row['index'] = file
                 elif 'barcode' in file:
                     row['barcode'] = file
-                elif '_R1' in file:
+                elif f'_{read1}_' in file:
                     row['R1'] = file
-                elif '_R2' in file:
+                elif f'_{read2}_' in file:
                     row['R2'] = file
-        return row[['name', 'Lane', 'R1', 'R2', 'barcode', 'index']]
+        return row[['Lane', 'R1', 'R2', 'barcode', 'index']]
 
     samples = samples.apply(get_fastq_paths, axis=1)
     return samples
@@ -33,6 +46,7 @@ def get_tumor_normal_pairs(samples):
     turns valid_file_info into tuples of valid tumor normal pairs
     '''
 
+    samples = samples.reset_index()
     # extract the tumor-normal suffix
     samples[['sample', 'TN']] = samples['name'].str.extract('(?P<sample>^[^_]+)_(?P<TN>[^_]+)$')
     tumor = config['samples']['tumor'][0]
@@ -42,7 +56,6 @@ def get_tumor_normal_pairs(samples):
         if tumor in list(group['TN']) and normal in list(group['TN']):
             return f"{group['sample'].iloc[0]}_{tumor}-{normal}"
 
- 
     TN_df = pd.DataFrame()
     TN_df['pairs'] = samples.groupby('sample').apply(TN_pair)
     return list(TN_df['pairs'])
@@ -50,26 +63,35 @@ def get_tumor_normal_pairs(samples):
 
 def get_fastqs(w):
     sample_name = f"{w.sample}_{w.type}"
-    fastq_path = file_df.query('name == @sample_name')[w.read_or_index]
-    return list(fastq_path)
+    fastq_path = sample_df.loc[sample_name][w.read_or_index]
+    return fastq_path
 
 
-def get_bwa_fastqs(w):
+# ###################### ubamXT #########################################
+
+def get_FastqToSam_input(w):
     '''
     retrieve either ...fastq or fastq.trim pairs depending on config:trim:trimming value for bwa alignment
     '''
 
-    if config['trim']['trimming']:
+    # get the R1 and R2 depending on whether trim or not
+    if config['trim']['run']:
         trim_suffix = config['trim']['suffix'][0]
-        return [f"fastq_trimmed/{w.sample}_{w.type}_{read}.{w.split}.{trim_suffix}.fastq.gz" for read in config['samples']['reads']]
+        fastqs = [f"fastq_trimmed/{w.sample}_{w.type}_{read}.{w.split}.{trim_suffix}.fastq.gz" for read in config['samples']['reads']]
     else:
-        return [f"fastq/{w.sample}_{w.type}_{read}.{w.split}.fastq.gz" for read in config['samples']['reads']]
+        fastqs = [f"fastq/{w.sample}_{w.type}_{read}.{w.split}.fastq.gz" for read in config['samples']['reads']]
+
+    # add the umi.fastq if umi = True
+    if config['setup']['UMI']:
+        fastqs.append(f"fastq/{w.sample}_{w.type}_index.{w.split}.fastq.gz")
+    return fastqs
 
 
 def get_fastq_input(w):
     '''
     retrieve either ...fastq or fastq.trim for fastQC
     '''
+
     trim_suffix = config['trim']['suffix'][0]
     # readtrim is either R1.trim or R1
     # and stands for active or disabled trimming
@@ -89,26 +111,13 @@ def get_fastqc_list(_):
     read1 = config['samples']['reads'][0]
     read2 = config['samples']['reads'][1]
     # create file list from the included_files tuple list
-    for file_name in file_df['name']:
+    for file_name in sample_df.index:
         fastqc_list.append(f"fastQC/{file_name}_{read1}_fastqc.zip")
         fastqc_list.append(f"fastQC/{file_name}_{read2}_fastqc.zip")
-        if config['trim']['trimming']:
+        if config['trim']['run']:
             fastqc_list.append(f"fastQC/{file_name}_{read1}.{trim_suffix}_fastqc.zip")
             fastqc_list.append(f"fastQC/{file_name}_{read2}.{trim_suffix}_fastqc.zip")
     return fastqc_list
-
-
-
-def get_UMI_fastq(w):
-    '''
-    retrieves the fastq containing the UMI-barcode information for tagging the aligned bam-file
-    '''
-
-    sample_name = f"{w.sample}_{w.type}"
-    index_name = config['setup']['UMI'] # is UMI named as 'barcode' or as 'index'
-    index_path = file_df.query('name == @sample_name').iloc[0][index_name]
-    return index_path
-
 
 
 def get_script(script_name):
@@ -122,12 +131,11 @@ def get_filter(filter_dict):
     return os.path.join(config['snakedir'], config['paths']['scripts'], 'filters', filter_dict['path'])
 
 
-
 def get_bed_file(covered_or_padded):
     '''
     returns the appropriate bed_file depending on build and library
     '''
-    
+
     build = config['ref']['build']
     lib = config['setup']['library']
     lib_version = config['setup']['library_version']

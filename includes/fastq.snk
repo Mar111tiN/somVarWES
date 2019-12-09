@@ -12,10 +12,10 @@ rule get_fastq:
             # compress fastq as fastq.gz into workdir
             shell("pigz -5 -p {threads} {input} > {output}")
         elif extension == '.gz':
-            print(f"Creating symlink for file {input}")
+            show_output(f"Creating symlink for file {input}")
             shell("ln -s {input} {output}")   # create shortcut to fastq.gz in workdir/fastq
         elif extension == '.bz2':
-            print(f"file extension {extension} --> unzipping with bzcat")
+            show_output(f"file extension {extension} --> unzipping with bzcat")
             shell("bzcat {input} | pigz -5 -p {threads} > {output}")  # uncompress fastq.b2 and recompress to fastq.gz in workdir/fastq 
 
 
@@ -28,7 +28,7 @@ rule split_fastq:
     params:
         split_factor = config['fastq']['split_factor'],
         split_tool = get_script('split_fastq'),
-        output_base = lambda w: f"fastq/{w.sample}_{w.type}_{w.read_or_index}"
+        output_base = lambda w, input: str(input).replace(".fastq.gz", "")
     shell:
         "{params.split_tool} {input} {params.split_factor} {params.output_base}"
 
