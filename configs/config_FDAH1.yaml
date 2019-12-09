@@ -75,7 +75,7 @@ scripts:
   
   # filter_csv: shell/filter_exome_wFlankingSeq.sh
 fastq:
-  threads: 4
+  threads: 20
   subsample_normal_factor: 1  # for testing purpose
   split_factor: 20 # split fastqs and run pipeline on split files --> merge before deduplication
 qc:
@@ -192,3 +192,6 @@ filter:
         candidate_list: annotation/damm_lists/AML_candidates.txt
         driver_list: annotation/damm_lists/AML_drivers.txt
         keep_syn: True
+filter_bam:
+    threads: 4
+    padding: 100

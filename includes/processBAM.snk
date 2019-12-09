@@ -28,11 +28,12 @@ rule tag_bam_with_umi:
         "fgbio AnnotateBamWithUmis -Xms500m -Xmx{params.max_mem} -i {input[0]} -f {input[1]} -o {output[0]}"
 
 
-
 rule merge_bam:
     '''
     here the split and umified bams are merged
     depending on input required by recalib, this can be umi/X-Y.bam or mapped
+    !!! the merge has to retain the bam headers of the individual files
+
     '''
 
     input: # here I need a switch if no UMI is involved
@@ -46,11 +47,22 @@ rule merge_bam:
     conda:
         "../env/align-env.yml"
     shell:
+
         # merge all split bams into one bam using samtools merge (also sorts the merged bam)
-        "samtools merge {output[0]} {params.folder}/{wildcards.sample}_{wildcards.type}.*.bam; "
+        # "samtools merge {output[0]} {params.folder}/{wildcards.sample}_{wildcards.type}.*.bam; "
+
+        ############ OPTION FOR HEADER RESCUE:::
+        # get the header of one file:
+        "samtools view -H {input[0]} > {output}.header"
+        # merge and get the header from input[0] header
+        "samtools merge -h {output}.header {output} {params.folder}/{wildcards.sample}_{wildcards.type}.*.bam; "
+
+        # index the bam
         "picard BuildBamIndex INPUT={output}"
         "rm {params.folder}/{wildcards.sample}_{wildcards.type}.*.bam;"
 
+
+        # OPTIONB: picard AddOrReplaceReadGroups
 
 rule resplit_bam:
     '''

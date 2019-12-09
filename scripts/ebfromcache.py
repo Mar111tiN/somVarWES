@@ -275,6 +275,7 @@ if sample_in_pon:
     show_output(f"Corresponding normal sample for {tumor_bam} has been found in Panel of Normals. EBcache cannot be used!", color='warning')
     show_output(f"Falling back to cached matrix file reduced by corresponding normal..", color='normal')
     # get the cached matrix file reduced by the sample
+    # reduce_matrix takes position of sample in pon_list as argument
     # EBcache cannot be used directly
     reduced_matrix_file = f"{base_file}.ponmatrix"
     reduce_matrix_cmd = f"gunzip < {matrix_file} | {reduce_matrix} {sample_in_pon} > {reduced_matrix_file}"

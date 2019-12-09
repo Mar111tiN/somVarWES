@@ -1,0 +1,13 @@
+rule ubamXT:
+    input:
+        expand("fastq/{{sample}}_{{type}}_{read}.{{split}}.fastq.gz", read=config['samples']['reads'])
+    output:
+        "ubam/{sample}_{type}_{read}.{split}.bam"
+    threads:
+        20
+    conda:
+        "../env/ubam.yml"
+    params:
+        umi = get_umi_params
+    shell:
+        "picard FastqToSam FASTQ={input[0]} {input[1]} "

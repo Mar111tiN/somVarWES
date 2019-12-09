@@ -8,9 +8,9 @@ rule concat_fastq:
     output:
         "fastq_trimmed/{sample}_{type}_{read}.{trim}.fastq.gz"
 
-    threads: 2
+    threads: config['fastq']['threads']
     shell:
-        "zcat fastq_trimmed/{wildcards.sample}_{wildcards.type}_{wildcards.read}.*.{wildcards.trim}.fastq.gz | gzip > {output}"
+        "zcat fastq_trimmed/{wildcards.sample}_{wildcards.type}_{wildcards.read}.*.{wildcards.trim}.fastq.gz | pigz -5 -p {threads} > {output}"
 
 
 rule fastqc:

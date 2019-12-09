@@ -41,18 +41,17 @@ def get_tumor_normal_pairs(samples):
     def TN_pair(group):
         if tumor in list(group['TN']) and normal in list(group['TN']):
             return f"{group['sample'].iloc[0]}_{tumor}-{normal}"
-        
+
+ 
     TN_df = pd.DataFrame()
     TN_df['pairs'] = samples.groupby('sample').apply(TN_pair)
     return list(TN_df['pairs'])
-
 
 
 def get_fastqs(w):
     sample_name = f"{w.sample}_{w.type}"
     fastq_path = file_df.query('name == @sample_name')[w.read_or_index]
     return list(fastq_path)
-
 
 
 def get_bwa_fastqs(w):

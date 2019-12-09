@@ -1,0 +1,8 @@
+            if config['fastq']['subsample_normal_factor'] > 1:
+                if f"_{config['samples']['normal']}_" in output[0]:
+                    lines = round(config['fastq']['subsample_normal_factor'] * 4)
+                    print(f"Subsampling normal file {input}")
+                    shell(f"gunzip < {{input}} | mawk 'NR % {lines} > 0 && NR % {lines} < 5' | pigz -5 -p {threads} > {{output}}")
+
+
+                    

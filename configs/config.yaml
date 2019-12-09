@@ -17,7 +17,7 @@ setup:
   readlength: 150  # neccessary???
   library: SureSelect  # have to be found at bed_files/SureSelect/<build>/SS_<library_version>_<build>_<Padded | Covered>[_nochr].bed
   library_version: HAEv7
-  UMI: index  #suffix of the fastq file containing the UMI-barcode information 
+  UMI: index  # suffix of the fastq file containing the UMI-barcode information | None if no Umis
 
 #### ABSOLUTE PATHS ############
 paths:
@@ -76,7 +76,6 @@ scripts:
   # filter_csv: shell/filter_exome_wFlankingSeq.sh
 fastq:
   threads: 4
-  subsample_normal_factor: 1  # for testing purpose
   split_factor: 20 # split fastqs and run pipeline on split files --> merge before deduplication
 qc:
   samplefactor: 1
@@ -192,3 +191,6 @@ filter:
         candidate_list: annotation/damm_lists/AML_candidates.txt
         driver_list: annotation/damm_lists/AML_drivers.txt
         keep_syn: True
+filter_bam:
+    threads: 4
+    padding: 100

@@ -8,28 +8,15 @@ rule get_fastq:
         sample = "[^/]+"
     run:
         extension = os.path.splitext(input[0])[1]
-
         if extension == '.fastq':
-            # shell("ln -s {input} {output}")   # create shortcut to fastq in workdir/fastq
-            shell("gzip {input} > {output}")
+            # compress fastq as fastq.gz into workdir
+            shell("pigz -5 -p {threads} {input} > {output}")
         elif extension == '.gz':
-            # print(f"file extension {extension} --> unzipping with gunzip")
-            # shell("gunzip -c {input} > {output}") # uncompress fastq.qz to fastq in workdir/fastq
-            if config['fastq']['subsample_normal_factor'] > 1:
-                print(output, output[0])
-                if f"_{config['samples']['normal']}_" in output[0]:
-                    lines = round(config['fastq']['subsample_normal_factor'] * 4)
-                    print(f"Subsampling normal file {input}")
-                    shell(f"gunzip < {{input}} | mawk 'NR % {lines} > 0 && NR % {lines} < 5' | gzip > {{output}}")
-                else:
-                    print(f"Creating a symlink for file {input}")
-                    shell("ln -s {input} {output}")
-            else:
-                print(f"Creating symlink for file {input}")
-                shell("ln -s {input} {output}")   # create shortcut to fastq.gz in workdir/fastq
+            print(f"Creating symlink for file {input}")
+            shell("ln -s {input} {output}")   # create shortcut to fastq.gz in workdir/fastq
         elif extension == '.bz2':
             print(f"file extension {extension} --> unzipping with bzcat")
-            shell("bzcat {input} | gzip > {output}") # uncompress fastq.b2 and recompress to fastq.gz in workdir/fastq 
+            shell("bzcat {input} | pigz -5 -p {threads} > {output}")  # uncompress fastq.b2 and recompress to fastq.gz in workdir/fastq 
 
 
 rule split_fastq:
@@ -39,12 +26,11 @@ rule split_fastq:
         expand("fastq/{{sample}}_{{type}}_{{read_or_index}}.{split}.fastq", split=list(range(config['fastq']['split_factor'])))
     threads: 1
     params:
-        split_factor=config['fastq']['split_factor'],
-        split_tool=get_script('split_fastq'),
-        output_base=lambda w: f"fastq/{w.sample}_{w.type}_{w.read_or_index}"
+        split_factor = config['fastq']['split_factor'],
+        split_tool = get_script('split_fastq'),
+        output_base = lambda w: f"fastq/{w.sample}_{w.type}_{w.read_or_index}"
     shell:
         "{params.split_tool} {input} {params.split_factor} {params.output_base}"
-
 
 
 rule compress_split_fastq:
@@ -52,10 +38,10 @@ rule compress_split_fastq:
         "fastq/{sample}_{type}_{read}.{split}.fastq"
     output:
         "fastq/{sample}_{type}_{read}.{split}.fastq.gz"
-    threads: 1
+    threads: config['fastq']['threads']
     shell:
-        "gzip {input}"
- 
+        "pigz -5 -p {threads} {input}"
+
 
 def get_trim_params(w, input, output, threads):
     '''
@@ -74,9 +60,9 @@ def get_trim_params(w, input, output, threads):
 
 
 rule trim_fastq_PE:
-    input: 
+    input:
         expand("fastq/{{sample}}_{{type}}_{read}.{{split}}.fastq.gz", read=config['samples']['reads'])
-    output: 
+    output:
         expand("fastq_trimmed/{{sample}}_{{type}}_{read}.{{split}}.{trim}.fastq.gz", read=config['samples']['reads'], trim=config['trim']['suffix'])
     conda:
         "../env/trim-env.yml"
@@ -84,7 +70,7 @@ rule trim_fastq_PE:
         config["trim"]["threads"]
     log:
         "logs/trim/{sample}_{type}.{split}.log"
-    params: 
+    params:
         run = f"{config['setup']['run']} -phred{config['setup']['phred']}",
         files_n_mode = get_trim_params
     shell:
