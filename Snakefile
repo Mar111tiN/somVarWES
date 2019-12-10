@@ -70,7 +70,7 @@ rule all:
         "fastQC/multiQC.html",
         # expand("bam_merge/{samples}.bam", samples=sample_df.index)
         expand("coverBED/{samples}.txt", samples=sample_df.index),
-        # # expand("filter/{file}.raw.csv", file=get_tumor_normal_pairs(file_df))
+        expand("filter/{file}.raw.csv", file=get_tumor_normal_pairs(sample_df))
         # expand("filter/{file}.{filter}.csv", file=get_tumor_normal_pairs(sample_df), filter=active_filter_list)
 
 

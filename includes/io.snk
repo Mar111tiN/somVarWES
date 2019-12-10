@@ -151,7 +151,7 @@ def get_bed_file(covered_or_padded):
     '''
     returns the appropriate bed_file depending on build and library
     '''
-    
+
     bed_file = config['setup'].get('bed_file', None)
     if bed_file:
         return bed_file

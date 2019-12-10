@@ -31,10 +31,11 @@ def get_chrom(c, use_chr=True):
         if c == 23:
             chrom = "Y"
     else:
-        chrom = c + 1        
+        chrom = c + 1
     return f"chr{chrom}" if use_chr else chrom
 
-# get the chrom list for  
+
+# get the chrom list
 chrom_list = [get_chrom(chrom, (config['ref']['build'] == 'hg38')) for chrom in range(24)]  # set use_chr to False if using hg19
 # print(chrom_list)
 
@@ -78,7 +79,7 @@ rule anno2EB_EBcache:
         "../scripts/ebfromcache.py"
 
 
-######################### MERGE ####################################################
+# ######################## MERGE ####################################################
 
 def get_mergeEBscore_input(w):
     '''
@@ -94,8 +95,8 @@ def get_mergeEBscore_input(w):
 
 rule mergeEBscore:
     input:
-        get_mergeEBscore_input   
-         # input switch for cached eb-files
+        get_mergeEBscore_input
+        # input switch for cached eb-files
     output:
         "table/{sample}_{tumor}-{norm}.EB.csv"
     threads:
@@ -119,8 +120,6 @@ rule mergeEBscore:
             matrix_merge.to_csv(matrix_file, sep='\t', index=False)
             show_output(f"Written matrix_file to {matrix_file}", color='success')
             # load in the input files (starting with 2nd input (1st is anno_file))
-
-
         EB_dfs = []
         for EB_file in input:
             EB_df = pd.read_csv(EB_file, sep='\t', index_col=False)
@@ -130,4 +129,3 @@ rule mergeEBscore:
         EB_merge = pd.concat(EB_dfs).sort_values(['Chr', 'Start'])
         EB_merge.to_csv(output[0], sep='\t', index=False)
         show_output(f"Written EB-annotated file to {output[0]}", color='success')
-

@@ -190,13 +190,15 @@ def is_clin_col(col):
         if key in col:
             return True
     return False
-    
-    
+
+
 def resort_cols(df):
     # resort the columns
     cols = list(df.columns)
     start_cols = cols[:11]
-    quant_cols = cols[11:26] + ['FisherScore', 'EBscore', 'A|a|G|g|C|c|T|t|I|i|D|d']
+    quant_cols = cols[11:26] + ['FisherScore', 'EBscore', 'PoN-Ref', 'PoN-Alt']
+    if config['EBFilter']['full_pon_output']:
+        quant_cols.append('A|a|G|g|C|c|T|t|I|i|D|d')
     clin_cols=['cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'cosmic90_MutID', 'cosmic90_type', 'cosmic90_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq', 'Clin_score']
     pop_col = cols[29:32]
     # the added extracted and score columns make up 8 columns:
@@ -207,27 +209,27 @@ def resort_cols(df):
     pred_col = cols[40:-9]
     new_cols = start_cols + quant_cols + clin_cols + pop_col + pred_col
     print('New columns: ', new_cols)
-    return df[new_cols]    
+    return df[new_cols]
 
- 
+
 def get_clinical_scores(df):
     '''
     extract, score and realign clinical columns
     '''
-    
+
     # INFERRED COLUMNS
     print('Add Cosmic70 derived columns')
     df = addCosmic70(df)
     print('Add ICGC derived columns')
     df = addICGC(df)
-   
+
     print('Derive Clinical Scores from Cosmic and Clinvar')   
     # SCALAR SCORES FROM CLINICAL DBS
     df['clinvar_score'] = df.apply(get_CLINVARscore, axis=1)
     df['cosmic70_score'] = df.apply(cosmic70score, axis=1)
     df['cosmic90_score'] = df['cosmic90_type'].str.extractall(pattern).apply(cosmic90_score, axis=1).reset_index().drop(columns='match').groupby('level_0').sum()
     df['cosmic90_score'] = df['cosmic90_score'].fillna(0)
-    
+
     # GET COMBINED CLIN_SCORE
     df['Clin_score'] = 0
     print('      Combining clinical scores into ClinScore')

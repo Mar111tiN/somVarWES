@@ -11,7 +11,7 @@ from scipy.special import gammaln
 from datetime import datetime as dt
 
 ###########################################################
-###################### FUNCTIONS ##########################
+# ##################### FUNCTIONS ##########################
 
 ansii_colors = {
           'magenta': '[1;35;2m',
@@ -29,6 +29,7 @@ colors = {
         'warning': ansii_colors['red'],
         'success': ansii_colors['cyan']
         }
+
 
 def show_output(text, color='normal', multi=False, time=False):
     '''
@@ -53,12 +54,13 @@ def show_command(command, list=False, multi=True):
     print(proc + command)
     return
 
-############### EBscore using matrix2EBinput.mawk #######################
+
+# ############## EBscore using matrix2EBinput.mawk #######################
 def get_count_df(row):
     '''
     converts the base-wise read coverage to a matrix
     '''
-    
+
     matrix = pd.DataFrame()
     matrix['depth_p'] = np.array(row['depthP'].split('|')).astype(int)
     matrix['mm_p'] = np.array(row['misP'].split('|')).astype(int)
@@ -68,16 +70,15 @@ def get_count_df(row):
 
 
 def get_EB_score2(pen, row):
-    
-    count_df = get_count_df(row)      
+
+    count_df = get_count_df(row)
     # ########### FITTING ####################################
     # get the respective control matrices (as dataframe) for positive and negative strands
     # estimate the beta-binomial parameters for positive and negative strands
 
     # <<<<<<######### DEBUG ###############
-    # print(row['Chr'], row['pos'], count_df) 
+    # print(row['Chr'], row['pos'], count_df)
     # <<<<<<###############################
-
 
     bb_params = fit_bb(count_df[1:], pen)
     # evaluate the p-values of target mismatch numbers for positive and negative strands
@@ -95,6 +96,7 @@ def get_EB_score2(pen, row):
         EB_score = -round(math.log10(EB_pvalue), 3)
     return EB_score
 ############################################################################
+
 
 def fisher_combination(p_values):
 
@@ -136,27 +138,28 @@ def bb_pvalues(params, target_df):
     p_values['n'] = bb_pvalue(params['n'], target_n)
     return p_values
 
+
 # the matrices for beta-binomial calculation
-KS_matrix = np.array([[1,0,1,1,0,1,0,0,0],[0,1,-1,0,1,-1,0,0,0]])
-gamma_reduce = np.array([1,-1,-1,-1,1,1,1,-1,-1])
+KS_matrix = np.array([[1, 0, 1, 1, 0, 1, 0, 0, 0], [0, 1, -1, 0, 1, -1, 0, 0, 0]])
+gamma_reduce = np.array([1, -1, -1, -1, 1, 1, 1, -1, -1])
 
 
 def bb_loglikelihood(params, count_df, is_1d):
     [a, b] = params
-    ab_matrix = np.array([1,1,1,a+b,a,b,a+b,a,b])
+    ab_matrix = np.array([1, 1, 1, a+b, a, b, a+b, a, b])
     # convert df into matrix for np.array operations that change dims
     count_matrix = count_df.values
     # perform matrix multiplication to get inputs to log-gamma
-    input_matrix = np.matmul(count_matrix,KS_matrix) + ab_matrix
+    input_matrix = np.matmul(count_matrix, KS_matrix) + ab_matrix
     # get corresponding log-gamma values and reduce over pon-values
-    if is_1d: # check whether gammatrix is 2-dim - otherwise sum aggregation over axis 0 is faulty
+    if is_1d:  # check whether gammatrix is 2-dim - otherwise sum aggregation over axis 0 is faulty
         gamma_matrix = gammaln(input_matrix)
-    else:  
+    else:
         gamma_matrix = np.sum(gammaln(input_matrix), axis=0)
     # add or subtract using gamma_reduce matrix and sum to loglikelihood (scalar)
     log_likelihood = np.sum(gamma_matrix * gamma_reduce)
     return log_likelihood
- 
+
 
 def fit_bb(count_df, pen):
     '''
@@ -165,7 +168,7 @@ def fit_bb(count_df, pen):
     during minimization of fitting function (max for loglikelihood) penalty term is applied to constrain alpha and beta
         Ref for L-BFGS-B algorithm:
         A Limited Memory Algorithm for Bound Constrained Optimization
-        R. H. Byrd, P. Lu and J. Nocedal. , (1995), 
+        R. H. Byrd, P. Lu and J. Nocedal. , (1995),
         SIAM Journal on Scientific and Statistical Computing, 16, 5, pp. 1190-1208.
     '''
 
@@ -175,27 +178,26 @@ def fit_bb(count_df, pen):
         '''
 
         # Here, we apply the penalty term of alpha and beta (default 0.5 is slightly arbitray...)
-        result = penalty * math.log(sum(params)) - bb_loglikelihood(params, count_df, False) # matrix is dim2
+        result = penalty * math.log(sum(params)) - bb_loglikelihood(params, count_df, False)  # matrix is dim2
         return result
-    
-    
+
     # get the respective control matrices (as dataframe) for positive and negative strands
     count_p = count_df.loc[:, ['depth_p', 'mm_p']]
     count_n = count_df.loc[:, ['depth_n', 'mm_n']]
     # minimize loglikelihood using L-BFGS-B algorithm
     ab_p = minimize_func(
                            bb_loglikelihood_fitting, [20, 20],
-                           args = (count_p, pen), approx_grad = True,
-                           bounds = [(0.1, 10000000), (1, 10000000)]
+                           args=(count_p, pen), approx_grad=True,
+                           bounds=[(0.1, 10000000), (1, 10000000)]
                           )[0]
     ab_p = [round(param, 5) for param in ab_p]
     ab_n = minimize_func(
                            bb_loglikelihood_fitting, [20, 20],
-                           args = (count_n, pen), approx_grad = True,
-                           bounds = [(0.1, 10000000), (1, 10000000)]
+                           args=(count_n, pen), approx_grad=True,
+                           bounds=[(0.1, 10000000), (1, 10000000)]
                           )[0]
     ab_n = [round(param, 5) for param in ab_n]
-    return {'p':ab_p, 'n':ab_n}
+    return {'p': ab_p, 'n': ab_n}
 
 #######################################################################
 #######################################################################
@@ -222,13 +224,13 @@ pile2count = params.pile2count
 matrix2EBinput = params.matrix2EBinput
 makeponlist = params.makeponlist
 
-############### LOAD DATA ###############################
+# ############## LOAD DATA ###############################
 # get the sceleton mutation file
 mut_df = pd.read_csv(mut_file, sep='\t', index_col=False).query('Chr == @chrom').iloc[:,:5]
 mut_cols = list(mut_df.columns)
 base_file = output[0].replace(".EB","")
 
-############### PILEUP --> MATRIX FILE ##################
+# ############## PILEUP --> MATRIX FILE ##################
 bed_file = f"{base_file}.bed"
 # create the bed file for mpileup
 shell(f"{csv2bed} < {mut_file} > {bed_file}")
@@ -250,7 +252,7 @@ shell(pipe_cmd)
 # cleanup
 shell(f"rm {bed_file} {sample_list}")
 
-################# MERGE INTO MUTFILE ######################
+# ################ MERGE INTO MUTFILE ######################
 
 # change mutation positions for deletions in mutation file
 mut_df.loc[mut_df['Alt'] == "-",'Start'] = mut_df['Start'] -1
@@ -264,7 +266,7 @@ mut_matrix = mut_df.merge(matrix_df, on=['Chr', 'Start'], how='inner')
 mut_matrix.loc[mut_matrix['Alt'] == "-",'Start'] = mut_matrix['Start'] + 1
 
 
-######## if using matrix2EBinput.mawk #######################
+# ####### if using matrix2EBinput.mawk #######################
 # write to file
 mutmatrix_file = f"{base_file}.mutmatrix"
 mut_matrix.to_csv(mutmatrix_file, sep='\t', index=False)
@@ -277,40 +279,77 @@ shell(f"cat {mutmatrix_file} | {matrix2EBinput} > {EB_matrix_input_file}")
 eb_matrix = pd.read_csv(EB_matrix_input_file, sep='\t')
 
 
-
 # multithreaded computation
-def  computeEB2(df):
+def computeEB2(df):
     show_output(f"Computing EBscore for {len(df.index)} lines", multi=True, time=True)
     df['EBscore'] = df.apply(partial(get_EB_score2, fit_pen), axis=1)
     show_output("Finished!", multi=True, time=True)
     return df
+
 
 eb_pool = Pool(threads)
 # minimal length of 1000 lines
 split_factor = min(math.ceil(len(eb_matrix.index) / 1000), threads)
 mut_split = np.array_split(eb_matrix, split_factor)
 EB_dfs = eb_pool.map(computeEB2, mut_split)
+
+# EB_df contains EB_score and matrix for Ref and Alt
 EB_df = pd.concat(EB_dfs).sort_values(['Chr', 'Start'])
 
-########## WRITE TO FILE ##############################################
+
 # add EBscore to columns
 mut_cols.append('EBscore')
 
-# condense base info
-base_cols = list("AaGgCcTtIiDd")
-col_name = "|".join(base_cols)
-# convert base coverage to str
-for ch in base_cols:
-    # take the letter info from the mut_matrix which is not yet condensated 
-    EB_df[ch] = mut_matrix[ch].map(str)
-# condense base info into col "A|a|G|g|C|c|T|t|I|i|D|d"
-EB_df[col_name] = EB_df[base_cols].apply(lambda row: "-".join(row), axis=1)
-# add "A|a|G|g|C|c|T|t|I|i|D|d" to columns
-mut_cols.append(col_name)
+# ######### ADD BASE INFO ##############################################
+
+
+def get_pon_bases(matrix_df):
+    '''
+    returns from eb-matrix file the concatenated Pon coverage for pos and neg strand
+    this is important output for mutation QC
+    imput cols:
+        depthP
+        depthN
+        misP
+        misN
+    '''
+
+    # remove sample depths from the columns
+    for col in ['depthP', 'misP', 'depthN', 'misN']:
+        matrix_df[col] = matrix[col].str.replace(r"^[0-9]+\|","")
+
+    # concate the respective columns
+    matrix_df['PoN-Ref'] = matrix_df['depthP'].str.cat(matrix_df['depthN'], sep="-")
+    matrix_df['PoN-Alt'] = matrix_df['misP'].str.cat(matrix_df['misN'], sep="-")
+    return matrix_df
+
+# get the pon_matrix containing the Pon coverages in Alt and Ref
+pon_matrix = get_pon_bases(eb_matrix)
+# transfer PoN-Ref and PoN-Alt to EB_df
+EB_df[['PoN-Ref', 'PoN-Alt']] = pon_matrix[['PoN-Ref', 'PoN-Alt']]
+mut_cols += ['PoN-Ref', 'PoN-Alt']
+
+
+# ###### add the full output ##########
+if config['EBfilter']['full_pon_output']:
+    # condense base info
+    base_cols = list("AaGgCcTtIiDd")
+    col_name = "|".join(base_cols)
+    # convert base coverage to str
+    for ch in base_cols:
+        # take the letter info from the mut_matrix which is not yet condensated
+        EB_df[ch] = mut_matrix[ch].map(str)
+    # condense base info into col "A|a|G|g|C|c|T|t|I|i|D|d"
+    EB_df[col_name] = EB_df[base_cols].apply(lambda row: "-".join(row), axis=1)
+    # add "A|a|G|g|C|c|T|t|I|i|D|d" to columns
+    mut_cols.append(col_name)
 
 
 # rm unnecessary columns
 EB_df = EB_df[mut_cols]
+
+
+# ######### WRITE TO FILE ##############################################
 
 EB_file = output[0]
 EB_df.to_csv(EB_file, sep='\t', index=False)

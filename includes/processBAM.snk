@@ -95,7 +95,7 @@ rule merge_recal_bam:
     this step is needed if samples are needed for PoN-list
     '''
 
-    input: # here I need a switch if no UMI is involved
+    input:  # here I need a switch if no UMI is involved
         expand("recalib/{{sample}}_{{type}}.{chrom}.bam", chrom=chrom_list)
     output:
         "recalib/{sample}_{type}.bam",
@@ -108,7 +108,7 @@ rule merge_recal_bam:
         # merge all split bams into one bam using samtools merge (also sorts the merged bam)
         "samtools merge {output[0]} recalib/{wildcards.sample}_{wildcards.type}.*.bam; "
         "picard BuildBamIndex INPUT={output[0]}; "
-        "rm -f recalib/{wildcards.sample}_{wildcards.type}.*.bam; "
+        # "rm -f recalib/{wildcards.sample}_{wildcards.type}.*.bam; "
 
 
 rule cover_BED:
