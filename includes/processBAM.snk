@@ -99,7 +99,7 @@ rule dedup_umi:
         "picard UmiAwareMarkDuplicatesWithMateCigar -Xms500m -Xmx{params.max_mem} UMI_METRICS={params.umi_metrics} I={input} O={output[0]} M={params.metric} ASSUME_SORTED=true REMOVE_DUPLICATES={params.remove_dups}; " # &>{log}
 
 
-def realign_ref():
+def IR_ref(_):
     '''
     returns ref parameters for realign-refs gatk tools
     '''
@@ -107,18 +107,11 @@ def realign_ref():
     return f"-R {full_path('genome')} -known {full_path('gold_standard_indels')} -known {full_path('phase1k_indels')}"
 
 
-def ir_params(_, input, output):
-    '''
-    params for realignGATK
-    '''
-
-    return f"{realign_ref()} -targetIntervals {input.intervals} -I {input.bam} -o {output}"
-
-
 rule create_GATK_target_list:
-    # the target has to be created only once and can be stored at the original REF position
+    input:
+        unpack(get_IR_input)
     output:
-        "realigned/GATK_targets.intervals"
+        "realigned/{sample}_{type}.{chrom}.intervals"
     threads:
         config['realignGATK']['threads']
     log:
@@ -127,16 +120,15 @@ rule create_GATK_target_list:
         "../env/gatk3-env.yml"
     params:
         gatk = config['tools']['gatk3'],
-        realign = lambda _, output: f"{realign_ref()} -nt {config['realignGATK']['threads']} -o {output}"
+        ref = IR_ref
     shell:
-        "{params.gatk} RealignerTargetCreator {params.realign} &>{log}"
+        "{params.gatk} RealignerTargetCreator -nt {threads} {params.ref} -I {input.bam} -o {output} &>{log}"
 
 
 rule realignGATK:
     input:
-        bam = lambda w: f"umi_deduped/{w.sample}_{w.type}.{w.chrom}.bam" if config['tag_bam']['run'] else f"deduped/{w.sample}_{w.type}.{w.chrom}.bam",
-        bai = lambda w: f"umi_deduped/{w.sample}_{w.type}.{w.chrom}.bai" if config['tag_bam']['run'] else f"deduped/{w.sample}_{w.type}.{w.chrom}.bai",
-        intervals = "realigned/GATK_targets.intervals"
+        unpack(get_IR_input),
+        intervals = "realigned/{sample}_{type}.{chrom}.intervals"
     output:
         "realigned/{sample}_{type}.{chrom}.bam"
     log:
@@ -147,9 +139,10 @@ rule realignGATK:
         "../env/gatk3-env.yml"
     params:
         gatk = config['tools']['gatk3'],
-        ir = ir_params
+        ref = IR_ref
     shell:
-        "{params.gatk} IndelRealigner {params.ir} &>{log}"
+        "{params.gatk} IndelRealigner {params.ref} "
+        "-targetIntervals {input.intervals} -I {input.bam} -o {output} &>{log}"
 
 
 rule base_recalibrator:
@@ -171,12 +164,11 @@ rule base_recalibrator:
     conda:
         "../env/gatk4-env.yml"
     shell:
-        "{params.gatk} BaseRecalibrator -I {input.bam} {params.genome} {params.known_sites} -O {output.table} &>{log}; " #  
+        "{params.gatk} BaseRecalibrator -I {input.bam} {params.genome} {params.known_sites} -O {output.table} &>{log}; "
         # apply recalibration table on input
         "{params.gatk} ApplyBQSR -I {input.bam} {params.genome} --bqsr-recal-file {output.table} -O {output.bam} &>>{log}; " # 
         # recreate recalibration table from output for QC
         "{params.gatk} BaseRecalibrator -I {output.bam} {params.genome} {params.known_sites} -O {output.table} &>>{log}"  #  
-
 
 
 rule merge_recal_bam:
@@ -219,4 +211,3 @@ rule cover_BED:
         "../env/bedcover-env.yml"
     script:
         "../scripts/bedcover.py"
-

@@ -120,6 +120,18 @@ def get_fastqc_list(_):
     return fastqc_list
 
 
+# ############## INDEL REALIGNER ######################
+
+def get_IR_input(w):
+    if config['setup']['UMI']:
+        bam = f"umi_deduped/{w.sample}_{w.type}.{w.chrom}.bam"
+        bai = f"umi_deduped/{w.sample}_{w.type}.{w.chrom}.bai"
+    else:
+        bam = f"deduped/{w.sample}_{w.type}.{w.chrom}.bam"
+        bai = f"deduped/{w.sample}_{w.type}.{w.chrom}.bai"
+    return {'bam': bam, 'bai': bai}
+
+
 def get_script(script_name):
     return os.path.join(config['snakedir'], config['paths']['scripts'], config['scripts'][script_name])
 
