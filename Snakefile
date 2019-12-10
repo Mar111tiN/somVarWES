@@ -32,7 +32,9 @@ include: "includes/fastq.snk"
 include: "includes/fastQC.snk"
 include: "includes/ubam.snk"
 include: "includes/map.snk"
+include: "includes/splitBAM.snk"
 include: "includes/processBAM.snk"
+include: "includes/dedup.snk"
 include: "includes/varscan.snk"
 include: "includes/annotate.snk"
 include: "includes/EB.snk"
@@ -66,8 +68,8 @@ active_filter_list = [f for f in config['filter']['filters'].keys() if config['f
 rule all:
     input:
         "fastQC/multiQC.html",
-        expand("bam_merge/{samples}.bam", samples=sample_df.index)
-        # expand("coverBED/{samples}.txt", samples=sample_df.index),
+        # expand("bam_merge/{samples}.bam", samples=sample_df.index)
+        expand("coverBED/{samples}.txt", samples=sample_df.index),
         # # expand("filter/{file}.raw.csv", file=get_tumor_normal_pairs(file_df))
         # expand("filter/{file}.{filter}.csv", file=get_tumor_normal_pairs(sample_df), filter=active_filter_list)
 

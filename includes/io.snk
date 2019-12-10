@@ -86,6 +86,8 @@ def get_FastqToSam_input(w):
         fastqs.append(f"fastq/{w.sample}_{w.type}_index.{w.split}.fastq.gz")
     return fastqs
 
+# ###################### FASTQC ###########################
+
 
 def get_fastq_input(w):
     '''
@@ -131,6 +133,8 @@ def get_IR_input(w):
         bai = f"deduped/{w.sample}_{w.type}.{w.chrom}.bai"
     return {'bam': bam, 'bai': bai}
 
+##########################################################
+
 
 def get_script(script_name):
     return os.path.join(config['snakedir'], config['paths']['scripts'], config['scripts'][script_name])
@@ -147,7 +151,10 @@ def get_bed_file(covered_or_padded):
     '''
     returns the appropriate bed_file depending on build and library
     '''
-
+    
+    bed_file = config['setup'].get('bed_file', None)
+    if bed_file:
+        return bed_file
     build = config['ref']['build']
     lib = config['setup']['library']
     lib_version = config['setup']['library_version']

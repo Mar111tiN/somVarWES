@@ -1,0 +1,62 @@
+rule index_split_bam:
+    input:
+        "{folder}/{sample}_{type}.{chrom_split}.bam"
+    output:
+        "{folder}/{sample}_{type}.{chrom_split}.bai"
+    threads:
+        config['bamindex']['threads']
+    conda:
+        "../env/align-env.yml"
+    shell:
+        "picard BuildBamIndex INPUT={input}"
+
+rule index_bam:
+    input:
+        "{folder}/{sample}_{type}.bam"
+    output:
+        "{folder}/{sample}_{type}.bai"
+    threads:
+        config['bamindex']['threads']
+    conda:
+        "../env/align-env.yml"
+    shell:
+        "picard BuildBamIndex INPUT={input}"
+
+rule merge_bam:
+    '''
+    here the split and umified bams are merged
+    depending on input required by recalib, this can be umi/X-Y.bam or mapped
+    !!! the merge has to retain the bam headers of the individual files
+
+    '''
+
+    input:  # here I need a switch if no UMI is involved
+        expand("mapped/{{sample}}_{{type}}.{split}.bam", split=list(range(config['fastq']['split_factor'])))
+    output:
+        "bam_merge/{sample}_{type}.bam"
+    threads:
+        config['resplit_bam']['threads']
+    conda:
+        "../env/samba-env.yml"
+    shell:
+        "sambamba merge -t {threads} {output} mapped/{wildcards.sample}_{wildcards.type}.*.bam; "
+        # "rm {input};"
+
+        # OPTIONB: picard AddOrReplaceReadGroups
+
+rule resplit_bam:
+    '''
+    chromosome-split merged bams into chromosome-split bams (one split per job) with index
+    '''
+
+    input:
+        bam = "bam_merge/{sample}_{type}.bam",
+        bai = "bam_merge/{sample}_{type}.bai"
+    output:
+        "bam_merge/{sample}_{type}.{chrom}.bam"
+    threads:
+        config['resplit_bam']['threads']
+    conda:
+        "../env/samba-env.yml"
+    shell:
+        "sambamba view -t {threads} -h -o {output} {input.bam} {wildcards.chrom}"

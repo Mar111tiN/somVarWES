@@ -1,0 +1,35 @@
+rule dedup:
+    input:
+        "bam_merge/{sample}_{type}.{chrom}.bam"
+    output:
+        "deduped/{sample}_{type}.{chrom}.bam"
+    log:
+        "logs/dedup/{sample}_{type}.{chrom}.log"
+    params:
+        metric = lambda w: f"deduped/{w.sample}_{w.type}.{w.chrom}.metric.txt"
+    threads:
+        config['dedup']['threads']
+    conda:
+        "../env/align-env.yml"
+    shell:
+        "picard MarkDuplicates I={input} O={output} M={params.metric} REMOVE_DUPLICATES=true &>{log}"
+
+
+rule dedup_umi:
+    input:
+        "bam_merge/{sample}_{type}.{chrom}.bam"
+    output:
+        "umi_deduped/{sample}_{type}.{chrom}.bam"
+    params:
+        metric = lambda w: f"umi_deduped/{w.sample}_{w.type}.{w.chrom}.metric.txt",
+        umi_metrics = lambda w: f"umi_deduped/{w.sample}_{w.type}.{w.chrom}.umi_metric.txt",
+        max_mem = config['dedup_umi']['max_mem'],
+        remove_dups = "false" if config['dedup_umi']['keep_dups'] else "true"
+    threads:
+        int(config['dedup_umi']['max_mem'].strip('g'))
+    log:
+        "logs/dedup/{sample}_{type}.{chrom}.log"
+    conda:
+        "../env/align-env.yml"
+    shell:
+        "picard UmiAwareMarkDuplicatesWithMateCigar -Xms500m -Xmx{params.max_mem} UMI_METRICS={params.umi_metrics} I={input} O={output[0]} M={params.metric} ASSUME_SORTED=true REMOVE_DUPLICATES={params.remove_dups}; " # &>{log}
