@@ -17,7 +17,6 @@ parser.add_argument('input', type=str, help='input from annovar')
 parser.add_argument('output', type=str, help='output file to filtered/..')
 
 
-
 # read arguments
 args = parser.parse_args()
 keep_syn = args.keep_syn
@@ -33,17 +32,17 @@ print(f'Started editing and basic filtering for {i}.')
 anno_df = pd.read_csv(i, sep='\t')
 
 #####################################################################
-############### ICGC29 ##############################################
+# ############## ICGC29 ##############################################
+
 
 def addICGC(df):
     ICGC = df['icgc29_Affected'].str.extract(r'^([0-9]+)/([0-9]+)$').fillna(0).astype('int')
-    df['icgc29_freq'] = (ICGC[0] / ICGC[1]).fillna(".")  
+    df['icgc29_freq'] = (ICGC[0] / ICGC[1]).fillna(".")
     return df.drop(columns='icgc29_Affected')
 
 
-
 #####################################################################
-############### COSMIC70 ############################################
+# ############## COSMIC70 ############################################
 
 def addCosmic70(df):
     pattern = r'(?:ID=(?P<cosmID>COSM[0-9]+(?:,COSM[0-9]+)?);OCCURENCE=)?(?P<freq>[0-9]+)\((?P<organ>[A-Z_a-z]+)\)'
@@ -59,6 +58,7 @@ cosmic70_dict = {
     'bone': 2
 }
 
+
 def cosmic70score(row):
     if row['cosmic70_type'] != ".":
         score = 1
@@ -66,9 +66,9 @@ def cosmic70score(row):
             if location in row['cosmic70_type']:
                 score += cosmic70_dict[location]
         return row['cosmic70_freq'] * score
-    else:    
+    else:
         return 0
-    
+
 
 #####################################################################
 ############### COSMIC90 ############################################
@@ -100,7 +100,7 @@ cosmic90_type_score = {
     'T_cell_large_granular_lymphocytic_leukaemia': 3,
     'marginal_zone_lymphoma': 3,
     'benign': -1,
-    'normal': -1,  
+    'normal': -1
 }
 
 cosmic90_location_score = {
@@ -110,7 +110,7 @@ cosmic90_location_score = {
     'thymus': 2,
     'tonsil': 2,
     'tibia': 2,
-    'medulla': 3, # is this the bone marrow
+    'medulla': 3,  # is this the bone marrow
     'spleen': 2
 }
 
@@ -119,7 +119,7 @@ pattern = r'(?P<count>[0-9]+)x\((?P<types>[^0-9@)]+)@(?P<location>[^0-9@)]+)\)'
 
 
 #####################################################################
-############### CLINVAR #############################################
+# ############## CLINVAR #############################################
 
 CLNDN_factorial = {
     'carcinoma': 2,
@@ -146,11 +146,12 @@ CLNSIG_score = {
     'Uncertain_significance': 0
 }
 
+
 def CLNDN2score(clndn):
     '''
     accumulates a factor for multiplication with CLNSIG_score
     '''
-    
+
     factor = 1
     for key in CLNDN_factorial:
         if key in clndn:
@@ -165,16 +166,16 @@ def get_CLINVARscore(row):
 
 
 #####################################################################
-############### COMBINED CLINSCORE ##################################
+# ############## COMBINED CLINSCORE ##################################
 
-########### CUSTOM WEIGHTS ##############
+# ########## CUSTOM WEIGHTS ##############
 
 # derived clinical significance scores --> ClinScore
-ClinScore = {   
-    'cosmic70_score': 2, # derived score
-    'cosmic90_score': 2, # derived score
+ClinScore = {
+    'cosmic70_score': 2,  # derived score
+    'cosmic90_score': 2,  # derived score
     'clinvar_score': 2,  # derived score
-    'icgc29_freq': 200 # derived score --> should be much higher!!!
+    'icgc29_freq': 200  # derived score --> should be much higher!!!
 }
 
 # only get the non-zero keys
@@ -182,9 +183,9 @@ clinscore_cols = [col for col in ClinScore.keys() if ClinScore[col]]
 
 
 #####################################################################
-############### GET ALL CLINICAL SCORES #############################
+# ############## GET ALL CLINICAL SCORES #############################
 
-########### CLINICAL ROWS ##############
+# ########## CLINICAL ROWS ##############
 def is_clin_col(col):
     for key in ['cosmic', 'CLN', 'Clin', 'icgc']:
         if key in col:
@@ -236,7 +237,7 @@ def get_clinical_scores(df):
     for col in clinscore_cols:
         print("            ", col)
         df.loc[df[col] != ".", 'Clin_score'] += ClinScore[col] * df[df[col] != "."][col]
-        
+
     # RESORT THE COLUMNS
     df = resort_cols(df)
     print(list(df.columns))
@@ -272,6 +273,8 @@ def get_gene_lists(df):
     new_cols = start_cols + list_cols + rest_cols
     print(new_cols)
     return df[new_cols]
+
+
 print(list(anno_df.columns))
 clin_df = get_clinical_scores(anno_df)
 
@@ -299,7 +302,6 @@ def filter_unwanted(df, keep_syn=False):
     return df[exon_func & aa_change & function]
 
 
-
 basic_df = filter_unwanted(candidate_df, keep_syn=keep_syn)
 basic_file = f"{output_base}.basic.csv"
 
@@ -308,7 +310,7 @@ basic_df.to_csv(basic_file, sep='\t', index=False)
 print(f"Writing basic filtered list to {basic_file}.")
 
 #####################################################################
-############### BASIC FILTER #########################################
+# ############## BASIC FILTER #########################################
 
 filter_setting = {
     'strict': {
@@ -346,16 +348,16 @@ filter_setting = {
 
 
 def basic_filter(df, stringency='loose'):
-    
+
     # get thresholds
     thresh = filter_setting[stringency]
-    tumor_depth = (df['TR2'] > thresh['variantT']) & (df['Tdepth'] > thresh['Tdepth'])   
+    tumor_depth = (df['TR2'] > thresh['variantT']) & (df['Tdepth'] > thresh['Tdepth'])
     # EBFilter
     eb = df['EBscore'] >= thresh['EBscore']
 
     # Strand Ratio (as FisherScore and simple)
-    # strand = (df['FisherScore'] <= thresh['FisherScore']) & (df['TR2+'] != df['TR2']) & (df['TR2+'] != 0)    
-    strand = (df['TR2+'] != df['TR2']) & (df['TR2+'] != 0) 
+    # strand = (df['FisherScore'] <= thresh['FisherScore']) & (df['TR2+'] != df['TR2']) & (df['TR2+'] != 0)
+    strand = (df['TR2+'] != df['TR2']) & (df['TR2+'] != 0)
     VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
     # VAF = (df['TVAF'] >= thresh['TVAF'])
     # total_score = df['Total_score'] >= thresh['Total_score']
@@ -369,20 +371,17 @@ def basic_filter(df, stringency='loose'):
 # EBscore >=4 or CoSMIC OCCURRENCE
 
 
-
-
 def damm_filter(data, output):
     '''
     creates filtered output using the daniel filtering
     input: pd.dataframe of unfiltered annovar output
-    output: 
+    output:
     - filtered/sample_tumor-normal_daniel.csv
     '''
     ############## FILTERS ##########################################
 
     filter_stats = {}
     filter_stats['initial'] = len(data.index)
-
 
     # filter exonic, splicing and exonic;splicing (but not ncRNA_splicing, _exonic,...)
     exonic = filter_unwanted(data)
@@ -400,8 +399,7 @@ def damm_filter(data, output):
     strict = basic_filter(exonic, 'strict')
     filter_stats.update({'strict_filter':len(strict.index)})
 
-
-    ############ DataBase filtering #################################
+    # ########### DataBase filtering #################################
     db_loose = DB_filter(loose)
     filter_stats.update({'loose_DB_filtered':len(db_loose.index)})
 

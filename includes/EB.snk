@@ -106,22 +106,27 @@ rule mergeEBscore:
         # maybe arrange columns so that EB is not last column?
         # anno_cols = anno_df.columns[5:]
 
-        # concatenate matrix file
-        if not config['EBFilter']['use_cache']:
-            matrix_dfs = []
-            for EB_file in input:
-                matrix_file = EB_file.replace('.EB', '.mutmatrix')
-                matrix_df = pd.read_csv(matrix_file, sep='\t', index_col=False)
-                # cleanup after
-                shell(f"rm {matrix_file}")
-                matrix_dfs.append(matrix_df)
-            matrix_merge = pd.concat(matrix_dfs).sort_values(['Chr', 'Start'])
-            matrix_file = output[0].replace('csv', 'matrix')
-            matrix_merge.to_csv(matrix_file, sep='\t', index=False)
-            show_output(f"Written matrix_file to {matrix_file}", color='success')
-            # load in the input files (starting with 2nd input (1st is anno_file))
+        # # concatenate matrix file
+        # if not config['EBFilter']['use_cache']:
+        #     matrix_dfs = []
+        #     for EB_file in input:
+        #         matrix_file = EB_file.replace('.EB', '.mutmatrix')
+        #         if not os.path.isfile(matrix_file):
+        #             continue
+        #         matrix_df = pd.read_csv(matrix_file, sep='\t', index_col=False)
+        #         # cleanup after
+        #         shell(f"rm {matrix_file}")
+        #         matrix_dfs.append(matrix_df)
+        #     matrix_merge = pd.concat(matrix_dfs).sort_values(['Chr', 'Start'])
+        #     matrix_file = output[0].replace('csv', 'matrix')
+        #     matrix_merge.to_csv(matrix_file, sep='\t', index=False)
+        #     show_output(f"Written matrix_file to {matrix_file}", color='success')
+        #     # load in the input files (starting with 2nd input (1st is anno_file))
+
         EB_dfs = []
         for EB_file in input:
+            if not os.path.getsize(EB_file):
+                continue
             EB_df = pd.read_csv(EB_file, sep='\t', index_col=False)
             # cleanup after
             shell(f"rm {EB_file}")
