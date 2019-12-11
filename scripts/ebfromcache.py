@@ -73,9 +73,9 @@ base_file = output[0].replace(".cachedEB","")
 # change mutation positions for deletions in mutation file
 mut_df.loc[mut_df['Alt'] == "-", 'Start'] = mut_df['Start'] -1
 # load in the target matrix file as df
-tumor_matrix_df = pd.read_csv(matrix_cache, sep='\t', index_col=False)
+cache_matrix_df = pd.read_csv(matrix_cache, sep='\t', index_col=False)
 # merge
-mut_matrix = mut_df.merge(tumor_matrix_df, on=['Chr', 'Start'], how='inner')
+mut_matrix = mut_df.merge(cache_matrix_df, on=['Chr', 'Start'], how='inner')
 # reset deletion positions
 mut_matrix.loc[mut_matrix['Alt'] == "-", 'Start'] = mut_matrix['Start'] + 1
 
@@ -84,8 +84,6 @@ mut_matrix.loc[mut_matrix['Alt'] == "-", 'Start'] = mut_matrix['Start'] + 1
 # if sample_inpon == 0, then sample is not in PoN
 # else, pon matrix has to be acquired from cache and used in EBscore
 sample_in_pon = get_sample_pos(pon_list, tumor_bam)
-
-
 # ########################################### CACHE FROM MATRIX #####################################
 if sample_in_pon:
     show_output(f"Corresponding normal sample for {tumor_bam} has been found in Panel of Normals. EBcache cannot be used!", color='warning')
@@ -120,60 +118,83 @@ if sample_in_pon:
 
     # get the pon_matrix containing the Pon coverages in Alt and Ref
     pon_matrix = get_pon_bases(eb_matrix)
-    # transfer PoN-Ref and PoN-Alt to EB_df
-    EB_df[['PoN-Ref', 'PoN-Alt']] = pon_matrix[['PoN-Ref', 'PoN-Alt']]
-    mut_cols += ['PoN-Ref', 'PoN-Alt']
 
 # ########################################### CACHE FROM ABcache ###########################
 else:
     # ############## TARGET PILEUP --> MATRIX FILE ##################
     tumor_matrix_file = target_pileup_from_mut(mut_file, base_file, tumor_bam, chrom)
-
-
-
     # check if matrix_file has input
     if not os.path.getsize(tumor_matrix_file):
         # create empty file
-        open(output[0], 'a').close()
-        show_output(f"Pileup for {chrom} of {tumor_bam} was empty! Created empty file {output[0]}", color='warning')
+        EB_df = mut_df
+        EB_df['EBscore'] = 0
+        # have to check on that (is it even possible to have no pileup? mut_file contains values!!)
     else:  # has input
+
         # get the mutation file for the chromosome
+        matrix_df = pd.read_csv(tumor_matrix_file, sep='\t')
         cache_df = pd.read_csv(AB_cache, compression='gzip', sep='\t')
-        matrix_df = pd.read_csv(matrix_cache, sep='\t', index_col=False)
         pileAB_file = f"{base_file}.pileAB"
         pileAB_df = matrix_df.merge(cache_df, on=['Chr', 'Start'])
-        # change coords for merge with start
+
+        # change coords for merge with start and merge into mut_df for Ref
         mut_df.loc[mut_df['Alt'] == "-", 'Start'] = mut_df['Start'] -1
         pileAB_df = mut_df.merge(pileAB_df, on=['Chr', 'Start'])
         pileAB_df.loc[pileAB_df['Alt'] == "-", 'Start'] = pileAB_df['Start'] + 1
 
         # save for debugging
-        pileAB_df.to_csv(pileAB_file, sep='\t', index=False)
-        show_output(f"Pileup matrix for for chrom {chrom} of {tumor_bam} merged with AB matrix.\n Written matrix file to {pileAB_file}.\n Going on with EB computation...", color='normal', time=True)
+        # pileAB_df.to_csv(pileAB_file, sep='\t', index=False)
+        show_output(f"Pileup matrix for for chrom {chrom} of {tumor_bam} merged with AB matrix.\n Going on with EB computation...", color='normal', time=True)
 
         # ############## EBSCORE COMPUTATION  ########
         # multithreaded computation
-        EBdf = computeEBfromAB_multithreaded(pileAB_df, fit_pen, threads)
+        EB_df = computeEBfromAB_multithreaded(pileAB_df, fit_pen, threads)
 
-    # add EBscore to columns
-    mut_cols.append('EBscore')
+        # convert matrix file to EB_input for getting PoN-Ref and Pon-Alt
+        mutmatrix_file = f"{base_file}.mutmatrix"
+        mut_matrix.to_csv(mutmatrix_file, sep='/t', index=False)
+        # do the conversion
+        EB_matrix_input_file = f"{base_file}.EB.matrix"
+        shell(f"cat {mutmatrix_file} | {matrix2EBinput} > {EB_matrix_input_file}")
 
+        # load in the EB.matrix file
+        eb_matrix = pd.read_csv(EB_matrix_input_file, sep='\t')
+
+        # get the pon_matrix containing the Pon coverages in Alt and Ref
+        # tumor sample is not in PoN --> no removal neccessary
+        pon_matrix = get_pon_bases(eb_matrix, remove_sample=False)
+
+# add EBscore to columns
+mut_cols.append('EBscore')
+
+
+# transfer PoN-Ref and PoN-Alt from pon_matrix to EB_df
+EB_df[['PoN-Ref', 'PoN-Alt']] = pon_matrix[['PoN-Ref', 'PoN-Alt']]
+mut_cols += ['PoN-Ref', 'PoN-Alt']
+
+
+# ###### add the full output ##########
+if config['EBFilter']['full_pon_output']:
     # condense base info
+    print('full_output')
     base_cols = list("AaGgCcTtIiDd")
     col_name = "|".join(base_cols)
     # convert base coverage to str
     for ch in base_cols:
-        EB_df[ch] = EB_df[ch].map(str)
+        # take the letter info from the mut_matrix which is not yet condensated
+        # str.replace removes the tumor bases
+        EB_df[ch] = mut_matrix[ch].map(str).str.replace(r'^[0-9]+\|', "")
     # condense base info into col "A|a|G|g|C|c|T|t|I|i|D|d"
-    EB_df[col_name] = EB_df[base_cols].apply(lambda row: "|".join(row), axis=1)
+    EB_df[col_name] = EB_df[base_cols].apply(lambda row: "-".join(row), axis=1)
     # add "A|a|G|g|C|c|T|t|I|i|D|d" to columns
     mut_cols.append(col_name)
-    # rm unnecessary columns
-    EB_df = EB_df[mut_cols]
 
-    # ######### WRITE TO FILE ##############################################
-    EB_df.to_csv(output[0], sep='\t', index=False)
+# rm unnecessary columns
+EB_df = EB_df[mut_cols]
 
-    # cleanup
-    shell(f"rm -f {matrix_file} {pileAB_file}") # 
-    show_output(f"Created EBscore for chrom {chrom} of {tumor_bam} using EBcache and written to {output[0]}", color='success', time=True)
+# ######### WRITE TO FILE ##############################################
+EB_df.to_csv(output[0], sep='\t', index=False)
+
+# cleanup
+# shell(f"rm -f {matrix_file} {pileAB_file}") # 
+show_output(f"Created EBscore for chrom {chrom} of {tumor_bam} using EBcache and written to {output[0]}", color='success', time=True)

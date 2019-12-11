@@ -72,7 +72,7 @@ def get_sample_pos(pon_list, bam_file):
 # ######### ADD BASE INFO ##############################################
 
 
-def get_pon_bases(matrix_df):
+def get_pon_bases(matrix_df, remove_sample=True):
     '''
     returns from eb-matrix file the concatenated Pon coverage for pos and neg strand
     this is important output for mutation QC
@@ -82,10 +82,10 @@ def get_pon_bases(matrix_df):
         misP
         misN
     '''
-
-    # remove sample depths from the columns
-    for col in ['depthP', 'misP', 'depthN', 'misN']:
-        matrix_df[col] = matrix_df[col].str.replace(r"^[0-9]+\|","")
+    if remove_sample:
+        # remove sample depths from the columns
+        for col in ['depthP', 'misP', 'depthN', 'misN']:
+            matrix_df[col] = matrix_df[col].str.replace(r"^[0-9]+\|","")
 
     # concate the respective columns
     matrix_df['PoN-Ref'] = matrix_df['depthP'].str.cat(matrix_df['depthN'], sep="-")
