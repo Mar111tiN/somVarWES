@@ -199,6 +199,28 @@ def fit_bb(count_df, pen):
     ab_n = [round(param, 5) for param in ab_n]
     return {'p': ab_p, 'n': ab_n}
 
+
+# ######### ADD BASE INFO ##############################################
+
+def get_pon_bases(matrix_df):
+    '''
+    returns from eb-matrix file the concatenated Pon coverage for pos and neg strand
+    this is important output for mutation QC
+    imput cols:
+        depthP
+        depthN
+        misP
+        misN
+    '''
+
+    # remove sample depths from the columns
+    for col in ['depthP', 'misP', 'depthN', 'misN']:
+        matrix_df[col] = matrix_df[col].str.replace(r"^[0-9]+\|","")
+
+    # concate the respective columns
+    matrix_df['PoN-Ref'] = matrix_df['depthP'].str.cat(matrix_df['depthN'], sep="-")
+    matrix_df['PoN-Alt'] = matrix_df['misP'].str.cat(matrix_df['misN'], sep="-")
+    return matrix_df
 #######################################################################
 #######################################################################
 
@@ -313,35 +335,11 @@ else:
     # add EBscore to columns
     mut_cols.append('EBscore')
 
-    # ######### ADD BASE INFO ##############################################
-
-
-    def get_pon_bases(matrix_df):
-        '''
-        returns from eb-matrix file the concatenated Pon coverage for pos and neg strand
-        this is important output for mutation QC
-        imput cols:
-            depthP
-            depthN
-            misP
-            misN
-        '''
-
-        # remove sample depths from the columns
-        for col in ['depthP', 'misP', 'depthN', 'misN']:
-            matrix_df[col] = matrix_df[col].str.replace(r"^[0-9]+\|","")
-
-        # concate the respective columns
-        matrix_df['PoN-Ref'] = matrix_df['depthP'].str.cat(matrix_df['depthN'], sep="-")
-        matrix_df['PoN-Alt'] = matrix_df['misP'].str.cat(matrix_df['misN'], sep="-")
-        return matrix_df
-
     # get the pon_matrix containing the Pon coverages in Alt and Ref
     pon_matrix = get_pon_bases(eb_matrix)
     # transfer PoN-Ref and PoN-Alt to EB_df
     EB_df[['PoN-Ref', 'PoN-Alt']] = pon_matrix[['PoN-Ref', 'PoN-Alt']]
     mut_cols += ['PoN-Ref', 'PoN-Alt']
-
 
     # ###### add the full output ##########
     if config['EBFilter']['full_pon_output']:
@@ -351,16 +349,14 @@ else:
         # convert base coverage to str
         for ch in base_cols:
             # take the letter info from the mut_matrix which is not yet condensated
-            EB_df[ch] = mut_matrix[ch].map(str)
+            # str.replace removes the tumor bases
+            EB_df[ch] = mut_matrix[ch].map(str).str.replace(r'^[0-9]+\|', "")
         # condense base info into col "A|a|G|g|C|c|T|t|I|i|D|d"
         EB_df[col_name] = EB_df[base_cols].apply(lambda row: "-".join(row), axis=1)
         # add "A|a|G|g|C|c|T|t|I|i|D|d" to columns
         mut_cols.append(col_name)
-
-
     # rm unnecessary columns
     EB_df = EB_df[mut_cols]
-
 
     # ######### WRITE TO FILE ##############################################
 
@@ -369,6 +365,4 @@ else:
 
     # cleanup
     shell(f"rm {matrix_file} {EB_matrix_input_file}") # {mutmatrix_file} 
-
-
     show_output(f"Created EBscore for chrom {chrom} of {tumor_bam} and written to {output[0]}", color='success')

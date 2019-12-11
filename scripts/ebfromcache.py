@@ -11,7 +11,7 @@ from scipy.special import gammaln
 from datetime import datetime as dt
 
 ###########################################################
-######################## UTILS ############################
+# ####################### UTILS ############################
 
 ansii_colors = {
           'magenta': '[1;35;2m',
@@ -29,6 +29,7 @@ colors = {
         'warning': ansii_colors['red'],
         'success': ansii_colors['cyan']
         }
+
 
 def show_output(text, color='normal', multi=False, time=False):
     '''
@@ -54,7 +55,8 @@ def show_command(command, list=False, multi=True):
     return
 
 ###########################################################
-###################### EB MATH CORE #######################
+# ##################### EB MATH CORE #######################
+
 
 def fisher_combination(p_values):
 
@@ -90,6 +92,7 @@ def bb_pvalues(params, target_df):
     p_values['n'] = bb_pvalue(params['n'], target_n)
     return p_values
 
+
 # the matrices for beta-binomial calculation
 KS_matrix = np.array([[1,0,1,1,0,1,0,0,0],[0,1,-1,0,1,-1,0,0,0]])
 gamma_reduce = np.array([1,-1,-1,-1,1,1,1,-1,-1])
@@ -103,29 +106,29 @@ def bb_loglikelihood(params, count_df, is_1d):
     # perform matrix multiplication to get inputs to log-gamma
     input_matrix = np.matmul(count_matrix,KS_matrix) + ab_matrix
     # get corresponding log-gamma values and reduce over pon-values
-    if is_1d: # check whether gammatrix is 2-dim - otherwise sum aggregation over axis 0 is faulty
+    if is_1d:  # check whether gammatrix is 2-dim - otherwise sum aggregation over axis 0 is faulty
         gamma_matrix = gammaln(input_matrix)
-    else:  
+    else:
         gamma_matrix = np.sum(gammaln(input_matrix), axis=0)
     # add or subtract using gamma_reduce matrix and sum to loglikelihood (scalar)
     log_likelihood = np.sum(gamma_matrix * gamma_reduce)
     return log_likelihood
- 
+
 
 ###############################################################
-###################### EBscore ROW HANDLERS ###################
+# ##################### EBscore ROW HANDLERS ###################
 
 def get_target_count(row, var):
     '''
     converts the base-wise read coverage to a matrix
     '''
-    
+
     s = pd.Series()
 
     s['depth_p'] = int(row['Depth-ACGT'])
     s['depth_n'] = int(row['Depth-acgt'])
     # treat Indels as combined event
-    if var in ['I', 'D']:      
+    if var in ['I', 'D']:
         s['depth_p'] += int(row['Depth-INDEL'])
         s['depth_n'] += int(row['Depth-indel'])
         # sum up insert and del events
@@ -142,7 +145,7 @@ def AB2EBscore(row):
     get the EBscore from cached AB parameters
     no fitting is needed as parameters are precomputed and stored in row[5:9]
     '''
-    
+
     # set the variant to the value fitting to the matrix
     if row['Ref'] == "-":
         ALT = "I"
@@ -150,16 +153,14 @@ def AB2EBscore(row):
         ALT = "D"
     else:
         ALT = row['Alt'].upper()
-    alt = ALT.lower()
-    
-    
+
     # we only get the snp count_df, using the mut_df 'Alt' as var and adjust for AB_df with column 9
     count_series = get_target_count(row, ALT)
     bb_params = {}
-    
+
     # adjust variant D-->I and d-->i because I/i is used in ABcache
     if ALT == "D":
-        ALT, alt = ("I", "i")
+        ALT = ("I")
     # feed-in the AB params coming with the row
     bb_params['p'] = [row[f"{ALT}+a"], row[f"{ALT}+b"]]
     bb_params['n'] = [row[f"{ALT}-a"], row[f"{ALT}-b"]]
@@ -179,8 +180,30 @@ def AB2EBscore(row):
     return EB_score
 
 
+# ######### ADD BASE INFO ##############################################
+def get_pon_bases(matrix_df):
+    '''
+    returns from eb-matrix file the concatenated Pon coverage for pos and neg strand
+    this is important output for mutation QC
+    imput cols:
+        depthP
+        depthN
+        misP
+        misN
+    '''
+
+    # remove sample depths from the columns
+    for col in ['depthP', 'misP', 'depthN', 'misN']:
+        matrix_df[col] = matrix_df[col].str.replace(r"^[0-9]+\|","")
+
+    # concate the respective columns
+    matrix_df['PoN-Ref'] = matrix_df['depthP'].str.cat(matrix_df['depthN'], sep="-")
+    matrix_df['PoN-Alt'] = matrix_df['misP'].str.cat(matrix_df['misN'], sep="-")
+    return matrix_df
+
 ####################################################################
-########################### SNAKE PARAMS ###########################
+# ########################## SNAKE PARAMS ###########################
+
 
 w = snakemake.wildcards
 config = snakemake.config
@@ -252,8 +275,10 @@ if not os.path.getsize(matrix_file):
     show_output(f"Pileup for {chrom} of {tumor_bam} was empty! Created empty file {output[0]}", color='warning')
 
 else:  # has input
+
+    # ############## LOAD PILEUP MATRIX INTO MUT_DF #####
     # change mutation positions for deletions in mutation file
-    mut_df.loc[mut_df['Alt'] == "-",'Start'] = mut_df['Start'] -1
+    mut_df.loc[mut_df['Alt'] == "-", 'Start'] = mut_df['Start'] -1
     # load in the target matrix file as df
     tumor_matrix_df = pd.read_csv(tumor_matrix_file, sep='\t', index_col=False)
     # merge
@@ -261,8 +286,6 @@ else:  # has input
     # reset deletion positions
     mut_matrix.loc[mut_matrix['Alt'] == "-",'Start'] = mut_matrix['Start'] + 1
 
-    # ############## LOAD AND MERGE CACHE INTO MATRIX FILE #####
-    
     # # check if sample is included in PoN ######
     def checkPon4sample(row, bam):
         '''
@@ -283,40 +306,38 @@ else:  # has input
         sample_pos = pon_df.apply(checkPon4sample, axis=1, bam=tumor_bam).sum()
         return sample_pos
 
-
     # if sample_inpon == 0, then sample is not in PoN
     # else, pon matrix has to be acquired from cache and used in EBscore
     sample_in_pon = get_sample_pos(pon_list, tumor_bam)
 
-
+    # ########################################### CACHE FROM MATRIX #####################################
     if sample_in_pon:
-        # ########################################### CACHE FROM MATRIX #####################################
-
         show_output(f"Corresponding normal sample for {tumor_bam} has been found in Panel of Normals. EBcache cannot be used!", color='warning')
         show_output(f"Falling back to cached matrix file reduced by corresponding normal..", color='normal')
+        # EBcache cannot be used directly
+
+        # ######### REMOVE SAMPLE BASES FROM MATRIX FILE
         # get the cached matrix file reduced by the sample
         # reduce_matrix takes position of sample in pon_list as argument
-        # EBcache cannot be used directly
+
         reduced_matrix_file = f"{base_file}.ponmatrix"
         reduce_matrix_cmd = f"gunzip < {matrix_cache} | {reduce_matrix} {sample_in_pon} > {reduced_matrix_file}"
 
-        ############# LOAD AND MERGE MATRIX FILES INTO MUTFILE
-
-
-
-
-
+        # ############ LOAD AND MERGE MATRIX FILES INTO MUTFILE
         # load in the pon_matrix file as df
         pon_matrix_df = pd.read_csv(reduced_matrix_file, sep='\t', index_col=False)
-        # merge
+        # ### ---> REUSE LATER FOR FULL OUTPUT
+
+        # merge pon_matrix into mut_matrix
         mut_matrix = mut_df.merge(pon_matrix_df, on=['Chr', 'Start'], how='inner')
 
         # write to file
         mutmatrix_file = f"{base_file}.mutmatrix"
         mut_matrix.to_csv(mutmatrix_file, sep='\t', index=False)
+        # cleanup
+        shell(f"rm {reduced_matrix_file}")
 
-
-        ## CONTINUE LIKE UNCACHED EBscore
+        # # CONTINUE LIKE UNCACHED EBscore
         # convert mutmatrix to direct EBinput
         EB_matrix_input_file = f"{base_file}.EB.matrix"
         shell(f"cat {mutmatrix_file} | {matrix2EBinput} > {EB_matrix_input_file}")
@@ -325,7 +346,7 @@ else:  # has input
         eb_matrix = pd.read_csv(EB_matrix_input_file, sep='\t')
 
         # multithreaded computation
-        def  computeEB2(df):
+        def computeEB2(df):
             show_output(f"Computing EBscore for {len(df.index)} lines", multi=True, time=True)
             df['EBscore'] = df.apply(partial(get_EB_score2, fit_pen), axis=1)
             show_output("Finished!", multi=True, time=True)
@@ -337,9 +358,16 @@ else:  # has input
         mut_split = np.array_split(eb_matrix, split_factor)
         EB_dfs = eb_pool.map(computeEB2, mut_split)
 
+        # get the pon_matrix containing the Pon coverages in Alt and Ref
+        pon_matrix = get_pon_bases(eb_matrix)
+        # transfer PoN-Ref and PoN-Alt to EB_df
+        EB_df[['PoN-Ref', 'PoN-Alt']] = pon_matrix[['PoN-Ref', 'PoN-Alt']]
+        mut_cols += ['PoN-Ref', 'PoN-Alt']
+        # #### CONCAT AND WRITE TO FILE
+        EB_df = pd.concat(EB_dfs).sort_values(['Chr', 'Start'])
 
+    # ########################################### CACHE FROM ABcache ###########################
     else:
-        ############################################ CACHE FROM ABcache #####################################
 
         # get the mutation file for the chromosome
         cache_df = pd.read_csv(AB_cache, compression='gzip', sep='\t')
@@ -355,10 +383,9 @@ else:  # has input
         pileAB_df.to_csv(pileAB_file, sep='\t', index=False)
         show_output(f"Pileup matrix for for chrom {chrom} of {tumor_bam} merged with AB matrix.\n Written matrix file to {pileAB_file}.\n Going on with EB computation...", color='normal', time=True)
 
-
-        ############### EBSCORE COMPUTATION  ########
+        # ############## EBSCORE COMPUTATION  ########
         # multithreaded computation
-        def  computeEB(df):
+        def computeEB(df):
             show_output(f"Computing EBscore for {len(df.index)} lines", multi=True, time=True)
             df['EBscore'] = df.apply(AB2EBscore, axis=1)
             show_output("Finished!", multi=True, time=True)
@@ -370,12 +397,10 @@ else:  # has input
         pileAB_split = np.array_split(pileAB_df, split_factor)
         EB_dfs = eb_pool.map(computeEB, pileAB_split)
 
-
-
-    ##### CONCAT AND WRITE TO FILE
+    # #### CONCAT AND WRITE TO FILE
     EB_df = pd.concat(EB_dfs).sort_values(['Chr', 'Start'])
 
-    ########## WRITE TO FILE ##############################################
+    # ######### WRITE TO FILE ##############################################
     # add EBscore to columns
     mut_cols.append('EBscore')
 
