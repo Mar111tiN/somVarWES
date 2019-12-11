@@ -73,6 +73,7 @@ scripts:
   matrix2EBinput: shell/matrix2EBinput.mawk
   makeponlist: shell/makeponlist.sh
   reducematrix: shell/matrix_minus_sample.mawk
+  reordermatrix: shell/reorder_matrix.mawk
   # merge_anno: merge_anno.py
   # expand_info: shell/expand_info.sh
   

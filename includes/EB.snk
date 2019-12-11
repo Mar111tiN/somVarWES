@@ -73,7 +73,8 @@ rule anno2EB_EBcache:
         pon2cols = get_script('pon2cols'),
         pile2count = get_script('pile2count'),
         matrix2EBinput = get_script('matrix2EBinput'),
-        reducematrix = get_script('reducematrix')
+        reducematrix = get_script('reducematrix'),
+        reorder_matrix = get_script('reordermatrix')
         # refgen = full_path('genome')
     script:
         "../scripts/ebfromcache.py"

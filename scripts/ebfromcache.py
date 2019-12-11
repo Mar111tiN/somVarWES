@@ -27,19 +27,7 @@ pile2count = params.pile2count
 matrix2EBinput = params.matrix2EBinput
 reduce_matrix = params.reducematrix
 matrix2EBinput = params.matrix2EBinput
-
-
-####################################################################
-# ########################## RUN COMPUTATION ########################
-
-# ############## LOAD DATA ###############################
-show_output(f"Computing EBscore for chrom {chrom} of {tumor_bam} using EBcache {AB_cache}", color='normal', time=True)
-
-# get the mutation file for the chromosome
-mut_df = pd.read_csv(mut_file, sep='\t', index_col=False).query('Chr == @chrom').iloc[:, :5]
-mut_cols = list(mut_df.columns)
-# set base_name for intermediate files
-base_file = output[0].replace(".cachedEB","")
+reorder_matrix = params.reorder_matrix
 
 
 def target_pileup_from_mut(mut_file, base_file, bam, chrom):
@@ -72,36 +60,50 @@ def target_pileup_from_mut(mut_file, base_file, bam, chrom):
     return matrix_file
 
 
+# ############## LOAD DATA ###############################
+show_output(f"Computing EBscore for chrom {chrom} of {tumor_bam} using EBcache {AB_cache}", color='normal', time=True)
+
+# get the mutation file for the chromosome
+mut_df = pd.read_csv(mut_file, sep='\t', index_col=False).query('Chr == @chrom').iloc[:, :5]
+mut_cols = list(mut_df.columns)
+# set base_name for intermediate files
+base_file = output[0].replace(".cachedEB","")
+
+# ############## LOAD PILEUP MATRIX CACHE AND MERGE INTO MUT_DF #####
+# change mutation positions for deletions in mutation file
+mut_df.loc[mut_df['Alt'] == "-", 'Start'] = mut_df['Start'] -1
+# load in the target matrix file as df
+tumor_matrix_df = pd.read_csv(matrix_cache, sep='\t', index_col=False)
+# merge
+mut_matrix = mut_df.merge(tumor_matrix_df, on=['Chr', 'Start'], how='inner')
+# reset deletion positions
+mut_matrix.loc[mut_matrix['Alt'] == "-", 'Start'] = mut_matrix['Start'] + 1
+
+
+# ############### CHECK IF SAMPLE IN PON ####################
 # if sample_inpon == 0, then sample is not in PoN
 # else, pon matrix has to be acquired from cache and used in EBscore
 sample_in_pon = get_sample_pos(pon_list, tumor_bam)
 
+
 # ########################################### CACHE FROM MATRIX #####################################
 if sample_in_pon:
     show_output(f"Corresponding normal sample for {tumor_bam} has been found in Panel of Normals. EBcache cannot be used!", color='warning')
-    show_output(f"Falling back to cached matrix file reduced by corresponding normal..", color='normal')
+    show_output(f"Falling back to cached matrix file..", color='normal')
     # EBcache cannot be used directly
 
     # ######### REMOVE SAMPLE BASES FROM MATRIX FILE
-    # get the cached matrix file reduced by the sample
-    # reduce_matrix takes position of sample in pon_list as argument
-
-    reduced_matrix_file = f"{base_file}.ponmatrix"
-    reduce_matrix_cmd = f"gunzip < {matrix_cache} | {reduce_matrix} {sample_in_pon} > {reduced_matrix_file}"
-
-    # ############ LOAD AND MERGE MATRIX FILES INTO MUTFILE
-    # load in the pon_matrix file as df
-    pon_matrix_df = pd.read_csv(reduced_matrix_file, sep='\t', index_col=False)
-    # ### ---> REUSE LATER FOR FULL OUTPUT
-
-    # merge pon_matrix into mut_matrix
-    mut_matrix = mut_df.merge(pon_matrix_df, on=['Chr', 'Start'], how='inner')
-
+    # get the cached matrix file and reorder sample bases to first position to create valid mutmatrix
+    # reorder_matrix takes position of sample in pon_list as argument
     # write to file
+    prematrix_file = f"{base_file}.prematrix"
     mutmatrix_file = f"{base_file}.mutmatrix"
-    mut_matrix.to_csv(mutmatrix_file, sep='\t', index=False)
+    mut_matrix.to_csv(prematrix_file, sep='/t', index=False)
+    reduce_matrix_cmd = f"cat {prematrix_file} | {reorder_matrix} {sample_in_pon} > {mutmatrix_file}"
+    # reload reordered mutmatrix into mut_matrix
+    mut_matrix = pd.read_csv(mutmatrix_file, sep='\t', index_col=False)
     # cleanup
-    shell(f"rm {reduced_matrix_file}")
+    shell(f"rm {prematrix_file}")
 
     # # CONTINUE LIKE UNCACHED EBscore
     # convert mutmatrix to direct EBinput
@@ -127,15 +129,7 @@ else:
     # ############## TARGET PILEUP --> MATRIX FILE ##################
     tumor_matrix_file = target_pileup_from_mut(mut_file, base_file, tumor_bam, chrom)
 
-    # ############## LOAD PILEUP MATRIX INTO MUT_DF #####
-    # change mutation positions for deletions in mutation file
-    mut_df.loc[mut_df['Alt'] == "-", 'Start'] = mut_df['Start'] -1
-    # load in the target matrix file as df
-    tumor_matrix_df = pd.read_csv(tumor_matrix_file, sep='\t', index_col=False)
-    # merge
-    mut_matrix = mut_df.merge(tumor_matrix_df, on=['Chr', 'Start'], how='inner')
-    # reset deletion positions
-    mut_matrix.loc[mut_matrix['Alt'] == "-",'Start'] = mut_matrix['Start'] + 1
+
 
     # check if matrix_file has input
     if not os.path.getsize(tumor_matrix_file):
@@ -149,9 +143,9 @@ else:
         pileAB_file = f"{base_file}.pileAB"
         pileAB_df = matrix_df.merge(cache_df, on=['Chr', 'Start'])
         # change coords for merge with start
-        mut_df.loc[mut_df['Alt'] == "-",'Start'] = mut_df['Start'] -1
+        mut_df.loc[mut_df['Alt'] == "-", 'Start'] = mut_df['Start'] -1
         pileAB_df = mut_df.merge(pileAB_df, on=['Chr', 'Start'])
-        pileAB_df.loc[pileAB_df['Alt'] == "-",'Start'] = pileAB_df['Start'] + 1
+        pileAB_df.loc[pileAB_df['Alt'] == "-", 'Start'] = pileAB_df['Start'] + 1
 
         # save for debugging
         pileAB_df.to_csv(pileAB_file, sep='\t', index=False)
