@@ -13,6 +13,7 @@ parser.add_argument('-candidate_list', type=str, default='', help='path to a fil
 parser.add_argument('-driver_list', type=str, default='', help='path to a file containing known driver genes')
 parser.add_argument('-keep_syn', type=bool, default=False, help='True if you want to keep synonymous mutations')
 parser.add_argument('-threads', type=int, default=1, help='threads for assuring memory')
+parser.add_argument('-pon_coverage', type=str, default=False, help='True: output full PoN coverage')
 parser.add_argument('input', type=str, help='input from annovar')
 parser.add_argument('output', type=str, help='output file to filtered/..')
 
@@ -24,7 +25,12 @@ i, o = args.input, args.output
 threads = args.threads
 keep_syn = args.keep_syn
 output_base = os.path.splitext(o)[0]
-
+# convert full_pon_out to bool
+full_pon_output = args.pon_coverage
+if "T" in full_pon_output.lower():
+    full_pon_output = True
+else:
+    full_pon_output = False
 # params
 TM2_limit = args.TM2_limit
 
@@ -198,9 +204,9 @@ def resort_cols(df):
     cols = list(df.columns)
     start_cols = cols[:11]
     quant_cols = cols[11:26] + ['FisherScore', 'EBscore', 'PoN-Ref', 'PoN-Alt']
-    if config['EBFilter']['full_pon_output']:
+    if full_pon_output:
         quant_cols.append('A|a|G|g|C|c|T|t|I|i|D|d')
-    clin_cols=['cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'cosmic90_MutID', 'cosmic90_type', 'cosmic90_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq', 'Clin_score']
+    clin_cols = ['cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'cosmic90_MutID', 'cosmic90_type', 'cosmic90_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq', 'Clin_score']
     pop_col = cols[29:32]
     # the added extracted and score columns make up 8 columns:
     # 1-3:  'cosmic70_ID', 'cosmic70_freq', 'cosmic70_type' 
@@ -209,7 +215,9 @@ def resort_cols(df):
     # 8:    'Clin_score'
     pred_col = cols[40:-9]
     new_cols = start_cols + quant_cols + clin_cols + pop_col + pred_col
-    print('New columns: ', new_cols)
+    # ## DEBUG
+    # print('New columns: ', new_cols)
+
     return df[new_cols]
 
 
@@ -224,7 +232,7 @@ def get_clinical_scores(df):
     print('Add ICGC derived columns')
     df = addICGC(df)
 
-    print('Derive Clinical Scores from Cosmic and Clinvar')   
+    print('Derive Clinical Scores from Cosmic and Clinvar')
     # SCALAR SCORES FROM CLINICAL DBS
     df['clinvar_score'] = df.apply(get_CLINVARscore, axis=1)
     df['cosmic70_score'] = df.apply(cosmic70score, axis=1)
@@ -240,7 +248,6 @@ def get_clinical_scores(df):
 
     # RESORT THE COLUMNS
     df = resort_cols(df)
-    print(list(df.columns))
     return df
 
 
@@ -249,7 +256,7 @@ def get_gene_lists(df):
     add gene info from attached lists
     '''
 
-    ### candidate list #########
+    # ## candidate list #########
     list_cols = []
     if args.candidate_list:
         candidate_file = os.path.join(args.static_path, args.candidate_list)
@@ -271,15 +278,13 @@ def get_gene_lists(df):
     # have to be omitted
     rest_cols = cols[11:-2]
     new_cols = start_cols + list_cols + rest_cols
-    print(new_cols)
     return df[new_cols]
 
 
-print(list(anno_df.columns))
 clin_df = get_clinical_scores(anno_df)
 
 candidate_df = get_gene_lists(clin_df)
-print(list(candidate_df.columns))
+
 
 # this is raw unfiltered data, only informative columns were added
 candidate_df.to_csv(o, sep='\t', index=False)

@@ -173,9 +173,9 @@ Fisher_strand:
 EBFilter:
   run: True
   pon_list: PoN/HAEv7_hg38_NovaSeq/Pon_list.txt # path relative to mystatic path
-  use_cache: True
+  use_cache: False
   cache_folder: PoN/HAEv7_hg38_NovaSeq # path relative to mystatic path
-  full_pon_output: False
+  full_pon_output: True
   threads: 
     makeEBcache: 20
     EBscore: 20
@@ -197,7 +197,6 @@ filter:
       run: True
       path: damm.py
       params:
-        TM2_limit: 4
         candidate_list: annotation/damm_lists/AML_candidates.txt
         driver_list: annotation/damm_lists/AML_drivers.txt
         keep_syn: True
