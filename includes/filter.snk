@@ -60,8 +60,8 @@ rule filter_bam:
         bam = "recalib/{sample}_{type}.bam",
         bai = "recalib/{sample}_{type}.bai"
     output:
-        bam = "filter_bam/{sample}_{type}.bam",
-        bai = "filter_bam/{sample}_{type}.bai"
+        bam = "filter_bam/{sample}_{type}.{filter}.bam",
+        bai = "filter_bam/{sample}_{type}.{filter}.bai"
     conda:
         "../env/align-env.yml"
     threads:
