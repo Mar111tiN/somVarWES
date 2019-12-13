@@ -8,9 +8,13 @@ NR == 1 {
     samplepos='"$1"';
 }
 NR > 1 {
+    # print constant fields
+    printf("%s", $1)
+    for (i = 1; i++ <5;) {
+       printf("\t%s", $i); 
+    }
     # go through fields
-    printf("%s\t%s", $1,$2);
-    for (i = 2; i++ < NF;) {
+    for (i = 5; i++ < NF;) {
         # split data by "|"
         split($i,array,"|");
         count=0;

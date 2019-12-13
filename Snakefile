@@ -38,7 +38,6 @@ include: "includes/dedup.snk"
 include: "includes/varscan.snk"
 include: "includes/annotate.snk"
 include: "includes/EB.snk"
-# include: "includes/EButils.snk"
 include: "includes/filter.snk"
 
 # convenience variables

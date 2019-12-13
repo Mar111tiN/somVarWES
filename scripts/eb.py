@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from os import system as shell
-from ebutils import show_output, show_command, get_pon_bases, compute_matrix2EB_multithreaded
+from ebutils import show_output, show_command, get_pon_bases, compute_matrix2EB_multi
 
 
 w = snakemake.wildcards
@@ -26,7 +26,7 @@ matrix2EBinput = params.matrix2EBinput
 makeponlist = params.makeponlist
 
 # ############## LOAD DATA ###############################
-show_output(f"Computing EBscore for chrom {chrom} of {tumor_bam}", color='normal', time=True)
+show_output(f"Computing EBscore for chrom {chrom} of {tumor_bam}", color='normal')
 
 # get the sceleton mutation file
 mut_df = pd.read_csv(mut_file, sep='\t', index_col=False).query('Chr == @chrom').iloc[:, :5]
@@ -53,7 +53,7 @@ sample_list = f"{base_file}.pon"
 # makeponlist removes the sample itself from list if it is part of PoN
 shell(f"{makeponlist} {tumor_bam} {pon_list} {sample_list}")
 
-show_output(f"Piling up {chrom} of {tumor_bam} with Pon List.", color='normal', time=True)
+show_output(f"Piling up {chrom} of {tumor_bam} with Pon List.", color='normal')
 shell(f"cat {sample_list}")
 # do the pileup into the matrix file
 matrix_file = f"{base_file}.matrix"
@@ -73,7 +73,7 @@ if not os.path.getsize(matrix_file):
     open(output[0], 'a').close()
     show_output(f"Pileup for {chrom} of {tumor_bam} was empty! Created empty file {output[0]}", color='warning')
 else:
-    show_output(f"Pileup matrix for chrom {chrom} of {tumor_bam} completed.", color='normal', time=True)
+    show_output(f"Pileup matrix for chrom {chrom} of {tumor_bam} completed.", color='normal')
     # ################ MERGE INTO MUTFILE ######################
     # change mutation positions for deletions in mutation file
     mut_df.loc[mut_df['Alt'] == "-", 'Start'] = mut_df['Start'] - 1
@@ -96,7 +96,7 @@ else:
     eb_matrix = pd.read_csv(EB_matrix_input_file, sep='\t')
 
     # multithreaded computation
-    EB_df = compute_matrix2EB_multithreaded(eb_matrix, fit_pen, threads)
+    EB_df = compute_matrix2EB_multi(eb_matrix, fit_pen, threads)
 
     # add EBscore to columns
     mut_cols.append('EBscore')

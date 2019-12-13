@@ -65,7 +65,7 @@ def get_bed_file(w, input):
 #     threads:
 #         config['filter_bam']['threads']
 #       params:
-#            bed = get_bed_file
+#            bed_file = get_bed_file
 #     :
 
 #

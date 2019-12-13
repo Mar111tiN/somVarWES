@@ -25,7 +25,7 @@ colors = {
         }
 
 
-def show_output(text, color='normal', multi=False, time=False):
+def show_output(text, color='normal', multi=False, time=True):
     '''
     get colored output to the terminal
     '''
@@ -50,25 +50,28 @@ def show_command(command, list=False, multi=True):
 
 
 # # check if sample is included in PoN ######
-def checkPon4sample(row, bam):
+def checkPon4sample(row, bam_base):
     '''
     per row of Pon_list checks whether sample name occurs in Pon_list
     if yes, returns the row number (zero-based)
     '''
-    if os.path.basename(bam).split('_')[0] in row.iloc[0]:
+    if bam_base in row.iloc[0]:
         print(row[0], row.name)
         return row.name
-    return 0
+    return None
 
 
 def get_sample_pos(pon_list, bam_file):
     '''
     returns the zero-based position of corresponding normal sample in Pon_list
     '''
+    # load pon_list as df
+    pon_df = pd.read_csv(pon_list, header=None)
+    # get sample base_name
+    bam_base = os.path.basename(bam_file).split('.')[0].split("_")[0]
 
-    pon_df = pd.read(pon_list)
-    sample_pos = pon_df.apply(checkPon4sample, axis=1, bam=tumor_bam).sum()
-    return sample_pos
+    sample_pos = pon_df.apply(checkPon4sample, axis=1, bam_base=bam_base).sum()
+    return int(sample_pos + 1)
 # ######### ADD BASE INFO ##############################################
 
 
@@ -101,13 +104,13 @@ def compute_matrix2EB(fit_pen, df):
     next rows: pon depth
     '''
 
-    show_output(f"Computing EBscore for {len(df.index)} lines", multi=True, time=True)
+    show_output(f"Computing EBscore for {len(df.index)} lines", multi=True)
     df['EBscore'] = df.apply(partial(matrix2EBscore, fit_pen), axis=1)
     show_output("Finished!", multi=True, time=True)
     return df
 
 
-def compute_matrix2EB_multithreaded(df, pen, threads):
+def compute_matrix2EB_multi(df, pen, threads):
     eb_pool = Pool(threads)
     # minimal length of 1000 lines
     split_factor = min(math.ceil(len(df.index) / 1000), threads)
@@ -126,13 +129,13 @@ def compute_AB2EB(df):
     per row of df, takes a target depth-ponAB matrix and computes the EBscore 
     '''
 
-    show_output(f"Computing EBscore for {len(df.index)} lines", multi=True, time=True)
+    show_output(f"Computing EBscore for {len(df.index)} lines", multi=True)
     df['EBscore'] = df.apply(AB2EBscore, axis=1)
-    show_output("Finished!", multi=True, time=True)
+    show_output("Finished!", multi=True)
     return df
 
 
-def computeEBfromAB_multithreaded(df, threads):
+def compute_AB2EB_multi(df, threads):
 
     eb_pool = Pool(threads)
     # minimal length of 2000 lines

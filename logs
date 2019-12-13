@@ -1,0 +1,396 @@
+You are now in an execute node
++ DRMAA=' -P medium -pe smp {threads}  -l h_rt=70:00:00 -l h_vmem=3.5g'
++ DRMAA=' -P medium -pe smp {threads}  -l h_rt=70:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/WES/9279499/ -j yes'
++ snakemake --unlock --rerun-incomplete
+Building DAG of jobs...
+Unlocking working directory.
++ snakemake --dag
++ dot -Tsvg
+/var/sge/default/spool/med0734/job_scripts/9279499: line 29: dax/dag.svg: No such file or directory
+Building DAG of jobs...
++ snakemake --use-conda --rerun-incomplete --drmaa ' -P medium -pe smp {threads}  -l h_rt=70:00:00 -l h_vmem=3.5g -V -o /fast/users/szyskam_c/scratch/lox/WES/9279499/ -j yes' -j 128 -p -r -k
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cluster nodes: 128
+Job counts:
+	count	jobs
+	1	all
+	19	anno2EB_EBcache
+	1	combine_annotations
+	1	filter_variants
+	1	fisher_strand
+	1	mergeEBscore
+	24
+
+[Fri Dec 13 12:29:34 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr3.bam, recalib/002_A.chr3.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr3.cache
+    output: eb/002_A-B-chr3.cachedEB
+    log: logs/eb/002_A-B-chr3.log
+    jobid: 215
+    reason: Missing output files: eb/002_A-B-chr3.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr3
+    threads: 20
+
+Submitted DRMAA job 215 with external jobid 9279504.
+
+[Fri Dec 13 12:29:34 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr6.bam, recalib/002_A.chr6.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr6.cache
+    output: eb/002_A-B-chr6.cachedEB
+    log: logs/eb/002_A-B-chr6.log
+    jobid: 218
+    reason: Missing output files: eb/002_A-B-chr6.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr6
+    threads: 20
+
+Submitted DRMAA job 218 with external jobid 9279505.
+
+[Fri Dec 13 12:29:34 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr16.bam, recalib/002_A.chr16.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr16.cache
+    output: eb/002_A-B-chr16.cachedEB
+    log: logs/eb/002_A-B-chr16.log
+    jobid: 228
+    reason: Missing output files: eb/002_A-B-chr16.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr16
+    threads: 20
+
+Submitted DRMAA job 228 with external jobid 9279506.
+
+[Fri Dec 13 12:29:35 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr20.bam, recalib/002_A.chr20.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr20.cache
+    output: eb/002_A-B-chr20.cachedEB
+    log: logs/eb/002_A-B-chr20.log
+    jobid: 232
+    reason: Missing output files: eb/002_A-B-chr20.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr20
+    threads: 20
+
+Submitted DRMAA job 232 with external jobid 9279507.
+
+[Fri Dec 13 12:29:35 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr15.bam, recalib/002_A.chr15.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr15.cache
+    output: eb/002_A-B-chr15.cachedEB
+    log: logs/eb/002_A-B-chr15.log
+    jobid: 227
+    reason: Missing output files: eb/002_A-B-chr15.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr15
+    threads: 20
+
+Submitted DRMAA job 227 with external jobid 9279508.
+
+[Fri Dec 13 12:29:35 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr10.bam, recalib/002_A.chr10.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr10.cache
+    output: eb/002_A-B-chr10.cachedEB
+    log: logs/eb/002_A-B-chr10.log
+    jobid: 222
+    reason: Missing output files: eb/002_A-B-chr10.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr10
+    threads: 20
+
+Submitted DRMAA job 222 with external jobid 9279509.
+
+[Fri Dec 13 12:29:35 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr4.bam, recalib/002_A.chr4.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr4.cache
+    output: eb/002_A-B-chr4.cachedEB
+    log: logs/eb/002_A-B-chr4.log
+    jobid: 216
+    reason: Missing output files: eb/002_A-B-chr4.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr4
+    threads: 20
+
+Submitted DRMAA job 216 with external jobid 9279510.
+
+[Fri Dec 13 12:29:35 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr22.bam, recalib/002_A.chr22.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr22.cache
+    output: eb/002_A-B-chr22.cachedEB
+    log: logs/eb/002_A-B-chr22.log
+    jobid: 234
+    reason: Missing output files: eb/002_A-B-chr22.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr22
+    threads: 20
+
+Submitted DRMAA job 234 with external jobid 9279511.
+
+[Fri Dec 13 12:29:35 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr9.bam, recalib/002_A.chr9.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr9.cache
+    output: eb/002_A-B-chr9.cachedEB
+    log: logs/eb/002_A-B-chr9.log
+    jobid: 221
+    reason: Missing output files: eb/002_A-B-chr9.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr9
+    threads: 20
+
+Submitted DRMAA job 221 with external jobid 9279512.
+
+[Fri Dec 13 12:29:35 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr21.bam, recalib/002_A.chr21.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr21.cache
+    output: eb/002_A-B-chr21.cachedEB
+    log: logs/eb/002_A-B-chr21.log
+    jobid: 233
+    reason: Missing output files: eb/002_A-B-chr21.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr21
+    threads: 20
+
+Submitted DRMAA job 233 with external jobid 9279513.
+
+[Fri Dec 13 12:29:35 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr11.bam, recalib/002_A.chr11.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr11.cache
+    output: eb/002_A-B-chr11.cachedEB
+    log: logs/eb/002_A-B-chr11.log
+    jobid: 223
+    reason: Missing output files: eb/002_A-B-chr11.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr11
+    threads: 20
+
+Submitted DRMAA job 223 with external jobid 9279514.
+
+[Fri Dec 13 12:29:35 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr13.bam, recalib/002_A.chr13.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr13.cache
+    output: eb/002_A-B-chr13.cachedEB
+    log: logs/eb/002_A-B-chr13.log
+    jobid: 225
+    reason: Missing output files: eb/002_A-B-chr13.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr13
+    threads: 20
+
+Submitted DRMAA job 225 with external jobid 9279515.
+
+[Fri Dec 13 12:29:36 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr7.bam, recalib/002_A.chr7.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr7.cache
+    output: eb/002_A-B-chr7.cachedEB
+    log: logs/eb/002_A-B-chr7.log
+    jobid: 219
+    reason: Missing output files: eb/002_A-B-chr7.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr7
+    threads: 20
+
+Submitted DRMAA job 219 with external jobid 9279516.
+
+[Fri Dec 13 12:29:36 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr5.bam, recalib/002_A.chr5.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr5.cache
+    output: eb/002_A-B-chr5.cachedEB
+    log: logs/eb/002_A-B-chr5.log
+    jobid: 217
+    reason: Missing output files: eb/002_A-B-chr5.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr5
+    threads: 20
+
+Submitted DRMAA job 217 with external jobid 9279517.
+
+[Fri Dec 13 12:29:36 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr12.bam, recalib/002_A.chr12.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr12.cache
+    output: eb/002_A-B-chr12.cachedEB
+    log: logs/eb/002_A-B-chr12.log
+    jobid: 224
+    reason: Missing output files: eb/002_A-B-chr12.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr12
+    threads: 20
+
+Submitted DRMAA job 224 with external jobid 9279518.
+
+[Fri Dec 13 12:29:36 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr18.bam, recalib/002_A.chr18.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr18.cache
+    output: eb/002_A-B-chr18.cachedEB
+    log: logs/eb/002_A-B-chr18.log
+    jobid: 230
+    reason: Missing output files: eb/002_A-B-chr18.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr18
+    threads: 20
+
+Submitted DRMAA job 230 with external jobid 9279519.
+
+[Fri Dec 13 12:29:36 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr8.bam, recalib/002_A.chr8.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr8.cache
+    output: eb/002_A-B-chr8.cachedEB
+    log: logs/eb/002_A-B-chr8.log
+    jobid: 220
+    reason: Missing output files: eb/002_A-B-chr8.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr8
+    threads: 20
+
+Submitted DRMAA job 220 with external jobid 9279520.
+
+[Fri Dec 13 12:29:36 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chrX.bam, recalib/002_A.chrX.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chrX.cache
+    output: eb/002_A-B-chrX.cachedEB
+    log: logs/eb/002_A-B-chrX.log
+    jobid: 235
+    reason: Missing output files: eb/002_A-B-chrX.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chrX
+    threads: 20
+
+Submitted DRMAA job 235 with external jobid 9279521.
+
+[Fri Dec 13 12:29:36 2019]
+rule anno2EB_EBcache:
+    input: table/002_A-B.csv, recalib/002_A.chr14.bam, recalib/002_A.chr14.bai, /fast/groups/ag_damm/work/ref/PoN/HAEv7_hg38_NovaSeq/EBcache/chr14.cache
+    output: eb/002_A-B-chr14.cachedEB
+    log: logs/eb/002_A-B-chr14.log
+    jobid: 226
+    reason: Missing output files: eb/002_A-B-chr14.cachedEB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr14
+    threads: 20
+
+Submitted DRMAA job 226 with external jobid 9279522.
+
+[Fri Dec 13 12:29:36 2019]
+rule fisher_strand:
+    input: table/002_A-B.csv
+    output: table/002_A-B.fisher.csv
+    log: logs/fisher/002_A-B.log
+    jobid: 66
+    reason: Missing output files: table/002_A-B.fisher.csv
+    wildcards: sample=002, tumor_norm=A-B
+    threads: 20
+
+Submitted DRMAA job 66 with external jobid 9279523.
+[Fri Dec 13 12:30:56 2019]
+Finished job 227.
+1 of 24 steps (4%) done
+[Fri Dec 13 12:31:08 2019]
+Error in rule anno2EB_EBcache:
+    jobid: 228
+    output: eb/002_A-B-chr16.cachedEB
+    log: logs/eb/002_A-B-chr16.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/cbd11e5b
+
+Error executing rule anno2EB_EBcache on cluster (jobid: 228, external: 9279506, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.3_gg4z_3/snakejob.anno2EB_EBcache.228.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 12:31:08 2019]
+Finished job 232.
+2 of 24 steps (8%) done
+[Fri Dec 13 12:31:08 2019]
+Error in rule anno2EB_EBcache:
+    jobid: 222
+    output: eb/002_A-B-chr10.cachedEB
+    log: logs/eb/002_A-B-chr10.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/cbd11e5b
+
+Error executing rule anno2EB_EBcache on cluster (jobid: 222, external: 9279509, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.3_gg4z_3/snakejob.anno2EB_EBcache.222.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 12:31:19 2019]
+Error in rule anno2EB_EBcache:
+    jobid: 218
+    output: eb/002_A-B-chr6.cachedEB
+    log: logs/eb/002_A-B-chr6.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/cbd11e5b
+
+Error executing rule anno2EB_EBcache on cluster (jobid: 218, external: 9279505, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.3_gg4z_3/snakejob.anno2EB_EBcache.218.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 12:31:42 2019]
+Error in rule anno2EB_EBcache:
+    jobid: 215
+    output: eb/002_A-B-chr3.cachedEB
+    log: logs/eb/002_A-B-chr3.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/cbd11e5b
+
+Error executing rule anno2EB_EBcache on cluster (jobid: 215, external: 9279504, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.3_gg4z_3/snakejob.anno2EB_EBcache.215.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 12:31:53 2019]
+Finished job 233.
+3 of 24 steps (12%) done
+[Fri Dec 13 12:32:15 2019]
+Error in rule anno2EB_EBcache:
+    jobid: 216
+    output: eb/002_A-B-chr4.cachedEB
+    log: logs/eb/002_A-B-chr4.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/cbd11e5b
+
+Error executing rule anno2EB_EBcache on cluster (jobid: 216, external: 9279510, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.3_gg4z_3/snakejob.anno2EB_EBcache.216.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 12:32:15 2019]
+Finished job 234.
+4 of 24 steps (17%) done
+[Fri Dec 13 12:32:26 2019]
+Finished job 225.
+5 of 24 steps (21%) done
+[Fri Dec 13 12:32:37 2019]
+Error in rule anno2EB_EBcache:
+    jobid: 221
+    output: eb/002_A-B-chr9.cachedEB
+    log: logs/eb/002_A-B-chr9.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/cbd11e5b
+
+Error executing rule anno2EB_EBcache on cluster (jobid: 221, external: 9279512, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.3_gg4z_3/snakejob.anno2EB_EBcache.221.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 12:32:37 2019]
+Error in rule anno2EB_EBcache:
+    jobid: 223
+    output: eb/002_A-B-chr11.cachedEB
+    log: logs/eb/002_A-B-chr11.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/cbd11e5b
+
+Error executing rule anno2EB_EBcache on cluster (jobid: 223, external: 9279514, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.3_gg4z_3/snakejob.anno2EB_EBcache.223.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 12:33:28 2019]
+Error in rule anno2EB_EBcache:
+    jobid: 217
+    output: eb/002_A-B-chr5.cachedEB
+    log: logs/eb/002_A-B-chr5.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/cbd11e5b
+
+Error executing rule anno2EB_EBcache on cluster (jobid: 217, external: 9279517, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.3_gg4z_3/snakejob.anno2EB_EBcache.217.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 12:33:38 2019]
+Error in rule anno2EB_EBcache:
+    jobid: 224
+    output: eb/002_A-B-chr12.cachedEB
+    log: logs/eb/002_A-B-chr12.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/cbd11e5b
+
+Error executing rule anno2EB_EBcache on cluster (jobid: 224, external: 9279518, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.3_gg4z_3/snakejob.anno2EB_EBcache.224.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 12:33:48 2019]
+Finished job 230.
+6 of 24 steps (25%) done
+[Fri Dec 13 12:33:48 2019]
+Finished job 220.
+7 of 24 steps (29%) done
+[Fri Dec 13 12:33:58 2019]
+Error in rule anno2EB_EBcache:
+    jobid: 219
+    output: eb/002_A-B-chr7.cachedEB
+    log: logs/eb/002_A-B-chr7.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/cbd11e5b
+
+Error executing rule anno2EB_EBcache on cluster (jobid: 219, external: 9279516, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.3_gg4z_3/snakejob.anno2EB_EBcache.219.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Dec 13 12:33:58 2019]
+Finished job 235.
+8 of 24 steps (33%) done
+[Fri Dec 13 12:34:08 2019]
+Finished job 66.
+9 of 24 steps (38%) done
+[Fri Dec 13 12:34:58 2019]
+Error in rule anno2EB_EBcache:
+    jobid: 226
+    output: eb/002_A-B-chr14.cachedEB
+    log: logs/eb/002_A-B-chr14.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/cbd11e5b
+
+Error executing rule anno2EB_EBcache on cluster (jobid: 226, external: 9279522, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.3_gg4z_3/snakejob.anno2EB_EBcache.226.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+Exiting because a job execution failed. Look above for error message
+Complete log: /fast/home/users/szyskam_c/snakes/develop/somVarWES/.snakemake/log/2019-12-13T122933.321279.snakemake.log
+    EXOM SEQUENCING PIPELINE STARTING.......
+samples name
+002_A    /fast/users/szyskam_c/work/testdata/somvar1/FD...
+002_B    /fast/users/szyskam_c/work/testdata/somvar1/FD...
+Name: R1, dtype: object

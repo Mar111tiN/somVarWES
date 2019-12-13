@@ -174,9 +174,9 @@ Fisher_strand:
 EBFilter:
   run: True
   pon_list: PoN/HAEv7_hg38_NovaSeq/Pon_list.txt # path relative to mystatic path
-  use_cache: False
+  use_cache: True
   cache_folder: PoN/HAEv7_hg38_NovaSeq # path relative to mystatic path
-  full_pon_output: True
+  full_pon_output: False
   threads: 
     makeEBcache: 20
     EBscore: 20
