@@ -137,7 +137,7 @@ rule mergeEBscore:
         EB_merge = pd.concat(EB_dfs).sort_values(['Chr', 'Start'])
 
         # sort nicely
-        cols = ['Chr', 'Start', 'End', 'Ref', 'Alt', 'EBscore', 'PoN-Ref', 'Pon-Alt']
+        cols = ['Chr', 'Start', 'End', 'Ref', 'Alt', 'EBscore', 'PoN-Ref', 'PoN-Alt']
         if config['EBFilter']['full_pon_output']:
             base_cols = list("AaGgCcTtIiDd")
             col_name = "|".join(base_cols)
