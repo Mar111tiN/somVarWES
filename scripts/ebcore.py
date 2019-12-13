@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import math
+from functools import partial
 from scipy.optimize import fmin_l_bfgs_b as minimize_func
 from scipy.stats import chi2
 from scipy.special import gammaln
@@ -211,3 +212,54 @@ def fit_bb(count_df, pen):
                           )[0]
     ab_n = [round(param, 5) for param in ab_n]
     return {'p': ab_p, 'n': ab_n}
+
+
+# ######################### EB-CACHE ####################
+def matrix2AB(matrix_df, pen):
+    '''
+    creates the AB_df for a pileup
+    '''
+
+    AB_df = matrix_df.iloc[:, [0, 1]].copy()
+    # ###################### AB FITTING ###############################################
+
+    def get_AB(penalty, row):
+        '''
+        returns the AB parameters (A+a A+b A-a A-b G+a G+b....) for each pileup row
+        main computational load
+        '''
+
+        bb_s = pd.Series()
+        # ########## get count matrix ###########################################
+        for var in list('ACTGI'):
+            # get the count matrix
+            count_df = get_count_df(row, var)
+            # get the AB parameters for
+
+            # <<<<<<######### DEBUG ###############
+            # if row['Start'] in [
+            #     14830116, 14622123, 14841205, 14733419, 14840756, 14719431, 16618785,
+            #     14824039, 14830279, 14622390, 18769493, 18550359, 13905782, 14840589,
+            #     14830168, 16618629, 13705217, 14830580, 18026171, 14841406, 14622699,
+            #     16618619, 14719675, 13905767, 13902927, 14840574, 18026160, 14824292, 14840574,
+            #     ]:
+            #     print(row, var)
+            # <<<<<<###############################
+
+            bb_params = fit_bb(count_df, penalty)
+        # dump the different parameters into bb_s
+        # keys have to fit with the var_columns for the receiving AB_df
+            bb_s[f'{var}+a'] = bb_params['p'][0]
+            bb_s[f'{var}+b'] = bb_params['p'][1]
+            bb_s[f'{var}-a'] = bb_params['n'][0]
+            bb_s[f'{var}-b'] = bb_params['n'][1]
+        return bb_s
+
+    # ################# Store AB data into df ####################################
+    # create the columns (A+a A+b A-a A-b G+a G+b....) for the recipient df of the pileup_df apply function
+    var_columns = [f'{var}{strand}{param}' for var in list('ACTGI') for strand in ['+', '-'] for param in ['a', 'b']]
+
+
+# !!!!!!!!!!!!!!!!!! PEN!!!!!!!!!!!!!!!!!!!
+    AB_df[var_columns] = matrix_df.apply(partial(get_AB, pen), axis=1)
+    return AB_df

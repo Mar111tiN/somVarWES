@@ -1,4 +1,4 @@
-from ebcore import matrix2EBscore, AB2EBscore
+from ebcore import matrix2EBscore, AB2EBscore, matrix2AB
 from multiprocessing import Pool
 from functools import partial
 from datetime import datetime as dt
@@ -147,3 +147,22 @@ def compute_AB2EB_multi(df, threads):
     # out_df contains EB_score
     out_df = pd.concat(dfs).sort_values(['Chr', 'Start'])
     return out_df
+
+
+# ##################### EB-CACHE ###########################
+
+def computeEBcache(mat_df, pen):
+    show_output(f"Computing EBcache for {len(mat_df.index)} lines", time=True, multi=True, color='process')
+    cache_df = matrix2AB(mat_df, pen)
+    show_output(f"Finished!", time=True, multi=True, color='success')
+    return cache_df
+
+
+def matrix2AB_multi(matrix_file, output, pen, threads):
+    matrix_df = pd.read_csv(matrix_file, sep='\t', compression='gzip', index_col=False)
+    cache_pool = Pool(threads)
+    matrix_split = np.array_split(matrix_df, threads)
+    cache_dfs = cache_pool.map(computeEBcache, matrix_split)
+    cache_df = pd.concat(cache_dfs)
+    cache_df.to_csv(output, compression='gzip', sep='\t', index=False)
+    return output

@@ -50,25 +50,26 @@ def get_bed_file(w, input):
     serves as a params function creating and returning the bed file for the samtools view
     '''
     padding = config['filter_bam']['padding']
-    bed_file = mut2bed(input[0], padding, f"filter_bam/{w.sample}_{w.type}.bed")
+    bed_file = mut2bed(input.csv, padding, f"filter_bam/{w.sample}_{w.type}.bed")
     return bed_file
 
 
 rule filter_bam:
     input:
-        "filter/{sample}_{tumor}-{norm}.{filter}.loose.csv",
-        "recalib/{sample}_{type}.bam",
-        "recalib/{sample}_{type}.bai"
+        csv = "filter/{sample}_{tumor}-{norm}.{filter}.loose.csv",
+        bam = "recalib/{sample}_{type}.bam",
+        bai = "recalib/{sample}_{type}.bai"
     output:
-        "filter_bam/{sample}_{type}.bam",
-        "filter_bam/{sample}_{type}.bai"
+        bam = "filter_bam/{sample}_{type}.bam",
+        bai = "filter_bam/{sample}_{type}.bai"
     conda:
-        "../env/samba-env.yml"
+        "../env/align-env.yml"
     threads:
         config['filter_bam']['threads']
     params:
         bed_file = get_bed_file
     conda:
-        "../env/samba-env.yml"
+        "../env/align-env.yml"
     shell:
-        "sambamba view -"
+        "samtools view -bhL {params.bed_file} {input.bam} > {output.bam}; "
+        "picard BuildBamIndex INPUT={input.bam}"

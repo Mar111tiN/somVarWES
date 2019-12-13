@@ -28,7 +28,7 @@ rule EBcache_pileup:
     log:
         "logs/{chrom}-{i}.matrix.log"
     threads:
-        2
+        config['EBFilter']['threads']['pileup']
     conda:
         "../env/eb-env.yml"
     params:

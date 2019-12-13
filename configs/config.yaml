@@ -181,7 +181,8 @@ EBFilter:
   use_cache: True
   cache_folder: PoN/HAEv7_hg38_NovaSeq # path relative to mystatic path
   full_pon_output: False
-  threads: 
+  threads:
+    pileup: 12
     makeEBcache: 20
     EBscore: 20
     EBsplit_factor: 20 # into how many jobs is makeEBcache divided per chromosome
