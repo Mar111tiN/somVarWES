@@ -130,8 +130,18 @@ rule mergeEBscore:
                 continue
             EB_df = pd.read_csv(EB_file, sep='\t', index_col=False)
             # cleanup after
-            shell(f"rm {EB_file}")
+            # shell(f"rm {EB_file}")
+            if EB_df.empty:
+                pass
             EB_dfs.append(EB_df)
         EB_merge = pd.concat(EB_dfs).sort_values(['Chr', 'Start'])
+
+        # sort nicely
+        cols = ['Chr', 'Start', 'End', 'Ref', 'Alt', 'EBscore', 'PoN-Ref', 'Pon-Alt']
+        if config['EBFilter']['full_pon_output']:
+            base_cols = list("AaGgCcTtIiDd")
+            col_name = "|".join(base_cols)
+            cols.append(col_name)
+        EB_merge = EB_merge[cols]
         EB_merge.to_csv(output[0], sep='\t', index=False)
         show_output(f"Written EB-annotated file to {output[0]}", color='success')

@@ -88,7 +88,7 @@ def get_pon_bases(matrix_df, remove_sample=True):
     if remove_sample:
         # remove sample depths from the columns
         for col in ['depthP', 'misP', 'depthN', 'misN']:
-            matrix_df[col] = matrix_df[col].str.replace(r"^[0-9]+\|","")
+            matrix_df[col] = matrix_df[col].str.replace(r"^[0-9]+\|", "")
 
     # concate the respective columns
     matrix_df['PoN-Ref'] = matrix_df['depthP'].str.cat(matrix_df['depthN'], sep="-")
@@ -111,7 +111,9 @@ def compute_matrix2EB(fit_pen, df):
 
 
 def compute_matrix2EB_multi(df, pen, threads):
+    print('Pooling threads: ', threads)
     eb_pool = Pool(threads)
+    print('Pooled')
     # minimal length of 1000 lines
     split_factor = min(math.ceil(len(df.index) / 1000), threads)
     split = np.array_split(df, split_factor)

@@ -60,7 +60,7 @@ anno_df = anno_df.merge(fisher_df, on=['Chr', 'Start', 'End', 'Ref', 'Alt'])
 fisher_cols = list(fisher_df.columns[5:])
 new_cols += fisher_cols     # -->COLS
 if config['EBFilter']['run']:
-    print(f'Loading EBScore from file {fisher}and merging into annotation.')
+    print(f'Loading EBScore from file {eb} and merging into annotation.')
     eb_df = pd.read_csv(eb, sep='\t', dtype={'Chr':str, 'Start':int, 'End':int}).fillna('.').sort_values(['Chr', 'Start'])
     eb_cols = list(eb_df.columns[5:])
     anno_df = anno_df.merge(eb_df, on=['Chr', 'Start', 'End', 'Ref', 'Alt'])

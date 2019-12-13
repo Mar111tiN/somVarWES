@@ -114,7 +114,7 @@ else:
             show_command(reduce_matrix_cmd, multi=False)
             shell(reduce_matrix_cmd)
             # cleanup
-            # shell(f"rm {prematrix_file}")
+            shell(f"rm {prematrix_file}")
         else:
             # tumor sample already in the right position
             mut_matrix.to_csv(mutmatrix_file, sep='\t', index=False)
@@ -123,19 +123,17 @@ else:
         # # CONTINUE LIKE UNCACHED EBscore
         # convert mutmatrix to direct EBinput
         EB_matrix_input_file = f"{base_file}.EB.matrix"
-        shell(f"cat {mutmatrix_file} | {matrix2EBinput} > {EB_matrix_input_file}")
-
+        EBinput_cmd = f"cat {mutmatrix_file} | {matrix2EBinput} > {EB_matrix_input_file}"
+        show_command(EBinput_cmd, multi=False)
+        shell(EBinput_cmd)
         # load in the EB.matrix file
         eb_matrix = pd.read_csv(EB_matrix_input_file, sep='\t')
-
+        print('Start computation file')
         # multithreaded computation
-        EB_df = compute_matrix2EB_multi(eb_matrix, fit_pen, threads)
-        # add EBscore to columns
-        mut_cols.append('EBscore')
-
+        EB_df = compute_matrix2EB_multi(eb_matrix, fit_pen, threads - 2)
+        print('Computation finished')
         # get the pon_matrix containing the Pon coverages in Alt and Ref
         pon_matrix = get_pon_bases(eb_matrix)
-
     # ########################################### CACHE FROM ABcache ###########################
     else:
         # ############## TARGET PILEUP --> MATRIX FILE ##################
@@ -189,7 +187,6 @@ else:
 
         # cleanup
         shell(f"rm -f {tumor_matrix_file}")
-
 
     # add EBscore to columns
     mut_cols.append('EBscore')

@@ -29,7 +29,7 @@ chrom_list = get_chrom_list(config)
 
 # ############ INCLUDES ##############################
 include: "includes/fastq.snk"
-include: "includes/fastQC.snk"
+include: "includes/QC.snk"
 include: "includes/ubam.snk"
 include: "includes/map.snk"
 include: "includes/splitBAM.snk"
@@ -66,7 +66,8 @@ active_filter_list = [f for f in config['filter']['filters'].keys() if config['f
 
 rule all:
     input:
-        "fastQC/multiQC.html",
+        "QC/fastQC.html",
+        "QC/bamQC.html",
         # expand("bam_merge/{samples}.bam", samples=sample_df.index)
         expand("coverBED/{samples}.txt", samples=sample_df.index),
         expand("filter/{file}.{filter}.csv", file=get_tumor_normal_pairs(sample_df), filter=active_filter_list)

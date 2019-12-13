@@ -114,11 +114,11 @@ def get_fastqc_list(_):
     read2 = config['samples']['reads'][1]
     # create file list from the included_files tuple list
     for file_name in sample_df.index:
-        fastqc_list.append(f"fastQC/{file_name}_{read1}_fastqc.zip")
-        fastqc_list.append(f"fastQC/{file_name}_{read2}_fastqc.zip")
+        fastqc_list.append(f"fastqc/{file_name}_{read1}_fastqc.zip")
+        fastqc_list.append(f"fastqc/{file_name}_{read2}_fastqc.zip")
         if config['trim']['run']:
-            fastqc_list.append(f"fastQC/{file_name}_{read1}.{trim_suffix}_fastqc.zip")
-            fastqc_list.append(f"fastQC/{file_name}_{read2}.{trim_suffix}_fastqc.zip")
+            fastqc_list.append(f"fastqc/{file_name}_{read1}.{trim_suffix}_fastqc.zip")
+            fastqc_list.append(f"fastqc/{file_name}_{read2}.{trim_suffix}_fastqc.zip")
     return fastqc_list
 
 
