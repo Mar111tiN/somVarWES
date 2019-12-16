@@ -210,6 +210,8 @@ def get_fastq_pair(w):
 
 def get_pileup_input(w):
     file_name = f"{w.sample}_{w.type}.{w.chrom}.bam"
+    if config['umi']['run']:
+        return f"umi/{file_name}.Umapped.bam"
     if config['recalib']['run']:
         return "recalib/" + file_name
     return "realigned/" + file_name
