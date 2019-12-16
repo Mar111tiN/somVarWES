@@ -54,4 +54,13 @@ rule UMIgroup:
 
 rule call_consensus:
     input:
-        ""
+        "umi/{sample}_{type}.{chrom}.UG.bam"
+    output:
+        "umi/{sample}_{type}.{chrom}.CR.bam"
+    conda:
+        "../env/ubam-env.yml"
+    params:
+
+    shell:
+        "fgbio FilterConsensusReads "
+        "-i {input} -o {output}"
