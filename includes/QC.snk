@@ -86,7 +86,7 @@ rule bam_metrix:
         bam = "recalib/{sample}_{type}.bam",
         bai = "recalib/{sample}_{type}.bai"
     output:
-        "bam_metrix/{sample}_{type}.metrix"
+        "bam_metrics/{sample}_{type}.metrics"
     conda:
         "../env/align-env.yml"
     log:
@@ -103,11 +103,39 @@ rule bam_metrix:
 
 rule bam_QC:
     input:
-        expand("bam_metrix/{samples}.metrix", samples=sample_df.index)
+        expand("bam_metrics/{samples}.metrix", samples=sample_df.index)
     output:
         "QC/bamQC.html"
     conda:
         "../env/fastQC-env.yml"
     threads: 2
     shell:
-        "multiqc -f -o QC/ -n bamQC --interactive bam_metrix/; "
+        "multiqc -f -o QC/ -n bamQC --interactive bam_metrics/; "
+
+
+# ##################### insert size QC ##############################################
+rule Insert_metrix:
+    input:
+        bam = "recalib/{sample}_{type}.bam",
+        bai = "recalib/{sample}_{type}.bai"
+    output:
+        metric = "insert_metrics/{sample}_{type}.metrics",
+        pdf = "insert_metrics/{sample}_{type}.metrics.pdf"
+    conda:
+        "../env/align-env.yml"
+    log:
+        "logs/bam_metrix/{sample}_{type}.log"
+    threads: config['bam_metrix']['threads']
+    shell:
+        "picard CollectHsMetrics I={input.bam} O={output.metric} H={output.pdf} "
+
+rule insert_QC:
+    input:
+        expand("insert_metrics/{samples}.metrix", samples=sample_df.index)
+    output:
+        "QC/insertQC.html"
+    conda:
+        "../env/fastQC-env.yml"
+    threads: 2
+    shell:
+        "multiqc -f -o QC/ -n insertQC --interactive insert_metrics/; "

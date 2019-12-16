@@ -45,13 +45,13 @@ def mut2bed(mut_file, padding, bed_file):
     return bed_file
 
 
-def get_bed_file(w, input):
+def get_mut2bed(w, input):
     '''
     serves as a params function creating and returning the bed file for the samtools view
     '''
     padding = config['filter_bam']['padding']
     bed_file = mut2bed(input.csv, padding, f"filter_bam/{w.sample}_{w.type}.bed")
-    return bed_file
+    return mut_bed_file
 
 
 rule filter_bam:
@@ -67,9 +67,9 @@ rule filter_bam:
     threads:
         config['filter_bam']['threads']
     params:
-        bed_file = get_bed_file
+        mut_bed_file = get_mut_bed
     conda:
         "../env/align-env.yml"
     shell:
-        "samtools view -bhL {params.bed_file} {input.bam} > {output.bam}; "
+        "samtools view -bhL {params.mut_bed_file} {input.bam} > {output.bam}; "
         "picard BuildBamIndex INPUT={input.bam}"

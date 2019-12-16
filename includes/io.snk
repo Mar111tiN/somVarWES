@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 
 def get_files(folder_list, sample_sheet):
@@ -149,19 +150,23 @@ def get_filter(filter_dict):
 
 def get_bed_file(covered_or_padded):
     '''
-    returns the appropriate bed_file depending on build and library
+    returns the appropriate bed_file depending on build and library if 
     '''
-
-    bed_file = config['setup'].get('bed_file', None)
+    if covered_or_padded == 'Padded':
+        bed = 'bed_file_pad'
+    else:
+        bed = 'bed_file'
+    bed_file = config['setup'].get(bed, None)
     if bed_file:
         return bed_file
-    build = config['ref']['build']
-    lib = config['setup']['library']
-    lib_version = config['setup']['library_version']
-    prefix = 'SS' if lib == 'SureSelect' else lib
-    suffix = '_nochr' if build == 'hg19' else ''
-    bed_name = f"{prefix}_{lib_version}_{build}_{covered_or_padded}{suffix}.bed"
-    bed_file = os.path.join(config['paths']['mystatic'], 'bed_files', lib, build,bed_name)
+    else:
+        build = config['ref']['build']
+        lib = config['setup']['library']
+        lib_version = config['setup']['library_version']
+        prefix = 'SS' if lib == 'SureSelect' else lib
+        suffix = '_nochr' if build == 'hg19' else ''
+        bed_name = f"{prefix}_{lib_version}_{build}_{covered_or_padded}{suffix}.bed"
+        bed_file = os.path.join(config['paths']['mystatic'], 'bed_files', lib, build, bed_name)
     return bed_file
 
 
