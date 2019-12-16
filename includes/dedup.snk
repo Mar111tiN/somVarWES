@@ -33,34 +33,3 @@ rule dedup_umi:
         remove_dups = "false" if config['dedup_umi']['keep_dups'] else "true"
     shell:
         "picard UmiAwareMarkDuplicatesWithMateCigar -Xms500m -Xmx{params.max_mem} UMI_METRICS={params.umi_metrics} I={input} O={output[0]} M={params.metric} ASSUME_SORTED=true REMOVE_DUPLICATES={params.remove_dups}; " # &>{log}
-
-
-rule UMIgroup:
-    input:
-        "recalib/{sample}_{type}.{chrom}.bam"
-    output:
-        "umi/{sample}_{type}.{chrom}.UG.bam"  # UG --> Umi-grouped
-    conda:
-        "../env/ubam-env.yml"
-    log:
-        "logs/umi/{sample}_{type}.{chrom}.UG.log"
-    params:
-        strategy = config['umi_filter']['group_strategy'],
-        min_map_q = config['umi_filter']['min_map_q']
-    shell:
-        "fgbio GroupReadsByUmi -i {input} -o {output} "
-        "-s adjacency {params.strategy} "   # adjacency is the recommended method of grouping
-        "-m {params.min_map_q}"
-
-rule call_consensus:
-    input:
-        "umi/{sample}_{type}.{chrom}.UG.bam"
-    output:
-        "umi/{sample}_{type}.{chrom}.CR.bam"
-    conda:
-        "../env/ubam-env.yml"
-    params:
-
-    shell:
-        "fgbio FilterConsensusReads "
-        "-i {input} -o {output}"

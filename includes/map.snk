@@ -30,6 +30,20 @@ rule make_ref_genome:
         "bwa index {params.refgen}; "
         "samtools faidx {params.refgen}"
 
+
+def get_clip():
+    '''
+    if UMI-tools is active, do not clip overlap in order to facilitate UMI-grouping
+    overlap clipping can then proceed after UMI-filtering
+    '''
+
+    if config['umi']['run']:
+        return "FALSE"
+    elif config['alignment']['clip_overlap']:
+        return "TRUE"
+    return "FALSE"
+
+
 rule map_ubam:
     input:
         bam = "ubam/{sample}_{type}.{split}.bam",
@@ -45,10 +59,9 @@ rule map_ubam:
     params:
         bwa_threads = config['alignment']['threads'],
         refgen = full_path('genome'),
-        clip_overlap = "TRUE" if config['alignment']['clip_overlap'] else "FALSE",
+        clip_overlap = get_clip,
         alignment_strategy = config['alignment']['strategy'],
         deflater = "use_jdk_deflater=true use_jdk_inflater=true" if config['alignment']['use_jdk'] else ""
-
     shell:
         "picard SamToFastq {params.deflater} "
         "I={input.bam} FASTQ=/dev/stdout "
@@ -68,7 +81,7 @@ rule map_ubam:
         "CLIP_ADAPTERS=FALSE "
         "CLIP_OVERLAPPING_READS= {params.clip_overlap} "
         "INCLUDE_SECONDARY_ALIGNMENTS=true "
-        "MAX_INSERTIONS_OR_DELETIONS=-1 "
+        "MAX_GAPS=-1 "
         "PRIMARY_ALIGNMENT_STRATEGY={params.alignment_strategy} "
         "ATTRIBUTES_TO_RETAIN=XS "
         "ATTRIBUTES_TO_RETAIN=RX "
