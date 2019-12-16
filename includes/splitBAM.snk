@@ -33,7 +33,8 @@ rule merge_bam:
     input:  # here I need a switch if no UMI is involved
         expand("mapped/{{sample}}_{{type}}.{split}.bam", split=list(range(config['fastq']['split_factor'])))
     output:
-        "bam_merge/{sample}_{type}.bam"
+        "bam_merge/{sample}_{type}.bam",
+        "bam_merge/{sample}_{type}.bam.bai"  # sambamba automatically creates a bam.bai
     threads:
         config['resplit_bam']['threads']
     conda:
@@ -51,7 +52,7 @@ rule resplit_bam:
 
     input:
         bam = "bam_merge/{sample}_{type}.bam",
-        bai = "bam_merge/{sample}_{type}.bai"
+        bai = "bam_merge/{sample}_{type}.bam.bai"
     output:
         "bam_merge/{sample}_{type}.{chrom}.bam"
     threads:
@@ -59,4 +60,4 @@ rule resplit_bam:
     conda:
         "../env/samba-env.yml"
     shell:
-        "sambamba view -t {threads} -h -o {output} {input.bam} {wildcards.chrom}"
+        "sambamba view -t {threads} -h -o {output} {input.bam} {wildcards.chrom} "
