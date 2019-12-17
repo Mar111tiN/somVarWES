@@ -138,7 +138,7 @@ def get_IR_input(w):
     if config['setup']['UMI']:
         if config['UMI_filter']['run']:
             bam = f"bam_merge/{file_name}.bam"
-            bai = f"bam_merge/{file_name}.bai"
+            bai = f"bam_merge/{file_name}.bam.bai"
         else:
             bam = f"umi_deduped/{file_name}.bam"
             bai = f"umi_deduped/{file_name}.bai"

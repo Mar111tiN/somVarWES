@@ -50,14 +50,15 @@ rule merge_recal_bam:
     input:  # here I need a switch if no UMI is involved
         expand("recalib/{{sample}}_{{type}}.{chrom}.bam", chrom=chrom_list)
     output:
-        "recalib/{sample}_{type}.bam"
+        bam = "recalib/{sample}_{type}.bam",
+        bai = "recalib/{sample}_{type}.bam.bai"
     threads:
         config['resplit_bam']['threads']
     conda:
         "../env/samba-env.yml"
     shell:
         # merge all split bams into one bam using samtools merge (also sorts the merged bam)
-        "sambamba merge -t {threads} {output[0]} recalib/{wildcards.sample}_{wildcards.type}.*.bam; "
+        "sambamba merge -t {threads} {output.bam} recalib/{wildcards.sample}_{wildcards.type}.*.bam; "
         "rm {input}"
 
 
@@ -103,18 +104,18 @@ rule bam_metrix:
 
 rule bam_QC:
     input:
-        expand("bam_metrics/{samples}.metrix", samples=sample_df.index)
+        expand("bam_metrics/{samples}.metrics", samples=sample_df.index)
     output:
-        "QC/bamQC.html"
+        "QC/libraryQC.html"
     conda:
         "../env/fastQC-env.yml"
     threads: 2
     shell:
-        "multiqc -f -o QC/ -n bamQC --interactive bam_metrics/; "
+        "multiqc -f -o QC/ -n libraryQC --interactive bam_metrics/; "
 
 
 # ##################### insert size QC ##############################################
-rule Insert_metrix:
+rule insert_metrix:
     input:
         bam = "recalib/{sample}_{type}.bam",
         bai = "recalib/{sample}_{type}.bai"
@@ -122,16 +123,17 @@ rule Insert_metrix:
         metric = "insert_metrics/{sample}_{type}.metrics",
         pdf = "insert_metrics/{sample}_{type}.metrics.pdf"
     conda:
-        "../env/align-env.yml"
+        "../env/picard-env.yml"
     log:
         "logs/bam_metrix/{sample}_{type}.log"
     threads: config['bam_metrix']['threads']
     shell:
-        "picard CollectHsMetrics I={input.bam} O={output.metric} H={output.pdf} "
+        "picard CollectInsertSizeMetrics I={input.bam} O={output.metric} H={output.pdf} M=0.5"
+
 
 rule insert_QC:
     input:
-        expand("insert_metrics/{samples}.metrix", samples=sample_df.index)
+        expand("insert_metrics/{samples}.metrics", samples=sample_df.index)
     output:
         "QC/insertQC.html"
     conda:

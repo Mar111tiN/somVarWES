@@ -31,13 +31,13 @@ rule make_ref_genome:
         "samtools faidx {params.refgen}"
 
 
-def get_clip():
+def get_clip(_):
     '''
     if UMI-tools is active, do not clip overlap in order to facilitate UMI-grouping
     overlap clipping can then proceed after UMI-filtering
     '''
 
-    if config['umi']['run']:
+    if config['UMI_filter']['run']:
         return "FALSE"
     elif config['alignment']['clip_overlap']:
         return "TRUE"

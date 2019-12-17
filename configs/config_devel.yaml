@@ -4,7 +4,7 @@ inputdirs:
 workdir: /fast/users/szyskam_c/scratch/develop/FDAH1 # here your results are created
 snakedir: /fast/users/szyskam_c/snakes/develop/somVarWES
 samples: # here go all your samples
-  samplesheet: /fast/users/szyskam_c/snakes/projects/somVarWES/sheets/sample002.csv
+  samplesheet: /fast/users/szyskam_c/snakes/develop/somVarWES/sheets/sample002.csv
   tumor:
     - A  # 
   normal:
