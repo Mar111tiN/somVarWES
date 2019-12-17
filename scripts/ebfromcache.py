@@ -92,6 +92,8 @@ else:
     # if sample_inpon == 0, then sample is not in PoN
     # else, pon matrix has to be acquired from cache and used in EBscore
     sample_in_pon = get_sample_pos(pon_list, tumor_bam)
+
+
     # ########################################### CACHE FROM MATRIX #####################################
     if sample_in_pon:
         in_pon = True

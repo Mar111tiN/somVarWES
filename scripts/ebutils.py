@@ -111,8 +111,14 @@ def compute_matrix2EB(fit_pen, df):
 
 
 def compute_matrix2EB_multi(df, pen, threads):
+    '''
+    split --> Pool --> compute --> concate
+    '''
     print('Pooling threads: ', threads)
-    eb_pool = Pool(threads)
+    # !!!!!!!!!!!!!!!!!!
+    eb_pool = Pool(threads)  # !!!!!!!
+    # !!!!!!!!!!!!!!!!!!
+
     print('Pooled')
     # minimal length of 1000 lines
     split_factor = min(math.ceil(len(df.index) / 1000), threads)
