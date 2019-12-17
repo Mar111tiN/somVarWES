@@ -5,7 +5,7 @@ import argparse
 import math
 
 # ############ SETUP ##############################
-configfile: "configs/config.yaml"
+configfile: "configs/config_devel.yaml"
 # configfile: "configs/config.json"
 workdir: config['workdir']
 

@@ -5,16 +5,16 @@ rule umi_group:
     output:
         "umi/{sample}_{type}.{chrom}.UG.bam"  # UG --> Umi-grouped
     threads:
-        config['umi']['group']['threads']
+        config['UMI_filter']['group']['threads']
     conda:
         "../env/ubam-env.yml"
     log:
         "logs/umi/{sample}_{type}.{chrom}.UG.log"
     params:
-        mem = f"Xmx{config['umi']['group']['mem']}",
-        strategy = config['umi']['group']['group_strategy'],
-        min_map_q = config['umi']['group']['min_map_q'],
-        edits = config['umi']['group']['edits']
+        mem = f"Xmx{config['UMI_filter']['group']['mem']}",
+        strategy = config['UMI_filter']['group']['group_strategy'],
+        min_map_q = config['UMI_filter']['group']['min_map_q'],
+        edits = config['UMI_filter']['group']['edits']
     shell:
         "fgbio GroupReadsByUmi {params.mem} "
         "-i {input} -o {output} "
@@ -29,15 +29,15 @@ rule call_consensus:
     output:
         "umi/{sample}_{type}.{chrom}.CR.bam"
     threads:
-        config['umi']['call']['threads']
+        config['UMI_filter']['call']['threads']
     conda:
         "../env/ubam-env.yml"
     params:
-        mem = f"-Xmx{config['umi']['call']['mem']}",
-        min_reads = config['umi']['min_reads'],
-        error_pre = config['umi']['call']['error_rate_pre_umi'],
-        error_post = config['umi']['call']['error_rate_post_umi']
-        min_input_Q = config['umi']['call']['min_input_Q']
+        mem = f"-Xmx{config['UMI_filter']['call']['mem']}",
+        min_reads = config['UMI_filter']['min_reads'],
+        error_pre = config['UMI_filter']['call']['error_rate_pre_umi'],
+        error_post = config['UMI_filter']['call']['error_rate_post_umi']
+        min_input_Q = config['UMI_filter']['call']['min_input_Q']
     shell:
         "fgbio CallConsensusReads {params.mem} "
         "-i {input} -o {output}"
@@ -54,16 +54,16 @@ rule filter_consensus:
     output:
         "umi/{sample}_{type}.{chrom}.UF.bam"
     threads:
-        config['umi']['filter']['threads']
+        config['UMI_filter']['filter']['threads']
     conda:
         "../env/ubam-env.yml"
     params:
-        mem = f"-Xmx{config['umi']['filter']['mem']}",
-        min_reads = config['umi']['min_reads'],
-        max_read_error = config['umi']['filter']['max_error_rate_per_read'],
-        max_base_error = config['umi']['filter']['max_error_rate_per_base'],
-        min_Q = config['umi']['filter']['min_Q'],
-        max_no_call = config['umi']['filter']['max_no_call']
+        mem = f"-Xmx{config['UMI_filter']['filter']['mem']}",
+        min_reads = config['UMI_filter']['min_reads'],
+        max_read_error = config['UMI_filter']['filter']['max_error_rate_per_read'],
+        max_base_error = config['UMI_filter']['filter']['max_error_rate_per_base'],
+        min_Q = config['UMI_filter']['filter']['min_Q'],
+        max_no_call = config['UMI_filter']['filter']['max_no_call']
     shell:
         "fgbio FilterConsensusReads {params.mem}"
         "-M {params.min_reads} "
@@ -86,8 +86,8 @@ rule remap_filtered:
     params:
         bwa_threads = config['alignment']['threads'],
         refgen = full_path('genome'),
-        clip_overlap = "TRUE" if config['umi']['remap']['clip_overlap'] else "FALSE",
-        clip_adapters = config['umi']['remap']['clip_adapters'],
+        clip_overlap = "TRUE" if config['UMI_filter']['remap']['clip_overlap'] else "FALSE",
+        clip_adapters = config['UMI_filter']['remap']['clip_adapters'],
         alignment_strategy = config['alignment']['strategy'],
         deflater = "use_jdk_deflater=true use_jdk_inflater=true" if config['alignment']['use_jdk'] else ""
     shell:
