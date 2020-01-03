@@ -7,6 +7,10 @@ def get_files(folder_list, sample_sheet):
     retrieves the path to all the files in the sample_sheet
     '''
 
+    # check whether single folder or folder list
+    if len(folder_list[0]) == 1:
+        folder_list = [folder_list]
+
     fastq_list = []
     for input_folder in folder_list:
         for folder, _, files in os.walk(input_folder):
@@ -143,7 +147,7 @@ def get_IR_input(w):
             bam = f"umi_deduped/{file_name}.bam"
             bai = f"umi_deduped/{file_name}.bai"
     else:
-        bam = f"deduped/{file_name}bam"
+        bam = f"deduped/{file_name}.bam"
         bai = f"deduped/{file_name}.bai"
     return {'bam': bam, 'bai': bai}
 

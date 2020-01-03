@@ -41,7 +41,7 @@ rule merge_bam:
         "../env/samba-env.yml"
     shell:
         "sambamba merge -t {threads} {output.bam} mapped/{wildcards.sample}_{wildcards.type}.*.bam; "
-        # "rm {input};"
+        "rm {input};"
 
         # OPTIONB: picard AddOrReplaceReadGroups
 
@@ -54,10 +54,11 @@ rule resplit_bam:
         bam = "bam_merge/{sample}_{type}.bam",
         bai = "bam_merge/{sample}_{type}.bam.bai"
     output:
-        "bam_merge/{sample}_{type}.{chrom}.bam"
+        bam = "bam_merge/{sample}_{type}.{chrom}.bam",
+        bai = "bam_merge/{sample}_{type}.{chrom}.bai"
     threads:
         config['resplit_bam']['threads']
     conda:
         "../env/samba-env.yml"
     shell:
-        "sambamba view -t {threads} -h -f bam -o {output} {input.bam} {wildcards.chrom} "
+        "sambamba view -t {threads} -h -f bam -o {output.bam} {input.bam} {wildcards.chrom} "

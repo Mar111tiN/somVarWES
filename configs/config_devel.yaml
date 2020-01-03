@@ -51,12 +51,12 @@ ref:
     phase1k_indels: annotation/gatk/hg38/1000G_phase1.snps.high_confidence.hg38.vcf # seems to work instead of indels (acc. to GATK blog: https://gatkforums.broadinstitute.org/gatk/discussion/6800/known-sites-for-indel-realignment-and-bqsr-in-hg38-bundle)
     # bed_file: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Covered.bed
     # bed_file_pad: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Padded.bed
-#### TOOLS SECTION ##############fastq_list = []
+#### TOOLS SECTION ##############
 tools:
   gatk: gatk # 
   gatk3: java -jar /fast/users/szyskam_c/work/utils/gatk3.8/GenomeAnalysisTK.jar -T
-  annovar: perl /fast/users/szyskam_c/tools/annovar2018
-  # annovar: perl /fast/users/szyskam_c/tools/annovar2019
+  # annovar: perl /fast/users/szyskam_c/tools/annovar2018
+  annovar: perl /fast/users/szyskam_c/tools/annovar2019
 scripts:
   split_fastq: shell/split_fastq.mawk
   prettifyBED : shell/prettify_BEDcoverage.awk

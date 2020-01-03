@@ -55,7 +55,8 @@ wildcard_constraints:
     read_or_index = "[^_/.]+",
     trim = "[^_/.]+",
     chrom = "[^_/.]*[0-9XY]+",
-    filter = "[A-Za-z]+"
+    filter = "[A-Za-z]+",
+    chrom_split = "[^_/.]+"
 
 
 # extract the filter list for active filters
