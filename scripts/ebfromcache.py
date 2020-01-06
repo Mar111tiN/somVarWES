@@ -3,7 +3,9 @@ from os import system as shell
 import pandas as pd
 from ebutils import show_output, show_command, get_pon_bases, get_sample_pos, compute_matrix2EB_multi, compute_AB2EB_multi
 
-attempts = snakemake.attempts
+# treads_adjusted is used for failing Pools with higher threads for certain (larger?) files
+threads_adjusted = snakemake.resources.threads_adjusted
+attempts = snakemake.resources.attempts
 w = snakemake.wildcards
 config = snakemake.config
 threads = snakemake.threads
@@ -28,6 +30,9 @@ matrix2EBinput = params.matrix2EBinput
 reduce_matrix = params.reducematrix
 matrix2EBinput = params.matrix2EBinput
 reorder_matrix = params.reorder_matrix
+
+if attempts > 1:
+    print(f"Due to a failed, threads are decreased to ", threads_adjusted)
 
 
 def target_pileup_from_mut(mut_file, base_file, bam, chrom):
@@ -133,7 +138,7 @@ else:
         print('Start computation file')
         # multithreaded computation
         # passing attempts to threads
-        EB_df = compute_matrix2EB_multi(eb_matrix, fit_pen, threads - 2 * attempts)
+        EB_df = compute_matrix2EB_multi(eb_matrix, fit_pen, threads_adjusted)
         print('Computation finished')
         # get the pon_matrix containing the Pon coverages in Alt and Ref
         pon_matrix = get_pon_bases(eb_matrix)
