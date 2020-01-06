@@ -27,7 +27,7 @@ DRMAA=" -P medium -pe smp {threads}  -l h_rt=70:00:00 -l h_vmem=3.5g"
 DRMAA="$DRMAA -V -o $LOGDIR/ -j yes"
 snakemake --unlock --rerun-incomplete
 snakemake --dag | dot -Tsvg > dax/dag.svg
-snakemake --use-conda  --rerun-incomplete --drmaa "$DRMAA" -j 128 -p -r -k
+snakemake --use-conda  --rerun-incomplete --restart-times 3 --drmaa "$DRMAA" -j 128 -p -r -k
 # -k ..keep going if job fails
 # -p ..print out shell commands
 # 

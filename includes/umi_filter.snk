@@ -11,14 +11,14 @@ rule umi_group:
     log:
         "logs/umi/{sample}_{type}.{chrom}.UG.log"
     params:
-        mem = f"Xmx{config['UMI_filter']['group']['mem']}",
+        mem = f"-Xmx{config['UMI_filter']['group']['mem']}",
         strategy = config['UMI_filter']['group']['group_strategy'],
         min_map_q = config['UMI_filter']['group']['min_map_q'],
         edits = config['UMI_filter']['group']['edits']
     shell:
         "fgbio GroupReadsByUmi {params.mem} "
         "-i {input} -o {output} "
-        "-s adjacency {params.strategy} "   # adjacency is the recommended method of grouping
+        "-s {params.strategy} "   # adjacency is the recommended method of grouping
         "-m {params.min_map_q} "
         "-e {params.edits} "  # for WES-data, 1 is good; for targeted >3
 
@@ -36,11 +36,11 @@ rule call_consensus:
         mem = f"-Xmx{config['UMI_filter']['call']['mem']}",
         min_reads = config['UMI_filter']['min_reads'],
         error_pre = config['UMI_filter']['call']['error_rate_pre_umi'],
-        error_post = config['UMI_filter']['call']['error_rate_post_umi']
+        error_post = config['UMI_filter']['call']['error_rate_post_umi'],
         min_input_Q = config['UMI_filter']['call']['min_input_Q']
     shell:
-        "fgbio CallConsensusReads {params.mem} "
-        "-i {input} -o {output}"
+        "fgbio CallMolecularConsensusReads  {params.mem} "
+        "-i {input} -o {output} "
         "-M {params.min_reads} "
         "-1 {params.error_pre} "
         "-2 {params.error_post} "
@@ -48,9 +48,63 @@ rule call_consensus:
         "-B true "  # output-per-base-tags
 
 
+rule remap_CR:
+    input:
+        bam = "umi/{sample}_{type}.{chrom}.CR.bam",
+        genome = os.path.join(full_path('genome_path'), 'gen_ref.done')
+    output:
+        XT = "umi/{sample}_{type}.{chrom}.CR_XT.bam",
+        metrix = "umi/{sample}_{type}.{chrom}.CR_XT.metrix",
+        CRmapped = "umi/{sample}_{type}.{chrom}.CRmapped.bam"
+    log:
+        "logs/Umapped/{sample}_{type}.{chrom}.log"
+    threads:
+        config['alignment']['threads'] + 4
+    conda:
+        "../env/align-env.yml"
+    params:
+        bwa_threads = config['alignment']['threads'],
+        refgen = full_path('genome'),
+        clip_overlap = "TRUE" if config['UMI_filter']['remap']['clip_overlap'] else "FALSE",
+        clip_adapters = "TRUE" if config['UMI_filter']['remap']['clip_adapters'] else "FALSE",
+        alignment_strategy = config['alignment']['strategy'],
+        deflater = "use_jdk_deflater=true use_jdk_inflater=true" if config['alignment']['use_jdk'] else ""
+    shell:
+        # maybe add IlluminaAdapter detection at this stage ??
+        "picard MarkIlluminaAdapters {params.deflater} I={input.bam} O={output.XT} M={output.metrix} TMP_DIR=$TMPDIR; "
+        "picard SamToFastq {params.deflater} "
+        "I={output.XT} FASTQ=/dev/stdout "
+        "ClIPPING_ATTRIBUTE=XT "        # use XT tag for clipping
+        "CLIPPING_ACTION=2 "             # base-quality of clipped bases is set to 2
+        "INTERLEAVE=TRUE "
+        "NON_PF=TRUE "
+        "TMP_DIR=$TMPDIR | "
+        # pipe to bwa mem
+        "bwa mem -M -t {params.bwa_threads} -p {params.refgen} /dev/stdin | "
+        "picard MergeBamAlignment "
+        "R={params.refgen} "
+        "UNMAPPED_BAM={output.XT} "
+        "ALIGNED_BAM=/dev/stdin "
+        "O={output.CRmapped} "
+        "CREATE_INDEX=TRUE "
+        "SORT_ORDER=coordinate "
+        "ADD_MATE_CIGAR=TRUE "
+        "ORIENTATIONS=FR "
+        "CLIP_ADAPTERS={params.clip_adapters} "
+        "CLIP_OVERLAPPING_READS={params.clip_overlap} "
+        "INCLUDE_SECONDARY_ALIGNMENTS=true "
+        "MAX_GAPS=-1 "
+        "PRIMARY_ALIGNMENT_STRATEGY={params.alignment_strategy} "
+        "VALIDATION_STRINGENCY=SILENT "
+        "ALIGNER_PROPER_PAIR_FLAGS=true "
+        "ATTRIBUTES_TO_RETAIN=XS "
+        "ATTRIBUTES_TO_RETAIN=RX "
+        "TMP_DIR=$TMPDIR "
+
+
 rule filter_consensus:
     input:
-        "umi/{sample}_{type}.{chrom}.CR.bam"
+        "umi/{sample}_{type}.{chrom}.CRmapped.bam"
     output:
         "umi/{sample}_{type}.{chrom}.UF.bam"
     threads:
@@ -63,58 +117,13 @@ rule filter_consensus:
         max_read_error = config['UMI_filter']['filter']['max_error_rate_per_read'],
         max_base_error = config['UMI_filter']['filter']['max_error_rate_per_base'],
         min_Q = config['UMI_filter']['filter']['min_Q'],
-        max_no_call = config['UMI_filter']['filter']['max_no_call']
+        max_no_call = config['UMI_filter']['filter']['max_no_call'],
+        ref = full_path('genome')
     shell:
-        "fgbio FilterConsensusReads {params.mem}"
+        "fgbio FilterConsensusReads {params.mem} "
+        "-i {input} -o {output} "
+        "-r {params.ref} "
         "-M {params.min_reads} "
-        "-N {params.min_Q}"
+        "-N {params.min_Q} "
         "-E {params.max_read_error} "
         "-e {params.max_base_error} "
-
-rule remap_filtered:
-    input:
-        bam = "umi/{sample}_{type}.{chrom}.UF.bam",
-        genome = os.path.join(full_path('genome_path'), 'gen_ref.done')
-    output:
-        "umi/{sample}_{type}.{chrom}.Umapped.bam"
-    log:
-        "logs/Umapped/{sample}_{type}.{chrom}.log"
-    threads:
-        config['alignment']['threads'] + 4
-    conda:
-        "../env/align-env.yml"
-    params:
-        bwa_threads = config['alignment']['threads'],
-        refgen = full_path('genome'),
-        clip_overlap = "TRUE" if config['UMI_filter']['remap']['clip_overlap'] else "FALSE",
-        clip_adapters = config['UMI_filter']['remap']['clip_adapters'],
-        alignment_strategy = config['alignment']['strategy'],
-        deflater = "use_jdk_deflater=true use_jdk_inflater=true" if config['alignment']['use_jdk'] else ""
-    shell:
-        "picard SamToFastq {params.deflater} "
-        "I={input.bam} FASTQ=/dev/stdout "
-        "ClIPPING_ATTRIBUTE=XT "        # use XT tag for clipping
-        "CLIPPING_ACTION=2 "             # base-quality of clipped bases is set to 2
-        "INTERLEAVE=TRUE "
-        "NON_PF=TRUE "
-        "TMP_DIR=$TMPDIR | "
-        # pipe to bwa mem
-        "bwa mem -M -t {params.bwa_threads} -p {params.refgen} /dev/stdin | "
-        "picard MergeBamAlignment "
-        "R={params.refgen} "
-        "UNMAPPED_BAM={input.bam} "
-        "ALIGNED_BAM=/dev/stdin "
-        "O={output} "
-        "CREATE_INDEX=TRUE "
-        "ADD_MATE_CIGAR=TRUE "
-        "ORIENTATIONS=FR"
-        "CLIP_ADAPTERS={params.clip_adapters} "
-        "CLIP_OVERLAPPING_READS={params.clip_overlap} "
-        "INCLUDE_SECONDARY_ALIGNMENTS=true "
-        "MAX_GAPS=-1 "
-        "PRIMARY_ALIGNMENT_STRATEGY={params.alignment_strategy} "
-        "VALIDATION_STRINGENCY=SILENT "
-        "ALIGNER_PROPER_PAIR_FLAGS=true "
-        "ATTRIBUTES_TO_RETAIN=XS "
-        "ATTRIBUTES_TO_RETAIN=RX "
-        "TMP_DIR=$TMPDIR "

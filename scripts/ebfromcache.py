@@ -3,7 +3,7 @@ from os import system as shell
 import pandas as pd
 from ebutils import show_output, show_command, get_pon_bases, get_sample_pos, compute_matrix2EB_multi, compute_AB2EB_multi
 
-
+attempts = snakemake.attempts
 w = snakemake.wildcards
 config = snakemake.config
 threads = snakemake.threads
@@ -132,7 +132,8 @@ else:
         eb_matrix = pd.read_csv(EB_matrix_input_file, sep='\t')
         print('Start computation file')
         # multithreaded computation
-        EB_df = compute_matrix2EB_multi(eb_matrix, fit_pen, threads - 2)
+        # passing attempts to threads
+        EB_df = compute_matrix2EB_multi(eb_matrix, fit_pen, threads - 2 * attempts)
         print('Computation finished')
         # get the pon_matrix containing the Pon coverages in Alt and Ref
         pon_matrix = get_pon_bases(eb_matrix)

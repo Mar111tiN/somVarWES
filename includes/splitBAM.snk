@@ -55,7 +55,7 @@ rule resplit_bam:
         bai = "bam_merge/{sample}_{type}.bam.bai"
     output:
         bam = "bam_merge/{sample}_{type}.{chrom}.bam",
-        bai = "bam_merge/{sample}_{type}.{chrom}.bai"
+        bai = "bam_merge/{sample}_{type}.{chrom}.bam.bai"
     threads:
         config['resplit_bam']['threads']
     conda:

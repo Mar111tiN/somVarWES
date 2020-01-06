@@ -35,7 +35,7 @@ rule fast_multiQC:
     conda:
         "../env/fastQC-env.yml"
     shell:
-        "multiqc -f -o QC/ -n fastQC --interactive fastqc/; " # interactive for big number of files
+        "multiqc -f -o QC/ -n fastQC --interactive fastqc/; "  # interactive for big number of files
         "rm -f fastqc/*_fastqc.html fastq/*.sub"  # leave the zip files for accumulated multiQC of all processed samples
 
 
@@ -59,7 +59,7 @@ rule merge_recal_bam:
     shell:
         # merge all split bams into one bam using samtools merge (also sorts the merged bam)
         "sambamba merge -t {threads} {output.bam} recalib/{wildcards.sample}_{wildcards.type}.*.bam; "
-        "rm {input}"
+        # "rm {input}"
 
 
 rule cover_BED:

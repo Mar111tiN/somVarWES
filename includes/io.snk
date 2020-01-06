@@ -229,7 +229,7 @@ def get_pileup_input(w):
     file_name = f"{w.sample}_{w.type}.{w.chrom}"
     if config['setup']['UMI']:
         if config['UMI_filter']['run']:
-            return f"umi/{file_name}.Umapped.bam"
+            return f"umi/{file_name}.UF.bam"
     elif config['recalib']['run']:
         return f"recalib/{file_name}.bam"
     return f"realigned/{file_name}.bam"

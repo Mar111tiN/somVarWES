@@ -139,6 +139,9 @@ UMI_filter:
     error_rate_pre_umi: 45
     error_rate_post_umi: 30
     min_input_Q: 10 # input base quality
+  remap:
+    clip_overlap: False
+    clip_adapters: True
   filter:
     threads: 6
     mem: 6G
@@ -146,9 +149,7 @@ UMI_filter:
     max_error_rate_per_base: 0.1
     min_Q: 30 # input base quality
     max_no_call: 0.1 # fraction of reads filtered per M/e
-  remap:
-    clip_overlap: True
-    clip_adapters: True
+
 cover_bed:
   histo_steps: "0 1 10 15 50 100 120 200 500 1000 1500 2000 2500"
 bam_metrix:

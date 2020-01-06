@@ -35,6 +35,7 @@ include: "includes/map.snk"
 include: "includes/splitBAM.snk"
 include: "includes/processBAM.snk"
 include: "includes/dedup.snk"
+include: "includes/umi_filter.snk"
 include: "includes/varscan.snk"
 include: "includes/annotate.snk"
 include: "includes/EB.snk"
@@ -70,8 +71,8 @@ rule all:
         "QC/fastQC.html",
         "QC/libraryQC.html",
         "QC/insertQC.html",
-        expand("coverBED/{samples}.txt", samples=sample_df.index)
-        # expand("filter/{tumor_normal_pair}.{filter}.csv", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list),
+        expand("coverBED/{samples}.txt", samples=sample_df.index),
+        expand("filter/{tumor_normal_pair}.{filter}.csv", tumor_normal_pair=get_tumor_normal_pairs (sample_df), filter=active_filter_list),
         # expand("filter_bam/filter_bam/{tumor_normal_pair}.{filter}.bam", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list)
 
 ###########################################################################
