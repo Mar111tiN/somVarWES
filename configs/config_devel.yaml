@@ -21,6 +21,8 @@ setup:
   platform: illumina
   # platform_unit: 
   UMI: True  # if UMI information should be used in pipeline
+  # if UMI_filter is true: deduplication is substituted with the UMI-filter pipeline
+  # else: umi-aware deduplication is used 
 
 #### ABSOLUTE PATHS ############
 paths:
@@ -124,7 +126,7 @@ recalib:
   threads: 12
   known_sites: dbsnp_common   # which dbsnp database to use beside gold_standard_indels and phase1k
 UMI_filter:
-  run: False # if False and setup-->UMI is True, run umi-dedup
+  run: True # if False and setup-->UMI is True, run umi-dedup
   min_reads:  1 # for WES-data, 1 is good; for targeted >3  counts for all fgbio tools
   group:
     threads: 10
@@ -137,10 +139,12 @@ UMI_filter:
     threads: 6
     mem: 6G
     error_rate_pre_umi: 45
-    error_rate_post_umi: 30
-    min_input_Q: 10 # input base quality
+    error_rate_post_umi: 40
+    min_input_Q: 20 # input base quality (10 is default; IDT says 30)
   remap:
-    clip_overlap: False
+    threads: 10
+    mem: 6G
+    clip_overlap: True
     clip_adapters: True
   filter:
     threads: 6

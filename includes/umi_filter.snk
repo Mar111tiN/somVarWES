@@ -1,7 +1,7 @@
 
 rule umi_group:
     input:
-        "recalib/{sample}_{type}.{chrom}.bam"
+        get_umi_filter_input
     output:
         "umi/{sample}_{type}.{chrom}.UG.bam"  # UG --> Umi-grouped
     threads:
@@ -37,32 +37,49 @@ rule call_consensus:
         min_reads = config['UMI_filter']['min_reads'],
         error_pre = config['UMI_filter']['call']['error_rate_pre_umi'],
         error_post = config['UMI_filter']['call']['error_rate_post_umi'],
-        min_input_Q = config['UMI_filter']['call']['min_input_Q']
+        min_input_Q = config['UMI_filter']['call']['min_input_Q'],
+        read_group = lambda w: f"{w.sample}_{w.type}"
     shell:
         "fgbio CallMolecularConsensusReads  {params.mem} "
         "-i {input} -o {output} "
+        "--read-group-id={params.read_group}"  # output-per-base-tags
         "-M {params.min_reads} "
         "-1 {params.error_pre} "
         "-2 {params.error_post} "
         "-m {params.min_input_Q} "
-        "-B true "  # output-per-base-tags
+        "-B true "
+
+
+rule mark_CR:
+    input:
+        "umi/{sample}_{type}.{chrom}.CR.bam"
+    output:
+        bam = "umi/{sample}_{type}.{chrom}.CR_XT.bam",
+        metrix = "umi/{sample}_{type}.{chrom}.CR_XT.metrix"
+    threads:
+        config['alignment']['threads']
+    conda:
+        "../env/align-env.yml"
+    params:
+        deflater = "use_jdk_deflater=true use_jdk_inflater=true" if config['alignment']['use_jdk'] else ""
+    shell:
+        "picard MarkIlluminaAdapters {params.deflater} I={input} O={output.bam} M={output.metrix} TMP_DIR=$TMPDIR; "
 
 
 rule remap_CR:
     input:
-        bam = "umi/{sample}_{type}.{chrom}.CR.bam",
+        bam = "umi/{sample}_{type}.{chrom}.CR_XT.bam",
         genome = os.path.join(full_path('genome_path'), 'gen_ref.done')
     output:
-        XT = "umi/{sample}_{type}.{chrom}.CR_XT.bam",
-        metrix = "umi/{sample}_{type}.{chrom}.CR_XT.metrix",
-        CRmapped = "umi/{sample}_{type}.{chrom}.CRmapped.bam"
+        bam = "umi/{sample}_{type}.{chrom}.CRmapped.bam"
     log:
         "logs/Umapped/{sample}_{type}.{chrom}.log"
     threads:
-        config['alignment']['threads'] + 4
+        config['UMI_filter']['remap']['threads']
     conda:
         "../env/align-env.yml"
     params:
+        mem = f"-Xmx{config['UMI_filter']['remap']['mem']}",
         bwa_threads = config['alignment']['threads'],
         refgen = full_path('genome'),
         clip_overlap = "TRUE" if config['UMI_filter']['remap']['clip_overlap'] else "FALSE",
@@ -70,22 +87,24 @@ rule remap_CR:
         alignment_strategy = config['alignment']['strategy'],
         deflater = "use_jdk_deflater=true use_jdk_inflater=true" if config['alignment']['use_jdk'] else ""
     shell:
-        # maybe add IlluminaAdapter detection at this stage ??
-        "picard MarkIlluminaAdapters {params.deflater} I={input.bam} O={output.XT} M={output.metrix} TMP_DIR=$TMPDIR; "
+        # convert bam to fastq
         "picard SamToFastq {params.deflater} "
-        "I={output.XT} FASTQ=/dev/stdout "
+        "I={input.bam} FASTQ=/dev/stdout "
         "ClIPPING_ATTRIBUTE=XT "        # use XT tag for clipping
         "CLIPPING_ACTION=2 "             # base-quality of clipped bases is set to 2
         "INTERLEAVE=TRUE "
         "NON_PF=TRUE "
         "TMP_DIR=$TMPDIR | "
-        # pipe to bwa mem
+
+        # pipe interleaved fastq to bwa for mapping
         "bwa mem -M -t {params.bwa_threads} -p {params.refgen} /dev/stdin | "
-        "picard MergeBamAlignment "
+
+        # pipe mapped bam to MergeBamAlignment for merging with unaligned bam containing the XS and XR tags
+        "picard MergeBamAlignment {params.mem} "
         "R={params.refgen} "
-        "UNMAPPED_BAM={output.XT} "
+        "UNMAPPED_BAM={input.bam} "
         "ALIGNED_BAM=/dev/stdin "
-        "O={output.CRmapped} "
+        "O={output.bam} "
         "CREATE_INDEX=TRUE "
         "SORT_ORDER=coordinate "
         "ADD_MATE_CIGAR=TRUE "
@@ -97,8 +116,8 @@ rule remap_CR:
         "PRIMARY_ALIGNMENT_STRATEGY={params.alignment_strategy} "
         "VALIDATION_STRINGENCY=SILENT "
         "ALIGNER_PROPER_PAIR_FLAGS=true "
-        "ATTRIBUTES_TO_RETAIN=XS "
-        "ATTRIBUTES_TO_RETAIN=RX "
+        "ATTRIBUTES_TO_RETAIN=XS "  # secondary alignment scores
+        "ATTRIBUTES_TO_RETAIN=RX "  # umi tag
         "TMP_DIR=$TMPDIR "
 
 

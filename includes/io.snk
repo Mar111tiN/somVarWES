@@ -226,10 +226,24 @@ def get_fastq_pair(w):
 
 
 def get_pileup_input(w):
+    '''
+    input switch for mpileup
+    '''
+
     file_name = f"{w.sample}_{w.type}.{w.chrom}"
-    if config['setup']['UMI']:
-        if config['UMI_filter']['run']:
-            return f"umi/{file_name}.UF.bam"
+    if config['setup']['UMI'] and config['UMI_filter']['run']:
+        return f"umi/{file_name}.UF.bam"
     elif config['recalib']['run']:
+        return f"recalib/{file_name}.bam"
+    return f"realigned/{file_name}.bam"
+
+
+def get_umi_filter_input(w):
+    '''
+    input switch for umi_filter
+    either recalib or realign depending in config['recalib']['run']
+    '''
+    file_name = f"{w.sample}_{w.type}.{w.chrom}"
+    if config['recalib']['run']:
         return f"recalib/{file_name}.bam"
     return f"realigned/{file_name}.bam"
