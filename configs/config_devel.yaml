@@ -235,7 +235,9 @@ filter:
       params:
         candidate_list: annotation/damm_lists/AML_candidates.txt
         driver_list: annotation/damm_lists/AML_drivers.txt
-        keep_syn: True
+        keep_syn: False
 filter_bam:
     threads: 4
+    file_prefix: "basic"
     padding: 100
+

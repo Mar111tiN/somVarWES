@@ -40,6 +40,11 @@ def mut2bed(mut_file, padding, bed_file):
     if not os.path.isdir(folder):
         os.makedirs(folder)
 
+    # use the prefix for getting the right mut_file
+    prefix = config['filter_bam']['file_prefix']
+    if prefix:
+        mut_file = mut_file.replace(".csv", f".{prefix}.csv")
+
     # read the anno_file
     anno_df = pd.read_csv(mut_file, sep='\t').sort_values(['Chr', 'Start']).iloc[:,:5]
     # get the bedfie with padded and collapsed regions
@@ -57,26 +62,36 @@ def get_mut_bed(w, input):
     '''
 
     padding = config['filter_bam']['padding']
-    bed_file = mut2bed(input.csv, padding, f"filter_bam/{w.sample}_{w.tumor}-{w.norm}.bed")
+    bed_file = mut2bed(input.csv, padding, f"filter_bam/{w.sample}_{w.tumor}-{w.normal}.bed")
     return bed_file
 
 
 rule filter_bam:
     input:
-        csv = "filter/{sample}_{tumor}-{norm}.{filter}.csv",
-        bam = "recalib/{sample}_{tumor}.bam",
-        bai = "recalib/{sample}_{tumor}.bai"
+        csv = "filter/{sample}_{tumor}-{normal}.{filter}.csv",
+        tumor_bam = "recalib/{sample}_{tumor}.bam",
+        tumor_bai = "recalib/{sample}_{tumor}.bai",
+        normal_bam = "recalib/{sample}_{normal}.bam",
+        normal_bai = "recalib/{sample}_{normal}.bai",
     output:
-        bam = "filter_bam/{sample}_{tumor}-{norm}.{filter}.bam",
-        bai = "filter_bam/{sample}_{tumor}-{norm}.{filter}.bai"
+        # tumor_bam = "filter_bam/{sample}_{tumor}.{filter}.bam",
+        # tumor_bai = "filter_bam/{sample}_{tumor}.{filter}.bai",
+        # normal_bam = "filter_bam/{sample}_{normal}.{filter}.bam",
+        # normal_bai = "filter_bam/{sample}_{normal}.{filter}.bai",
+        done = "filter_bam/{sample}_{tumor}-{normal}.{filter}.done"
     conda:
         "../env/align-env.yml"
     threads:
         config['filter_bam']['threads']
     params:
-        mut_bed_file = get_mut_bed
+        mut_bed_file = get_mut_bed,
+        tumor_bam = lambda w,input: input.tumor_bam.replace(os.path.split(input.tumor_bam)[0], "filter_bam").replace(".bam", f".{w.filter}.bam"),
+        normal_bam = lambda w,input: input.normal_bam.replace(os.path.split(input.normal_bam)[0], "filter_bam").replace(".bam", f".{w.filter}.bam")
     conda:
         "../env/align-env.yml"
     shell:
-        "samtools view -bhL {params.mut_bed_file} {input.bam} > {output.bam}; "
-        "picard BuildBamIndex INPUT={output.bam}"
+        "samtools view -bhL {params.mut_bed_file} {input.tumor_bam} > {params.tumor_bam}; "
+        "picard BuildBamIndex INPUT={params.tumor_bam}; "
+        "samtools view -bhL {params.mut_bed_file} {input.normal_bam} > {params.normal_bam}; "
+        "picard BuildBamIndex INPUT={params.normal_bam}; "
+        "touch {output.done}"

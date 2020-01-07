@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import re
 
 
 def get_files(folder_list, sample_sheet):
@@ -52,7 +53,7 @@ def get_tumor_normal_pairs(samples):
     '''
 
     samples = samples.reset_index()
-    # extract the tumor-normal suffix
+    # extract the tumor-normal suffix (Name_A --> sample: "Name", TN: "A")
     samples[['sample', 'TN']] = samples['name'].str.extract('(?P<sample>^[^_]+)_(?P<TN>[^_]+)$')
     tumor = config['samples']['tumor'][0]
     normal = config['samples']['normal'][0]
@@ -66,6 +67,30 @@ def get_tumor_normal_pairs(samples):
     return list(TN_df['pairs'])
 
 
+########### NOT USED ##########################################
+def get_tumor_samples(samples):
+    '''
+    get only the tumor samples from paired samples
+    '''
+    TN_list = get_tumor_normal_pairs(samples)
+    # re.compile pattern for normal phrase for removal
+    pattern = re.compile(r"-[^_-]+$")
+    tumor_list = [pattern.replace(pair, "") for pair in TN_list]
+    print('Tumor list: ', tumor_list)
+    return tumor_list
+
+
+def get_normal_samples(samples):
+    '''
+    get only the normal samples from paired samples
+    '''
+    TN_list = get_tumor_normal_pairs(samples)
+    # re.compile pattern for normal phrase for removal
+    pattern = re.compile(r"_[^_-]+-")
+    normal_list = [pattern.replace(pair, "") for pair in TN_list]
+    print('Normal list: ', normal_list)
+    return normal_list
+# 
 def get_fastqs(w):
     sample_name = f"{w.sample}_{w.type}"
     fastq_path = sample_df.loc[sample_name][w.read_or_index]
