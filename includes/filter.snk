@@ -35,13 +35,19 @@ def reduce_regions(df, padding):
 
 
 def mut2bed(mut_file, padding, bed_file):
+    # check for filter_bam folder (using general declaration for easy folder name changing)
+    folder = os.path.split(bed_file)[0]
+    if not os.path.isdir(folder):
+        os.makedirs(folder)
+
     # read the anno_file
-    anno = pd.read_csv(mut_file, sep='\t').sort_values(['Chr', 'Start']).iloc[:,:5]
+    anno_df = pd.read_csv(mut_file, sep='\t').sort_values(['Chr', 'Start']).iloc[:,:5]
     # get the bedfie with padded and collapsed regions
-    bed = anno.groupby('Chr').apply(reduce_regions, padding)
+    bed_df = anno_df.groupby('Chr').apply(reduce_regions, padding)
     # remove Chr index
-    bed = bed.reset_index().drop(columns='level_1')
-    bed.to_csv(bed_file, index=False, sep='\t', header=False)
+    bed_df = bed_df.reset_index().drop(columns='level_1')
+    # write bed_df to file
+    bed_df.to_csv(bed_file, index=False, sep='\t', header=False)
     return bed_file
 
 
@@ -51,18 +57,18 @@ def get_mut_bed(w, input):
     '''
 
     padding = config['filter_bam']['padding']
-    bed_file = mut2bed(input.csv, padding, f"filter_bam/{w.sample}_{w.type}.bed")
-    return mut_bed_file
+    bed_file = mut2bed(input.csv, padding, f"filter_bam/{w.sample}_{w.tumor}-{w.norm}.bed")
+    return bed_file
 
 
 rule filter_bam:
     input:
-        csv = "filter/{sample}_{tumor}-{norm}.{filter}.loose.csv",
-        bam = "recalib/{sample}_{type}.bam",
-        bai = "recalib/{sample}_{type}.bai"
+        csv = "filter/{sample}_{tumor}-{norm}.{filter}.csv",
+        bam = "recalib/{sample}_{tumor}.bam",
+        bai = "recalib/{sample}_{tumor}.bai"
     output:
-        bam = "filter_bam/{sample}_{type}.{filter}.bam",
-        bai = "filter_bam/{sample}_{type}.{filter}.bai"
+        bam = "filter_bam/{sample}_{tumor}-{norm}.{filter}.bam",
+        bai = "filter_bam/{sample}_{tumor}-{norm}.{filter}.bai"
     conda:
         "../env/align-env.yml"
     threads:
@@ -73,4 +79,4 @@ rule filter_bam:
         "../env/align-env.yml"
     shell:
         "samtools view -bhL {params.mut_bed_file} {input.bam} > {output.bam}; "
-        "picard BuildBamIndex INPUT={input.bam}"
+        "picard BuildBamIndex INPUT={output.bam}"

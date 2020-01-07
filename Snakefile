@@ -72,8 +72,8 @@ rule all:
         "QC/libraryQC.html",
         "QC/insertQC.html",
         expand("coverBED/{samples}.txt", samples=sample_df.index),
-        expand("filter/{tumor_normal_pair}.{filter}.csv", tumor_normal_pair=get_tumor_normal_pairs (sample_df), filter=active_filter_list),
-        # expand("filter_bam/filter_bam/{tumor_normal_pair}.{filter}.bam", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list)
+        expand("filter/{tumor_normal_pair}.{filter}.csv", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list),
+        expand("filter_bam/{tumor_normal_pair}.{filter}.bam", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list)
 
 ###########################################################################
 
