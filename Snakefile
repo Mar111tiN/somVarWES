@@ -30,7 +30,6 @@ chrom_list = get_chrom_list(config)
 # ############ INCLUDES ##############################
 include: "includes/fastq.snk"
 include: "includes/QC.snk"
-include: "includes/ubam.snk"
 include: "includes/map.snk"
 include: "includes/splitBAM.snk"
 include: "includes/processBAM.snk"
