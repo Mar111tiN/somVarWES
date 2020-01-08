@@ -15,19 +15,19 @@ threads = snakemake.threads
 log = snakemake.log
 
 
-
 #####################################################################
-####################### FISHER SCORE ################################
+# ###################### FISHER SCORE ################################
 
 def get_fisher_exact(row):
     T1plus = row['TR1+']
     T1min = row['TR1'] - T1plus
     T2plus = row['TR2+']
     T2min = row['TR2'] - T2plus
-    mat = np.matrix([[T1plus, T2plus],[T1min, T2min]])
+    mat = np.matrix([[T1plus, T2plus], [T1min, T2min]])
     fisher_p = fe(mat)[1]
-    FS = round(-10*math.log(fisher_p,10),1)
-    return 0 if FS == 0 else FS
+    if fisher_p:
+        return round(-10*math.log(fisher_p, 10), 1)
+    return 5000
 
 
 def compute_FS(df):
