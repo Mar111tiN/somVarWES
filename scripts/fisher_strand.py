@@ -7,8 +7,6 @@ from multiprocessing import Pool
 
 w = snakemake.wildcards
 config = snakemake.config
-
-
 input = snakemake.input
 output = snakemake.output
 threads = snakemake.threads

@@ -207,16 +207,16 @@ def resort_cols(df):
     if full_pon_output:
         quant_cols.append('A|a|G|g|C|c|T|t|I|i|D|d')
     clin_cols = ['cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'cosmic90_MutID', 'cosmic90_type', 'cosmic90_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq', 'Clin_score']
-    pop_col = cols[29:32]
+    pop_col = cols[30:33]
     # the added extracted and score columns make up 8 columns:
     # 1-3:  'cosmic70_ID', 'cosmic70_freq', 'cosmic70_type' 
     # 4:    'icgc29_freq'
     # 5-7:  'clinvar_score', 'cosmic70_score', 'cosmic90_score'
     # 8:    'Clin_score'
-    pred_col = cols[40:-9]
+    pred_col = cols[41:-9]
     new_cols = start_cols + quant_cols + clin_cols + pop_col + pred_col
     # ## DEBUG
-    # print('New columns: ', new_cols)
+    print('New columns: ', new_cols)
 
     return df[new_cols]
 
@@ -292,7 +292,7 @@ print(f"Writing mutation list with added columns to {o}.")
 
 
 #####################################################################
-############### FUNC FILTER #########################################
+# ############## FUNC FILTER #########################################
 
 
 def filter_unwanted(df, keep_syn=False):

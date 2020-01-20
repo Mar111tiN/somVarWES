@@ -1,6 +1,5 @@
 #################################
 # add information to table/{sample}_{tumor_norm}.csv
-
 def get_anno_params(_):
     '''
     helper function to create full annovar parameters from input_output[1]
@@ -44,7 +43,6 @@ def get_anno_params(_):
             operation_list.append('f')
     operation = ','.join(operation_list)
 
-    
     options = f'{humandb}/ -buildver {build} -remove -thread {config["annovar"]["threads"]} -protocol {protocol} -operation {operation} -nastring "." -otherinfo'
     return options
 
@@ -56,7 +54,7 @@ rule annovar:
         "table/{sample}_{tumor_norm}.anno.csv"
     log:
         "logs/annovar/{sample}_{tumor_norm}.log"
-    threads: 
+    threads:
         config["annovar"]["threads"]
     conda:
         "../env/anno-env.yml"
@@ -74,7 +72,7 @@ rule fisher_strand:
         "table/{sample}_{tumor_norm}.fisher.csv"
     log:
         "logs/fisher/{sample}_{tumor_norm}.log"
-    threads: 
+    threads:
         config["Fisher_strand"]["threads"]
     conda:
         "../env/fisher-env.yml"
