@@ -223,21 +223,18 @@ EBFilter:
     fitting_penalty: 0.5
 filter:
   threads: 2
+  edit:
+    extended_output: False
+    candidate_list: annotation/damm_lists/AML_candidates.txt
+    driver_list: annotation/damm_lists/AML_drivers.txt
   filters:
-    bull:  # changed from -name: bull  # this is also the extension used in the filtered output (_bull.csv)
-      run: False
-      path: bullinger.py # filters are expected in scripts/filters
-      params: 
-        TM2_limit: 4
     damm:
       run: True
       path: damm.py
       params:
-        candidate_list: annotation/damm_lists/AML_candidates.txt
-        driver_list: annotation/damm_lists/AML_drivers.txt
         keep_syn: False
 filter_bam:
     threads: 4
-    file_prefix: "basic"
+    file_prefix: "moderate"
     padding: 100
 

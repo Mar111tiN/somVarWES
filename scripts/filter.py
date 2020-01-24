@@ -26,7 +26,6 @@ filter_script = get_filter(filter_config)
 params_list = [param for plist in [[f"-{param}", f"{val}"] for param, val in filter_config['params'].items()] for param in plist]
 params_list += ['-static_path', config['paths']['mystatic']]
 params_list += ['-threads', str(threads)]
-params_list += ['-pon_coverage', str(config['EBFilter']['full_pon_output'])]
 filter_cmd = [filter_script, *params_list, input_file, output_file]
 
 print(f" ".join(filter_cmd))

@@ -87,5 +87,22 @@ rule combine_annotations:
         eb_score = "table/{sample}_{tumor_norm}.EB.csv"
     output:
         "table/{sample}_{tumor_norm}.raw.csv"
+    threads:
+        2
     script:
         "../scripts/format_table.py"
+
+
+rule edit_mutation_list:
+    input:
+        "table/{sample}_{tumor_norm}.raw.csv"
+    output:
+        "filter/{sample}_{tumor_norm}.csv"
+    threads:
+        2
+    params:
+        extended_output = config['filter']['edit']['extended_output'],
+        candidate_list = config['filter']['edit']['candidate_list'],
+        driver_list = config['filter']['edit']['driver_list']
+    script:
+        "../scripts/edit_table.py"

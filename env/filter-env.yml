@@ -6,8 +6,10 @@ channels:
 dependencies:
   - _libgcc_mutex=0.1
   - bzip2=1.0.8
-  - ca-certificates=2019.9.11
-  - certifi=2019.9.11
+  - ca-certificates=2019.11.28
+  - certifi=2019.11.28
+  - et_xmlfile=1.0.1
+  - jdcal=1.4.1
   - libblas=3.8.0
   - libcblas=3.8.0
   - libffi=3.2.1
@@ -18,7 +20,8 @@ dependencies:
   - libstdcxx-ng=9.1.0
   - ncurses=6.1
   - numpy=1.17.2
-  - openssl=1.1.1c
+  - openpyxl=3.0.3
+  - openssl=1.1.1d
   - pandas=0.25.1
   - pip=19.2.3
   - python=3.7.3
@@ -33,3 +36,4 @@ dependencies:
   - wheel=0.33.6
   - xz=5.2.4
   - zlib=1.2.11
+

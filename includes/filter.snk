@@ -1,6 +1,6 @@
 # ################# FILTER ###################################################
 rule filter_variants:
-    input: "table/{sample}_{tumor}-{norm}.raw.csv"
+    input: "filter/{sample}_{tumor}-{norm}.csv"
     output: "filter/{sample}_{tumor}-{norm}.{filter}.csv"
     wildcard_constraints:
         sample = "[^_]+"
@@ -47,6 +47,10 @@ def mut2bed(mut_file, padding, bed_file):
 
     # read the anno_file
     anno_df = pd.read_csv(mut_file, sep='\t').sort_values(['Chr', 'Start']).iloc[:,:5]
+    if not len(anno_df.index):
+        anno_df.to_csv(bed_file, index=False, sep='\t', header=False)
+        return bed_file
+
     # get the bedfie with padded and collapsed regions
     bed_df = anno_df.groupby('Chr').apply(reduce_regions, padding)
     # remove Chr index
