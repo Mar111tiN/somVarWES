@@ -119,10 +119,10 @@ clinscore_cols = [col for col in ClinScore.keys() if ClinScore[col]]
 
 def get_PoN_info(df):
     print('Calculating PoN metrix')
-    df['PoN-Alt-Sum'] = df['PoN-Alt'].str.replace('-', '|').str.split('|').apply(lambda array: sum([int(count) for count in array]))
-    df['PoN-Ref-Sum'] = df['PoN-Ref'].str.replace('-', '|').str.split('|').apply(lambda array: sum([int(count) for count in array]))
-    df['PoN-Alt-Zeros'] = df['PoN-Alt'].str.count('0')
-    df['PoN-Ratio'] = df['PoN-Alt-Sum'] / df['PoN-Ref-Sum']
+    df.loc[:,'PoN-Alt-Sum'] = df['PoN-Alt'].str.replace('-', '|').str.split('|').apply(lambda array: sum([int(count) for count in array]))
+    df.loc[:,'PoN-Ref-Sum'] = df['PoN-Ref'].str.replace('-', '|').str.split('|').apply(lambda array: sum([int(count) for count in array]))
+    df.loc[:,'PoN-Alt-NonZeros'] = df['PoN-Alt'].str.count(r'[0-9]+') - df['PoN-Alt'].str.count('0')
+    df.loc[:,'PoN-Ratio'] = df['PoN-Alt-Sum'] / df['PoN-Ref-Sum']
     return df
 
 
@@ -132,7 +132,7 @@ def resort_cols(df):
     '''
     cols = list(df.columns)
     start_cols = cols[:11]
-    quant_cols = cols[11:26] + ['FisherScore', 'EBscore', 'PoN-Ref', 'PoN-Alt', 'PoN-Ref-Sum', 'PoN-Alt-Sum', 'PoN-Ratio', 'PoN-Alt-Zeros', ]
+    quant_cols = cols[11:26] + ['FisherScore', 'EBscore', 'PoN-Ref', 'PoN-Alt', 'PoN-Ref-Sum', 'PoN-Alt-Sum', 'PoN-Alt-NonZeros', 'PoN-Ratio']
     if 'A|a|G|g|C|c|T|t|I|i|D|d' in cols:
         quant_cols.append('A|a|G|g|C|c|T|t|I|i|D|d')
     clin_cols = ['cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'cosmic90_MutID', 'cosmic90_type', 'cosmic90_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq', 'Clin_score']

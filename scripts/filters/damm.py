@@ -8,7 +8,7 @@ import openpyxl
 # set_up the parser for input
 parser = argparse.ArgumentParser('filters annovar output with custom criteria')
 parser.add_argument('-static_path', type=str, default='', help='path to the static folder containing the gene lists')
-parser.add_argument('-keep_syn', type=bool, default=False, help='True if you want to keep synonymous mutations')
+parser.add_argument('-keep_syn', type=str, default=False, help='True if you want to keep synonymous mutations')
 parser.add_argument('-threads', type=int, default=1, help='threads for assuring memory')
 parser.add_argument('input', type=str, help='input from annovar')
 parser.add_argument('output', type=str, help='output file to filtered/..')
@@ -16,16 +16,15 @@ parser.add_argument('output', type=str, help='output file to filtered/..')
 
 # read arguments
 args = parser.parse_args()
-keep_syn = args.keep_syn
+keep_syn = args.keep_syn.lower() in ['true', 'yes', 't']
 i, o = args.input, args.output
 threads = args.threads
-keep_syn = args.keep_syn
 output_base = os.path.splitext(o)[0]
 
 print(f'Started editing and basic filtering for {i}.')
 anno_df = pd.read_csv(i, sep='\t')
 
-
+print(f"keep_syn= {keep_syn}")
 # ############## BASIC FILTER ####################################
 def filter_basic(df, keep_syn=False):
     '''
@@ -53,7 +52,7 @@ filter1_setting = {
     'Tdepth': 20,
     'EBscore': 1,
     'PoN-Ratio': 0.001,
-    'PoN-Alt-Zeros': 46,
+    'PoN-Alt-NonZeros': 46,
     'FisherScore': 50,
     'TVAF': 0.01,
     'NVAF': 0.3,
@@ -68,12 +67,12 @@ def filter1(df):
 
     # EBFilter
     # eb = df['EBscore'] >= thresh['EBscore']
-    eb = (df['PoN-Ratio'] < thresh['PoN-Ratio']) | (df['PoN-Alt-Zeros'] > thresh['PoN-Alt-Zeros'])
+    eb = (df['PoN-Ratio'] < thresh['PoN-Ratio']) | (df['PoN-Alt-NonZeros'] > thresh['PoN-Alt-NonZeros'])
 
-    # Strand Ratio (as FisherScore and simple)
-    strand = (df['TR2+'] < df['TR2']) & (df['TR2+'] > 0)
+    # Strand Bias (as FS)
+    no_strand_bias = df['FisherScore'] < thresh['FisherScore']
     VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
-    return df[tumor_depth & eb & strand & VAF]
+    return df[tumor_depth & eb & no_strand_bias & VAF]
 
 
 # from Kenichi Data
@@ -94,8 +93,9 @@ filter2_setting = {
         'Tdepth': 60,
         'EBscore': 5,
         'PoN-Ratio': 0,
-        'PoN-Alt-Zeros': 49,
+        'PoN-Alt-NonZeros': 1,
         'FisherScore': 20,
+        'strand_polarity':1, # filters out TR2 == X and (TR2+ <= 1 | TR2+ >= X-1)
         'TVAF': 0.03,
         'NVAF': 0.25,
         'P-value': 2,
@@ -106,8 +106,9 @@ filter2_setting = {
         'Tdepth': 50,
         'EBscore': 4,
         'PoN-Ratio': 0.0001,
-        'PoN-Alt-Zeros': 48,
+        'PoN-Alt-NonZeros': 2,
         'FisherScore': 30,
+        'strand_polarity':0,
         'TVAF': 0.02,
         'NVAF': 0.35,
         'P-value': 0.8,
@@ -118,8 +119,9 @@ filter2_setting = {
         'Tdepth': 40,
         'EBscore': 2,
         'PoN-Ratio': 0.0005,
-        'PoN-Alt-Zeros': 47,
+        'PoN-Alt-NonZeros': 3,
         'FisherScore': 40,
+        'strand_polarity': None,
         'TVAF': 0.01,
         'NVAF': 0.4,
         'Clin_score': 50
@@ -139,17 +141,35 @@ def filter2(df, stringency='moderate'):
     # get thresholds
     thresh = filter2_setting[stringency]
     tumor_depth = (df['TR2'] > thresh['variantT']) & (df['Tdepth'] > thresh['Tdepth'])
-    # eb = df['EBscore'] >= thresh['EBscore']
-    eb = (df['PoN-Ratio'] < thresh['PoN-Ratio']) | (df['PoN-Alt-Zeros'] > thresh['PoN-Alt-Zeros'])
+    if thresh['EBscore']:
+        eb = df['EBscore'] >= thresh['EBscore']
+    else:
+        eb = True
+
+    pon = (df['PoN-Ratio'] < thresh['PoN-Ratio']) | (df['PoN-Alt-NonZeros'] > thresh['PoN-Alt-NonZeros'])
+
     # minimum TVAF if not candidate
     is_candidate = (df['isCandidate'] == 1) | (df['isDriver'] == 1)
     no_noise = is_candidate | (df['TVAF'] > 0.05)
 
     # Strand Ratio (as FisherScore and simple)
-    strand = df['FisherScore'] <= thresh['FisherScore']
+    no_strand_bias = df['FisherScore'] <= thresh['FisherScore']
+
+    # Strand Polarity (filters out very uneven strand distribution of alt calls)
+    if thresh['strand_polarity']:
+        pol = thresh['strand_polarity']
+        no_strand_polarity = (df['TR2+'] <= df['TR2'] - pol) & (df['TR2+'] >= pol)
+    else:
+        no_strand_polarity = True
+
+    # VAF is simple
     VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
+
+    # Clin_score is used for rescue of all mutations
     clin_score = df['Clin_score'] >= thresh['Clin_score']
-    df = df[(tumor_depth & eb & strand & VAF & no_noise) | clin_score].sort_values(['TVAF'], ascending=False)
+
+    # apply filters to dataframe
+    df = df[(tumor_depth & pon & no_strand_polarity & VAF & no_noise) | clin_score].sort_values(['TVAF'], ascending=False)
     list_len = len(df.index)
     return df, list_len
 
