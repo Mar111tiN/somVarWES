@@ -52,7 +52,7 @@ filter1_setting = {
     'Tdepth': 20,
     'EBscore': 1,
     'PoN-Ratio': 0.001,
-    'PoN-Alt-NonZeros': 46,
+    'PoN-Alt-NonZeros': 4,
     'FisherScore': 50,
     'TVAF': 0.01,
     'NVAF': 0.3,
@@ -66,13 +66,18 @@ def filter1(df):
     tumor_depth = (df['TR2'] > thresh['variantT']) & (df['Tdepth'] > thresh['Tdepth'])
 
     # EBFilter
-    # eb = df['EBscore'] >= thresh['EBscore']
-    eb = (df['PoN-Ratio'] < thresh['PoN-Ratio']) | (df['PoN-Alt-NonZeros'] > thresh['PoN-Alt-NonZeros'])
+    if thresh['EBscore']:
+        eb = df['EBscore'] >= thresh['EBscore']
+    else:
+        eb = True
+
+    # other PanelOfNormal metrices
+    pon = (df['PoN-Ratio'] < thresh['PoN-Ratio']) | (df['PoN-Alt-NonZeros'] <= thresh['PoN-Alt-NonZeros'])
 
     # Strand Bias (as FS)
     no_strand_bias = df['FisherScore'] < thresh['FisherScore']
     VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
-    return df[tumor_depth & eb & no_strand_bias & VAF]
+    return df[tumor_depth & (eb | pon) & no_strand_bias & VAF]
 
 
 # from Kenichi Data
@@ -84,7 +89,8 @@ def filter1(df):
 filter1_file = f"{output_base}.filter1.csv"
 filter1_df = filter1(basic_df)
 filter1_df.to_csv(filter1_file, sep='\t', index=False)
-print(f"Writing filter1 list to {filter1_file}.")
+len_filter1 = len(filter1_df.index)
+print(f"Writing filter1 list ({len_filter1} mutations) to {filter1_file}.")
 
 
 filter2_setting = {
@@ -146,7 +152,7 @@ def filter2(df, stringency='moderate'):
     else:
         eb = True
 
-    pon = (df['PoN-Ratio'] < thresh['PoN-Ratio']) | (df['PoN-Alt-NonZeros'] > thresh['PoN-Alt-NonZeros'])
+    pon = (df['PoN-Ratio'] < thresh['PoN-Ratio']) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
 
     # minimum TVAF if not candidate
     is_candidate = (df['isCandidate'] == 1) | (df['isDriver'] == 1)
@@ -169,11 +175,11 @@ def filter2(df, stringency='moderate'):
     clin_score = df['Clin_score'] >= thresh['Clin_score']
 
     # apply filters to dataframe
-    df = df[(tumor_depth & pon & no_strand_polarity & VAF & no_noise) | clin_score].sort_values(['TVAF'], ascending=False)
+    df = df[(tumor_depth & (pon | eb) & no_strand_polarity & VAF & no_noise) | clin_score].sort_values(['TVAF'], ascending=False)
     list_len = len(df.index)
     return df, list_len
 
-
+print(f"Applying filter2 in 3 stringencies [loose, moderate, strict]")
 df_filter2_loose, len_loose = filter2(filter1_df, stringency='loose')
 df_filter2_mod, len_mod = filter2(filter1_df, stringency='moderate')
 df_filter2_strict, len_strict = filter2(filter1_df, stringency='strict')
@@ -185,8 +191,16 @@ print('strict:', len_strict)
 df_filter2_loose.to_csv(f"{output_base}.loose.csv", sep='\t', index=False)
 df_filter2_mod.to_csv(f"{output_base}.moderate.csv", sep='\t', index=False)
 df_filter2_strict.to_csv(f"{output_base}.strict.csv", sep='\t', index=False)
+print(f"Writing filter2 lists to {output_base}.<stringency>.csv")
 
-with pd.ExcelWriter(f"{output_base}.filter2.xlsx") as writer:
+
+excel_file = f"{output_base}.filter.xlsx"
+with pd.ExcelWriter(excel_file) as writer:
+    filter1_df.to_excel(writer, sheet_name=f'filter1 <{len_filter1}>', index=False)
     df_filter2_loose.to_excel(writer, sheet_name=f'loose <{len_loose}>', index=False)
     df_filter2_mod.to_excel(writer, sheet_name=f'moderate <{len_mod}>', index=False)
     df_filter2_strict.to_excel(writer, sheet_name=f'strict <{len_strict}>', index=False)
+
+
+print(f"Writing combined filters to excel file {excel_file}.")
+

@@ -13,7 +13,10 @@ samples: # here go all your samples
     - R1
     - R2
   umi_barcode: index # suffix for the fastq containing the umi-barcode
-setup: 
+setup:
+  cleanup:
+    run: True
+    keep_only_final_bam: True
   run: PE   # SE run is not implemented
   phred: 33
   library: SureSelect  # have to be found at bed_files/SureSelect/<build>/SS_<library_version>_<build>_<Padded | Covered>[_nochr].bed
@@ -126,7 +129,7 @@ recalib:
   threads: 12
   known_sites: dbsnp_common   # which dbsnp database to use beside gold_standard_indels and phase1k
 UMI_filter:
-  run: True # if False and setup-->UMI is True, run umi-dedup
+  run: False # if False and setup-->UMI is True, run umi-dedup
   min_reads:  1 # for WES-data, 1 is good; for targeted >3  counts for all fgbio tools
   group:
     threads: 10

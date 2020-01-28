@@ -72,7 +72,7 @@ rule all:
         "QC/insertQC.html",
         expand("coverBED/{samples}.txt", samples=sample_df.index),
         expand("filter/{tumor_normal_pair}.{filter}.csv", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list),
-        # expand("filter_bam/{tumor_normal_pair}.{filter}.done", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list)
+        expand("filter_bam/{tumor_normal_pair}.{filter}.done", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list)
 
 ###########################################################################
 
@@ -97,3 +97,28 @@ onstart:
 onsuccess:
     # shell("export PATH=$ORG_PATH; unset ORG_PATH")
     print("Workflow finished - everything ran smoothly")
+
+    # cleanup
+    if config['setup']['cleanup']['run']:
+        no_bams = config['setup']['cleanup']['keep_only_final_bam']
+
+        
+        split_fastq_pattern = '\.[0-9]+\.fastq.gz'
+        split_bam_pattern = 'chr[^.]+\..*'
+        
+        # remove split fastqs
+        shell("ls fastq | grep -E '{split_fastq_pattern}' | sed 's_^_fastq/_' | xargs rm -f")
+        shell("rm -rf ubam realigned bam_metrics insert_metrics pileup varscan fastqc mapped")
+
+        # remove split recalib bams
+        shell("ls recalib | grep -E '{split_bam_pattern}' | sed 's-^-recalib/-' | xargs rm -f")
+
+
+        # 
+        if no_bams:
+            shell("rm -r bam_merge ")
+        else:
+            # only remove split_bams in bam_merge
+            shell("ls bam_merge | grep -E '{split_bam_pattern}' | sed 's-^-bam_merge/-' | xargs rm -f")
+
+
