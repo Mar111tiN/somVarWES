@@ -98,4 +98,25 @@ rule filter_bam:
         "picard BuildBamIndex INPUT={params.tumor_bam}; "
         "samtools view -bhL {params.mut_bed_file} {input.normal_bam} > {params.normal_bam}; "
         "picard BuildBamIndex INPUT={params.normal_bam}; "
+        "rm -f filter_bam/{params.mut_bed_file}; "
         "touch {output.done}"
+
+rule filter_pileup:
+    input:
+        "filter_bam/{sample}_{tumor}-{normal}.{filter}.done"
+        # tumor_bam = "filter_bam/{sample}_{tumor}.{filter}.bam",
+        # tumor_bai = "filter_bam/{sample}_{tumor}.{filter}.bai",
+        # normal_bam = "filter_bam/{sample}_{normal}.{filter}.bam",
+        # normal_bai = "filter_bam/{sample}_{normal}.{filter}.bai"
+    output:
+        "filter_bam/{sample}_{tumor}-{normal}.{filter}.pileup"
+    threads:
+        2
+    conda:
+        "../env/align-env.yml"
+    params:
+        input = lambda w: f"filter_bam/{w.sample}_{w.tumor}.{w.filter}.bam filter_bam/{w.sample}_{w.normal}.{w.filter}.bam",
+        refgen = full_path('genome'),
+        qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}" 
+    shell:
+        "samtools mpileup -f {params.refgen} {params.qual} {params.input}> {output}"    

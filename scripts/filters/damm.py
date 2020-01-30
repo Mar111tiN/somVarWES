@@ -76,7 +76,8 @@ def filter1(df):
 
     # Strand Bias (as FS)
     no_strand_bias = df['FisherScore'] < thresh['FisherScore']
-    VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
+    VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF']) & (df['TVAF'] > thresh['NVAF'])
+    
     return df[tumor_depth & (eb | pon) & no_strand_bias & VAF]
 
 
