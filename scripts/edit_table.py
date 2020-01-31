@@ -135,7 +135,7 @@ def resort_cols(df):
     quant_cols = cols[11:26] + ['FisherScore', 'EBscore', 'PoN-Ref', 'PoN-Alt', 'PoN-Ref-Sum', 'PoN-Alt-Sum', 'PoN-Alt-NonZeros', 'PoN-Ratio']
     if 'A|a|G|g|C|c|T|t|I|i|D|d' in cols:
         quant_cols.append('A|a|G|g|C|c|T|t|I|i|D|d')
-    clin_cols = ['cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'cosmic90_MutID', 'cosmic90_type', 'cosmic90_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq', 'Clin_score']
+    clin_cols = ['Clin_score', 'cosmic90_MutID', 'cosmic90_type', 'cosmic90_score', 'cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq']
     pop_col = cols[30:33]
     # the added extracted and score columns make up 8 columns:
 
@@ -159,7 +159,7 @@ def get_clinical_scores(df):
     # ############## ICGC29 ###########
     def addICGC(df):
         ICGC = df['icgc29_Affected'].str.extract(r'^([0-9]+)/([0-9]+)$').fillna(0).astype('int')
-        df['icgc29_freq'] = (ICGC[0] / ICGC[1]).fillna(".")
+        df['icgc29_freq'] = (ICGC[0] / ICGC[1]).round(4).fillna(".")
         return df.drop(columns='icgc29_Affected')
 
     # ############## COSMIC70 #########
@@ -226,7 +226,6 @@ def get_clinical_scores(df):
     for col in clinscore_cols:
         print("            ", col)
         df.loc[df[col] != ".", 'Clin_score'] += ClinScore[col] * df[df[col] != "."][col]
-
     return df
 
 

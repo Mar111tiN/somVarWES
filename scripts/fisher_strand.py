@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from scipy.stats import fisher_exact as fe 
+from scipy.stats import fisher_exact as fe
 import math
 import numpy as np
 from multiprocessing import Pool

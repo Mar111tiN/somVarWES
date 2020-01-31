@@ -102,23 +102,18 @@ onsuccess:
     if config['setup']['cleanup']['run']:
         no_bams = config['setup']['cleanup']['keep_only_final_bam']
 
-        
         split_fastq_pattern = '\.[0-9]+\.fastq.gz'
         split_bam_pattern = 'chr[^.]+\..*'
-        
+
         # remove split fastqs
-        shell("ls fastq | grep -E '{split_fastq_pattern}' | sed 's_^_fastq/_' | xargs rm -f")
+        shell("ls fastq | grep -E '{split_fastq_pattern}' | sed 's_^_fastq/_' | xargs -r rm -f")
         shell("rm -rf ubam realigned bam_metrics insert_metrics pileup varscan fastqc mapped")
 
         # remove split recalib bams
-        shell("ls recalib | grep -E '{split_bam_pattern}' | sed 's-^-recalib/-' | xargs rm -f")
+        shell("ls recalib | grep -E '{split_bam_pattern}' | sed 's-^-recalib/-' | xargs -r rm -f")
 
-
-        # 
         if no_bams:
             shell("rm -r bam_merge ")
         else:
             # only remove split_bams in bam_merge
-            shell("ls bam_merge | grep -E '{split_bam_pattern}' | sed 's-^-bam_merge/-' | xargs rm -f")
-
-
+            shell("ls bam_merge | grep -E '{split_bam_pattern}' | sed 's-^-bam_merge/-' | xargs -r rm -f")

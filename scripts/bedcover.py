@@ -2,10 +2,9 @@ import pandas as pd
 import os
 from subprocess import check_call as shell
 import matplotlib as mpl
-mpl.use('Agg')
-
 import matplotlib.pyplot as plt
 import seaborn
+mpl.use('Agg')
 seaborn.set()
 
 

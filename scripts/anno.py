@@ -1,5 +1,4 @@
 from os import system as shell
-import pandas as pd
 
 annovar = snakemake.config['tools']['annovar']
 
@@ -28,4 +27,4 @@ shell(format_cmd)
 shell(f"rm {headerless_input}")
 # shell(f"rm -f {output_base}.*_multianno.txt")
 
-print(f"Annotated with annovar and written to {output}")   
+print(f"Annotated with annovar and written to {output}")

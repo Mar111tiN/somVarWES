@@ -68,7 +68,7 @@ rule anno2EB_EBcache:
     resources:
         # ebfromcache.py fails for some files with higher thread numbers during the process pooling
         # no idea why that is but gradually reducing the threads incrementally allows more files to run to completion
-        # solution: 
+        # solution:
         # run snakemake with the --restart-times option and compute adjusted thread with the resources option, ..
         # that decreases depending on the attempts used
         threads_adjusted = lambda wildcards, threads, attempt: max(1, threads - (attempt - 1) * 6),

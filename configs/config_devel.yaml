@@ -38,6 +38,7 @@ ref:
   hg19:
     genome_path: genome/gatk/b37
     genome: genome/gatk/b37/human_g1k_v37.fasta
+    genome_split: genome/gatk/b37/split
     candidates: /fast/users/szyskam_c/work/utils/bulltools/known_sites/candidate_genes_aml.txt
     dbsnp: annotation/gatk/b37/dbsnp_138.b37.vcf
     dbsnp_all: annotation/gatk/b37/All_20180423.vcf
@@ -49,6 +50,7 @@ ref:
   hg38:
     genome_path: genome/gatk/hg38/
     genome: genome/gatk/hg38/hg38.fasta
+    genome_split: genome/gatk/hg38/split
     dbsnp: annotation/gatk/hg38/dbsnp_138.hg38.vcf
     dbsnp_all: annotation/gatk/hg38/All_20180418.vcf
     dbsnp_common: annotation/gatk/hg38/common_all_20180418.vcf
@@ -240,4 +242,8 @@ filter_bam:
     threads: 4
     file_prefix: "moderate"
     padding: 100
+primer3:  # is applied after filter step 1
+  min_size: 140
+  max_size: 200
+  center_offSet: 5 # how much offSet primer pairs can 
 
