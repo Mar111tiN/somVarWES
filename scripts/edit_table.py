@@ -119,10 +119,10 @@ clinscore_cols = [col for col in ClinScore.keys() if ClinScore[col]]
 
 def get_PoN_info(df):
     print('Calculating PoN metrix')
-    df.loc[:,'PoN-Alt-Sum'] = df['PoN-Alt'].str.replace('-', '|').str.split('|').apply(lambda array: sum([int(count) for count in array]))
-    df.loc[:,'PoN-Ref-Sum'] = df['PoN-Ref'].str.replace('-', '|').str.split('|').apply(lambda array: sum([int(count) for count in array]))
-    df.loc[:,'PoN-Alt-NonZeros'] = df['PoN-Alt'].str.count(r'[0-9]+') - df['PoN-Alt'].str.count('0')
-    df.loc[:,'PoN-Ratio'] = df['PoN-Alt-Sum'] / df['PoN-Ref-Sum']
+    df.loc[:, 'PoN-Alt-Sum'] = df['PoN-Alt'].str.replace('-', '|').str.split('|').apply(lambda array: sum([int(count) for count in array]))
+    df.loc[:, 'PoN-Ref-Sum'] = df['PoN-Ref'].str.replace('-', '|').str.split('|').apply(lambda array: sum([int(count) for count in array]))
+    df.loc[:, 'PoN-Alt-NonZeros'] = df['PoN-Alt'].str.count(r'[0-9]+') - df['PoN-Alt'].str.count('0')
+    df.loc[:, 'PoN-Ratio'] = df['PoN-Alt-Sum'] / df['PoN-Ref-Sum']
     return df
 
 
