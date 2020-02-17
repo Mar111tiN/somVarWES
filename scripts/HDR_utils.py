@@ -172,7 +172,7 @@ def concat(row):
     return f"∆{row['distance']}:{simil}%({support})"
 
 
-def condense_HDR_info(HDR_df):
+def condense_HDR_info(HDR_df, min_sim=0.85):
     '''
     reduces the entire HDR_df to entries:
     HDRcount: the number of relevant (similar) lanes around mutation
@@ -181,7 +181,7 @@ def condense_HDR_info(HDR_df):
     '''
     # print(HDR_df)
     # select the relevant HDR-lanes / exclude the mutation itself
-    HDR_select = HDR_df.query('(distance != 0) and (similarity > .85) and (support > 9)')
+    HDR_select = HDR_df.query('(distance != 0) and (similarity > @min_sim) and (support > 9)')
     if HDR_select.empty:
         return pd.Series([0, 0, 'no similarity in HDR-pattern'], index=[
             'HDRcount',
@@ -196,7 +196,7 @@ def condense_HDR_info(HDR_df):
     return pd.Series([count, mean_sim, info], index=['HDRcount', 'HDRmeanSimilarity', 'HDRinfo'])
 
 
-def get_HDR_info(mut_row, hotspot_df, bam_df, padding=100):
+def get_HDR_info(mut_row, hotspot_df, bam_df, padding=100, min_sim=0.85):
     '''
     compute the HDR_info for each mut_row 
     --> to be used in filter_HDR.apply
@@ -210,7 +210,7 @@ def get_HDR_info(mut_row, hotspot_df, bam_df, padding=100):
     # compute the similarity for each HDR_lane
     HDR_df[['similarity', 'support']] = HDR_df.apply(compute_similarity, axis=1, args=(mut_bam,))
     # HDR_series with fields ['HDRcount', 'HDRmeanSimilarity', 'HDRinfo']
-    HDR_series = condense_HDR_info(HDR_df)
+    HDR_series = condense_HDR_info(HDR_df, min_sim=min_sim)
     return HDR_series
 
 
@@ -242,7 +242,8 @@ def masterHDR(pileup_file='', bam_file='', filter_df=None, min_sim=.90, padding=
         get_HDR_info,
         axis=1,
         args=(hotspot_df, bam_df),
-        padding=padding
+        padding=padding,
+        min_sim=min_sim
         )
     filter_df['HDRcount'] = filter_df['HDRcount'].fillna(0).astype(int)
     filter_df['HDRmeanSimilarity'] = filter_df['HDRmeanSimilarity'].fillna(0)
