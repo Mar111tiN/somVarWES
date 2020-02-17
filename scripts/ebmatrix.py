@@ -1,5 +1,5 @@
 from os import system as shell
-from ebutils import show_output, show_command
+from script_utils import show_output, show_command
 
 ##############################################################################
 # ######################### SNAKE PARAMETERS ##################################

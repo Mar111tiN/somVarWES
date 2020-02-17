@@ -1,6 +1,6 @@
 from os.path import getsize as filesize
-from ebutils import show_output, matrix2AB_multi
-
+from ebutils import matrix2AB_multi
+from script_utils import show_output
 
 w = snakemake.wildcards
 config = snakemake.config

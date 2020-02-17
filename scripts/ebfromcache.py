@@ -1,7 +1,9 @@
 import os
 from os import system as shell
 import pandas as pd
-from ebutils import show_output, show_command, get_pon_bases, get_sample_pos, compute_matrix2EB_multi, compute_AB2EB_multi
+from ebutils import get_pon_bases, get_sample_pos, compute_matrix2EB_multi, compute_AB2EB_multi
+from script_utils import show_output, show_command
+
 
 # treads_adjusted is used for failing Pools with higher threads for certain (larger?) files
 threads_adjusted = snakemake.resources.threads_adjusted

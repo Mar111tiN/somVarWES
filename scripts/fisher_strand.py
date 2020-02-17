@@ -4,6 +4,8 @@ from scipy.stats import fisher_exact as fe
 import math
 import numpy as np
 from multiprocessing import Pool
+from script_utils import show_output, show_command
+
 
 w = snakemake.wildcards
 config = snakemake.config
@@ -30,7 +32,7 @@ def get_fisher_exact(row):
 
 def compute_FS(df):
     process = os.getpid()
-    print(f"<{process}> Computing FisherScore for {len(df.index)} lines")
+    show_command(f"<{process}> Computing FisherScore for {len(df.index)} lines")
     df['FisherScore'] = df.apply(get_fisher_exact, axis=1)
     return df
 
@@ -51,4 +53,4 @@ df_fisher = get_FS_col(df_table, threads)
 cols = list(df_fisher.columns)[:5] + ['FisherScore']
 # write file to filtered
 df_fisher[cols].to_csv(output[0], sep='\t', index=False)
-print(f'FisherScore for file {input[0]} written to {output[0]}')
+show_output(f'FisherScore for file {input[0]} written to {output[0]}', color='success')

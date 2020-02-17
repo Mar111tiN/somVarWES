@@ -241,9 +241,12 @@ filter:
 filter_bam:
     threads: 4
     file_prefix: "moderate"
-    padding: 100
+    padding: 200
 primer3:  # is applied after filter step 1
   min_size: 140
   max_size: 200
   center_offSet: 5 # how much offSet primer pairs can 
 
+HDR:
+  min_similarity: .85 # which similarities to consider as HDR
+  padding: 150  # range around mutation to be scanned
