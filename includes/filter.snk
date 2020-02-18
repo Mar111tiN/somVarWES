@@ -38,7 +38,7 @@ rule filter_bam:
         "picard BuildBamIndex INPUT={params.tumor_bam}; "
         "samtools view -bhL {params.mut_bed_file} {input.normal_bam} > {params.normal_bam}; "
         "picard BuildBamIndex INPUT={params.normal_bam}; "
-        "rm -f filter_bam/{params.mut_bed_file}; "
+        "rm -f {params.mut_bed_file}; "
         "touch {output.done}"
 
 rule IGVnav:
