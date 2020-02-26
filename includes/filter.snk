@@ -1,15 +1,43 @@
 # ################# FILTER ###################################################
-rule filter_variants:
+rule filter1:
     input: "filter/{sample}_{tumor}-{norm}.csv"
-    output: "filter/{sample}_{tumor}-{norm}.{filter}.csv"
+    output: "filter/{sample}_{tumor}-{norm}.filter1.csv"
     wildcard_constraints:
         sample = "[^_]+"
-    conda:
-        "../env/filter-env.yml"
     threads:
         config['filter']['threads']
     script:
-        "../scripts/filter.py"
+        "../scripts/filters/damm1.py" 
+
+
+rule primer3:
+    input: "filter/{sample}_{tumor}-{norm}.filter1.csv"
+    output: "filter/{sample}_{tumor}-{norm}.primer.csv"
+    conda:
+        "../env/primer3-env.yml"
+    threads:
+        config['primer3']['threads']
+    params:
+        genome_split = full_path('genome_split')
+    script:
+        "../scripts/primer3.py"
+
+
+rule detect_HDR:
+    input:
+        filter_file = "filter/{sample}_{tumor}-{normal}.filter1.csv",
+        filter_bam = "filter_bam/{sample}_{tumor}-{normal}.filter1.done",
+        filter_pileup = "filter_pileup/{sample}_{tumor}-{normal}.filter1.pileup"
+    output:
+        "filter/{sample}_{tumor}-{normal}.HDR.csv"
+    conda:
+        "../env/HDR-env.yml"
+    threads:
+        2
+    params:
+        min_sim = config['HDR']['min_similarity']
+    script:
+        "../scripts/HDR.py"
 
 
 rule filter_bam:
@@ -41,15 +69,48 @@ rule filter_bam:
         "rm -f {params.mut_bed_file}; "
         "touch {output.done}"
 
+
+rule filter_pileup:
+    input:
+        "filter_bam/{sample}_{tumor}-{normal}.filter1.done"
+    output:
+        "filter_pileup/{sample}_{tumor}-{normal}.filter1.pileup"
+    threads:
+        2
+    conda:
+        "../env/align-env.yml"
+    params:
+        input = lambda w: f"filter_bam/{w.sample}_{w.tumor}.filter1.bam filter_bam/{w.sample}_{w.normal}.filter1.bam",
+        refgen = full_path('genome'),
+        qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}",
+        cleanpileup = get_script('cleanpileup')
+    shell:
+        "samtools mpileup -f {params.refgen} {params.qual} {params.input} | {params.cleanpileup} > {output}"
+
+
+rule filter2:
+    input: 
+        filter1 = "filter/{sample}_{tumor}-{norm}.filter1.csv",
+        primer = "filter/{sample}_{tumor}-{norm}.primer.csv",
+        HDR = "filter/{sample}_{tumor}-{norm}.HDR.csv"
+    output: "filter/{sample}_{tumor}-{norm}.filter2.loose.csv"
+    threads: 2
+    conda:
+        "../env/filter2-env.yml"
+    script:
+        "../scripts/filters/damm2.py"
+
+
+
 rule IGVnav:
     input:
-        "filter/{sample}_{tumor}-{normal}.{filter}.csv"
+        "filter/{sample}_{tumor}-{normal}.filter2.loose.csv"
     output:
-        "filter_bam/{sample}_{tumor}-{normal}.{filter}.IGVnav.txt"
+        "filter_bam/{sample}_{tumor}-{normal}.filter2.{stringency}.IGVnav.txt"
     threads:
         1
     run:
-        filter_file = str(input).replace('.csv', '.moderate.csv')
+        filter_file = str(input).replace('.loose.csv', f'.{wildcards.stringency}.csv')
         print(filter_file)
         df = pd.read_csv(filter_file, sep='\t', index_col=False).iloc[:, :5]
         print(f'Loaded {filter_file}')
@@ -59,36 +120,4 @@ rule IGVnav:
         df.to_csv(str(output), sep='\t', index=False)
         print(f"Written to {str(output)}")
 
-rule filter_pileup:
-    input:
-        "filter_bam/{sample}_{tumor}-{normal}.{filter}.done"
-    output:
-        "filter_pileup/{sample}_{tumor}-{normal}.{filter}.pileup"
-    threads:
-        2
-    conda:
-        "../env/align-env.yml"
-    params:
-        input = lambda w: f"filter_bam/{w.sample}_{w.tumor}.{w.filter}.bam filter_bam/{w.sample}_{w.normal}.{w.filter}.bam",
-        refgen = full_path('genome'),
-        qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}",
-        cleanpileup = get_script('cleanpileup')
-    shell:
-        "samtools mpileup -f {params.refgen} {params.qual} {params.input} | {params.cleanpileup} > {output}"
 
-
-rule detect_HDR:
-    input:
-        filter_file = "filter/{sample}_{tumor}-{normal}.{filter}.csv",
-        filter_bam = "filter_bam/{sample}_{tumor}-{normal}.{filter}.done",
-        filter_pileup = "filter_pileup/{sample}_{tumor}-{normal}.{filter}.pileup"
-    output:
-        "filter/{sample}_{tumor}-{normal}.{filter}.HDR.csv"
-    conda:
-        "../env/HDR-env.yml"
-    threads:
-        2
-    params:
-        min_sim = config['HDR']['min_similarity']
-    script:
-        "../scripts/HDR.py"

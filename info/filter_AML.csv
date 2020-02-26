@@ -1,0 +1,7 @@
+	variantT	Tdepth	EBscore	PoN-Ratio	PoN-Alt-NonZeros	FisherScore	TVAF	NVAF	ClinScore
+filter1	2.0	20.0	1.0	0.001	4.0	50.0	0.02	0.3	
+filter2-loose	5.0	40.0	2.0	0.0005	3.0	40.0	0.01	0.4	100.0
+filter2-moderate	7.0	50.0	4.0	0.0001	2.0	30.0	0.02	0.35	400.0
+filter2-strict	10.0	60.0	5.0	0.0	1.0	20.0	0.03	0.25	2000.0
+active	1.0	1.0	1.0	1.0	1.0	1.0	1.0	1.0	1.0
+notes									

@@ -162,11 +162,6 @@ def mut2bed(mut_file, padding, bed_file):
     if not os.path.isdir(folder):
         os.makedirs(folder)
 
-    # use the prefix for getting the right mut_file
-    prefix = config['filter_bam']['file_prefix']
-    if prefix:
-        mut_file = mut_file.replace(".csv", f".{prefix}.csv")
-
     # read the anno_file
     anno_df = pd.read_csv(mut_file, sep='\t').sort_values(['Chr', 'Start']).iloc[:,:5]
     if not len(anno_df.index):

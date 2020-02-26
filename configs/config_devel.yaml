@@ -32,6 +32,7 @@ paths:
   mystatic: /fast/groups/ag_damm/work/ref/
   bihstatic: /fast/projects/cubit/current/static_data
   scripts: scripts/ # folder relative to snakedir
+  filter_settings: /fast/users/szyskam_c/snakes/develop/somVarWES/info
 #### REF SECTION ###############
 ref:
   build: hg38
@@ -228,25 +229,26 @@ EBFilter:
     fitting_penalty: 0.5
 filter:
   threads: 2
+  filter_settings: filter_AML.csv
   edit:
     extended_output: False
     candidate_list: annotation/damm_lists/AML_candidates.txt
     driver_list: annotation/damm_lists/AML_drivers.txt
-  filters:
-    damm:
-      run: True
-      path: damm.py
-      params:
-        keep_syn: False
+  filter_name: damm
+  run: True
+  filter1: damm1.py
+  filter2: damm2.py
+  keep_syn: False
 filter_bam:
     threads: 4
-    file_prefix: "moderate"
+    file_prefix: moderate
     padding: 200
 primer3:  # is applied after filter step 1
-  min_size: 140
-  max_size: 200
-  center_offSet: 5 # how much offSet primer pairs can 
-
+  threads: 10
+  min_size: 120
+  max_size: 220
+  center_offSet: 5 # how much offSet primer pairs can
+  use_primer_list: ''
 HDR:
   min_similarity: .85 # which similarities to consider as HDR
   padding: 150  # range around mutation to be scanned

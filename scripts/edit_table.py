@@ -135,19 +135,16 @@ def resort_cols(df):
     quant_cols = cols[11:26] + ['FisherScore', 'EBscore', 'PoN-Ref', 'PoN-Alt', 'PoN-Ref-Sum', 'PoN-Alt-Sum', 'PoN-Alt-NonZeros', 'PoN-Ratio']
     if 'A|a|G|g|C|c|T|t|I|i|D|d' in cols:
         quant_cols.append('A|a|G|g|C|c|T|t|I|i|D|d')
-    clin_cols = ['Clin_score', 'cosmic90_MutID', 'cosmic90_type', 'cosmic90_score', 'cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq']
+    clin_cols = ['ClinScore', 'cosmic90_MutID', 'cosmic90_type', 'cosmic90_score', 'cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq']
     pop_col = cols[30:33]
     # the added extracted and score columns make up 8 columns:
 
     # 4:    'icgc29_freq'
     # 5-7:  'clinvar_score', 'cosmic70_score', 'cosmic90_score'
-    # 8:    'Clin_score'
+    # 8:    'ClinScore'
     # 9-12: PoN-info (4 columns)
     pred_col = cols[41:-13] if extended_output else cols[41:49]
     new_cols = start_cols + quant_cols + clin_cols + pop_col + pred_col
-    # ## DEBUG
-    print('New columns: ', new_cols)
-
     return df[new_cols]
 
 
@@ -220,12 +217,12 @@ def get_clinical_scores(df):
     df['cosmic90_score'] = df['cosmic90_type'].str.extractall(cosmic90_pattern).apply(cosmic90_score, axis=1).reset_index().drop(columns='match').groupby('level_0').sum()
     df['cosmic90_score'] = df['cosmic90_score'].fillna(0)
 
-    # GET COMBINED CLIN_SCORE
-    df['Clin_score'] = 0
+    # GET COMBINED ClinScore
+    df['ClinScore'] = 0
     print('      Combining clinical scores into ClinScore')
     for col in clinscore_cols:
         print("            ", col)
-        df.loc[df[col] != ".", 'Clin_score'] += ClinScore[col] * df[df[col] != "."][col]
+        df.loc[df[col] != ".", 'ClinScore'] += ClinScore[col] * df[df[col] != "."][col]
     return df
 
 

@@ -33,8 +33,6 @@ WES_mut_filt_1 <- WES_sample_filt %>%
   dplyr::filter(!Func.refGene %in% c("downstream","intergenic","intronic", "ncRNA_exonic", "ncRNA_exonic;splicing", "ncRNA_intronic", 
                                      "ncRNA_splicing", "upstream", "upstream;downstream", "UTR3", "UTR5", "UTR5;UTR3")) 
 
-
-
 #BASIC FILTERING CRITERIA#####
 # A. moderate as a basic
 WES_mut_filt_all_criteria <- WES_mut_filt_1 %>% 

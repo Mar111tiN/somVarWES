@@ -27,7 +27,7 @@ sample_df = get_files(config['inputdirs'], config['samples']['samplesheet'])
 chrom_list = get_chrom_list(config)
 
 
-# ############ INCLUDES ##############################
+# ############ INCLUDES ##############################  
 include: "includes/fastq.snk"
 include: "includes/QC.snk"
 include: "includes/map.snk"
@@ -55,13 +55,9 @@ wildcard_constraints:
     read_or_index = "[^_/.]+",
     trim = "[^_/.]+",
     chrom = "[^_/.]*[0-9XY]+",
-    filter = "[A-Za-z]+",
+    filter = "[A-Za-z]+[1-9]\.[a-z]+",
     chrom_split = "[^_/.]+",
     # folder = "^((?!filter).)*$"
-
-
-# extract the filter list for active filters
-active_filter_list = [f for f in config['filter']['filters'].keys() if config['filter']['filters'][f]['run']]
 
 
 # ############## MASTER RULE ##############################################
@@ -72,11 +68,10 @@ rule all:
         "QC/libraryQC.html",
         "QC/insertQC.html",
         expand("coverBED/{samples}.txt", samples=sample_df.index),
-        # expand("filter/{tumor_normal_pair}.{filter}.csv", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list),
-        # expand("filter_bam/{tumor_normal_pair}.{filter}.done", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list),
-        # expand("filter_bam/{tumor_normal_pair}.{filter}.pileup", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list),
-        expand("filter_bam/{tumor_normal_pair}.{filter}.IGVnav.txt", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list),
-        expand("filter/{tumor_normal_pair}.{filter}.HDR.csv", tumor_normal_pair=get_tumor_normal_pairs(sample_df), filter=active_filter_list)
+        expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=get_tumor_normal_pairs(sample_df)),
+        expand("filter_bam/{tumor_normal_pair}.filter2.loose.done", tumor_normal_pair=get_tumor_normal_pairs(sample_df)),
+        expand("filter_bam/{tumor_normal_pair}.filter2.moderate.IGVnav.txt", tumor_normal_pair=get_tumor_normal_pairs(sample_df))
+
 
 ###########################################################################
 
