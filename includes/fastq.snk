@@ -61,9 +61,9 @@ def get_trim_params(w, input, output, threads):
 
 rule trim_fastq_PE:
     input:
-        expand("fastq/{{sample}}_{{type}}_{read}.{{split}}.fastq.gz", read=config['samples']['reads'])
+        expand("fastq/{{sample}}_{{type}}_{read}.{{split}}.fastq.gz", read=['R1', 'R2'])
     output:
-        expand("fastq_trimmed/{{sample}}_{{type}}_{read}.{{split}}.{trim}.fastq.gz", read=config['samples']['reads'], trim=config['trim']['suffix'])
+        expand("fastq_trimmed/{{sample}}_{{type}}_{read}.{{split}}.{trim}.fastq.gz", read=['R1', 'R2'], trim=config['trim']['suffix'])
     conda:
         "../env/trim-env.yml"
     threads:
