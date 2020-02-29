@@ -22,7 +22,9 @@ setup:
   library: SureSelect  # have to be found at bed_files/SureSelect/<build>/SS_<library_version>_<build>_<Padded | Covered>[_nochr].bed
   library_version: HAEv7
   platform: illumina
-  # platform_unit: 
+  Flowcell: HKCN3DRXX
+  Instrument: A00643
+  platform_unit: A00643.HKCN3DRXX
   UMI: True  # if UMI information should be used in pipeline
   # if UMI_filter is true: deduplication is substituted with the UMI-filter pipeline
   # else: umi-aware deduplication is used 

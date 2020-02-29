@@ -5,8 +5,9 @@ def get_RG_info(w):
     sample = f"{w.sample}_{w.type}"
     platform = config['setup']['platform']
     library = f"{config['setup']['library']}_{config['setup']['library_version']}"
+    PU = f"{config['setup']['platform_unit']}.{get_lane(w)}"  # here should come the lane
     # platform_unit = asdf
-    RG_info = f"--read-group-id={sample} --sample={sample} --platform={platform} --library={library}"
+    RG_info = f"--read-group-id={sample} --sample={sample} --platform-unit {PU} --platform={platform} --library={library}"
     return RG_info
 
 

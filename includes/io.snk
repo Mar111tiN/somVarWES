@@ -32,7 +32,7 @@ def get_files(folder_list, sample_sheet):
         index = config['samples']['umi_barcode']
 
         for file in fastq_list:
-            if f"{row['sample']}_" in file and '_S' not in file:  # dirty fix for weird multiplex results
+            if f"{row['sample']}_L00{row['Lane']}" in file:  # dirty fix for weird multiplex results
                 if f'_{index}_' in file:
                     row['index'] = file
                 elif 'barcode' in file:
@@ -96,6 +96,10 @@ def get_fastqs(w):
     fastq_path = sample_df.loc[sample_name][w.read_or_index]
     return fastq_path
 
+def get_lane(w):
+    sample_name = f"{w.sample}_{w.type}"
+    lane = sample_df.loc[sample_name]['Lane']
+    return lane
 
 # ###################### ubamXT #########################################
 
@@ -107,9 +111,9 @@ def get_FastqToSam_input(w):
     # get the R1 and R2 depending on whether trim or not
     if config['trim']['run']:
         trim_suffix = config['trim']['suffix'][0]
-        fastqs = [f"fastq_trimmed/{w.sample}_{w.type}_{read}.{w.split}.{trim_suffix}.fastq.gz" for read in config['samples']['reads']]
+        fastqs = [f"fastq_trimmed/{w.sample}_{w.type}_{read}.{w.split}.{trim_suffix}.fastq.gz" for read in ['R1', 'R2']]
     else:
-        fastqs = [f"fastq/{w.sample}_{w.type}_{read}.{w.split}.fastq.gz" for read in config['samples']['reads']]
+        fastqs = [f"fastq/{w.sample}_{w.type}_{read}.{w.split}.fastq.gz" for read in ['R1', 'R2']]
 
     # add the umi.fastq if umi = True
     if config['setup']['UMI']:
@@ -140,15 +144,13 @@ def get_fastqc_list(_):
 
     fastqc_list = []
     trim_suffix = config['trim']['suffix'][0]
-    read1 = config['samples']['reads'][0]
-    read2 = config['samples']['reads'][1]
     # create file list from the included_files tuple list
     for file_name in sample_df.index:
-        fastqc_list.append(f"fastqc/{file_name}_{read1}_fastqc.zip")
-        fastqc_list.append(f"fastqc/{file_name}_{read2}_fastqc.zip")
+        fastqc_list.append(f"fastqc/{file_name}_R1_fastqc.zip")
+        fastqc_list.append(f"fastqc/{file_name}_R2_fastqc.zip")
         if config['trim']['run']:
-            fastqc_list.append(f"fastqc/{file_name}_{read1}.{trim_suffix}_fastqc.zip")
-            fastqc_list.append(f"fastqc/{file_name}_{read2}.{trim_suffix}_fastqc.zip")
+            fastqc_list.append(f"fastqc/{file_name}_R1.{trim_suffix}_fastqc.zip")
+            fastqc_list.append(f"fastqc/{file_name}_R2.{trim_suffix}_fastqc.zip")
     return fastqc_list
 
 
