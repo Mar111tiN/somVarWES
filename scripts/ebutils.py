@@ -15,9 +15,11 @@ def checkPon4sample(row, bam_base):
     per row of Pon_list checks whether sample name occurs in Pon_list
     if yes, returns the row number (zero-based)
     '''
-    if bam_base in row.iloc[0]:
+
+    # the split is necessary for looking only in file and not in paths
+    if bam_base in row.iloc[0].split('/')[-1]:
         print(row[0], row.name)
-        return row.name
+        return int(row.name) + 1
     return None
 
 
@@ -31,7 +33,7 @@ def get_sample_pos(pon_list, bam_file):
     bam_base = os.path.basename(bam_file).split('.')[0].split("_")[0]
 
     sample_pos = pon_df.apply(checkPon4sample, axis=1, bam_base=bam_base).sum()
-    return int(sample_pos + 1)
+    return int(sample_pos)
 # ######### ADD BASE INFO ##############################################
 
 
@@ -51,8 +53,10 @@ def get_pon_bases(matrix_df, remove_sample=True):
             matrix_df[col] = matrix_df[col].str.replace(r"^[0-9]+\|", "")
 
     # concate the respective columns
-    matrix_df['PoN-Ref'] = matrix_df['depthP'].str.cat(matrix_df['depthN'], sep="-")
-    matrix_df['PoN-Alt'] = matrix_df['misP'].str.cat(matrix_df['misN'], sep="-")
+    matrix_df['PoN-Ref'] = matrix_df['depthP'].str.cat(
+        matrix_df['depthN'], sep="-")
+    matrix_df['PoN-Alt'] = matrix_df['misP'].str.cat(
+        matrix_df['misN'], sep="-")
     return matrix_df
 
 
@@ -118,14 +122,16 @@ def compute_AB2EB_multi(df, threads):
 # ##################### EB-CACHE ###########################
 
 def computeEBcache(mat_df, pen):
-    show_output(f"Computing EBcache for {len(mat_df.index)} lines", time=True, multi=True, color='process')
+    show_output(
+        f"Computing EBcache for {len(mat_df.index)} lines", time=True, multi=True, color='process')
     cache_df = matrix2AB(mat_df, pen)
     show_output(f"Finished!", time=True, multi=True, color='success')
     return cache_df
 
 
 def matrix2AB_multi(matrix_file, output, pen, threads):
-    matrix_df = pd.read_csv(matrix_file, sep='\t', compression='gzip', index_col=False)
+    matrix_df = pd.read_csv(matrix_file, sep='\t',
+                            compression='gzip', index_col=False)
     cache_pool = Pool(threads)
     matrix_split = np.array_split(matrix_df, threads)
     cache_dfs = cache_pool.map(computeEBcache, matrix_split)
