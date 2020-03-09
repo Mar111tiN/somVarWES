@@ -8,10 +8,11 @@ config = snakemake.config
 f_config = config['filter']
 filter_name = f_config['filter_name']
 i = snakemake.input[0]
-o = snakemake.output[0]
+filter1_file = snakemake.output.filter1
+filter_basic_file = snakemake.output.basic
 threads = f_config['threads']
 keep_syn = f_config['keep_syn']
-filter_file = os.path.join(
+filter_setting_file = os.path.join(
     config['paths']['filter_settings'],
     f_config['filter_settings']
 )
@@ -53,15 +54,14 @@ def filter_basic(df, keep_syn=False):
 
 
 basic_df = filter_basic(anno_df, keep_syn=keep_syn)
-basic_file = o.replace('filter1', 'basic')
 
 
-basic_df.to_csv(basic_file, sep='\t', index=False)
-print(f"Writing basic filtered list to {basic_file}.")
+basic_df.to_csv(filter_basic_file, sep='\t', index=False)
+print(f"Writing basic filtered list to {filter_basic_file}.")
 
 # ############### FILTER1 ########################################
-print(f"Loading filter file {filter_file}")
-filter_settings = pd.read_csv(filter_file, sep='\t', index_col=0)
+print(f"Loading filter file {filter_setting_file}")
+filter_settings = pd.read_csv(filter_setting_file, sep='\t', index_col=0)
 
 # filter1_setting = {
 #     'variantT': 2,
@@ -77,7 +77,7 @@ filter_settings = pd.read_csv(filter_file, sep='\t', index_col=0)
 
 def filter1(df, _filter=''):
 
-    # get thresholds from filter_file
+    # get thresholds from filter_setting_file
     thresh = filter_settings.loc[_filter, :]
     tumor_depth = (df['TR2'] > thresh['variantT']) & (
         df['Tdepth'] > thresh['Tdepth'])
@@ -107,5 +107,5 @@ def filter1(df, _filter=''):
 # EBscore >=4 or CoSMIC OCCURRENCE
 
 filter1_df = filter1(basic_df, _filter='filter1')
-print(f"Writing filter1 file to {o}")
-filter1_df.to_csv(o, sep='\t', index=False)
+print(f"Writing filter1 file to {filter1_file}")
+filter1_df.to_csv(filter1_file, sep='\t', index=False)

@@ -181,7 +181,7 @@ def get_mut_bed(w, input):
     '''
     serves as a params function creating and returning the bed file for the samtools view
     '''
-
-    padding = config['filter_bam']['padding']
-    bed_file = mut2bed(input.csv, padding, f"filter_bam/{w.sample}_{w.tumor}-{w.normal}.bed")
+    conf = config['filter_bam']
+    padding = conf['padding']
+    bed_file = mut2bed(input.csv, padding, f"{conf['folder']}/{w.sample}_{w.tumor}-{w.normal}.bed")
     return bed_file

@@ -23,7 +23,7 @@ include: "includes/utils.snk"
 
 
 # retrieve the file_df with all the file paths from the samplesheet
-sample_df = get_files(config['inputdirs'], config['samples']['samplesheet'])
+sample_df, short_sample_df = get_files(config['inputdirs'], config['samples']['samplesheet'])
 chrom_list = get_chrom_list(config)
 
 
@@ -54,8 +54,8 @@ wildcard_constraints:
     split = "[0-9]+",
     read_or_index = "[^_/.]+",
     trim = "[^_/.]+",
-    chrom = "[^_/.]*[0-9XY]+",
-    filter = "[A-Za-z]+[1-9]\.[a-z]+",
+    chrom = "(chr)?[0-9XY]+",
+    filter = "filter[0-9]+",
     chrom_split = "[^_/.]+",
     # folder = "^((?!filter).)*$"
 
@@ -69,8 +69,7 @@ rule all:
         "QC/insertQC.html",
         expand("coverBED/{samples}.txt", samples=sample_df.index),
         expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=get_tumor_normal_pairs(sample_df)),
-        expand("filter_bam/{tumor_normal_pair}.filter2.loose.done", tumor_normal_pair=get_tumor_normal_pairs(sample_df)),
-        expand("filter_bam/{tumor_normal_pair}.filter2.moderate.IGVnav.txt", tumor_normal_pair=get_tumor_normal_pairs(sample_df))
+        expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=get_tumor_normal_pairs(sample_df))
 
 
 ###########################################################################
@@ -79,7 +78,7 @@ rule all:
 # print out of installed tools
 onstart:
     print("    EXOM SEQUENCING PIPELINE STARTING.......")
-    print('samples', sample_df['R1'])
+    print('samples', short_sample_df.loc[:, ['R1', 'R2', 'index']])
     ##########################
     # shell("echo Conda-environment: $CONDA_PREFIX")
     # shell('echo $PATH')
@@ -105,9 +104,11 @@ onsuccess:
         split_bam_pattern = 'chr[^.]+\..*'
 
         # remove split fastqs
-        shell("ls fastq | grep -E '{split_fastq_pattern}' | sed 's_^_fastq/_' | xargs -r rm -f")
-        shell("rm -rf ubam realigned bam_metrics insert_metrics pileup varscan fastqc mapped")
+        shell("rm -rf ubam realigned bam_metrics insert_metrics pileup varscan fastqc mapped bam_done")
 
+
+        shell("ls fastq | grep -E '{split_fastq_pattern}' | sed 's_^_fastq/_' | xargs -r rm -f")
+        
         # remove split recalib bams
         shell("ls recalib | grep -E '{split_bam_pattern}' | sed 's-^-recalib/-' | xargs -r rm -f")
 

@@ -243,8 +243,10 @@ filter:
   keep_syn: False
 filter_bam:
     threads: 4
-    file_prefix: moderate
+    stringency_for_bam: loose # from which filter2 should the filter bam be generated
+    stringency_for_IGVnav: moderate
     padding: 200
+    folder: filterbam
 primer3:  # is applied after filter step 1
   threads: 10
   min_size: 120
