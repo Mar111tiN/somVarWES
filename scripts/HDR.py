@@ -8,20 +8,24 @@ from script_utils import show_output
 w = snakemake.wildcards
 config = snakemake.config
 params = snakemake.params
-MIN_SIM = params.min_sim
+MINSIM = params.min_sim
+min_q = params.min_q
 PAD = min(config['HDR']['padding'], config['filter_bam']['padding'])
-
+HDRMINCOUNT = params.min_HDR_count
 
 i = snakemake.input
 
 
-tumor_bam = os.path.split(i.filter_bam)[1]
-# remove the normal part of the tumor-normal descriptor
-tumor_bam = tumor_bam.replace(
-    f"-{config['samples']['normal'][0]}", '').replace('.done', '.bam')
-# folder comes from config
-tumor_bam = os.path.join(config['filter_bam']['folder'], tumor_bam)
+bam = os.path.split(i.filter_bam)[1]
+bam = os.path.join(config['filter_bam']['folder'], bam)
 
+# remove the normal part of the tumor-normal descriptor
+tumor_bam = bam.replace(
+    f"-{config['samples']['normal'][0]}", '').replace('.done', '.bam')
+# remove the tumor part of the tumor-normal descriptor
+normal_bam = bam.replace(
+    f"{config['samples']['tumor'][0]}-", '').replace('.done', '.bam')
+print('tumor:', tumor_bam, 'normal:', normal_bam)
 
 filter_file = i.filter_file
 filter_pileup = i.pileup
@@ -29,7 +33,7 @@ out_file = snakemake.output.HDR
 
 
 show_output(
-    f'Starting HDR analysis of {filter_file}. [MIN_SIM={MIN_SIM}, PAD={PAD}]')
+    f'Starting HDR analysis of {filter_file}. [MIN_SIM={MINSIM}, PAD={PAD}]')
 # GET THE mutation file for masterHDR
 show_output(f'Importing {filter_file} for HDR detection', time=False)
 filter_df = pd.read_csv(filter_file, sep='\t').loc[:, [
@@ -37,15 +41,16 @@ filter_df = pd.read_csv(filter_file, sep='\t').loc[:, [
 
 HDR_df = masterHDR(
     pileup_file=filter_pileup,
-    bam_file=tumor_bam,
+    tumor_bam=tumor_bam,
+    normal_bam=normal_bam,
     filter_df=filter_df,
-    min_sim=MIN_SIM,
-    padding=PAD
+    MINSIM=MINSIM,
+    padding=PAD,
+    min_q=min_q,
+    min_HDR_count=HDRMINCOUNT
 )
 
-HDR_df['HDRmeanSimilarity'] = HDR_df['HDRmeanSimilarity'].round(2)
-
-HDR_len = len(HDR_df.query('HDRcount > 0').index)
+HDR_len = len(HDR_df.query('TumorHDRcount > 0').index)
 
 show_output(
     f"Found {HDR_len} possible HDR mutations. Writing to file {out_file}")

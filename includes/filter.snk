@@ -37,7 +37,9 @@ rule detect_HDR:
     threads:
         2
     params:
-        min_sim = config['HDR']['min_similarity']
+        min_sim = config['HDR']['min_similarity'],
+        min_q = config['HDR']['min_q'],
+        min_HDR_count = config['HDR']['min_HDR_count']
     script:
         "../scripts/HDR.py"
 

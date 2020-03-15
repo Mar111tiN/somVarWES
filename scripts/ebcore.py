@@ -131,7 +131,8 @@ def bb_pvalues(params, target_df):
     def bb_pvalue(params, target_df):
         n_minus_k = target_df[0] - target_df[1]
         # get the list of observations [n, k] to [n, n]
-        obs_list = [target_df + np.array([0,i]) for i in range(0, n_minus_k + 1)]
+        obs_list = [target_df + np.array([0, i])
+                    for i in range(0, n_minus_k + 1)]
         # get the list of loglikelihoods per observation
         ll_list = [bb_loglikelihood(params, obs, True) for obs in obs_list]
 
@@ -154,7 +155,8 @@ def bb_pvalues(params, target_df):
 
 
 # the matrices for beta-binomial calculation
-KS_matrix = np.array([[1, 0, 1, 1, 0, 1, 0, 0, 0], [0, 1, -1, 0, 1, -1, 0, 0, 0]])
+KS_matrix = np.array([[1, 0, 1, 1, 0, 1, 0, 0, 0], [
+                     0, 1, -1, 0, 1, -1, 0, 0, 0]])
 gamma_reduce = np.array([1, -1, -1, -1, 1, 1, 1, -1, -1])
 
 
@@ -192,7 +194,9 @@ def fit_bb(count_df, pen):
         '''
 
         # Here, we apply the penalty term of alpha and beta (default 0.5 is slightly arbitray...)
-        result = penalty * math.log(sum(params)) - bb_loglikelihood(params, count_df, False)  # matrix is dim2
+        result = penalty * \
+            math.log(sum(params)) - bb_loglikelihood(params,
+                                                     count_df, False)  # matrix is dim2
         return result
 
     # get the respective control matrices (as dataframe) for positive and negative strands
@@ -200,26 +204,46 @@ def fit_bb(count_df, pen):
     count_n = count_df.loc[:, ['depth_n', 'mm_n']]
     # minimize loglikelihood using L-BFGS-B algorithm
     ab_p = minimize_func(
-                           bb_loglikelihood_fitting, [20, 20],
-                           args=(count_p, pen), approx_grad=True,
-                           bounds=[(0.1, 10000000), (1, 10000000)]
-                          )[0]
+        bb_loglikelihood_fitting, [20, 20],
+        args=(count_p, pen), approx_grad=True,
+        bounds=[(0.1, 10000000), (1, 10000000)]
+    )[0]
     ab_p = [round(param, 5) for param in ab_p]
     ab_n = minimize_func(
-                           bb_loglikelihood_fitting, [20, 20],
-                           args=(count_n, pen), approx_grad=True,
-                           bounds=[(0.1, 10000000), (1, 10000000)]
-                          )[0]
+        bb_loglikelihood_fitting, [20, 20],
+        args=(count_n, pen), approx_grad=True,
+        bounds=[(0.1, 10000000), (1, 10000000)]
+    )[0]
     ab_n = [round(param, 5) for param in ab_n]
     return {'p': ab_p, 'n': ab_n}
 
 
 # ######################### EB-CACHE ####################
+
+def get_cache_count_df(row, var):
+    '''
+    converts the base-wise read coverage to a matrix
+    '''
+
+    matrix = pd.DataFrame()
+    matrix['depth_p'] = np.array(row['Depth-ACGT'].split('|')).astype(int)
+    matrix['mm_p'] = np.array(row[var].split('|')).astype(int)
+    matrix['depth_n'] = np.array(row['Depth-acgt'].split('|')).astype(int)
+    matrix['mm_n'] = np.array(row[var.lower()].split('|')).astype(int)
+    if var == 'I':
+        matrix['depth_p'] += np.array(row['Depth-INDEL'].split('|')
+                                      ).astype(int)
+        matrix['depth_n'] += np.array(row['Depth-indel'].split('|')
+                                      ).astype(int)
+    return matrix
+
+
 def matrix2AB(matrix_df, pen):
     '''
     creates the AB_df for a pileup
     '''
 
+    # creates an empty-shell df from the matrix_df to receive the AB parameters
     AB_df = matrix_df.iloc[:, [0, 1]].copy()
     # ###################### AB FITTING ###############################################
 
@@ -233,18 +257,8 @@ def matrix2AB(matrix_df, pen):
         # ########## get count matrix ###########################################
         for var in list('ACTGI'):
             # get the count matrix
-            count_df = get_count_df(row, var)
+            count_df = get_cache_count_df(row, var)
             # get the AB parameters for
-
-            # <<<<<<######### DEBUG ###############
-            # if row['Start'] in [
-            #     14830116, 14622123, 14841205, 14733419, 14840756, 14719431, 16618785,
-            #     14824039, 14830279, 14622390, 18769493, 18550359, 13905782, 14840589,
-            #     14830168, 16618629, 13705217, 14830580, 18026171, 14841406, 14622699,
-            #     16618619, 14719675, 13905767, 13902927, 14840574, 18026160, 14824292, 14840574,
-            #     ]:
-            #     print(row, var)
-            # <<<<<<###############################
 
             bb_params = fit_bb(count_df, penalty)
         # dump the different parameters into bb_s
@@ -257,7 +271,8 @@ def matrix2AB(matrix_df, pen):
 
     # ################# Store AB data into df ####################################
     # create the columns (A+a A+b A-a A-b G+a G+b....) for the recipient df of the pileup_df apply function
-    var_columns = [f'{var}{strand}{param}' for var in list('ACTGI') for strand in ['+', '-'] for param in ['a', 'b']]
+    var_columns = [f'{var}{strand}{param}' for var in list(
+        'ACTGI') for strand in ['+', '-'] for param in ['a', 'b']]
 
 
 # !!!!!!!!!!!!!!!!!! PEN!!!!!!!!!!!!!!!!!!!

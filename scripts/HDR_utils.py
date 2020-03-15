@@ -3,18 +3,19 @@ import pysam
 from script_utils import show_output
 
 
-def get_count_pileup(filename):
+def get_count_pileup(filename, _type='Tumor'):
+    cols = [0, 1, 2, 3, 4, 5] if _type == 'Tumor' else [0, 1, 2, 6, 7, 8]
     pileup = pd.read_csv(
         filename,
         sep='\t',
         header=None,
-        usecols=[0, 1, 2, 3, 4, 5],
+        usecols=cols,
         names=['Chr', 'Pos', 'Ref', 'depth', 'read', 'Qual']
-        )
+    )
 
     pileup['read'] = pileup['read'].str.upper()
     for base in 'ACTG':
-        pileup[base] = pileup['read'].str.count(base) 
+        pileup[base] = pileup['read'].str.count(base)
     pileup['AltSum'] = pileup[['A', 'C', 'T', 'G']].max(axis=1)
     pileup['AltRatio'] = pileup['AltSum'] / pileup['depth']
     return pileup
@@ -32,7 +33,8 @@ def filter_hotspots(pileup_df, hotspot_config={
     minAlt = hotspot_config['minAltSum']
     minRatio = hotspot_config['minAltRatio']
     maxRatio = hotspot_config['maxAltRatio']
-    hotspot_df = pileup_df.query('(AltSum >= @minAlt) and (@minRatio <= AltRatio <= @maxRatio)')
+    hotspot_df = pileup_df.query(
+        '(AltSum >= @minAlt) and (@minRatio <= AltRatio <= @maxRatio)')
     return hotspot_df
 
 # cigar_pattern = re.compile(r'^([0-9]+)([NMDIS])(.*)')
@@ -50,7 +52,8 @@ def bam2df(bam_file, q=20):
         for i, line in enumerate(bam_file):
             row = line.to_dict()
             # extract the tag elements into dictionary keys
-            row.update({tag.split(':')[0]: tag.split(':')[2] for tag in row['tags']})
+            row.update({tag.split(':')[0]: tag.split(':')[2]
+                        for tag in row['tags']})
             row.pop('tags')
             lst.append(row)
     # read list into a dataframe
@@ -71,39 +74,29 @@ def editbamdf(df):
     # extract the intron sizes from the cigar string
     df['Chr_len'] = df['read_len']
     # extraction of soft-clipped bases
-    df['soft_start'] = df['cigar'].str.extract(r'(^[0-9]+)S').fillna(0).astype(int)
+    df['soft_start'] = df['cigar'].str.extract(
+        r'(^[0-9]+)S').fillna(0).astype(int)
     # filter out reads without a Cell barcode and return only desired columns
-    df = df[['name', 'ref_name', 'ref_pos', 'read_len', 'seq', 'qual', 'soft_start', 'cigar']]
-    df.columns = ['name', 'Chr', 'Pos', 'read_len', 'Seq', 'Qual', 'Soft_start', 'Cigar']
+    df = df[['name', 'ref_name', 'ref_pos', 'read_len',
+             'seq', 'qual', 'soft_start', 'cigar']]
+    df.columns = ['name', 'Chr', 'Pos', 'read_len',
+                  'Seq', 'Qual', 'Soft_start', 'Cigar']
     return df
 
 
-def get_base(read, mut_row):
+def get_base(read, mut_row, min_q=25):
     '''
-    get bases at mut_row position
+    get bases at row position
     '''
     if read['Chr'] != mut_row['Chr']:
         return None
     Seq_pos = mut_row['Start'] - read['Pos'] + read['Soft_start']
-    base = read['Seq'][Seq_pos] 
+    base = read['Seq'][Seq_pos]
     qual = ord(read['Qual'][Seq_pos]) - 33
-    if qual > 24:
-        return base
-    return "N"
-
-
-def get_mutated_bam(bam_df, mut_row):
-    # get values from mut_row
-    pos = mut_row['Start']
-    Alt = mut_row['Alt']
-
-    # get reads covering the mutation
-    cover_bam = bam_df.query('Pos < @pos < Pos + read_len - Soft_start')
-
-    # get reads that are mutated at position
-    cover_bam.loc[:, 'mut_pos'] = cover_bam.apply(get_base, axis=1, args=(mut_row,))
-    mut_bam = cover_bam.query('mut_pos == @Alt')
-    return mut_bam
+    isAlt = 1 if (base == mut_row['Alt']) else 0
+    if qual >= min_q:
+        return 1 if (base == mut_row['Alt']) else 0
+    return -1
 
 
 def get_adjacent_HDR(mut_row, hotspot_df, padding=150):
@@ -113,7 +106,8 @@ def get_adjacent_HDR(mut_row, hotspot_df, padding=150):
 
     chrom = mut_row['Chr']
     mut_pos = mut_row['Start']
-    HDR_df = hotspot_df.query('(Chr == @chrom) and (@mut_pos - @padding < Pos) and (Pos < @mut_pos + @padding)')
+    HDR_df = hotspot_df.query(
+        '(Chr == @chrom) and (@mut_pos - @padding < Pos) and (Pos < @mut_pos + @padding)')
     # get distance to mut_spot
     HDR_df.loc[:, 'distance'] = HDR_df['Pos'] - mut_pos
     HDR_df.loc[:, 'Alt'] = HDR_df[['A', 'C', 'T', 'G']].idxmax(axis=1)
@@ -125,14 +119,21 @@ def get_HDR_count(row, df, padding=100):
     return len(HDR_lanes.index)
 
 
-def get_intersect_bam(HDR_row, mut_bam):
+def get_intersect_bam(HDR_row, mut_bam, min_q=25):
     '''
     get the reads covering both the mutation and the specific HDR_lane --> intersect_bam
     '''
-    pos = HDR_row['Pos']
+    pos = HDR_row['Start']
     chrom = HDR_row['Chr']
     Alt = HDR_row['Alt']
     intersect_bam = mut_bam.query('Pos < @pos < Pos + read_len - Soft_start')
+    # prevent key error in next step
+    if intersect_bam.empty:
+        return intersect_bam
+    intersect_bam.loc[:, 'HDRAlt'] = intersect_bam.apply(
+        get_base, axis=1, args=(HDR_row,), min_q=min_q)
+    # reduce intersect_bam to the reads above threshold quality at that position
+    intersect_bam = intersect_bam.query('mutAlt != -1 and HDRAlt != -1')
     return intersect_bam
 
 
@@ -142,37 +143,67 @@ def get_HDR_base(intersect_read, HDR_row):
     '''
     if intersect_read['Chr'] != HDR_row['Chr']:
         return None
-    Seq_pos = HDR_row['Pos'] - intersect_read['Pos'] + intersect_read['Soft_start']
+    Seq_pos = HDR_row['Pos'] - intersect_read['Pos'] + \
+        intersect_read['Soft_start']
     base = intersect_read['Seq'][Seq_pos]
     qual = ord(intersect_read['Qual'][Seq_pos]) - 33
     if qual > 24:
-        return int(base == HDR_row['Alt']) # return 1 if this position has an Alt-base
+        # return 1 if this position has an Alt-base
+        return int(base == HDR_row['Alt'])
     return 0
 
 
-def get_HDR_Alt_percentage(HDR_row, intersect_bam):
-    Alt_sum = intersect_bam.apply(get_HDR_base, axis=1, args=(HDR_row,)).sum()
-    HDR_Alt_percentage = Alt_sum / len(intersect_bam.index)
-    return HDR_Alt_percentage.round(2)
+def get_covering_reads(bam_df, mut_row):
+    '''
+
+    '''
+    # get values from mut_row
+    pos = mut_row['Start']
+    Alt = mut_row['Alt']
+
+    # get reads covering the mutation
+    cover_bam = bam_df.query('Pos < @pos < Pos + read_len - Soft_start')
+    if len(cover_bam.index) == 0:
+        return pd.DataFrame()
+    # get reads that are mutated at position
+    cover_bam.loc[:, 'mutAlt'] = cover_bam.apply(
+        get_base, axis=1, args=(mut_row,))
+    return cover_bam
 
 
-def compute_similarity(HDR_row, mut_bam):
+def compute_similarity(HDR_row, cover_bam, min_q=25):
     '''
     for each HDR_row, get the intersecting bam
     '''
-    intersect_bam = get_intersect_bam(HDR_row, mut_bam)
+    # get the reads covering both the mutation position and the specific HDR_lane --> intersect_bam
+    intersect_bam = get_intersect_bam(HDR_row, cover_bam, min_q=min_q)
     if intersect_bam.empty:
-        return pd.Series([0,0], index=['similarity', 'support'])
-    return pd.Series([get_HDR_Alt_percentage(HDR_row, intersect_bam), len(intersect_bam.index)], index=['similarity', 'support'])
+        return pd.Series([0, 0, 0, 0, 0], index=['RefSim', 'RefSupport', 'AltSim', 'AltSupport', 'support'])
+    ref_sim = intersect_bam.query('mutAlt == 0 and HDRAlt == 0')[
+        'mutAlt'].count()
+    ref_support = intersect_bam.query('mutAlt == 0')['mutAlt'].count()
+    alt_sim = intersect_bam.query('mutAlt == 1 and HDRAlt == 1')[
+        'mutAlt'].count()
+    alt_support = intersect_bam.query('mutAlt == 1')['mutAlt'].count()
+
+    # if there is no alt_support, make it zero --> alt_sim/alt_support will be zero as well
+    ref_support = ref_support if ref_support else 1
+    alt_support = alt_support if alt_support else 1
+    support = len(intersect_bam.index)
+    result = pd.Series([round(ref_sim/ref_support, 2), ref_support, round(alt_sim/alt_support, 2),
+                        alt_support, support], index=['RefSim', 'RefSupport', 'AltSim', 'AltSupport', 'support'])
+    return result
 
 
 def concat(row):
-    support = int(row['support'])
-    simil = int(row['similarity'] * 100)
-    return f"∆{row['distance']}:{simil}%({support})"
+    ref_support = int(row['RefSupport'])
+    ref_sim = int(row['RefSim'] * 100)
+    alt_support = int(row['AltSupport'])
+    alt_sim = int(row['AltSim'] * 100)
+    return f"∆{row['distance']}<Ref:{ref_sim}%({ref_support})><Alt:{alt_sim}%({alt_support})>"
 
 
-def condense_HDR_info(HDR_df, min_sim=0.85):
+def condense_HDR_info(HDR_df, MINSIM=0.9):
     '''
     reduces the entire HDR_df to entries:
     HDRcount: the number of relevant (similar) lanes around mutation
@@ -181,72 +212,87 @@ def condense_HDR_info(HDR_df, min_sim=0.85):
     '''
     # print(HDR_df)
     # select the relevant HDR-lanes / exclude the mutation itself
-    HDR_select = HDR_df.query('(distance != 0) and (similarity > @min_sim) and (support > 9)')
+
+    HDR_select = HDR_df.query(
+        'AltSupport > 13 and (RefSupport == 0 or RefSim >= @MINSIM) and AltSim >= @MINSIM')
     if HDR_select.empty:
-        return pd.Series([0, 0, 'no similarity in HDR-pattern'], index=[
-            'HDRcount',
-            'HDRmeanSimilarity',
-            'HDRinfo'
-            ])
+        return pd.Series([0, 'no similarity in HDR-pattern'], index=[f'HDRcount', f'HDRinfo'])
     # add info field
     HDR_select.loc[:, 'info'] = HDR_select.apply(concat, axis=1)
     count = HDR_select['info'].count()
-    mean_sim = HDR_select['similarity'].mean()
     info = HDR_select['info'].str.cat(sep=' | ')
-    return pd.Series([count, mean_sim, info], index=['HDRcount', 'HDRmeanSimilarity', 'HDRinfo'])
+    return pd.Series([count, info], index=['HDRcount', 'HDRinfo'])
 
 
-def get_HDR_info(mut_row, hotspot_df, bam_df, padding=100, min_sim=0.85):
+def get_HDR_info(mut_row, hotspot_df, bam_df, MINSIM=0.9, min_q=25):
     '''
     compute the HDR_info for each mut_row 
     --> to be used in filter_HDR.apply
     '''
-    show_output(f"Analysing Mutation {mut_row['Chr']}:{mut_row['Start']}", time=False)
-    # reduce bam_df to mutation vicinity
-    mut_bam = get_mutated_bam(bam_df, mut_row)
-    # get the HDR_df of adjacent HDR-lanes
-    HDR_df = get_adjacent_HDR(mut_row, hotspot_df, padding=padding)
+    print(f"Analysing Mutation {mut_row['Chr']}:{mut_row['Start']}")
 
+    # reduce bam_df to reads covering mutation
+    cover_bam = get_covering_reads(bam_df, mut_row)
+    # in case there is no coverage on the bam file (should only happen if mutation file is less stringenty filtered than filterbam)
+    if cover_bam.empty:
+        s = pd.Series([0, 'no bam coverage for that mutation'],
+                      index=['HDRcount', 'HDRinfo'])
+        return s
+    # get the HDR_df of adjacent HDR-lanes
+    HDR_df = get_adjacent_HDR(mut_row, hotspot_df)
+    HDR_df = HDR_df.rename(columns={'Pos': 'Start'})
     # compute the similarity for each HDR_lane
-    HDR_df[['similarity', 'support']] = HDR_df.apply(compute_similarity, axis=1, args=(mut_bam,))
+    HDR_df = HDR_df.query('distance != 0')
+    if HDR_df.empty:
+        s = pd.Series([0, 'no HDR in vincinity'],
+                      index=[f'HDRcount', f'HDRinfo'])
+        return s
+    HDR_df[['RefSim', 'RefSupport', 'AltSim', 'AltSupport', 'support']] = HDR_df.apply(
+        compute_similarity, axis=1, args=(cover_bam,), min_q=min_q).fillna(0)
     # HDR_series with fields ['HDRcount', 'HDRmeanSimilarity', 'HDRinfo']
-    HDR_series = condense_HDR_info(HDR_df, min_sim=min_sim)
+    HDR_series = condense_HDR_info(HDR_df, MINSIM=MINSIM)
     return HDR_series
 
 
-def masterHDR(pileup_file='', bam_file='', filter_df=None, min_sim=.90, padding=100):
-    '''
-    compute and output the HDR for the mutation file
-    '''
+def getHDR(bam_file, filter_df, pileup_file='', _type='Tumor', MINSIM=.90, padding=100, min_HDR_count=1, min_q=25):
 
-    # get the HDR_hotspots in the samples bam file
-    pileup_df = get_count_pileup(pileup_file)
-    show_output(f"Imported pileup {pileup_file} .", time=False)
+    # get the right pileup_df (different cols for Tumor and Normal)
+    pileup_df = get_count_pileup(pileup_file, _type=_type)
+    print(f"Loading pileup file {pileup_file} finished.")
     hotspot_df = filter_hotspots(pileup_df)
-    show_output(f"Detected {len(hotspot_df.index)} putative HDR lanes in {bam_file}.")
+    print(
+        f"Detected {len(hotspot_df.index)} putative HDR lanes in {bam_file}.")
     # enumerate the HDRs in vicinity of mutations
-    filter_df['HDR'] = filter_df.apply(
-        get_HDR_count,
-        axis=1,
-        args=(hotspot_df,),
-        padding=padding
-        )
+    filter_df.loc[:, 'HDR'] = filter_df.apply(
+        get_HDR_count, axis=1, args=(hotspot_df,), padding=padding)
 
     # continue with HDR-rich mutations
-    filter_HDR = filter_df.query('HDR > 1')
+    filter_HDR = filter_df.query('HDR >= @min_HDR_count')
     print(f"Found {len(filter_HDR.index)} HDR-rich mutations")
+    ####### BAM ANALYSIS ##################################
     # get the bam_df for analysis in single-read resolution
     bam_df = editbamdf(bam2df(bam_file))
     print(f'Loaded the bam_file {bam_file} for read analysis')
-    filter_df[['HDRcount', 'HDRmeanSimilarity', 'HDRinfo']] = filter_HDR.apply(
-        get_HDR_info,
-        axis=1,
-        args=(hotspot_df, bam_df),
-        padding=padding,
-        min_sim=min_sim
-        )
-    filter_df['HDRcount'] = filter_df['HDRcount'].fillna(0).astype(int)
-    filter_df['HDRmeanSimilarity'] = filter_df['HDRmeanSimilarity'].fillna(0)
-    filter_df['HDRinfo'] = filter_df['HDRinfo'].fillna('no HDR')
+    filter_df[['HDRcount', 'HDRinfo']] = filter_HDR.apply(
+        get_HDR_info, axis=1, args=(hotspot_df, bam_df), MINSIM=MINSIM, min_q=min_q)
+    filter_df.loc[:, 'HDRcount'] = filter_df['HDRcount'].fillna(0).astype(int)
+    filter_df.loc[:, 'HDRinfo'] = filter_df['HDRinfo'].fillna('no HDR')
     return filter_df
-    # return filter_HDR, hotspot_df, bam_df
+
+
+####### THE NEW MASTERHDR ############################################
+
+def masterHDR(filter_df, tumor_bam='', normal_bam='', pileup_file='', min_q=25, MINSIM=.90, padding=100, min_HDR_count=1):
+
+    bam_dict = {'Tumor': tumor_bam, 'Normal': normal_bam}
+    ####### PILEUP ANALYSIS ##############################
+    for type in ['Tumor', 'Normal']:
+        print(f'Analysing {type}')
+        filter_df = getHDR(bam_dict[type], filter_df, _type=type, pileup_file=pileup_file,
+                           MINSIM=MINSIM, padding=padding, min_HDR_count=min_HDR_count, min_q=min_q)
+        filter_df = filter_df.rename(columns={
+            'HDR': f'{type}HDRcand',
+            'HDRcount': f'{type}HDRcount',
+            'HDRinfo': f'{type}HDRinfo'
+        })
+    return filter_df

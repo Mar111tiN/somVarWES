@@ -15,7 +15,7 @@ samples: # here go all your samples
   umi_barcode: index # suffix for the fastq containing the umi-barcode
 setup:
   cleanup:
-    run: True
+    run: False
     keep_only_final_bam: True
   run: PE   # SE run is not implemented
   phred: 33
@@ -251,8 +251,10 @@ primer3:  # is applied after filter step 1
   threads: 10
   min_size: 120
   max_size: 220
-  center_offSet: 5 # how much offSet primer pairs can
+  center_offSet: 5 #  how much offSet primer pairs can
   use_primer_list: ''
 HDR:
+  min_HDR_count: 1 # minimum lanes around mutation to make it a putative HDR
   min_similarity: .85 # which similarities to consider as HDR
   padding: 150  # range around mutation to be scanned
+  min_q: 25 # minimum base quality to be used for HDR-calculation
