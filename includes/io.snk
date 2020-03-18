@@ -22,7 +22,8 @@ def get_files(folder_list, sample_sheet):
                     short_list.append(file)
     # import the sample sheet
     samples = pd.read_csv(sample_sheet, sep='\t', index_col=0).set_index('name')
-
+    print(samples)
+    print(fastq_list)
     def get_fastq_paths(row, fastq_list = None):
         '''
         go through the sample list and find the respective read and index fastqs in the respective fastq_list
@@ -34,7 +35,7 @@ def get_files(folder_list, sample_sheet):
         index = config['samples']['umi_barcode']
 
         for file in fastq_list:
-            if f"{row['sample']}_L00{row['Lane']}" in file:
+            if f"{row['sample']}" in file and f"_L00{row['Lane']}" in file:
                 if f'_{index}_' in file:
                     row['index'] = file
                 elif 'barcode' in file:

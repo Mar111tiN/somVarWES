@@ -5,7 +5,7 @@ import argparse
 import math
 
 # ############ SETUP ##############################
-configfile: "configs/config.yaml"
+configfile: "configs/config_test.yaml"
 # configfile: "configs/config.json"
 cache_folder = os.path.join(config['paths']['mystatic'], config['EBFilter']['cache_folder'])
 work_dir = os.path.join(cache_folder, "EBcache")

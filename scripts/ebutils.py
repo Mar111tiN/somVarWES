@@ -1,6 +1,7 @@
 from ebcore import matrix2EBscore, AB2EBscore, matrix2AB
 from multiprocessing import Pool
 from functools import partial
+from itertools import repeat
 
 import os
 import numpy as np
@@ -134,6 +135,14 @@ def matrix2AB_multi(matrix_file, output, pen, threads):
                             compression='gzip', index_col=False)
     cache_pool = Pool(threads)
     matrix_split = np.array_split(matrix_df, threads)
+    # in order to map both mat_df and pen into computeEBcache
+    # pool.starmap has to be used with an iterable of argument tuples.
+    # argument tuples can infused with the zip(a, repeat(b))
+    # pattern for the constant pen variable
+    cache_dfs = cache_pool.starmap(
+        computeEBcache,
+        zip(matrix_split, repeat(pen))
+    )
     cache_dfs = cache_pool.map(computeEBcache, matrix_split)
     cache_df = pd.concat(cache_dfs)
     cache_df.to_csv(output, compression='gzip', sep='\t', index=False)
