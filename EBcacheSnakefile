@@ -22,7 +22,7 @@ def get_chrom(c, use_chr=True):
         chrom = c + 1        
     return f"chr{chrom}" if use_chr else chrom
 # get the chrom list for all the splits (range24 for all chromosomes)
-chrom_list = [get_chrom(chrom, (config['ref']['build'] == 'hg38')) for chrom in range(24)]  # set use_chr to False if using hg19
+chrom_list = [get_chrom(chrom, (config['ref']['build'] == 'hg38')) for chrom in range(23)]  # set use_chr to False if using hg19
 # chrom_list = [f"chr{chrom + 1}" for chrom in range(22)] + ['chrX', 'chrY']
 # print(chrom_list)
 split_factor = config['EBFilter']['threads']['EBsplit_factor']

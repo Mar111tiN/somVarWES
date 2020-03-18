@@ -84,6 +84,6 @@ rule apply_BQSR:
         known_sites = f"--known-sites {full_path('gold_standard_indels')} --known-sites {full_path('phase1k_indels')} --known-sites {full_path(config['recalib']['known_sites'])}"  
     shell:
         # apply recalibration table on input
-        "{params.gatk} ApplyBQSR -I {input.bam} {params.genome} --bqsr-recal-file {input.table} -O {output.bam} &>>{log}; "
+        "{params.gatk} ApplyBQSR -I {input.bam} {params.genome} --bqsr-recal-file {input.table} -O {output.bam}; "  #  &>>{log}
         # recreate recalibration table from output for QC
-        "{params.gatk} BaseRecalibrator -I {output.bam} {params.genome} {params.known_sites} -O {output.table} &>>{log}"
+        "{params.gatk} BaseRecalibrator -I {output.bam} {params.genome} {params.known_sites} -O {output.table}" #  &>>{log}

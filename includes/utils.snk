@@ -64,7 +64,7 @@ def get_chrom_list(config):
     # switch for use of "chr"-prefix
     is_hg38 = (config['ref']['build'] == 'hg38')
 
-    chrom_list = [get_chrom(chrom, is_hg38) for chrom in range(24)]
+    chrom_list = [get_chrom(chrom, is_hg38) for chrom in range(23)]  ### for including Y use 24!!!
     return chrom_list
 
 

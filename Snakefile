@@ -67,7 +67,7 @@ rule all:
         "QC/fastQC.html",
         "QC/libraryQC.html",
         "QC/insertQC.html",
-        expand("coverBED/{samples}.txt", samples=sample_df.index),
+        # expand("coverBED/{samples}.txt", samples=sample_df.index),
         expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=get_tumor_normal_pairs(sample_df)),
         expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=get_tumor_normal_pairs(sample_df))
 
