@@ -143,7 +143,6 @@ def matrix2AB_multi(matrix_file, output, pen, threads):
         computeEBcache,
         zip(matrix_split, repeat(pen))
     )
-    cache_dfs = cache_pool.map(computeEBcache, matrix_split)
     cache_df = pd.concat(cache_dfs)
     cache_df.to_csv(output, compression='gzip', sep='\t', index=False)
     return output

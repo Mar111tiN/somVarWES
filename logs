@@ -24816,3 +24816,3099 @@ rule EBcache:
     threads: 20
 
 Submitted DRMAA job 90 with external jobid 804974.
+
+[Wed Mar 18 08:46:02 2020]
+rule EBcache:
+    input: matrix/chr2-3.matrix
+    output: cache/chr2-3.cache
+    log: logs/chr2-3.AB.log
+    jobid: 36
+    reason: Missing output files: cache/chr2-3.cache
+    wildcards: chrom=chr2, i=3
+    threads: 20
+
+Submitted DRMAA job 36 with external jobid 804975.
+
+[Wed Mar 18 08:46:02 2020]
+rule EBcache:
+    input: matrix/chr16-1.matrix
+    output: cache/chr16-1.cache
+    log: logs/chr16-1.AB.log
+    jobid: 146
+    reason: Missing output files: cache/chr16-1.cache
+    wildcards: chrom=chr16, i=1
+    threads: 20
+
+Submitted DRMAA job 146 with external jobid 804976.
+
+[Wed Mar 18 08:46:02 2020]
+rule EBcache:
+    input: matrix/chr12-2.matrix
+    output: cache/chr12-2.cache
+    log: logs/chr12-2.AB.log
+    jobid: 115
+    reason: Missing output files: cache/chr12-2.cache
+    wildcards: chrom=chr12, i=2
+    threads: 20
+
+Submitted DRMAA job 115 with external jobid 804977.
+
+[Wed Mar 18 08:46:02 2020]
+rule EBcache:
+    input: matrix/chr6-1.matrix
+    output: cache/chr6-1.cache
+    log: logs/chr6-1.AB.log
+    jobid: 66
+    reason: Missing output files: cache/chr6-1.cache
+    wildcards: chrom=chr6, i=1
+    threads: 20
+
+Submitted DRMAA job 66 with external jobid 804978.
+
+[Wed Mar 18 08:46:02 2020]
+rule EBcache:
+    input: matrix/chr8-3.matrix
+    output: cache/chr8-3.cache
+    log: logs/chr8-3.AB.log
+    jobid: 84
+    reason: Missing output files: cache/chr8-3.cache
+    wildcards: chrom=chr8, i=3
+    threads: 20
+
+Submitted DRMAA job 84 with external jobid 804979.
+
+[Wed Mar 18 08:46:02 2020]
+rule EBcache:
+    input: matrix/chr19-0.matrix
+    output: cache/chr19-0.cache
+    log: logs/chr19-0.AB.log
+    jobid: 169
+    reason: Missing output files: cache/chr19-0.cache
+    wildcards: chrom=chr19, i=0
+    threads: 20
+
+Submitted DRMAA job 169 with external jobid 804980.
+
+[Wed Mar 18 08:46:02 2020]
+rule EBcache:
+    input: matrix/chr18-2.matrix
+    output: cache/chr18-2.cache
+    log: logs/chr18-2.AB.log
+    jobid: 163
+    reason: Missing output files: cache/chr18-2.cache
+    wildcards: chrom=chr18, i=2
+    threads: 20
+
+Submitted DRMAA job 163 with external jobid 804981.
+
+[Wed Mar 18 08:46:02 2020]
+rule EBcache:
+    input: matrix/chr3-2.matrix
+    output: cache/chr3-2.cache
+    log: logs/chr3-2.AB.log
+    jobid: 43
+    reason: Missing output files: cache/chr3-2.cache
+    wildcards: chrom=chr3, i=2
+    threads: 20
+
+Submitted DRMAA job 43 with external jobid 804982.
+
+[Wed Mar 18 08:46:02 2020]
+rule EBcache:
+    input: matrix/chr10-3.matrix
+    output: cache/chr10-3.cache
+    log: logs/chr10-3.AB.log
+    jobid: 100
+    reason: Missing output files: cache/chr10-3.cache
+    wildcards: chrom=chr10, i=3
+    threads: 20
+
+Submitted DRMAA job 100 with external jobid 804983.
+
+[Wed Mar 18 08:46:02 2020]
+rule EBcache:
+    input: matrix/chr7-3.matrix
+    output: cache/chr7-3.cache
+    log: logs/chr7-3.AB.log
+    jobid: 76
+    reason: Missing output files: cache/chr7-3.cache
+    wildcards: chrom=chr7, i=3
+    threads: 20
+
+Submitted DRMAA job 76 with external jobid 804984.
+
+[Wed Mar 18 08:46:03 2020]
+rule EBcache:
+    input: matrix/chr16-0.matrix
+    output: cache/chr16-0.cache
+    log: logs/chr16-0.AB.log
+    jobid: 145
+    reason: Missing output files: cache/chr16-0.cache
+    wildcards: chrom=chr16, i=0
+    threads: 20
+
+Submitted DRMAA job 145 with external jobid 804985.
+
+[Wed Mar 18 08:46:03 2020]
+rule EBcache:
+    input: matrix/chr6-0.matrix
+    output: cache/chr6-0.cache
+    log: logs/chr6-0.AB.log
+    jobid: 65
+    reason: Missing output files: cache/chr6-0.cache
+    wildcards: chrom=chr6, i=0
+    threads: 20
+
+Submitted DRMAA job 65 with external jobid 804986.
+
+[Wed Mar 18 08:46:03 2020]
+rule EBcache:
+    input: matrix/chr4-3.matrix
+    output: cache/chr4-3.cache
+    log: logs/chr4-3.AB.log
+    jobid: 52
+    reason: Missing output files: cache/chr4-3.cache
+    wildcards: chrom=chr4, i=3
+    threads: 20
+
+Submitted DRMAA job 52 with external jobid 804987.
+
+[Wed Mar 18 08:46:03 2020]
+rule EBcache:
+    input: matrix/chr11-3.matrix
+    output: cache/chr11-3.cache
+    log: logs/chr11-3.AB.log
+    jobid: 108
+    reason: Missing output files: cache/chr11-3.cache
+    wildcards: chrom=chr11, i=3
+    threads: 20
+
+Submitted DRMAA job 108 with external jobid 804988.
+
+[Wed Mar 18 08:46:03 2020]
+rule EBcache:
+    input: matrix/chr22-3.matrix
+    output: cache/chr22-3.cache
+    log: logs/chr22-3.AB.log
+    jobid: 196
+    reason: Missing output files: cache/chr22-3.cache
+    wildcards: chrom=chr22, i=3
+    threads: 20
+
+Submitted DRMAA job 196 with external jobid 804989.
+
+[Wed Mar 18 08:46:03 2020]
+rule EBcache:
+    input: matrix/chr5-2.matrix
+    output: cache/chr5-2.cache
+    log: logs/chr5-2.AB.log
+    jobid: 59
+    reason: Missing output files: cache/chr5-2.cache
+    wildcards: chrom=chr5, i=2
+    threads: 20
+
+Submitted DRMAA job 59 with external jobid 804990.
+
+[Wed Mar 18 08:46:03 2020]
+rule EBcache:
+    input: matrix/chr21-2.matrix
+    output: cache/chr21-2.cache
+    log: logs/chr21-2.AB.log
+    jobid: 187
+    reason: Missing output files: cache/chr21-2.cache
+    wildcards: chrom=chr21, i=2
+    threads: 20
+
+Submitted DRMAA job 187 with external jobid 804991.
+
+[Wed Mar 18 08:46:03 2020]
+rule EBcache:
+    input: matrix/chr19-1.matrix
+    output: cache/chr19-1.cache
+    log: logs/chr19-1.AB.log
+    jobid: 170
+    reason: Missing output files: cache/chr19-1.cache
+    wildcards: chrom=chr19, i=1
+    threads: 20
+
+Submitted DRMAA job 170 with external jobid 804992.
+
+[Wed Mar 18 08:46:03 2020]
+rule EBcache:
+    input: matrix/chr17-0.matrix
+    output: cache/chr17-0.cache
+    log: logs/chr17-0.AB.log
+    jobid: 153
+    reason: Missing output files: cache/chr17-0.cache
+    wildcards: chrom=chr17, i=0
+    threads: 20
+
+Submitted DRMAA job 153 with external jobid 804993.
+
+[Wed Mar 18 08:46:03 2020]
+rule EBcache:
+    input: matrix/chr11-2.matrix
+    output: cache/chr11-2.cache
+    log: logs/chr11-2.AB.log
+    jobid: 107
+    reason: Missing output files: cache/chr11-2.cache
+    wildcards: chrom=chr11, i=2
+    threads: 20
+
+Submitted DRMAA job 107 with external jobid 804994.
+
+[Wed Mar 18 08:46:04 2020]
+rule EBcache:
+    input: matrix/chr4-2.matrix
+    output: cache/chr4-2.cache
+    log: logs/chr4-2.AB.log
+    jobid: 51
+    reason: Missing output files: cache/chr4-2.cache
+    wildcards: chrom=chr4, i=2
+    threads: 20
+
+Submitted DRMAA job 51 with external jobid 804995.
+
+[Wed Mar 18 08:46:04 2020]
+rule EBcache:
+    input: matrix/chr20-0.matrix
+    output: cache/chr20-0.cache
+    log: logs/chr20-0.AB.log
+    jobid: 177
+    reason: Missing output files: cache/chr20-0.cache
+    wildcards: chrom=chr20, i=0
+    threads: 20
+
+Submitted DRMAA job 177 with external jobid 804996.
+
+[Wed Mar 18 08:46:04 2020]
+rule EBcache:
+    input: matrix/chr22-2.matrix
+    output: cache/chr22-2.cache
+    log: logs/chr22-2.AB.log
+    jobid: 195
+    reason: Missing output files: cache/chr22-2.cache
+    wildcards: chrom=chr22, i=2
+    threads: 20
+
+Submitted DRMAA job 195 with external jobid 804997.
+
+[Wed Mar 18 08:46:04 2020]
+rule EBcache:
+    input: matrix/chr18-3.matrix
+    output: cache/chr18-3.cache
+    log: logs/chr18-3.AB.log
+    jobid: 164
+    reason: Missing output files: cache/chr18-3.cache
+    wildcards: chrom=chr18, i=3
+    threads: 20
+
+Submitted DRMAA job 164 with external jobid 804998.
+
+[Wed Mar 18 08:46:04 2020]
+rule EBcache:
+    input: matrix/chrX-1.matrix
+    output: cache/chrX-1.cache
+    log: logs/chrX-1.AB.log
+    jobid: 202
+    reason: Missing output files: cache/chrX-1.cache
+    wildcards: chrom=chrX, i=1
+    threads: 20
+
+Submitted DRMAA job 202 with external jobid 804999.
+
+[Wed Mar 18 08:46:04 2020]
+rule EBcache:
+    input: matrix/chr7-2.matrix
+    output: cache/chr7-2.cache
+    log: logs/chr7-2.AB.log
+    jobid: 75
+    reason: Missing output files: cache/chr7-2.cache
+    wildcards: chrom=chr7, i=2
+    threads: 20
+
+Submitted DRMAA job 75 with external jobid 805000.
+
+[Wed Mar 18 08:46:04 2020]
+rule EBcache:
+    input: matrix/chr13-0.matrix
+    output: cache/chr13-0.cache
+    log: logs/chr13-0.AB.log
+    jobid: 121
+    reason: Missing output files: cache/chr13-0.cache
+    wildcards: chrom=chr13, i=0
+    threads: 20
+
+Submitted DRMAA job 121 with external jobid 805001.
+
+[Wed Mar 18 08:46:04 2020]
+rule EBcache:
+    input: matrix/chr3-3.matrix
+    output: cache/chr3-3.cache
+    log: logs/chr3-3.AB.log
+    jobid: 44
+    reason: Missing output files: cache/chr3-3.cache
+    wildcards: chrom=chr3, i=3
+    threads: 20
+
+Submitted DRMAA job 44 with external jobid 805002.
+
+[Wed Mar 18 08:46:04 2020]
+rule EBcache:
+    input: matrix/chr10-2.matrix
+    output: cache/chr10-2.cache
+    log: logs/chr10-2.AB.log
+    jobid: 99
+    reason: Missing output files: cache/chr10-2.cache
+    wildcards: chrom=chr10, i=2
+    threads: 20
+
+Submitted DRMAA job 99 with external jobid 805003.
+
+[Wed Mar 18 08:46:04 2020]
+rule EBcache:
+    input: matrix/chr14-0.matrix
+    output: cache/chr14-0.cache
+    log: logs/chr14-0.AB.log
+    jobid: 129
+    reason: Missing output files: cache/chr14-0.cache
+    wildcards: chrom=chr14, i=0
+    threads: 20
+
+Submitted DRMAA job 129 with external jobid 805004.
+
+[Wed Mar 18 08:46:05 2020]
+rule EBcache:
+    input: matrix/chr1-1.matrix
+    output: cache/chr1-1.cache
+    log: logs/chr1-1.AB.log
+    jobid: 26
+    reason: Missing output files: cache/chr1-1.cache
+    wildcards: chrom=chr1, i=1
+    threads: 20
+
+Submitted DRMAA job 26 with external jobid 805005.
+
+[Wed Mar 18 08:46:05 2020]
+rule EBcache:
+    input: matrix/chr5-3.matrix
+    output: cache/chr5-3.cache
+    log: logs/chr5-3.AB.log
+    jobid: 60
+    reason: Missing output files: cache/chr5-3.cache
+    wildcards: chrom=chr5, i=3
+    threads: 20
+
+Submitted DRMAA job 60 with external jobid 805006.
+
+[Wed Mar 18 08:46:05 2020]
+rule EBcache:
+    input: matrix/chr15-0.matrix
+    output: cache/chr15-0.cache
+    log: logs/chr15-0.AB.log
+    jobid: 137
+    reason: Missing output files: cache/chr15-0.cache
+    wildcards: chrom=chr15, i=0
+    threads: 20
+
+Submitted DRMAA job 137 with external jobid 805007.
+
+[Wed Mar 18 08:46:05 2020]
+rule EBcache:
+    input: matrix/chr21-3.matrix
+    output: cache/chr21-3.cache
+    log: logs/chr21-3.AB.log
+    jobid: 188
+    reason: Missing output files: cache/chr21-3.cache
+    wildcards: chrom=chr21, i=3
+    threads: 20
+
+Submitted DRMAA job 188 with external jobid 805008.
+
+[Wed Mar 18 08:46:05 2020]
+rule EBcache:
+    input: matrix/chr9-0.matrix
+    output: cache/chr9-0.cache
+    log: logs/chr9-0.AB.log
+    jobid: 89
+    reason: Missing output files: cache/chr9-0.cache
+    wildcards: chrom=chr9, i=0
+    threads: 20
+
+Submitted DRMAA job 89 with external jobid 805009.
+
+[Wed Mar 18 08:46:05 2020]
+rule EBcache:
+    input: matrix/chr19-3.matrix
+    output: cache/chr19-3.cache
+    log: logs/chr19-3.AB.log
+    jobid: 172
+    reason: Missing output files: cache/chr19-3.cache
+    wildcards: chrom=chr19, i=3
+    threads: 20
+
+Submitted DRMAA job 172 with external jobid 805010.
+
+[Wed Mar 18 08:46:05 2020]
+rule EBcache:
+    input: matrix/chr1-2.matrix
+    output: cache/chr1-2.cache
+    log: logs/chr1-2.AB.log
+    jobid: 27
+    reason: Missing output files: cache/chr1-2.cache
+    wildcards: chrom=chr1, i=2
+    threads: 20
+
+Submitted DRMAA job 27 with external jobid 805011.
+
+[Wed Mar 18 08:46:05 2020]
+rule EBcache:
+    input: matrix/chr8-0.matrix
+    output: cache/chr8-0.cache
+    log: logs/chr8-0.AB.log
+    jobid: 81
+    reason: Missing output files: cache/chr8-0.cache
+    wildcards: chrom=chr8, i=0
+    threads: 20
+
+Submitted DRMAA job 81 with external jobid 805012.
+
+[Wed Mar 18 08:46:05 2020]
+rule EBcache:
+    input: matrix/chr22-1.matrix
+    output: cache/chr22-1.cache
+    log: logs/chr22-1.AB.log
+    jobid: 194
+    reason: Missing output files: cache/chr22-1.cache
+    wildcards: chrom=chr22, i=1
+    threads: 20
+
+Submitted DRMAA job 194 with external jobid 805013.
+
+[Wed Mar 18 08:46:05 2020]
+rule EBcache:
+    input: matrix/chr11-1.matrix
+    output: cache/chr11-1.cache
+    log: logs/chr11-1.AB.log
+    jobid: 106
+    reason: Missing output files: cache/chr11-1.cache
+    wildcards: chrom=chr11, i=1
+    threads: 20
+
+Submitted DRMAA job 106 with external jobid 805014.
+
+[Wed Mar 18 08:46:06 2020]
+rule EBcache:
+    input: matrix/chr4-1.matrix
+    output: cache/chr4-1.cache
+    log: logs/chr4-1.AB.log
+    jobid: 50
+    reason: Missing output files: cache/chr4-1.cache
+    wildcards: chrom=chr4, i=1
+    threads: 20
+
+Submitted DRMAA job 50 with external jobid 805015.
+
+[Wed Mar 18 08:46:06 2020]
+rule EBcache:
+    input: matrix/chr10-1.matrix
+    output: cache/chr10-1.cache
+    log: logs/chr10-1.AB.log
+    jobid: 98
+    reason: Missing output files: cache/chr10-1.cache
+    wildcards: chrom=chr10, i=1
+    threads: 20
+
+Submitted DRMAA job 98 with external jobid 805016.
+
+[Wed Mar 18 08:46:06 2020]
+rule EBcache:
+    input: matrix/chr2-0.matrix
+    output: cache/chr2-0.cache
+    log: logs/chr2-0.AB.log
+    jobid: 33
+    reason: Missing output files: cache/chr2-0.cache
+    wildcards: chrom=chr2, i=0
+    threads: 20
+
+Submitted DRMAA job 33 with external jobid 805017.
+
+[Wed Mar 18 08:46:06 2020]
+rule EBcache:
+    input: matrix/chr7-1.matrix
+    output: cache/chr7-1.cache
+    log: logs/chr7-1.AB.log
+    jobid: 74
+    reason: Missing output files: cache/chr7-1.cache
+    wildcards: chrom=chr7, i=1
+    threads: 20
+
+Submitted DRMAA job 74 with external jobid 805018.
+
+[Wed Mar 18 08:46:06 2020]
+rule EBcache:
+    input: matrix/chrX-2.matrix
+    output: cache/chrX-2.cache
+    log: logs/chrX-2.AB.log
+    jobid: 203
+    reason: Missing output files: cache/chrX-2.cache
+    wildcards: chrom=chrX, i=2
+    threads: 20
+
+Submitted DRMAA job 203 with external jobid 805019.
+
+[Wed Mar 18 08:46:06 2020]
+rule EBcache:
+    input: matrix/chr19-2.matrix
+    output: cache/chr19-2.cache
+    log: logs/chr19-2.AB.log
+    jobid: 171
+    reason: Missing output files: cache/chr19-2.cache
+    wildcards: chrom=chr19, i=2
+    threads: 20
+
+Submitted DRMAA job 171 with external jobid 805020.
+
+[Wed Mar 18 08:46:06 2020]
+rule EBcache:
+    input: matrix/chr21-1.matrix
+    output: cache/chr21-1.cache
+    log: logs/chr21-1.AB.log
+    jobid: 186
+    reason: Missing output files: cache/chr21-1.cache
+    wildcards: chrom=chr21, i=1
+    threads: 20
+
+Submitted DRMAA job 186 with external jobid 805021.
+
+[Wed Mar 18 08:46:06 2020]
+rule EBcache:
+    input: matrix/chr5-1.matrix
+    output: cache/chr5-1.cache
+    log: logs/chr5-1.AB.log
+    jobid: 58
+    reason: Missing output files: cache/chr5-1.cache
+    wildcards: chrom=chr5, i=1
+    threads: 20
+
+Submitted DRMAA job 58 with external jobid 805022.
+
+[Wed Mar 18 08:46:06 2020]
+rule EBcache:
+    input: matrix/chr1-3.matrix
+    output: cache/chr1-3.cache
+    log: logs/chr1-3.AB.log
+    jobid: 28
+    reason: Missing output files: cache/chr1-3.cache
+    wildcards: chrom=chr1, i=3
+    threads: 20
+
+Submitted DRMAA job 28 with external jobid 805023.
+
+[Wed Mar 18 08:46:06 2020]
+rule EBcache:
+    input: matrix/chr3-1.matrix
+    output: cache/chr3-1.cache
+    log: logs/chr3-1.AB.log
+    jobid: 42
+    reason: Missing output files: cache/chr3-1.cache
+    wildcards: chrom=chr3, i=1
+    threads: 20
+
+Submitted DRMAA job 42 with external jobid 805024.
+
+[Wed Mar 18 08:46:07 2020]
+rule EBcache:
+    input: matrix/chr18-1.matrix
+    output: cache/chr18-1.cache
+    log: logs/chr18-1.AB.log
+    jobid: 162
+    reason: Missing output files: cache/chr18-1.cache
+    wildcards: chrom=chr18, i=1
+    threads: 20
+
+Submitted DRMAA job 162 with external jobid 805025.
+
+[Wed Mar 18 08:46:07 2020]
+rule EBcache:
+    input: matrix/chrX-3.matrix
+    output: cache/chrX-3.cache
+    log: logs/chrX-3.AB.log
+    jobid: 204
+    reason: Missing output files: cache/chrX-3.cache
+    wildcards: chrom=chrX, i=3
+    threads: 20
+
+Submitted DRMAA job 204 with external jobid 805026.
+
+[Wed Mar 18 08:46:07 2020]
+rule EBcache:
+    input: matrix/chr12-0.matrix
+    output: cache/chr12-0.cache
+    log: logs/chr12-0.AB.log
+    jobid: 113
+    reason: Missing output files: cache/chr12-0.cache
+    wildcards: chrom=chr12, i=0
+    threads: 20
+
+Submitted DRMAA job 113 with external jobid 805027.
+[Wed Mar 18 08:46:35 2020]
+Error in rule EBcache:
+    jobid: 28
+    output: cache/chr1-3.cache
+    log: logs/chr1-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 28, external: 805023, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.28.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 28.
+
+[Wed Mar 18 08:46:35 2020]
+rule EBcache:
+    input: matrix/chr1-3.matrix
+    output: cache/chr1-3.cache
+    log: logs/chr1-3.AB.log
+    jobid: 28
+    reason: Missing output files: cache/chr1-3.cache
+    wildcards: chrom=chr1, i=3
+    threads: 20
+
+Submitted DRMAA job 28 with external jobid 805028.
+[Wed Mar 18 08:46:47 2020]
+Error in rule EBcache:
+    jobid: 210
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 210, external: 804949, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.210.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 210.
+
+[Wed Mar 18 08:46:47 2020]
+rule EBcache:
+    input: matrix/chrY-1.matrix
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log
+    jobid: 210
+    reason: Missing output files: cache/chrY-1.cache
+    wildcards: chrom=chrY, i=1
+    threads: 20
+
+Submitted DRMAA job 210 with external jobid 805030.
+[Wed Mar 18 08:47:05 2020]
+Error in rule EBcache:
+    jobid: 210
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 210, external: 805030, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.210.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 210.
+
+[Wed Mar 18 08:47:05 2020]
+rule EBcache:
+    input: matrix/chrY-1.matrix
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log
+    jobid: 210
+    reason: Missing output files: cache/chrY-1.cache
+    wildcards: chrom=chrY, i=1
+    threads: 20
+
+Submitted DRMAA job 210 with external jobid 805031.
+[Wed Mar 18 08:47:13 2020]
+Error in rule EBcache:
+    jobid: 186
+    output: cache/chr21-1.cache
+    log: logs/chr21-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 186, external: 805021, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.186.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 186.
+
+[Wed Mar 18 08:47:13 2020]
+rule EBcache:
+    input: matrix/chr21-1.matrix
+    output: cache/chr21-1.cache
+    log: logs/chr21-1.AB.log
+    jobid: 186
+    reason: Missing output files: cache/chr21-1.cache
+    wildcards: chrom=chr21, i=1
+    threads: 20
+
+Submitted DRMAA job 186 with external jobid 805032.
+[Wed Mar 18 08:47:14 2020]
+Error in rule EBcache:
+    jobid: 162
+    output: cache/chr18-1.cache
+    log: logs/chr18-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 162, external: 805025, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.162.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 162.
+
+[Wed Mar 18 08:47:14 2020]
+rule EBcache:
+    input: matrix/chr18-1.matrix
+    output: cache/chr18-1.cache
+    log: logs/chr18-1.AB.log
+    jobid: 162
+    reason: Missing output files: cache/chr18-1.cache
+    wildcards: chrom=chr18, i=1
+    threads: 20
+
+Submitted DRMAA job 162 with external jobid 805033.
+[Wed Mar 18 08:47:24 2020]
+Error in rule EBcache:
+    jobid: 28
+    output: cache/chr1-3.cache
+    log: logs/chr1-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 28, external: 805028, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.28.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 28.
+
+[Wed Mar 18 08:47:24 2020]
+rule EBcache:
+    input: matrix/chr1-3.matrix
+    output: cache/chr1-3.cache
+    log: logs/chr1-3.AB.log
+    jobid: 28
+    reason: Missing output files: cache/chr1-3.cache
+    wildcards: chrom=chr1, i=3
+    threads: 20
+
+Submitted DRMAA job 28 with external jobid 805034.
+[Wed Mar 18 08:47:27 2020]
+Error in rule EBcache:
+    jobid: 122
+    output: cache/chr13-1.cache
+    log: logs/chr13-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 122, external: 804967, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.122.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 122.
+
+[Wed Mar 18 08:47:27 2020]
+rule EBcache:
+    input: matrix/chr13-1.matrix
+    output: cache/chr13-1.cache
+    log: logs/chr13-1.AB.log
+    jobid: 122
+    reason: Missing output files: cache/chr13-1.cache
+    wildcards: chrom=chr13, i=1
+    threads: 20
+
+Submitted DRMAA job 122 with external jobid 805035.
+[Wed Mar 18 08:47:29 2020]
+Error in rule EBcache:
+    jobid: 187
+    output: cache/chr21-2.cache
+    log: logs/chr21-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 187, external: 804991, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.187.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 187.
+
+[Wed Mar 18 08:47:29 2020]
+rule EBcache:
+    input: matrix/chr21-2.matrix
+    output: cache/chr21-2.cache
+    log: logs/chr21-2.AB.log
+    jobid: 187
+    reason: Missing output files: cache/chr21-2.cache
+    wildcards: chrom=chr21, i=2
+    threads: 20
+
+Submitted DRMAA job 187 with external jobid 805036.
+[Wed Mar 18 08:47:43 2020]
+Error in rule EBcache:
+    jobid: 210
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 210, external: 805031, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.210.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 210.
+[Wed Mar 18 08:47:43 2020]
+Error in rule EBcache:
+    jobid: 185
+    output: cache/chr21-0.cache
+    log: logs/chr21-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 185, external: 804939, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.185.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:47:43 2020]
+rule EBcache:
+    input: matrix/chrY-1.matrix
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log
+    jobid: 210
+    reason: Missing output files: cache/chrY-1.cache
+    wildcards: chrom=chrY, i=1
+    threads: 20
+
+Trying to restart job 185.
+Submitted DRMAA job 210 with external jobid 805037.
+
+[Wed Mar 18 08:47:43 2020]
+rule EBcache:
+    input: matrix/chr21-0.matrix
+    output: cache/chr21-0.cache
+    log: logs/chr21-0.AB.log
+    jobid: 185
+    reason: Missing output files: cache/chr21-0.cache
+    wildcards: chrom=chr21, i=0
+    threads: 20
+
+Submitted DRMAA job 185 with external jobid 805038.
+[Wed Mar 18 08:47:44 2020]
+Error in rule EBcache:
+    jobid: 161
+    output: cache/chr18-0.cache
+    log: logs/chr18-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 161, external: 804940, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.161.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 161.
+
+[Wed Mar 18 08:47:44 2020]
+rule EBcache:
+    input: matrix/chr18-0.matrix
+    output: cache/chr18-0.cache
+    log: logs/chr18-0.AB.log
+    jobid: 161
+    reason: Missing output files: cache/chr18-0.cache
+    wildcards: chrom=chr18, i=0
+    threads: 20
+
+Submitted DRMAA job 161 with external jobid 805039.
+[Wed Mar 18 08:47:45 2020]
+Error in rule EBcache:
+    jobid: 82
+    output: cache/chr8-1.cache
+    log: logs/chr8-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 82, external: 804952, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.82.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 82.
+
+[Wed Mar 18 08:47:45 2020]
+rule EBcache:
+    input: matrix/chr8-1.matrix
+    output: cache/chr8-1.cache
+    log: logs/chr8-1.AB.log
+    jobid: 82
+    reason: Missing output files: cache/chr8-1.cache
+    wildcards: chrom=chr8, i=1
+    threads: 20
+
+Submitted DRMAA job 82 with external jobid 805040.
+[Wed Mar 18 08:48:02 2020]
+Error in rule EBcache:
+    jobid: 28
+    output: cache/chr1-3.cache
+    log: logs/chr1-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 28, external: 805034, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.28.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 28.
+
+[Wed Mar 18 08:48:02 2020]
+rule EBcache:
+    input: matrix/chr1-3.matrix
+    output: cache/chr1-3.cache
+    log: logs/chr1-3.AB.log
+    jobid: 28
+    reason: Missing output files: cache/chr1-3.cache
+    wildcards: chrom=chr1, i=3
+    threads: 20
+
+Submitted DRMAA job 28 with external jobid 805041.
+[Wed Mar 18 08:48:03 2020]
+Error in rule EBcache:
+    jobid: 124
+    output: cache/chr13-3.cache
+    log: logs/chr13-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 124, external: 804941, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.124.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 124.
+[Wed Mar 18 08:48:03 2020]
+Error in rule EBcache:
+    jobid: 131
+    output: cache/chr14-2.cache
+    log: logs/chr14-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 131, external: 804948, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.131.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:48:03 2020]
+rule EBcache:
+    input: matrix/chr13-3.matrix
+    output: cache/chr13-3.cache
+    log: logs/chr13-3.AB.log
+    jobid: 124
+    reason: Missing output files: cache/chr13-3.cache
+    wildcards: chrom=chr13, i=3
+    threads: 20
+
+Trying to restart job 131.
+Submitted DRMAA job 124 with external jobid 805042.
+
+[Wed Mar 18 08:48:03 2020]
+rule EBcache:
+    input: matrix/chr14-2.matrix
+    output: cache/chr14-2.cache
+    log: logs/chr14-2.AB.log
+    jobid: 131
+    reason: Missing output files: cache/chr14-2.cache
+    wildcards: chrom=chr14, i=2
+    threads: 20
+
+Submitted DRMAA job 131 with external jobid 805043.
+[Wed Mar 18 08:48:04 2020]
+Error in rule EBcache:
+    jobid: 179
+    output: cache/chr20-2.cache
+    log: logs/chr20-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 179, external: 804957, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.179.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 179.
+
+[Wed Mar 18 08:48:04 2020]
+rule EBcache:
+    input: matrix/chr20-2.matrix
+    output: cache/chr20-2.cache
+    log: logs/chr20-2.AB.log
+    jobid: 179
+    reason: Missing output files: cache/chr20-2.cache
+    wildcards: chrom=chr20, i=2
+    threads: 20
+
+Submitted DRMAA job 179 with external jobid 805044.
+[Wed Mar 18 08:48:05 2020]
+Error in rule EBcache:
+    jobid: 123
+    output: cache/chr13-2.cache
+    log: logs/chr13-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 123, external: 804961, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.123.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 123.
+[Wed Mar 18 08:48:05 2020]
+Error in rule EBcache:
+    jobid: 178
+    output: cache/chr20-1.cache
+    log: logs/chr20-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 178, external: 804964, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.178.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:48:05 2020]
+rule EBcache:
+    input: matrix/chr13-2.matrix
+    output: cache/chr13-2.cache
+    log: logs/chr13-2.AB.log
+    jobid: 123
+    reason: Missing output files: cache/chr13-2.cache
+    wildcards: chrom=chr13, i=2
+    threads: 20
+
+Trying to restart job 178.
+[Wed Mar 18 08:48:05 2020]
+Error in rule EBcache:
+    jobid: 138
+    output: cache/chr15-1.cache
+    log: logs/chr15-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 138, external: 804970, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.138.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 138.
+Submitted DRMAA job 123 with external jobid 805045.
+[Wed Mar 18 08:48:05 2020]
+Error in rule EBcache:
+    jobid: 130
+    output: cache/chr14-1.cache
+    log: logs/chr14-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 130, external: 804971, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.130.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:48:05 2020]
+rule EBcache:
+    input: matrix/chr20-1.matrix
+    output: cache/chr20-1.cache
+    log: logs/chr20-1.AB.log
+    jobid: 178
+    reason: Missing output files: cache/chr20-1.cache
+    wildcards: chrom=chr20, i=1
+    threads: 20
+
+Trying to restart job 130.
+Submitted DRMAA job 178 with external jobid 805046.
+
+[Wed Mar 18 08:48:05 2020]
+rule EBcache:
+    input: matrix/chr15-1.matrix
+    output: cache/chr15-1.cache
+    log: logs/chr15-1.AB.log
+    jobid: 138
+    reason: Missing output files: cache/chr15-1.cache
+    wildcards: chrom=chr15, i=1
+    threads: 20
+
+Submitted DRMAA job 138 with external jobid 805047.
+
+[Wed Mar 18 08:48:05 2020]
+rule EBcache:
+    input: matrix/chr14-1.matrix
+    output: cache/chr14-1.cache
+    log: logs/chr14-1.AB.log
+    jobid: 130
+    reason: Missing output files: cache/chr14-1.cache
+    wildcards: chrom=chr14, i=1
+    threads: 20
+
+Submitted DRMAA job 130 with external jobid 805048.
+[Wed Mar 18 08:48:06 2020]
+Error in rule EBcache:
+    jobid: 163
+    output: cache/chr18-2.cache
+    log: logs/chr18-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 163, external: 804981, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.163.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 163.
+
+[Wed Mar 18 08:48:06 2020]
+rule EBcache:
+    input: matrix/chr18-2.matrix
+    output: cache/chr18-2.cache
+    log: logs/chr18-2.AB.log
+    jobid: 163
+    reason: Missing output files: cache/chr18-2.cache
+    wildcards: chrom=chr18, i=2
+    threads: 20
+
+Submitted DRMAA job 163 with external jobid 805049.
+[Wed Mar 18 08:48:07 2020]
+Error in rule EBcache:
+    jobid: 65
+    output: cache/chr6-0.cache
+    log: logs/chr6-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 65, external: 804986, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.65.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 65.
+
+[Wed Mar 18 08:48:07 2020]
+rule EBcache:
+    input: matrix/chr6-0.matrix
+    output: cache/chr6-0.cache
+    log: logs/chr6-0.AB.log
+    jobid: 65
+    reason: Missing output files: cache/chr6-0.cache
+    wildcards: chrom=chr6, i=0
+    threads: 20
+
+Submitted DRMAA job 65 with external jobid 805050.
+[Wed Mar 18 08:48:08 2020]
+Error in rule EBcache:
+    jobid: 51
+    output: cache/chr4-2.cache
+    log: logs/chr4-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 51, external: 804995, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.51.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 51.
+
+[Wed Mar 18 08:48:08 2020]
+rule EBcache:
+    input: matrix/chr4-2.matrix
+    output: cache/chr4-2.cache
+    log: logs/chr4-2.AB.log
+    jobid: 51
+    reason: Missing output files: cache/chr4-2.cache
+    wildcards: chrom=chr4, i=2
+    threads: 20
+
+[Wed Mar 18 08:48:08 2020]
+Error in rule EBcache:
+    jobid: 164
+    output: cache/chr18-3.cache
+    log: logs/chr18-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 164, external: 804998, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.164.sh). For error details see the cluster log and the log files of the involved rule(s).
+Submitted DRMAA job 51 with external jobid 805051.
+Trying to restart job 164.
+[Wed Mar 18 08:48:08 2020]
+Error in rule EBcache:
+    jobid: 121
+    output: cache/chr13-0.cache
+    log: logs/chr13-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 121, external: 805001, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.121.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:48:08 2020]
+rule EBcache:
+    input: matrix/chr18-3.matrix
+    output: cache/chr18-3.cache
+    log: logs/chr18-3.AB.log
+    jobid: 164
+    reason: Missing output files: cache/chr18-3.cache
+    wildcards: chrom=chr18, i=3
+    threads: 20
+
+Trying to restart job 121.
+Submitted DRMAA job 164 with external jobid 805052.
+
+[Wed Mar 18 08:48:08 2020]
+rule EBcache:
+    input: matrix/chr13-0.matrix
+    output: cache/chr13-0.cache
+    log: logs/chr13-0.AB.log
+    jobid: 121
+    reason: Missing output files: cache/chr13-0.cache
+    wildcards: chrom=chr13, i=0
+    threads: 20
+
+Submitted DRMAA job 121 with external jobid 805053.
+[Wed Mar 18 08:48:09 2020]
+Error in rule EBcache:
+    jobid: 188
+    output: cache/chr21-3.cache
+    log: logs/chr21-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 188, external: 805008, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.188.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 188.
+
+[Wed Mar 18 08:48:09 2020]
+rule EBcache:
+    input: matrix/chr21-3.matrix
+    output: cache/chr21-3.cache
+    log: logs/chr21-3.AB.log
+    jobid: 188
+    reason: Missing output files: cache/chr21-3.cache
+    wildcards: chrom=chr21, i=3
+    threads: 20
+
+Submitted DRMAA job 188 with external jobid 805054.
+[Wed Mar 18 08:48:10 2020]
+Error in rule EBcache:
+    jobid: 50
+    output: cache/chr4-1.cache
+    log: logs/chr4-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 50, external: 805015, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.50.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 50.
+
+[Wed Mar 18 08:48:10 2020]
+rule EBcache:
+    input: matrix/chr4-1.matrix
+    output: cache/chr4-1.cache
+    log: logs/chr4-1.AB.log
+    jobid: 50
+    reason: Missing output files: cache/chr4-1.cache
+    wildcards: chrom=chr4, i=1
+    threads: 20
+
+Submitted DRMAA job 50 with external jobid 805055.
+[Wed Mar 18 08:48:22 2020]
+Error in rule EBcache:
+    jobid: 210
+    output: cache/chrY-1.cache
+    log: logs/chrY-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 210, external: 805037, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.210.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Mar 18 08:48:23 2020]
+Error in rule EBcache:
+    jobid: 187
+    output: cache/chr21-2.cache
+    log: logs/chr21-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 187, external: 805036, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.187.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 187.
+[Wed Mar 18 08:48:23 2020]
+Error in rule EBcache:
+    jobid: 186
+    output: cache/chr21-1.cache
+    log: logs/chr21-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 186, external: 805032, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.186.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:48:23 2020]
+rule EBcache:
+    input: matrix/chr21-2.matrix
+    output: cache/chr21-2.cache
+    log: logs/chr21-2.AB.log
+    jobid: 187
+    reason: Missing output files: cache/chr21-2.cache
+    wildcards: chrom=chr21, i=2
+    threads: 20
+
+Trying to restart job 186.
+[Wed Mar 18 08:48:23 2020]
+Error in rule EBcache:
+    jobid: 140
+    output: cache/chr15-3.cache
+    log: logs/chr15-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 140, external: 804938, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.140.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 140.
+Submitted DRMAA job 187 with external jobid 805056.
+
+[Wed Mar 18 08:48:23 2020]
+rule EBcache:
+    input: matrix/chr15-3.matrix
+    output: cache/chr15-3.cache
+    log: logs/chr15-3.AB.log
+    jobid: 140
+    reason: Missing output files: cache/chr15-3.cache
+    wildcards: chrom=chr15, i=3
+    threads: 20
+
+Submitted DRMAA job 140 with external jobid 805057.
+
+[Wed Mar 18 08:48:23 2020]
+rule EBcache:
+    input: matrix/chr21-1.matrix
+    output: cache/chr21-1.cache
+    log: logs/chr21-1.AB.log
+    jobid: 186
+    reason: Missing output files: cache/chr21-1.cache
+    wildcards: chrom=chr21, i=1
+    threads: 20
+
+Submitted DRMAA job 186 with external jobid 805058.
+[Wed Mar 18 08:48:24 2020]
+Error in rule EBcache:
+    jobid: 139
+    output: cache/chr15-2.cache
+    log: logs/chr15-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 139, external: 804950, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.139.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 139.
+[Wed Mar 18 08:48:24 2020]
+Error in rule EBcache:
+    jobid: 97
+    output: cache/chr10-0.cache
+    log: logs/chr10-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 97, external: 804959, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.97.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:48:24 2020]
+rule EBcache:
+    input: matrix/chr15-2.matrix
+    output: cache/chr15-2.cache
+    log: logs/chr15-2.AB.log
+    jobid: 139
+    reason: Missing output files: cache/chr15-2.cache
+    wildcards: chrom=chr15, i=2
+    threads: 20
+
+Trying to restart job 97.
+Submitted DRMAA job 139 with external jobid 805059.
+
+[Wed Mar 18 08:48:24 2020]
+rule EBcache:
+    input: matrix/chr10-0.matrix
+    output: cache/chr10-0.cache
+    log: logs/chr10-0.AB.log
+    jobid: 97
+    reason: Missing output files: cache/chr10-0.cache
+    wildcards: chrom=chr10, i=0
+    threads: 20
+
+Submitted DRMAA job 97 with external jobid 805060.
+[Wed Mar 18 08:48:26 2020]
+Error in rule EBcache:
+    jobid: 115
+    output: cache/chr12-2.cache
+    log: logs/chr12-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 115, external: 804977, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.115.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 115.
+[Wed Mar 18 08:48:26 2020]
+Error in rule EBcache:
+    jobid: 84
+    output: cache/chr8-3.cache
+    log: logs/chr8-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 84, external: 804979, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.84.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:48:26 2020]
+rule EBcache:
+    input: matrix/chr12-2.matrix
+    output: cache/chr12-2.cache
+    log: logs/chr12-2.AB.log
+    jobid: 115
+    reason: Missing output files: cache/chr12-2.cache
+    wildcards: chrom=chr12, i=2
+    threads: 20
+
+Trying to restart job 84.
+Submitted DRMAA job 115 with external jobid 805061.
+
+[Wed Mar 18 08:48:26 2020]
+rule EBcache:
+    input: matrix/chr8-3.matrix
+    output: cache/chr8-3.cache
+    log: logs/chr8-3.AB.log
+    jobid: 84
+    reason: Missing output files: cache/chr8-3.cache
+    wildcards: chrom=chr8, i=3
+    threads: 20
+
+Submitted DRMAA job 84 with external jobid 805062.
+[Wed Mar 18 08:48:27 2020]
+Error in rule EBcache:
+    jobid: 52
+    output: cache/chr4-3.cache
+    log: logs/chr4-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 52, external: 804987, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.52.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 52.
+
+[Wed Mar 18 08:48:27 2020]
+rule EBcache:
+    input: matrix/chr4-3.matrix
+    output: cache/chr4-3.cache
+    log: logs/chr4-3.AB.log
+    jobid: 52
+    reason: Missing output files: cache/chr4-3.cache
+    wildcards: chrom=chr4, i=3
+    threads: 20
+
+Submitted DRMAA job 52 with external jobid 805063.
+[Wed Mar 18 08:48:27 2020]
+Error in rule EBcache:
+    jobid: 196
+    output: cache/chr22-3.cache
+    log: logs/chr22-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 196, external: 804989, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.196.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 196.
+
+[Wed Mar 18 08:48:27 2020]
+rule EBcache:
+    input: matrix/chr22-3.matrix
+    output: cache/chr22-3.cache
+    log: logs/chr22-3.AB.log
+    jobid: 196
+    reason: Missing output files: cache/chr22-3.cache
+    wildcards: chrom=chr22, i=3
+    threads: 20
+
+[Wed Mar 18 08:48:27 2020]
+Error in rule EBcache:
+    jobid: 177
+    output: cache/chr20-0.cache
+    log: logs/chr20-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 177, external: 804996, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.177.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 177.
+[Wed Mar 18 08:48:27 2020]
+Error in rule EBcache:
+    jobid: 195
+    output: cache/chr22-2.cache
+    log: logs/chr22-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 195, external: 804997, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.195.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 195.
+Submitted DRMAA job 196 with external jobid 805064.
+
+[Wed Mar 18 08:48:27 2020]
+rule EBcache:
+    input: matrix/chr20-0.matrix
+    output: cache/chr20-0.cache
+    log: logs/chr20-0.AB.log
+    jobid: 177
+    reason: Missing output files: cache/chr20-0.cache
+    wildcards: chrom=chr20, i=0
+    threads: 20
+
+Submitted DRMAA job 177 with external jobid 805065.
+
+[Wed Mar 18 08:48:27 2020]
+rule EBcache:
+    input: matrix/chr22-2.matrix
+    output: cache/chr22-2.cache
+    log: logs/chr22-2.AB.log
+    jobid: 195
+    reason: Missing output files: cache/chr22-2.cache
+    wildcards: chrom=chr22, i=2
+    threads: 20
+
+Submitted DRMAA job 195 with external jobid 805066.
+[Wed Mar 18 08:48:30 2020]
+Error in rule EBcache:
+    jobid: 162
+    output: cache/chr18-1.cache
+    log: logs/chr18-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 162, external: 805033, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.162.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 162.
+
+[Wed Mar 18 08:48:30 2020]
+rule EBcache:
+    input: matrix/chr18-1.matrix
+    output: cache/chr18-1.cache
+    log: logs/chr18-1.AB.log
+    jobid: 162
+    reason: Missing output files: cache/chr18-1.cache
+    wildcards: chrom=chr18, i=1
+    threads: 20
+
+Submitted DRMAA job 162 with external jobid 805067.
+[Wed Mar 18 08:48:41 2020]
+Error in rule EBcache:
+    jobid: 28
+    output: cache/chr1-3.cache
+    log: logs/chr1-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 28, external: 805041, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.28.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Mar 18 08:48:43 2020]
+Error in rule EBcache:
+    jobid: 57
+    output: cache/chr5-0.cache
+    log: logs/chr5-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 57, external: 804937, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.57.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 57.
+[Wed Mar 18 08:48:43 2020]
+Error in rule EBcache:
+    jobid: 67
+    output: cache/chr6-2.cache
+    log: logs/chr6-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 67, external: 804945, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.67.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:48:43 2020]
+rule EBcache:
+    input: matrix/chr5-0.matrix
+    output: cache/chr5-0.cache
+    log: logs/chr5-0.AB.log
+    jobid: 57
+    reason: Missing output files: cache/chr5-0.cache
+    wildcards: chrom=chr5, i=0
+    threads: 20
+
+Trying to restart job 67.
+Submitted DRMAA job 57 with external jobid 805069.
+
+[Wed Mar 18 08:48:43 2020]
+rule EBcache:
+    input: matrix/chr6-2.matrix
+    output: cache/chr6-2.cache
+    log: logs/chr6-2.AB.log
+    jobid: 67
+    reason: Missing output files: cache/chr6-2.cache
+    wildcards: chrom=chr6, i=2
+    threads: 20
+
+Submitted DRMAA job 67 with external jobid 805070.
+[Wed Mar 18 08:48:47 2020]
+Error in rule EBcache:
+    jobid: 81
+    output: cache/chr8-0.cache
+    log: logs/chr8-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 81, external: 805012, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.81.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 81.
+
+[Wed Mar 18 08:48:47 2020]
+rule EBcache:
+    input: matrix/chr8-0.matrix
+    output: cache/chr8-0.cache
+    log: logs/chr8-0.AB.log
+    jobid: 81
+    reason: Missing output files: cache/chr8-0.cache
+    wildcards: chrom=chr8, i=0
+    threads: 20
+
+Submitted DRMAA job 81 with external jobid 805071.
+[Wed Mar 18 08:49:01 2020]
+Error in rule EBcache:
+    jobid: 185
+    output: cache/chr21-0.cache
+    log: logs/chr21-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 185, external: 805038, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.185.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 185.
+
+[Wed Mar 18 08:49:01 2020]
+rule EBcache:
+    input: matrix/chr21-0.matrix
+    output: cache/chr21-0.cache
+    log: logs/chr21-0.AB.log
+    jobid: 185
+    reason: Missing output files: cache/chr21-0.cache
+    wildcards: chrom=chr21, i=0
+    threads: 20
+
+Submitted DRMAA job 185 with external jobid 805072.
+[Wed Mar 18 08:49:02 2020]
+Error in rule EBcache:
+    jobid: 180
+    output: cache/chr20-3.cache
+    log: logs/chr20-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 180, external: 804946, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.180.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 180.
+
+[Wed Mar 18 08:49:02 2020]
+rule EBcache:
+    input: matrix/chr20-3.matrix
+    output: cache/chr20-3.cache
+    log: logs/chr20-3.AB.log
+    jobid: 180
+    reason: Missing output files: cache/chr20-3.cache
+    wildcards: chrom=chr20, i=3
+    threads: 20
+
+Submitted DRMAA job 180 with external jobid 805073.
+[Wed Mar 18 08:49:03 2020]
+Error in rule EBcache:
+    jobid: 193
+    output: cache/chr22-0.cache
+    log: logs/chr22-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 193, external: 804958, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.193.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 193.
+
+[Wed Mar 18 08:49:03 2020]
+rule EBcache:
+    input: matrix/chr22-0.matrix
+    output: cache/chr22-0.cache
+    log: logs/chr22-0.AB.log
+    jobid: 193
+    reason: Missing output files: cache/chr22-0.cache
+    wildcards: chrom=chr22, i=0
+    threads: 20
+
+Submitted DRMAA job 193 with external jobid 805074.
+[Wed Mar 18 08:49:04 2020]
+Error in rule EBcache:
+    jobid: 83
+    output: cache/chr8-2.cache
+    log: logs/chr8-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 83, external: 804973, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.83.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 83.
+
+[Wed Mar 18 08:49:04 2020]
+rule EBcache:
+    input: matrix/chr8-2.matrix
+    output: cache/chr8-2.cache
+    log: logs/chr8-2.AB.log
+    jobid: 83
+    reason: Missing output files: cache/chr8-2.cache
+    wildcards: chrom=chr8, i=2
+    threads: 20
+
+Submitted DRMAA job 83 with external jobid 805075.
+[Wed Mar 18 08:49:05 2020]
+Error in rule EBcache:
+    jobid: 100
+    output: cache/chr10-3.cache
+    log: logs/chr10-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 100, external: 804983, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.100.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 100.
+
+[Wed Mar 18 08:49:05 2020]
+rule EBcache:
+    input: matrix/chr10-3.matrix
+    output: cache/chr10-3.cache
+    log: logs/chr10-3.AB.log
+    jobid: 100
+    reason: Missing output files: cache/chr10-3.cache
+    wildcards: chrom=chr10, i=3
+    threads: 20
+
+Submitted DRMAA job 100 with external jobid 805076.
+[Wed Mar 18 08:49:06 2020]
+Error in rule EBcache:
+    jobid: 44
+    output: cache/chr3-3.cache
+    log: logs/chr3-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 44, external: 805002, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.44.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 44.
+
+[Wed Mar 18 08:49:06 2020]
+[Wed Mar 18 08:49:06 2020]
+Error in rule EBcache:
+rule EBcache:
+    input: matrix/chr3-3.matrix
+    output: cache/chr3-3.cache
+    log: logs/chr3-3.AB.log
+    jobid: 44
+    reason: Missing output files: cache/chr3-3.cache
+    wildcards: chrom=chr3, i=3
+    threads: 20
+    jobid: 89
+
+    output: cache/chr9-0.cache
+    log: logs/chr9-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 89, external: 805009, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.89.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 89.
+[Wed Mar 18 08:49:06 2020]
+Error in rule EBcache:
+    jobid: 194
+    output: cache/chr22-1.cache
+    log: logs/chr22-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 194, external: 805013, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.194.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 194.
+Submitted DRMAA job 44 with external jobid 805077.
+
+[Wed Mar 18 08:49:06 2020]
+rule EBcache:
+    input: matrix/chr9-0.matrix
+    output: cache/chr9-0.cache
+    log: logs/chr9-0.AB.log
+    jobid: 89
+    reason: Missing output files: cache/chr9-0.cache
+    wildcards: chrom=chr9, i=0
+    threads: 20
+
+Submitted DRMAA job 89 with external jobid 805078.
+
+[Wed Mar 18 08:49:06 2020]
+rule EBcache:
+    input: matrix/chr22-1.matrix
+    output: cache/chr22-1.cache
+    log: logs/chr22-1.AB.log
+    jobid: 194
+    reason: Missing output files: cache/chr22-1.cache
+    wildcards: chrom=chr22, i=1
+    threads: 20
+
+Submitted DRMAA job 194 with external jobid 805079.
+[Wed Mar 18 08:49:07 2020]
+Error in rule EBcache:
+    jobid: 58
+    output: cache/chr5-1.cache
+    log: logs/chr5-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 58, external: 805022, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.58.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 58.
+
+[Wed Mar 18 08:49:07 2020]
+rule EBcache:
+    input: matrix/chr5-1.matrix
+    output: cache/chr5-1.cache
+    log: logs/chr5-1.AB.log
+    jobid: 58
+    reason: Missing output files: cache/chr5-1.cache
+    wildcards: chrom=chr5, i=1
+    threads: 20
+
+Submitted DRMAA job 58 with external jobid 805080.
+[Wed Mar 18 08:49:19 2020]
+Error in rule EBcache:
+    jobid: 187
+    output: cache/chr21-2.cache
+    log: logs/chr21-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 187, external: 805056, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.187.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 187.
+[Wed Mar 18 08:49:19 2020]
+Error in rule EBcache:
+    jobid: 186
+    output: cache/chr21-1.cache
+    log: logs/chr21-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 186, external: 805058, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.186.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:49:19 2020]
+rule EBcache:
+    input: matrix/chr21-2.matrix
+    output: cache/chr21-2.cache
+    log: logs/chr21-2.AB.log
+    jobid: 187
+    reason: Missing output files: cache/chr21-2.cache
+    wildcards: chrom=chr21, i=2
+    threads: 20
+
+Trying to restart job 186.
+Submitted DRMAA job 187 with external jobid 805081.
+
+[Wed Mar 18 08:49:19 2020]
+rule EBcache:
+    input: matrix/chr21-1.matrix
+    output: cache/chr21-1.cache
+    log: logs/chr21-1.AB.log
+    jobid: 186
+    reason: Missing output files: cache/chr21-1.cache
+    wildcards: chrom=chr21, i=1
+    threads: 20
+
+Submitted DRMAA job 186 with external jobid 805082.
+[Wed Mar 18 08:49:20 2020]
+Error in rule EBcache:
+    jobid: 123
+    output: cache/chr13-2.cache
+    log: logs/chr13-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 123, external: 805045, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.123.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 123.
+
+[Wed Mar 18 08:49:20 2020]
+rule EBcache:
+    input: matrix/chr13-2.matrix
+    output: cache/chr13-2.cache
+    log: logs/chr13-2.AB.log
+    jobid: 123
+    reason: Missing output files: cache/chr13-2.cache
+    wildcards: chrom=chr13, i=2
+    threads: 20
+
+Submitted DRMAA job 123 with external jobid 805083.
+[Wed Mar 18 08:49:21 2020]
+Error in rule EBcache:
+    jobid: 122
+    output: cache/chr13-1.cache
+    log: logs/chr13-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 122, external: 805035, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.122.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 122.
+
+[Wed Mar 18 08:49:21 2020]
+rule EBcache:
+    input: matrix/chr13-1.matrix
+    output: cache/chr13-1.cache
+    log: logs/chr13-1.AB.log
+    jobid: 122
+    reason: Missing output files: cache/chr13-1.cache
+    wildcards: chrom=chr13, i=1
+    threads: 20
+
+Submitted DRMAA job 122 with external jobid 805084.
+[Wed Mar 18 08:49:22 2020]
+Error in rule EBcache:
+    jobid: 41
+    output: cache/chr3-0.cache
+    log: logs/chr3-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 41, external: 804943, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.41.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 41.
+
+[Wed Mar 18 08:49:22 2020]
+rule EBcache:
+    input: matrix/chr3-0.matrix
+    output: cache/chr3-0.cache
+    log: logs/chr3-0.AB.log
+    jobid: 41
+    reason: Missing output files: cache/chr3-0.cache
+    wildcards: chrom=chr3, i=0
+    threads: 20
+
+Submitted DRMAA job 41 with external jobid 805085.
+[Wed Mar 18 08:49:24 2020]
+Error in rule EBcache:
+    jobid: 43
+    output: cache/chr3-2.cache
+    log: logs/chr3-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 43, external: 804982, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.43.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 43.
+
+[Wed Mar 18 08:49:24 2020]
+rule EBcache:
+    input: matrix/chr3-2.matrix
+    output: cache/chr3-2.cache
+    log: logs/chr3-2.AB.log
+    jobid: 43
+    reason: Missing output files: cache/chr3-2.cache
+    wildcards: chrom=chr3, i=2
+    threads: 20
+
+Submitted DRMAA job 43 with external jobid 805086.
+[Wed Mar 18 08:49:26 2020]
+Error in rule EBcache:
+    jobid: 98
+    output: cache/chr10-1.cache
+    log: logs/chr10-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 98, external: 805016, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.98.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 98.
+
+[Wed Mar 18 08:49:26 2020]
+rule EBcache:
+    input: matrix/chr10-1.matrix
+    output: cache/chr10-1.cache
+    log: logs/chr10-1.AB.log
+    jobid: 98
+    reason: Missing output files: cache/chr10-1.cache
+    wildcards: chrom=chr10, i=1
+    threads: 20
+
+Submitted DRMAA job 98 with external jobid 805087.
+[Wed Mar 18 08:49:26 2020]
+Error in rule EBcache:
+    jobid: 113
+    output: cache/chr12-0.cache
+    log: logs/chr12-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 113, external: 805027, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.113.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 113.
+
+[Wed Mar 18 08:49:26 2020]
+rule EBcache:
+    input: matrix/chr12-0.matrix
+    output: cache/chr12-0.cache
+    log: logs/chr12-0.AB.log
+    jobid: 113
+    reason: Missing output files: cache/chr12-0.cache
+    wildcards: chrom=chr12, i=0
+    threads: 20
+
+Submitted DRMAA job 113 with external jobid 805088.
+[Wed Mar 18 08:49:41 2020]
+Error in rule EBcache:
+    jobid: 188
+    output: cache/chr21-3.cache
+    log: logs/chr21-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 188, external: 805054, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.188.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 188.
+
+[Wed Mar 18 08:49:41 2020]
+rule EBcache:
+    input: matrix/chr21-3.matrix
+    output: cache/chr21-3.cache
+    log: logs/chr21-3.AB.log
+    jobid: 188
+    reason: Missing output files: cache/chr21-3.cache
+    wildcards: chrom=chr21, i=3
+    threads: 20
+
+Submitted DRMAA job 188 with external jobid 805089.
+[Wed Mar 18 08:49:42 2020]
+Error in rule EBcache:
+    jobid: 68
+    output: cache/chr6-3.cache
+    log: logs/chr6-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 68, external: 804953, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.68.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 68.
+[Wed Mar 18 08:49:42 2020]
+Error in rule EBcache:
+    jobid: 73
+    output: cache/chr7-0.cache
+    log: logs/chr7-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 73, external: 804962, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.73.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:49:42 2020]
+rule EBcache:
+    input: matrix/chr6-3.matrix
+    output: cache/chr6-3.cache
+    log: logs/chr6-3.AB.log
+    jobid: 68
+    reason: Missing output files: cache/chr6-3.cache
+    wildcards: chrom=chr6, i=3
+    threads: 20
+
+Trying to restart job 73.
+[Wed Mar 18 08:49:42 2020]
+Error in rule EBcache:
+    jobid: 116
+    output: cache/chr12-3.cache
+    log: logs/chr12-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 116, external: 804965, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.116.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 116.
+Submitted DRMAA job 68 with external jobid 805090.
+
+[Wed Mar 18 08:49:42 2020]
+rule EBcache:
+    input: matrix/chr7-0.matrix
+    output: cache/chr7-0.cache
+    log: logs/chr7-0.AB.log
+    jobid: 73
+    reason: Missing output files: cache/chr7-0.cache
+    wildcards: chrom=chr7, i=0
+    threads: 20
+
+Submitted DRMAA job 73 with external jobid 805091.
+
+[Wed Mar 18 08:49:42 2020]
+rule EBcache:
+    input: matrix/chr12-3.matrix
+    output: cache/chr12-3.cache
+    log: logs/chr12-3.AB.log
+    jobid: 116
+    reason: Missing output files: cache/chr12-3.cache
+    wildcards: chrom=chr12, i=3
+    threads: 20
+
+Submitted DRMAA job 116 with external jobid 805092.
+[Wed Mar 18 08:49:45 2020]
+Error in rule EBcache:
+    jobid: 74
+    output: cache/chr7-1.cache
+    log: logs/chr7-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 74, external: 805018, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.74.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 74.
+
+[Wed Mar 18 08:49:45 2020]
+rule EBcache:
+    input: matrix/chr7-1.matrix
+    output: cache/chr7-1.cache
+    log: logs/chr7-1.AB.log
+    jobid: 74
+    reason: Missing output files: cache/chr7-1.cache
+    wildcards: chrom=chr7, i=1
+    threads: 20
+
+Submitted DRMAA job 74 with external jobid 805093.
+[Wed Mar 18 08:49:46 2020]
+Error in rule EBcache:
+    jobid: 162
+    output: cache/chr18-1.cache
+    log: logs/chr18-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 162, external: 805067, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.162.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 162.
+
+[Wed Mar 18 08:49:46 2020]
+rule EBcache:
+    input: matrix/chr18-1.matrix
+    output: cache/chr18-1.cache
+    log: logs/chr18-1.AB.log
+    jobid: 162
+    reason: Missing output files: cache/chr18-1.cache
+    wildcards: chrom=chr18, i=1
+    threads: 20
+
+Submitted DRMAA job 162 with external jobid 805094.
+[Wed Mar 18 08:49:56 2020]
+Error in rule EBcache:
+    jobid: 187
+    output: cache/chr21-2.cache
+    log: logs/chr21-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 187, external: 805081, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.187.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Mar 18 08:49:59 2020]
+Error in rule EBcache:
+    jobid: 124
+    output: cache/chr13-3.cache
+    log: logs/chr13-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 124, external: 805042, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.124.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 124.
+[Wed Mar 18 08:49:59 2020]
+Error in rule EBcache:
+    jobid: 178
+    output: cache/chr20-1.cache
+    log: logs/chr20-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 178, external: 805046, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.178.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:49:59 2020]
+rule EBcache:
+    input: matrix/chr13-3.matrix
+    output: cache/chr13-3.cache
+    log: logs/chr13-3.AB.log
+    jobid: 124
+    reason: Missing output files: cache/chr13-3.cache
+    wildcards: chrom=chr13, i=3
+    threads: 20
+
+Trying to restart job 178.
+[Wed Mar 18 08:49:59 2020]
+Error in rule EBcache:
+    jobid: 138
+    output: cache/chr15-1.cache
+    log: logs/chr15-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 138, external: 805047, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.138.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 138.
+Submitted DRMAA job 124 with external jobid 805095.
+
+[Wed Mar 18 08:49:59 2020]
+rule EBcache:
+    input: matrix/chr20-1.matrix
+    output: cache/chr20-1.cache
+    log: logs/chr20-1.AB.log
+    jobid: 178
+    reason: Missing output files: cache/chr20-1.cache
+    wildcards: chrom=chr20, i=1
+    threads: 20
+
+Submitted DRMAA job 178 with external jobid 805096.
+
+[Wed Mar 18 08:49:59 2020]
+rule EBcache:
+    input: matrix/chr15-1.matrix
+    output: cache/chr15-1.cache
+    log: logs/chr15-1.AB.log
+    jobid: 138
+    reason: Missing output files: cache/chr15-1.cache
+    wildcards: chrom=chr15, i=1
+    threads: 20
+
+Submitted DRMAA job 138 with external jobid 805097.
+[Wed Mar 18 08:50:00 2020]
+Error in rule EBcache:
+    jobid: 163
+    output: cache/chr18-2.cache
+    log: logs/chr18-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 163, external: 805049, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.163.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 163.
+[Wed Mar 18 08:50:00 2020]
+Error in rule EBcache:
+    jobid: 65
+    output: cache/chr6-0.cache
+    log: logs/chr6-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 65, external: 805050, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.65.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:50:00 2020]
+rule EBcache:
+    input: matrix/chr18-2.matrix
+    output: cache/chr18-2.cache
+    log: logs/chr18-2.AB.log
+    jobid: 163
+    reason: Missing output files: cache/chr18-2.cache
+    wildcards: chrom=chr18, i=2
+    threads: 20
+
+Trying to restart job 65.
+[Wed Mar 18 08:50:00 2020]
+Error in rule EBcache:
+    jobid: 51
+    output: cache/chr4-2.cache
+    log: logs/chr4-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 51, external: 805051, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.51.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 51.
+[Wed Mar 18 08:50:00 2020]
+Error in rule EBcache:
+    jobid: 161
+    output: cache/chr18-0.cache
+    log: logs/chr18-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 161, external: 805039, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.161.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 161.
+Submitted DRMAA job 163 with external jobid 805098.
+[Wed Mar 18 08:50:00 2020]
+Error in rule EBcache:
+    jobid: 132
+    output: cache/chr14-3.cache
+    log: logs/chr14-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 132, external: 804936, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.132.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:50:00 2020]
+rule EBcache:
+    input: matrix/chr18-0.matrix
+    output: cache/chr18-0.cache
+    log: logs/chr18-0.AB.log
+    jobid: 161
+    reason: Missing output files: cache/chr18-0.cache
+    wildcards: chrom=chr18, i=0
+    threads: 20
+
+Trying to restart job 132.
+Submitted DRMAA job 161 with external jobid 805099.
+
+[Wed Mar 18 08:50:00 2020]
+rule EBcache:
+    input: matrix/chr6-0.matrix
+    output: cache/chr6-0.cache
+    log: logs/chr6-0.AB.log
+    jobid: 65
+    reason: Missing output files: cache/chr6-0.cache
+    wildcards: chrom=chr6, i=0
+    threads: 20
+
+Submitted DRMAA job 65 with external jobid 805100.
+
+[Wed Mar 18 08:50:00 2020]
+rule EBcache:
+    input: matrix/chr4-2.matrix
+    output: cache/chr4-2.cache
+    log: logs/chr4-2.AB.log
+    jobid: 51
+    reason: Missing output files: cache/chr4-2.cache
+    wildcards: chrom=chr4, i=2
+    threads: 20
+
+Submitted DRMAA job 51 with external jobid 805101.
+
+[Wed Mar 18 08:50:00 2020]
+rule EBcache:
+    input: matrix/chr14-3.matrix
+    output: cache/chr14-3.cache
+    log: logs/chr14-3.AB.log
+    jobid: 132
+    reason: Missing output files: cache/chr14-3.cache
+    wildcards: chrom=chr14, i=3
+    threads: 20
+
+Submitted DRMAA job 132 with external jobid 805102.
+[Wed Mar 18 08:50:01 2020]
+Error in rule EBcache:
+    jobid: 156
+    output: cache/chr17-3.cache
+    log: logs/chr17-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 156, external: 804944, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.156.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 156.
+
+[Wed Mar 18 08:50:01 2020]
+rule EBcache:
+    input: matrix/chr17-3.matrix
+    output: cache/chr17-3.cache
+    log: logs/chr17-3.AB.log
+    jobid: 156
+    reason: Missing output files: cache/chr17-3.cache
+    wildcards: chrom=chr17, i=3
+    threads: 20
+
+Submitted DRMAA job 156 with external jobid 805103.
+[Wed Mar 18 08:50:02 2020]
+Error in rule EBcache:
+    jobid: 201
+    output: cache/chrX-0.cache
+    log: logs/chrX-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 201, external: 804969, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.201.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 201.
+[Wed Mar 18 08:50:02 2020]
+Error in rule EBcache:
+    jobid: 90
+    output: cache/chr9-1.cache
+    log: logs/chr9-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 90, external: 804974, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.90.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:50:02 2020]
+rule EBcache:
+    input: matrix/chrX-0.matrix
+    output: cache/chrX-0.cache
+    log: logs/chrX-0.AB.log
+    jobid: 201
+    reason: Missing output files: cache/chrX-0.cache
+    wildcards: chrom=chrX, i=0
+    threads: 20
+
+Trying to restart job 90.
+[Wed Mar 18 08:50:02 2020]
+Error in rule EBcache:
+    jobid: 146
+    output: cache/chr16-1.cache
+    log: logs/chr16-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 146, external: 804976, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.146.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 146.
+Submitted DRMAA job 201 with external jobid 805104.
+
+[Wed Mar 18 08:50:02 2020]
+rule EBcache:
+    input: matrix/chr9-1.matrix
+    output: cache/chr9-1.cache
+    log: logs/chr9-1.AB.log
+    jobid: 90
+    reason: Missing output files: cache/chr9-1.cache
+    wildcards: chrom=chr9, i=1
+    threads: 20
+
+Submitted DRMAA job 90 with external jobid 805105.
+
+[Wed Mar 18 08:50:02 2020]
+rule EBcache:
+    input: matrix/chr16-1.matrix
+    output: cache/chr16-1.cache
+    log: logs/chr16-1.AB.log
+    jobid: 146
+    reason: Missing output files: cache/chr16-1.cache
+    wildcards: chrom=chr16, i=1
+    threads: 20
+
+Submitted DRMAA job 146 with external jobid 805106.
+[Wed Mar 18 08:50:03 2020]
+Error in rule EBcache:
+    jobid: 108
+    output: cache/chr11-3.cache
+    log: logs/chr11-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 108, external: 804988, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.108.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 108.
+
+[Wed Mar 18 08:50:03 2020]
+rule EBcache:
+    input: matrix/chr11-3.matrix
+    output: cache/chr11-3.cache
+    log: logs/chr11-3.AB.log
+    jobid: 108
+    reason: Missing output files: cache/chr11-3.cache
+    wildcards: chrom=chr11, i=3
+    threads: 20
+
+[Wed Mar 18 08:50:03 2020]
+Error in rule EBcache:
+    jobid: 129
+    output: cache/chr14-0.cache
+    log: logs/chr14-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 129, external: 805004, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.129.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 129.
+Submitted DRMAA job 108 with external jobid 805107.
+
+[Wed Mar 18 08:50:03 2020]
+rule EBcache:
+    input: matrix/chr14-0.matrix
+    output: cache/chr14-0.cache
+    log: logs/chr14-0.AB.log
+    jobid: 129
+    reason: Missing output files: cache/chr14-0.cache
+    wildcards: chrom=chr14, i=0
+    threads: 20
+
+Submitted DRMAA job 129 with external jobid 805108.
+[Wed Mar 18 08:50:04 2020]
+Error in rule EBcache:
+    jobid: 203
+    output: cache/chrX-2.cache
+    log: logs/chrX-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 203, external: 805019, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.203.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 203.
+
+[Wed Mar 18 08:50:04 2020]
+rule EBcache:
+    input: matrix/chrX-2.matrix
+    output: cache/chrX-2.cache
+    log: logs/chrX-2.AB.log
+    jobid: 203
+    reason: Missing output files: cache/chrX-2.cache
+    wildcards: chrom=chrX, i=2
+    threads: 20
+
+[Wed Mar 18 08:50:04 2020]
+Error in rule EBcache:
+    jobid: 204
+    output: cache/chrX-3.cache
+    log: logs/chrX-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 204, external: 805026, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.204.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 204.
+Submitted DRMAA job 203 with external jobid 805109.
+
+[Wed Mar 18 08:50:04 2020]
+rule EBcache:
+    input: matrix/chrX-3.matrix
+    output: cache/chrX-3.cache
+    log: logs/chrX-3.AB.log
+    jobid: 204
+    reason: Missing output files: cache/chrX-3.cache
+    wildcards: chrom=chrX, i=3
+    threads: 20
+
+Submitted DRMAA job 204 with external jobid 805110.
+[Wed Mar 18 08:50:17 2020]
+Error in rule EBcache:
+    jobid: 186
+    output: cache/chr21-1.cache
+    log: logs/chr21-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 186, external: 805082, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.186.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Mar 18 08:50:17 2020]
+Error in rule EBcache:
+    jobid: 122
+    output: cache/chr13-1.cache
+    log: logs/chr13-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 122, external: 805084, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.122.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 122.
+[Wed Mar 18 08:50:17 2020]
+Error in rule EBcache:
+    jobid: 185
+    output: cache/chr21-0.cache
+    log: logs/chr21-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 185, external: 805072, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.185.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:50:17 2020]
+rule EBcache:
+    input: matrix/chr13-1.matrix
+    output: cache/chr13-1.cache
+    log: logs/chr13-1.AB.log
+    jobid: 122
+    reason: Missing output files: cache/chr13-1.cache
+    wildcards: chrom=chr13, i=1
+    threads: 20
+
+Trying to restart job 185.
+Submitted DRMAA job 122 with external jobid 805112.
+
+[Wed Mar 18 08:50:17 2020]
+rule EBcache:
+    input: matrix/chr21-0.matrix
+    output: cache/chr21-0.cache
+    log: logs/chr21-0.AB.log
+    jobid: 185
+    reason: Missing output files: cache/chr21-0.cache
+    wildcards: chrom=chr21, i=0
+    threads: 20
+
+Submitted DRMAA job 185 with external jobid 805113.
+[Wed Mar 18 08:50:19 2020]
+Error in rule EBcache:
+    jobid: 140
+    output: cache/chr15-3.cache
+    log: logs/chr15-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 140, external: 805057, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.140.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 140.
+
+[Wed Mar 18 08:50:19 2020]
+rule EBcache:
+    input: matrix/chr15-3.matrix
+    output: cache/chr15-3.cache
+    log: logs/chr15-3.AB.log
+    jobid: 140
+    reason: Missing output files: cache/chr15-3.cache
+    wildcards: chrom=chr15, i=3
+    threads: 20
+
+Submitted DRMAA job 140 with external jobid 805114.
+[Wed Mar 18 08:50:20 2020]
+Error in rule EBcache:
+    jobid: 130
+    output: cache/chr14-1.cache
+    log: logs/chr14-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 130, external: 805048, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.130.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 130.
+[Wed Mar 18 08:50:20 2020]
+Error in rule EBcache:
+    jobid: 164
+    output: cache/chr18-3.cache
+    log: logs/chr18-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 164, external: 805052, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.164.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:50:20 2020]
+rule EBcache:
+    input: matrix/chr14-1.matrix
+    output: cache/chr14-1.cache
+    log: logs/chr14-1.AB.log
+    jobid: 130
+    reason: Missing output files: cache/chr14-1.cache
+    wildcards: chrom=chr14, i=1
+    threads: 20
+
+Trying to restart job 164.
+[Wed Mar 18 08:50:20 2020]
+Error in rule EBcache:
+    jobid: 50
+    output: cache/chr4-1.cache
+    log: logs/chr4-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 50, external: 805055, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.50.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 50.
+Submitted DRMAA job 130 with external jobid 805115.
+[Wed Mar 18 08:50:20 2020]
+
+Error in rule EBcache:
+[Wed Mar 18 08:50:20 2020]
+    jobid: 82
+rule EBcache:
+    input: matrix/chr18-3.matrix
+    output: cache/chr18-3.cache
+    log: logs/chr18-3.AB.log
+    jobid: 164
+    reason: Missing output files: cache/chr18-3.cache
+    wildcards: chrom=chr18, i=3
+    threads: 20
+    output: cache/chr8-1.cache
+
+    log: logs/chr8-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 82, external: 805040, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.82.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 82.
+[Wed Mar 18 08:50:20 2020]
+Error in rule EBcache:
+    jobid: 91
+    output: cache/chr9-2.cache
+    log: logs/chr9-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 91, external: 804951, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.91.sh). For error details see the cluster log and the log files of the involved rule(s).
+Submitted DRMAA job 164 with external jobid 805116.
+
+[Wed Mar 18 08:50:20 2020]
+rule EBcache:
+    input: matrix/chr4-1.matrix
+    output: cache/chr4-1.cache
+    log: logs/chr4-1.AB.log
+    jobid: 50
+    reason: Missing output files: cache/chr4-1.cache
+    wildcards: chrom=chr4, i=1
+    threads: 20
+
+Trying to restart job 91.
+Submitted DRMAA job 50 with external jobid 805117.
+
+[Wed Mar 18 08:50:20 2020]
+rule EBcache:
+    input: matrix/chr9-2.matrix
+    output: cache/chr9-2.cache
+    log: logs/chr9-2.AB.log
+    jobid: 91
+    reason: Missing output files: cache/chr9-2.cache
+    wildcards: chrom=chr9, i=2
+    threads: 20
+
+Submitted DRMAA job 91 with external jobid 805118.
+
+[Wed Mar 18 08:50:20 2020]
+rule EBcache:
+    input: matrix/chr8-1.matrix
+    output: cache/chr8-1.cache
+    log: logs/chr8-1.AB.log
+    jobid: 82
+    reason: Missing output files: cache/chr8-1.cache
+    wildcards: chrom=chr8, i=1
+    threads: 20
+
+Submitted DRMAA job 82 with external jobid 805119.
+[Wed Mar 18 08:50:21 2020]
+Error in rule EBcache:
+    jobid: 154
+    output: cache/chr17-1.cache
+    log: logs/chr17-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 154, external: 804966, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.154.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 154.
+[Wed Mar 18 08:50:21 2020]
+Error in rule EBcache:
+    jobid: 36
+    output: cache/chr2-3.cache
+    log: logs/chr2-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 36, external: 804975, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.36.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:50:21 2020]
+rule EBcache:
+    input: matrix/chr17-1.matrix
+    output: cache/chr17-1.cache
+    log: logs/chr17-1.AB.log
+    jobid: 154
+    reason: Missing output files: cache/chr17-1.cache
+    wildcards: chrom=chr17, i=1
+    threads: 20
+
+Submitted DRMAA job 154 with external jobid 805120.
+Trying to restart job 36.
+[Wed Mar 18 08:50:21 2020]
+Error in rule EBcache:
+    jobid: 66
+    output: cache/chr6-1.cache
+    log: logs/chr6-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 66, external: 804978, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.66.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:50:21 2020]
+rule EBcache:
+    input: matrix/chr2-3.matrix
+    output: cache/chr2-3.cache
+    log: logs/chr2-3.AB.log
+    jobid: 36
+    reason: Missing output files: cache/chr2-3.cache
+    wildcards: chrom=chr2, i=3
+    threads: 20
+
+Trying to restart job 66.
+Submitted DRMAA job 36 with external jobid 805121.
+
+[Wed Mar 18 08:50:21 2020]
+rule EBcache:
+    input: matrix/chr6-1.matrix
+    output: cache/chr6-1.cache
+    log: logs/chr6-1.AB.log
+    jobid: 66
+    reason: Missing output files: cache/chr6-1.cache
+    wildcards: chrom=chr6, i=1
+    threads: 20
+
+Submitted DRMAA job 66 with external jobid 805122.
+[Wed Mar 18 08:50:22 2020]
+Error in rule EBcache:
+    jobid: 59
+    output: cache/chr5-2.cache
+    log: logs/chr5-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 59, external: 804990, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.59.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 59.
+
+[Wed Mar 18 08:50:22 2020]
+rule EBcache:
+    input: matrix/chr5-2.matrix
+    output: cache/chr5-2.cache
+    log: logs/chr5-2.AB.log
+    jobid: 59
+    reason: Missing output files: cache/chr5-2.cache
+    wildcards: chrom=chr5, i=2
+    threads: 20
+
+[Wed Mar 18 08:50:22 2020]
+Error in rule EBcache:
+    jobid: 107
+    output: cache/chr11-2.cache
+    log: logs/chr11-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 107, external: 804994, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.107.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 107.
+Submitted DRMAA job 59 with external jobid 805123.
+
+[Wed Mar 18 08:50:22 2020]
+rule EBcache:
+    input: matrix/chr11-2.matrix
+    output: cache/chr11-2.cache
+    log: logs/chr11-2.AB.log
+    jobid: 107
+    reason: Missing output files: cache/chr11-2.cache
+    wildcards: chrom=chr11, i=2
+    threads: 20
+
+Submitted DRMAA job 107 with external jobid 805124.
+[Wed Mar 18 08:50:37 2020]
+Error in rule EBcache:
+    jobid: 123
+    output: cache/chr13-2.cache
+    log: logs/chr13-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 123, external: 805083, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.123.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 123.
+
+[Wed Mar 18 08:50:37 2020]
+rule EBcache:
+    input: matrix/chr13-2.matrix
+    output: cache/chr13-2.cache
+    log: logs/chr13-2.AB.log
+    jobid: 123
+    reason: Missing output files: cache/chr13-2.cache
+    wildcards: chrom=chr13, i=2
+    threads: 20
+
+Submitted DRMAA job 123 with external jobid 805125.
+[Wed Mar 18 08:50:39 2020]
+Error in rule EBcache:
+    jobid: 196
+    output: cache/chr22-3.cache
+    log: logs/chr22-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 196, external: 805064, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.196.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 196.
+[Wed Mar 18 08:50:39 2020]
+Error in rule EBcache:
+    jobid: 177
+    output: cache/chr20-0.cache
+    log: logs/chr20-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 177, external: 805065, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.177.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:50:39 2020]
+rule EBcache:
+    input: matrix/chr22-3.matrix
+    output: cache/chr22-3.cache
+    log: logs/chr22-3.AB.log
+    jobid: 196
+    reason: Missing output files: cache/chr22-3.cache
+    wildcards: chrom=chr22, i=3
+    threads: 20
+
+Trying to restart job 177.
+Submitted DRMAA job 196 with external jobid 805127.
+
+[Wed Mar 18 08:50:39 2020]
+rule EBcache:
+    input: matrix/chr20-0.matrix
+    output: cache/chr20-0.cache
+    log: logs/chr20-0.AB.log
+    jobid: 177
+    reason: Missing output files: cache/chr20-0.cache
+    wildcards: chrom=chr20, i=0
+    threads: 20
+
+Submitted DRMAA job 177 with external jobid 805128.
+[Wed Mar 18 08:50:40 2020]
+Error in rule EBcache:
+    jobid: 147
+    output: cache/chr16-2.cache
+    log: logs/chr16-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 147, external: 804942, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.147.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 147.
+
+[Wed Mar 18 08:50:40 2020]
+rule EBcache:
+    input: matrix/chr16-2.matrix
+    output: cache/chr16-2.cache
+    log: logs/chr16-2.AB.log
+    jobid: 147
+    reason: Missing output files: cache/chr16-2.cache
+    wildcards: chrom=chr16, i=2
+    threads: 20
+
+Submitted DRMAA job 147 with external jobid 805129.
+[Wed Mar 18 08:50:42 2020]
+Error in rule EBcache:
+    jobid: 137
+    output: cache/chr15-0.cache
+    log: logs/chr15-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 137, external: 805007, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.137.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 137.
+
+[Wed Mar 18 08:50:42 2020]
+rule EBcache:
+    input: matrix/chr15-0.matrix
+    output: cache/chr15-0.cache
+    log: logs/chr15-0.AB.log
+    jobid: 137
+    reason: Missing output files: cache/chr15-0.cache
+    wildcards: chrom=chr15, i=0
+    threads: 20
+
+[Wed Mar 18 08:50:42 2020]
+Error in rule EBcache:
+    jobid: 162
+    output: cache/chr18-1.cache
+    log: logs/chr18-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 162, external: 805094, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.162.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+Submitted DRMAA job 137 with external jobid 805130.
+[Wed Mar 18 08:50:55 2020]
+Error in rule EBcache:
+    jobid: 188
+    output: cache/chr21-3.cache
+    log: logs/chr21-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 188, external: 805089, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.188.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 188.
+
+[Wed Mar 18 08:50:55 2020]
+rule EBcache:
+    input: matrix/chr21-3.matrix
+    output: cache/chr21-3.cache
+    log: logs/chr21-3.AB.log
+    jobid: 188
+    reason: Missing output files: cache/chr21-3.cache
+    wildcards: chrom=chr21, i=3
+    threads: 20
+
+Submitted DRMAA job 188 with external jobid 805131.
+[Wed Mar 18 08:50:57 2020]
+Error in rule EBcache:
+    jobid: 57
+    output: cache/chr5-0.cache
+    log: logs/chr5-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 57, external: 805069, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.57.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 57.
+[Wed Mar 18 08:50:57 2020]
+Error in rule EBcache:
+    jobid: 131
+    output: cache/chr14-2.cache
+    log: logs/chr14-2.AB.log (check log file(s) for error message)
+
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+[Wed Mar 18 08:50:57 2020]
+
+rule EBcache:
+    input: matrix/chr5-0.matrix
+    output: cache/chr5-0.cache
+    log: logs/chr5-0.AB.log
+    jobid: 57
+    reason: Missing output files: cache/chr5-0.cache
+    wildcards: chrom=chr5, i=0
+    threads: 20
+Error executing rule EBcache on cluster (jobid: 131, external: 805043, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.131.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+Trying to restart job 131.
+Submitted DRMAA job 57 with external jobid 805132.
+
+[Wed Mar 18 08:50:57 2020]
+rule EBcache:
+    input: matrix/chr14-2.matrix
+    output: cache/chr14-2.cache
+    log: logs/chr14-2.AB.log
+    jobid: 131
+    reason: Missing output files: cache/chr14-2.cache
+    wildcards: chrom=chr14, i=2
+    threads: 20
+
+Submitted DRMAA job 131 with external jobid 805133.
+[Wed Mar 18 08:50:58 2020]
+Error in rule EBcache:
+    jobid: 179
+    output: cache/chr20-2.cache
+    log: logs/chr20-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 179, external: 805044, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.179.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 179.
+[Wed Mar 18 08:50:58 2020]
+Error in rule EBcache:
+    jobid: 121
+    output: cache/chr13-0.cache
+    log: logs/chr13-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 121, external: 805053, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.121.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:50:58 2020]
+rule EBcache:
+    input: matrix/chr20-2.matrix
+    output: cache/chr20-2.cache
+    log: logs/chr20-2.AB.log
+    jobid: 179
+    reason: Missing output files: cache/chr20-2.cache
+    wildcards: chrom=chr20, i=2
+    threads: 20
+
+Trying to restart job 121.
+Submitted DRMAA job 179 with external jobid 805134.
+
+[Wed Mar 18 08:50:58 2020]
+rule EBcache:
+    input: matrix/chr13-0.matrix
+    output: cache/chr13-0.cache
+    log: logs/chr13-0.AB.log
+    jobid: 121
+    reason: Missing output files: cache/chr13-0.cache
+    wildcards: chrom=chr13, i=0
+    threads: 20
+
+Submitted DRMAA job 121 with external jobid 805135.
+[Wed Mar 18 08:50:59 2020]
+Error in rule EBcache:
+    jobid: 169
+    output: cache/chr19-0.cache
+    log: logs/chr19-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 169, external: 804980, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.169.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 169.
+[Wed Mar 18 08:50:59 2020]
+Error in rule EBcache:
+    jobid: 145
+    output: cache/chr16-0.cache
+    log: logs/chr16-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 145, external: 804985, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.145.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:50:59 2020]
+rule EBcache:
+    input: matrix/chr19-0.matrix
+    output: cache/chr19-0.cache
+    log: logs/chr19-0.AB.log
+    jobid: 169
+    reason: Missing output files: cache/chr19-0.cache
+    wildcards: chrom=chr19, i=0
+    threads: 20
+
+Trying to restart job 145.
+[Wed Mar 18 08:50:59 2020]
+Error in rule EBcache:
+    jobid: 99
+    output: cache/chr10-2.cache
+    log: logs/chr10-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 99, external: 805003, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.99.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 99.
+Submitted DRMAA job 169 with external jobid 805136.
+
+[Wed Mar 18 08:50:59 2020]
+rule EBcache:
+    input: matrix/chr16-0.matrix
+    output: cache/chr16-0.cache
+    log: logs/chr16-0.AB.log
+    jobid: 145
+    reason: Missing output files: cache/chr16-0.cache
+    wildcards: chrom=chr16, i=0
+    threads: 20
+
+Submitted DRMAA job 145 with external jobid 805137.
+
+[Wed Mar 18 08:50:59 2020]
+rule EBcache:
+    input: matrix/chr10-2.matrix
+    output: cache/chr10-2.cache
+    log: logs/chr10-2.AB.log
+    jobid: 99
+    reason: Missing output files: cache/chr10-2.cache
+    wildcards: chrom=chr10, i=2
+    threads: 20
+
+Submitted DRMAA job 99 with external jobid 805138.
+[Wed Mar 18 08:51:00 2020]
+Error in rule EBcache:
+    jobid: 106
+    output: cache/chr11-1.cache
+    log: logs/chr11-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 106, external: 805014, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.106.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 106.
+
+[Wed Mar 18 08:51:00 2020]
+rule EBcache:
+    input: matrix/chr11-1.matrix
+    output: cache/chr11-1.cache
+    log: logs/chr11-1.AB.log
+    jobid: 106
+    reason: Missing output files: cache/chr11-1.cache
+    wildcards: chrom=chr11, i=1
+    threads: 20
+
+Submitted DRMAA job 106 with external jobid 805139.
+[Wed Mar 18 08:51:15 2020]
+Error in rule EBcache:
+    jobid: 193
+    output: cache/chr22-0.cache
+    log: logs/chr22-0.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 193, external: 805074, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.193.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 193.
+[Wed Mar 18 08:51:15 2020]
+Error in rule EBcache:
+    jobid: 83
+    output: cache/chr8-2.cache
+    log: logs/chr8-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 83, external: 805075, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.83.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:51:15 2020]
+rule EBcache:
+    input: matrix/chr22-0.matrix
+    output: cache/chr22-0.cache
+    log: logs/chr22-0.AB.log
+    jobid: 193
+    reason: Missing output files: cache/chr22-0.cache
+    wildcards: chrom=chr22, i=0
+    threads: 20
+
+Trying to restart job 83.
+[Wed Mar 18 08:51:15 2020]
+Error in rule EBcache:
+    jobid: 139
+    output: cache/chr15-2.cache
+    log: logs/chr15-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 139, external: 805059, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.139.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 139.
+Submitted DRMAA job 193 with external jobid 805140.
+
+[Wed Mar 18 08:51:15 2020]
+rule EBcache:
+    input: matrix/chr15-2.matrix
+    output: cache/chr15-2.cache
+    log: logs/chr15-2.AB.log
+    jobid: 139
+    reason: Missing output files: cache/chr15-2.cache
+    wildcards: chrom=chr15, i=2
+    threads: 20
+
+Submitted DRMAA job 139 with external jobid 805141.
+
+[Wed Mar 18 08:51:15 2020]
+rule EBcache:
+    input: matrix/chr8-2.matrix
+    output: cache/chr8-2.cache
+    log: logs/chr8-2.AB.log
+    jobid: 83
+    reason: Missing output files: cache/chr8-2.cache
+    wildcards: chrom=chr8, i=2
+    threads: 20
+
+Submitted DRMAA job 83 with external jobid 805142.
+[Wed Mar 18 08:51:16 2020]
+Error in rule EBcache:
+    jobid: 195
+    output: cache/chr22-2.cache
+    log: logs/chr22-2.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 195, external: 805066, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.195.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 195.
+[Wed Mar 18 08:51:16 2020]
+Error in rule EBcache:
+    jobid: 92
+    output: cache/chr9-3.cache
+    log: logs/chr9-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 92, external: 804935, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.92.sh). For error details see the cluster log and the log files of the involved rule(s).
+
+[Wed Mar 18 08:51:16 2020]
+rule EBcache:
+    input: matrix/chr22-2.matrix
+    output: cache/chr22-2.cache
+    log: logs/chr22-2.AB.log
+    jobid: 195
+    reason: Missing output files: cache/chr22-2.cache
+    wildcards: chrom=chr22, i=2
+    threads: 20
+
+Trying to restart job 92.
+Submitted DRMAA job 195 with external jobid 805143.
+
+[Wed Mar 18 08:51:16 2020]
+rule EBcache:
+    input: matrix/chr9-3.matrix
+    output: cache/chr9-3.cache
+    log: logs/chr9-3.AB.log
+    jobid: 92
+    reason: Missing output files: cache/chr9-3.cache
+    wildcards: chrom=chr9, i=3
+    threads: 20
+
+Submitted DRMAA job 92 with external jobid 805144.
+[Wed Mar 18 08:51:17 2020]
+Error in rule EBcache:
+    jobid: 148
+    output: cache/chr16-3.cache
+    log: logs/chr16-3.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 148, external: 804963, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.148.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 148.
+
+[Wed Mar 18 08:51:17 2020]
+rule EBcache:
+    input: matrix/chr16-3.matrix
+    output: cache/chr16-3.cache
+    log: logs/chr16-3.AB.log
+    jobid: 148
+    reason: Missing output files: cache/chr16-3.cache
+    wildcards: chrom=chr16, i=3
+    threads: 20
+
+[Wed Mar 18 08:51:17 2020]
+Error in rule EBcache:
+    jobid: 26
+    output: cache/chr1-1.cache
+    log: logs/chr1-1.AB.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/conda/f65983f9
+
+Error executing rule EBcache on cluster (jobid: 26, external: 805005, jobscript: /fast/scratch/users/szyskam_c/test/static/PoN/Test/EBcache/.snakemake/tmp.1wo8tjgj/snakejob.EBcache.26.sh). For error details see the cluster log and the log files of the involved rule(s).
+Trying to restart job 26.
+Submitted DRMAA job 148 with external jobid 805145.
+
+[Wed Mar 18 08:51:17 2020]
+rule EBcache:
+    input: matrix/chr1-1.matrix
+    output: cache/chr1-1.cache
+    log: logs/chr1-1.AB.log
+    jobid: 26
+    reason: Missing output files: cache/chr1-1.cache
+    wildcards: chrom=chr1, i=1
+    threads: 20
+
+Submitted DRMAA job 26 with external jobid 805146.

@@ -209,7 +209,7 @@ EBFilter:
     pileup: 12
     makeEBcache: 20
     EBscore: 20
-    EBsplit_factor: 4 # into how many jobs is makeEBcache divided per chromosome
+    EBsplit_factor: 20 # into how many jobs is makeEBcache divided per chromosome
   params:
     sep: tab
     MAPQ: 20   # I guess this should be lower than the mapping quality used for mpileup or not?
