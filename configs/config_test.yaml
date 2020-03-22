@@ -203,7 +203,7 @@ Fisher_strand:
 EBFilter:
   run: True
   pon_list: PoN/Test/PoN_list.txt # path relative to mystatic path
-  use_cache: False
+  use_cache: True
   cache_folder: PoN/Test # path relative to mystatic path
   full_pon_output: False
   threads:

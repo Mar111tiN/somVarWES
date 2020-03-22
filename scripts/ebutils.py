@@ -79,7 +79,7 @@ def compute_matrix2EB_multi(df, pen, threads):
     '''
     split --> Pool --> compute --> concate
     '''
-    
+
     # !!!!!!!!!!!!!!!!!!
     eb_pool = Pool(threads)  # !!!!!!!
     # !!!!!!!!!!!!!!!!!
@@ -99,7 +99,7 @@ def compute_matrix2EB_multi(df, pen, threads):
 
 def compute_AB2EB(df):
     '''
-    per row of df, takes a target depth-ponAB matrix and computes the EBscore 
+    per row of df, takes a target depth-ponAB matrix and computes the EBscore
     '''
 
     show_output(f"Computing EBscore for {len(df.index)} lines", multi=True)

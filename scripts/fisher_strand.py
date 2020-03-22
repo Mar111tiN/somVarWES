@@ -7,12 +7,7 @@ from multiprocessing import Pool
 from script_utils import show_output, show_command
 
 
-w = snakemake.wildcards
-config = snakemake.config
-input = snakemake.input
-output = snakemake.output
-threads = snakemake.threads
-log = snakemake.log
+
 
 
 #####################################################################
@@ -45,12 +40,25 @@ def get_FS_col(df, threads):
     return pd.concat(df_chunks).sort_values(['Chr', 'Start'])
 
 
-print(f'Computing FisherScore for file {input[0]}')
-df_table = pd.read_csv(input[0], sep='\t')
-df_fisher = get_FS_col(df_table, threads)
+def main(s):
+    w = s.wildcards
+    config = s.config
+    input = s.input
+    output = s.output
+    threads = s.threads
+    log = s.log
 
-# reduce to important cols
-cols = list(df_fisher.columns)[:5] + ['FisherScore']
-# write file to filtered
-df_fisher[cols].to_csv(output[0], sep='\t', index=False)
-show_output(f'FisherScore for file {input[0]} written to {output[0]}', color='success')
+
+    print(f'Computing FisherScore for file {input[0]}')
+    df_table = pd.read_csv(input[0], sep='\t')
+    df_fisher = get_FS_col(df_table, threads)
+
+    # reduce to important cols
+    cols = list(df_fisher.columns)[:5] + ['FisherScore']
+    # write file to filtered
+    df_fisher[cols].to_csv(output[0], sep='\t', index=False)
+    show_output(f'FisherScore for file {input[0]} written to {output[0]}', color='success')
+
+
+if __name__ == "__main__":
+    main(snakemake)
