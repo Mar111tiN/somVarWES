@@ -4,7 +4,8 @@ from os import system as shell
 from ebutils import get_pon_bases, compute_matrix2EB_multi
 from script_utils import show_output, show_command
 
-w = snakemake.wildcards
+
+w = snakemake.wildcards ###
 config = snakemake.config
 threads = snakemake.threads
 log = snakemake.log
@@ -82,7 +83,7 @@ else:
     # merge
     mut_matrix = mut_df.merge(matrix_df, on=['Chr', 'Start'], how='inner')
     # reset deletion positions
-    mut_matrix.loc[mut_matrix['Alt'] == "-",'Start'] = mut_matrix['Start'] + 1
+    mut_matrix.loc[mut_matrix['Alt'] == "-", 'Start'] = mut_matrix['Start'] + 1
 
     # ####### if using matrix2EBinput.mawk #######################
     # write to file

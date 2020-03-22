@@ -8,7 +8,7 @@ rule mpileup:
     threads:
         2
     conda:
-        "../env/align-env.yml"
+        f"../{config['envs']}/align-env.yml"
     params:
         bedfile = get_bed_file('Covered'),
         refgen = full_path('genome'),
@@ -33,7 +33,7 @@ rule varscan:
         p = f"--p-value {config['varscan']['p-value']} --somatic-p-value {config['varscan']['somatic-p-value']}",
         np = f"--normal-purity {config['varscan']['normal-purity']} --tumor-purity {config['varscan']['tumor-purity']}",
     conda:
-        "../env/varscan-env.yml"
+        f"../{config['envs']}/varscan-env.yml"
     log:
         "logs/varscan/{sample}_{tumor}-{norm}.{chrom}.log"
     shell:
@@ -59,12 +59,13 @@ rule varscan2table:
         "table/{sample}_{tumor}-{norm}.{chrom}.csv"
     threads: 2
     conda:
-        "../env/vcf-env.yml"
+        f"../{config['envs']}/varscan-env.yml"
     params:
         vcf2table = get_script('vcf2table'),
         varscan2table = get_script('varscan2table')
     script:
         "../scripts/varscan2table.py"
+
 
 rule merge_table:
     input:

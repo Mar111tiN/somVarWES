@@ -30,7 +30,7 @@ rule EBcache_pileup:
     threads:
         config['EBFilter']['threads']['pileup']
     conda:
-        "../env/eb-env.yml"
+        f"../{config['envs']}/eb-env.yml"
     params:
         pon_list = static_path(config['EBFilter']['pon_list']),
         cleanpileup = get_script('cleanpileup'),
@@ -50,7 +50,7 @@ rule EBcache:
     threads:
         config['EBFilter']['threads']['makeEBcache']
     conda:
-        "../env/eb-env.yml"
+        f"../{config['envs']}/eb-env.yml"
     params:
         pon_list = static_path(config['EBFilter']['pon_list']),
         cleanpileup = get_script('cleanpileup'),

@@ -10,7 +10,7 @@ rule anno2EB:
     threads:
         config['EBFilter']['threads']['EBscore']
     conda:
-        "../env/eb-env.yml"
+        f"../{config['envs']}/eb-env.yml"
     params:
         cleanpileup = get_script('cleanpileup'),
         csv2bed = get_script('csv2bed'),
@@ -22,22 +22,6 @@ rule anno2EB:
     script:
         "../scripts/eb.py"
         # should I repileup the target with separate Q and q --> ask Kenyishi
-
-
-def get_chrom(c, use_chr=True):
-    if c > 21:
-        if c == 22:
-            chrom = "X"
-        if c == 23:
-            chrom = "Y"
-    else:
-        chrom = c + 1
-    return f"chr{chrom}" if use_chr else chrom
-
-
-# get the chrom list
-chrom_list = [get_chrom(chrom, (config['ref']['build'] == 'hg38')) for chrom in range(24)]  # set use_chr to False if using hg19
-# print(chrom_list)
 
 
 def get_cache(w):
@@ -74,7 +58,7 @@ rule anno2EB_EBcache:
         threads_adjusted = lambda wildcards, threads, attempt: max(1, threads - (attempt - 1) * 6),
         attempts = lambda _, attempt: attempt
     conda:
-        "../env/eb-env.yml"
+        f"../{config['envs']}/eb-env.yml"
     params:
         cleanpileup = get_script('cleanpileup'),
         csv2bed = get_script('csv2bed'),

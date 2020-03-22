@@ -16,7 +16,7 @@ rule primer3:
     input: "table/{sample}_{tumor}-{normal}.filter1.csv"
     output: "table/{sample}_{tumor}-{normal}.filter1.primer.csv"
     conda:
-        "../env/primer3-env.yml"
+        f"../{config['envs']}/primer3-env.yml"
     threads:
         config['primer3']['threads']
     params:
@@ -33,7 +33,7 @@ rule detect_HDR:
     output:
         HDR = "table/{sample}_{tumor}-{normal}.filter1.HDR.csv"
     conda:
-        "../env/HDR-env.yml"
+        f"../{config['envs']}/HDR-env.yml"
     threads:
         2
     params:
@@ -58,7 +58,7 @@ rule filter_bam:
         # normal_bai = "filterbam/{sample}_{normal}.{filter}.bai",
         done = "bam_done/{sample}_{tumor}-{normal}.{filter}.done"
     conda:
-        "../env/align-env.yml"
+        f"../{config['envs']}/align-env.yml"
     threads:
         config['filter_bam']['threads']
     params:
@@ -83,7 +83,7 @@ rule filter_pileup:
     threads:
         2
     conda:
-        "../env/align-env.yml"
+        f"../{config['envs']}/align-env.yml"
     params:
         input = lambda w: f"{config['filter_bam']['folder']}/{w.sample}_{w.tumor}.filter1.bam {config['filter_bam']['folder']}/{w.sample}_{w.normal}.filter1.bam",
         refgen = full_path('genome'),
@@ -124,8 +124,6 @@ rule filter2:
         filter2_for_filterbam = "table/{sample}_{tumor}-{normal}.filter2.csv"
     threads: 
         2
-    conda:
-        "../env/filter2-env.yml"
     script:
         "../scripts/filters/damm2.py"
 

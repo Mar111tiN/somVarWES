@@ -1,9 +1,10 @@
 inputdirs: 
-  - /fast/users/szyskam_c/scratch/test/fastq  # source of fastq files (subfolders allowed)
-workdir: /fast/users/szyskam_c/scratch/test/output # here your results are created
-snakedir: /fast/users/szyskam_c/snakes/develop/somVarWES
+  - /Users/mahtin/Dropbox/Icke/Work/somVar/somVarTest/fastq  # source of fastq files (subfolders allowed)
+workdir: /Users/mahtin/Bio/SnakeOutput/somVarTest # here your results are created
+snakedir: /Users/mahtin/Sites/Bio/somVarWES
+envs: envMac # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
-  samplesheet: /fast/users/szyskam_c/snakes/develop/somVarWES/sheets/test_sheet.csv
+  samplesheet: /Users/mahtin/Sites/Bio/somVarWES/sheets/test_sheet.csv
   tumor:
     - A  # 
   normal:
@@ -30,9 +31,9 @@ setup:
 
 #### ABSOLUTE PATHS ############
 paths:
-  mystatic: /fast/users/szyskam_c/scratch/test/static
+  mystatic: /Users/mahtin/Dropbox/Icke/Work/static
   scripts: scripts/ # folder relative to snakedir
-  filter_settings: /fast/users/szyskam_c/snakes/develop/somVarWES/info
+  filter_settings: /Users/mahtin/Sites/Bio/somVarWES/info
 #### REF SECTION ###############
 ref:
   build: hg38
@@ -50,9 +51,9 @@ ref:
 #### TOOLS SECTION ##############
 tools:
   gatk: gatk # 
-  gatk3: java -jar /fast/users/szyskam_c/scratch/test/tools/gatk3.8/GenomeAnalysisTK.jar -T
+  gatk3: java -jar /Users/mahtin/Dropbox/Icke/Work/somVar/somVarTest/tools/gatk3.8/GenomeAnalysisTK.jar -T
   # annovar: perl /fast/users/szyskam_c/tools/annovar2018
-  annovar: perl /fast/users/szyskam_c/scratch/test/tools/annovar2019
+  annovar: perl /Users/mahtin/Dropbox/Icke/Work/somVar/somVarTest/tools/annovar2019
 scripts:
   split_fastq: shell/split_fastq.mawk
   prettifyBED : shell/prettify_BEDcoverage.awk
@@ -202,7 +203,7 @@ Fisher_strand:
 EBFilter:
   run: True
   pon_list: PoN/Test/PoN_list.txt # path relative to mystatic path
-  use_cache: True
+  use_cache: False
   cache_folder: PoN/Test # path relative to mystatic path
   full_pon_output: False
   threads:

@@ -21,7 +21,7 @@ rule fastqc:
     log:
         "logs/fastqc/{sample}_{type}_{readtrim}.log"
     conda:
-        "../env/fastQC-env.yml"
+        f"../{config['envs']}/fastQC-env.yml"
     script:
         "../scripts/fastQC.py"
 
@@ -33,7 +33,7 @@ rule fast_multiQC:
         "QC/fastQC.html"
     threads: 2
     conda:
-        "../env/fastQC-env.yml"
+        f"../{config['envs']}/fastQC-env.yml"
     shell:
         "multiqc -f -o QC/ -n fastQC --interactive fastqc/; "  # interactive for big number of files
         "rm -f fastqc/*_fastqc.html fastq/*.sub"  # leave the zip files for accumulated multiQC of all processed samples
@@ -55,7 +55,7 @@ rule merge_recal_bam:
     threads:
         config['resplit_bam']['threads']
     conda:
-        "../env/samba-env.yml"
+        f"../{config['envs']}/samba-env.yml"
     shell:
         # merge all split bams into one bam using samtools merge (also sorts the merged bam)
         "sambamba merge -t {threads} {output.bam} recalib/{wildcards.sample}_{wildcards.type}.*.bam; "
@@ -89,7 +89,7 @@ rule bam_metrix:
     output:
         "bam_metrics/{sample}_{type}.metrics"
     conda:
-        "../env/align-env.yml"
+        f"../{config['envs']}/align-env.yml"
     log:
         "logs/bam_metrix/{sample}_{type}.log"
     threads: config['bam_metrix']['threads']
@@ -108,7 +108,7 @@ rule bam_QC:
     output:
         "QC/libraryQC.html"
     conda:
-        "../env/fastQC-env.yml"
+        f"../{config['envs']}/fastQC-env.yml"
     threads: 2
     shell:
         "multiqc -f -o QC/ -n libraryQC --interactive bam_metrics/; "
@@ -123,7 +123,7 @@ rule insert_metrix:
         metric = "insert_metrics/{sample}_{type}.metrics",
         pdf = "insert_metrics/{sample}_{type}.metrics.pdf"
     conda:
-        "../env/picard-env.yml"
+        f"../{config['envs']}/picard-env.yml"
     log:
         "logs/bam_metrix/{sample}_{type}.log"
     threads: config['bam_metrix']['threads']
@@ -137,7 +137,7 @@ rule insert_QC:
     output:
         "QC/insertQC.html"
     conda:
-        "../env/fastQC-env.yml"
+        f"../{config['envs']}/fastQC-env.yml"
     threads: 2
     shell:
         "multiqc -f -o QC/ -n insertQC --interactive insert_metrics/; "

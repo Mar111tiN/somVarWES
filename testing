@@ -1,0 +1,5 @@
+picard SamToFastq use_jdk_deflater=true use_jdk_inflater=true I=ubam/001_A.3.bam FASTQ=/dev/stdout ClIPPING_ATTRIBUTE=XT CLIPPING_ACTION=2 INTERLEAVE=TRUE NON_PF=TRUE TMP_DIR=$TMPDIR 
+| bwa mem -M -t 16 -p /Users/mahtin/Dropbox/Icke/Work/static/genome/gatk/hg38/hg38.fasta /dev/stdin
+| picard MergeBamAlignment R=/Users/mahtin/Dropbox/Icke/Work/static/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/001_A.3.bam ALIGNED_BAM=/dev/stdin O=mapped/001_A.3.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS=FALSE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_GAPS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR
+
+picard MergeBamAlignment R=/Users/mahtin/Dropbox/Icke/Work/static/genome/gatk/hg38/hg38.fasta UNMAPPED_BAM=ubam/001_A.3.bam ALIGNED_BAM=001_A.3.mapped.bam O=mapped/001_A.3.bam CREATE_INDEX=TRUE ADD_MATE_CIGAR=TRUE CLIP_ADAPTERS=FALSE CLIP_OVERLAPPING_READS=FALSE INCLUDE_SECONDARY_ALIGNMENTS=true MAX_GAPS=-1 PRIMARY_ALIGNMENT_STRATEGY=MostDistant ATTRIBUTES_TO_RETAIN=XS ATTRIBUTES_TO_RETAIN=RX TMP_DIR=$TMPDIR

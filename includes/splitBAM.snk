@@ -6,7 +6,7 @@ rule index_split_bam:
     threads:
         config['bamindex']['threads']
     conda:
-        "../env/align-env.yml"
+        f"../{config['envs']}/align-env.yml"
     shell:
         "picard BuildBamIndex INPUT={input}"
 
@@ -18,7 +18,7 @@ rule index_bam:
     threads:
         config['bamindex']['threads']
     conda:
-        "../env/align-env.yml"
+        f"../{config['envs']}/align-env.yml"
     shell:
         "picard BuildBamIndex INPUT={input}"
 
@@ -38,7 +38,7 @@ rule merge_bam:
     threads:
         config['resplit_bam']['threads']
     conda:
-        "../env/samba-env.yml"
+        f"../{config['envs']}/samba-env.yml"
     shell:
         "sambamba merge -t {threads} {output.bam} mapped/{wildcards.sample}_{wildcards.type}.*.bam; "
         "rm {input};"
@@ -59,6 +59,6 @@ rule resplit_bam:
     threads:
         config['resplit_bam']['threads']
     conda:
-        "../env/samba-env.yml"
+        f"../{config['envs']}/samba-env.yml"
     shell:
         "sambamba view -t {threads} -h -f bam -o {output.bam} {input.bam} {wildcards.chrom} "

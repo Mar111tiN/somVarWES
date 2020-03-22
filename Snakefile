@@ -26,7 +26,6 @@ include: "includes/utils.snk"
 sample_df, short_sample_df = get_files(config['inputdirs'], config['samples']['samplesheet'])
 chrom_list = get_chrom_list(config)
 
-
 # ############ INCLUDES ##############################  
 include: "includes/fastq.snk"
 include: "includes/QC.snk"

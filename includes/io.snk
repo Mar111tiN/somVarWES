@@ -42,7 +42,7 @@ def get_files(folder_list, sample_sheet):
                     row['R1'] = file
                 elif f'_{read2}_' in file:
                     row['R2'] = file
-        return row[['Lane', 'R1', 'R2', 'barcode', 'index']]
+        return row.reindex(['Lane', 'R1', 'R2', 'barcode', 'index'])
 
     samples_df = samples.apply(get_fastq_paths, axis=1, fastq_list = fastq_list)
     short_df = samples.apply(get_fastq_paths, axis=1, fastq_list = short_list)

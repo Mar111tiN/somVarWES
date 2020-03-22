@@ -6,13 +6,14 @@ rule dedup:
     log:
         "logs/dedup/{sample}_{type}.{chrom}.log"
     params:
-        metric = lambda w: f"deduped/{w.sample}_{w.type}.{w.chrom}.metric.txt"
+        metric = lambda w: f"deduped/{w.sample}_{w.type}.{w.chrom}.metric.txt",
+        deflater = "use_jdk_deflater=true use_jdk_inflater=true" if config['alignment']['use_jdk'] else ""
     threads:
         config['dedup']['threads']
     conda:
-        "../env/align-env.yml"
+        f"../{config['envs']}/align-env.yml"
     shell:
-        "picard MarkDuplicates I={input} O={output} M={params.metric} REMOVE_DUPLICATES=true &>{log}"
+        "picard MarkDuplicates {params.deflater} I={input} O={output} M={params.metric} REMOVE_DUPLICATES=true &>{log}"
 
 
 rule dedup_umi:
@@ -25,7 +26,7 @@ rule dedup_umi:
     log:
         "logs/dedup/{sample}_{type}.{chrom}.log"
     conda:
-        "../env/align-env.yml"
+        f"../{config['envs']}/align-env.yml"
     params:
         metric = lambda w: f"umi_deduped/{w.sample}_{w.type}.{w.chrom}.metric.txt",
         umi_metrics = lambda w: f"umi_deduped/{w.sample}_{w.type}.{w.chrom}.umi_metric.txt",

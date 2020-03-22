@@ -22,7 +22,7 @@ rule ubamXT:
     log:
         "logs/ubam/{sample}_{type}.{split}.log"
     conda:
-        "../env/ubam-env.yml"
+        f"../{config['envs']}/ubam-env.yml"
     params:
         read_group_info = get_RG_info,
         read_structure = "+T +T +M" if config['setup']['UMI'] else "+T +T",
@@ -55,7 +55,7 @@ rule make_ref_genome:
         sed_cmd = get_sed,
         refgen = full_path('genome')
     conda:
-        "../env/align-env.yml"
+        f"../{config['envs']}/align-env.yml"
     message:
         "Genome indexed by bwa"
     shell:
@@ -89,7 +89,7 @@ rule map_ubam:
     threads:
         config['alignment']['threads'] + 4
     conda:
-        "../env/align-env.yml"
+        f"../{config['envs']}/align-env.yml"
     params:
         bwa_threads = config['alignment']['threads'],
         refgen = full_path('genome'),
@@ -106,7 +106,8 @@ rule map_ubam:
         "TMP_DIR=$TMPDIR | "
         # pipe to bwa mem
         "bwa mem -M -t {params.bwa_threads} -p {params.refgen} /dev/stdin | "
-        "picard MergeBamAlignment R={params.refgen} "
+        # pipe to MergeBamAlignment
+        "picard MergeBamAlignment {params.deflater} R={params.refgen} "
         "UNMAPPED_BAM={input.bam} "
         "ALIGNED_BAM=/dev/stdin "
         "O={output} "

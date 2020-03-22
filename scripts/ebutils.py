@@ -62,7 +62,7 @@ def get_pon_bases(matrix_df, remove_sample=True):
 
 
 # ################# EB from matrix ###########################################
-def compute_matrix2EB(fit_pen, df):
+def compute_matrix2EB(df, fit_pen):
     '''
     per df row, computes the EBscore from full depth matrix
     first row: target depth
@@ -79,16 +79,16 @@ def compute_matrix2EB_multi(df, pen, threads):
     '''
     split --> Pool --> compute --> concate
     '''
-    print('Pooling threads: ', threads)
+    
     # !!!!!!!!!!!!!!!!!!
     eb_pool = Pool(threads)  # !!!!!!!
-    # !!!!!!!!!!!!!!!!!!
+    # !!!!!!!!!!!!!!!!!
+    print('Pooling threads: ', threads)
 
-    print('Pooled')
     # minimal length of 1000 lines
     split_factor = min(math.ceil(len(df.index) / 1000), threads)
     split = np.array_split(df, split_factor)
-    dfs = eb_pool.map(partial(compute_matrix2EB, pen), split)
+    dfs = eb_pool.starmap(compute_matrix2EB, zip(split, repeat(pen)))
 
     # out_df contains EB_score
     out_df = pd.concat(dfs).sort_values(['Chr', 'Start'])

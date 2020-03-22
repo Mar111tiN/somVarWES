@@ -16,7 +16,7 @@ rule create_GATK_target_list:
     log:
         "logs/realign/{sample}_{type}.{chrom}.targetList"
     conda:
-        "../env/gatk3-env.yml"
+        f"../{config['envs']}/gatk3-env.yml"
     params:
         gatk = config['tools']['gatk3'],
         ref = IR_ref
@@ -35,12 +35,13 @@ rule realignGATK:
     threads:
         config['realignGATK']['threads']
     conda:
-        "../env/gatk3-env.yml"
+        f"../{config['envs']}/gatk3-env.yml"
     params:
         gatk = config['tools']['gatk3'],
-        ref = IR_ref
+        ref = IR_ref,
+        deflater = "-jdk_deflater -jdk_inflater" if config['envs'] == "envMac" else ""
     shell:
-        "{params.gatk} IndelRealigner {params.ref} "
+        "{params.gatk} IndelRealigner {params.deflater} {params.ref} "
         "-targetIntervals {input.intervals} -I {input.bam} -o {output} &>{log}"
 
 
@@ -55,7 +56,7 @@ rule base_recalib:
     threads:
         config['recalib']['threads']
     conda:
-        "../env/gatk4-env.yml"
+        f"../{config['envs']}/gatk4-env.yml"
     params:
         gatk = config['tools']['gatk'],
         genome = f"-R {full_path('genome')}",
@@ -77,7 +78,7 @@ rule apply_BQSR:
     threads:
         config['recalib']['threads']
     conda:
-        "../env/gatk4-env.yml"
+        f"../{config['envs']}/gatk4-env.yml"
     params:
         gatk = config['tools']['gatk'],
         genome = f"-R {full_path('genome')}",
