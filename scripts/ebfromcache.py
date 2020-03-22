@@ -27,16 +27,13 @@ def main(s):
     # import the scripts
     cleanpileup = params.cleanpileup
     csv2bed = params.csv2bed
-    pon2cols = params.pon2cols
     pile2count = params.pile2count
     matrix2EBinput = params.matrix2EBinput
-    reduce_matrix = params.reducematrix
     matrix2EBinput = params.matrix2EBinput
     reorder_matrix = params.reorder_matrix
 
     if attempts > 1:
         print(f"Due to a failed, threads are decreased to ", threads_adjusted)
-
 
     def target_pileup_from_mut(mut_file, base_file, bam, chrom):
         '''
@@ -56,7 +53,8 @@ def main(s):
 
         # do the pileup into the matrix file
         matrix_file = f"{base_file}.matrix"
-        pileup_cmd = f"samtools mpileup -B -q {EBparams['MAPQ']} -Q {EBparams['Q']} -l {bed_file} -r {chrom} {tumor_bam}"
+        pileup_cmd = f"samtools mpileup -B -q {EBparams['MAPQ']} -Q {EBparams['Q']}"
+        pileup_cmd += f" -l {bed_file} -r {chrom} {tumor_bam}"
         pipe_cmd = f"{pileup_cmd} | cut -f 1,2,5 | {cleanpileup} | {pile2count} > {matrix_file}"
         show_output(f"Piling up tumor bam {tumor_bam}", color='normal')
         # do the pileup to matrix_file
@@ -64,9 +62,11 @@ def main(s):
         shell(pipe_cmd)
         # cleanup
         shell(f"rm -f {bed_file}")
-        show_output(f"Pileup matrix for chrom {chrom} of {tumor_bam} completed. Merging with cache file...", color='normal')
+        show_output(
+            f"Pileup matrix for chrom {chrom} of {tumor_bam} completed. Merging with cache file...",
+            color='normal'
+        )
         return matrix_file
-
 
     # ############## LOAD DATA ###############################
     show_output(f"Computing EBscore for chrom {chrom} of {tumor_bam} using EBcache {AB_cache_file}", color='normal')
@@ -82,7 +82,7 @@ def main(s):
         show_output(f"No mutations for {chrom} in mutation list! Writing empty file to {output[0]}", color='warning')
     else:
         # set base_name for intermediate files
-        base_file = output[0].replace(".cachedEB","")
+        base_file = output[0].replace(".cachedEB", "")
 
         # ############## LOAD PILEUP MATRIX CACHE AND MERGE INTO MUT_DF #####
         # change mutation positions for deletions in mutation file
@@ -101,11 +101,12 @@ def main(s):
         # else, pon matrix has to be acquired from cache and used in EBscore
         sample_in_pon = get_sample_pos(pon_list, tumor_bam)
 
-
         # ########################################### CACHE FROM MATRIX #####################################
         if sample_in_pon:
-            in_pon = True
-            show_output(f"Corresponding normal sample for {tumor_bam} has been found in Panel of Normals! EBcache cannot be used!", color='warning')
+            show_output(
+                f"Corresponding normal sample for {tumor_bam} has been found in PoNs! EBcache cannot be used!",
+                color='warning'
+            )
             show_output(f"Falling back to cached matrix file..", color='normal')
             # EBcache cannot be used directly
 
@@ -164,17 +165,21 @@ def main(s):
 
             show_output(f"Loading compressed AB cache file {AB_cache_file}", color='normal')
             cache_df = pd.read_csv(AB_cache_file, compression='gzip', sep='\t')
-            pileAB_file = f"{base_file}.pileAB"
-            pileAB_df = pileup_df.merge(cache_df, on=['Chr', 'Start'])
 
+            pileAB_df = pileup_df.merge(cache_df, on=['Chr', 'Start'])
             # change coords for merge with start and merge into mut_df for Ref
             mut_df.loc[mut_df['Alt'] == "-", 'Start'] = mut_df['Start'] - 1
             pileAB_df = mut_df.merge(pileAB_df, on=['Chr', 'Start'])
             pileAB_df.loc[pileAB_df['Alt'] == "-", 'Start'] = pileAB_df['Start'] + 1
 
             # save for debugging
+            # pileAB_file = f"{base_file}.pileAB"
             # pileAB_df.to_csv(pileAB_file, sep='\t', index=False)
-            show_output(f"Pileup matrix for for chrom {chrom} of {tumor_bam} merged with AB matrix. Going on with EB computation...", color='normal')
+            show_output(
+                f"Pileup matrix for for chrom {chrom} of {tumor_bam} merged with AB matrix." +
+                " Going on with EB computation...",
+                color='normal'
+            )
 
             # ############## EBSCORE COMPUTATION  ########
             # multithreaded computation
@@ -229,7 +234,11 @@ def main(s):
 
         # cleanup
         shell(f"rm -f {EB_matrix_input_file}")
-        show_output(f"Created EBscore for chrom {chrom} of {tumor_bam} using EBcache and written to {output[0]}", color='success')
+        show_output(
+            f"Created EBscore for chrom {chrom} of {tumor_bam} using EBcache and written to {output[0]}",
+            color='success'
+        )
+
 
 if __name__ == "__main__":
     main(snakemake)

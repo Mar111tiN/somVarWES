@@ -162,7 +162,7 @@ gamma_reduce = np.array([1, -1, -1, -1, 1, 1, 1, -1, -1])
 
 def bb_loglikelihood(params, count_df, is_1d):
     [a, b] = params
-    ab_matrix = np.array([1, 1, 1, a+b, a, b, a+b, a, b])
+    ab_matrix = np.array([1, 1, 1, a + b, a, b, a + b, a, b])
     # convert df into matrix for np.array operations that change dims
     count_matrix = count_df.values
     # perform matrix multiplication to get inputs to log-gamma

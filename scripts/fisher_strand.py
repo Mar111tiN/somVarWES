@@ -6,12 +6,9 @@ import numpy as np
 from multiprocessing import Pool
 from script_utils import show_output, show_command
 
-
-
-
-
 #####################################################################
 # ###################### FISHER SCORE ################################
+
 
 def get_fisher_exact(row):
     T1plus = row['TR1+']
@@ -21,7 +18,7 @@ def get_fisher_exact(row):
     mat = np.matrix([[T1plus, T2plus], [T1min, T2min]])
     fisher_p = fe(mat)[1]
     if fisher_p:
-        return round(-10*math.log(fisher_p, 10), 1)
+        return round(-10 * math.log(fisher_p, 10), 1)
     return 5000
 
 
@@ -41,13 +38,10 @@ def get_FS_col(df, threads):
 
 
 def main(s):
-    w = s.wildcards
-    config = s.config
     input = s.input
     output = s.output
     threads = s.threads
-    log = s.log
-
+    # log = s.log
 
     print(f'Computing FisherScore for file {input[0]}')
     df_table = pd.read_csv(input[0], sep='\t')
