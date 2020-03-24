@@ -1,16 +1,20 @@
 #!/bin/sh
 
-### cleans output from samtools mpileup where only Chr, Start, and the read data has been lef
-# this can be done with pon2cols tool
+### cleans samtools mpileup output 
 # removes from all reads the traces of base location and indel lengths
 
-
 mawk '
+NR == 1 {
+    samples = (NF - 3) / 3;
+}
 {
     read = $0;
     
     # remove position traces from all read fields
-    gsub(/\^[^\t]|\$/,"",$col);
+    for (i = 0; i++ < samples;) {
+        col = (i*3) + 2;
+        gsub(/\^[^\t]|\$/,"",$col);
+    }
     # 
     while (match(read,/[+-][0-9]+/)) {
         pre = substr(read,1,RSTART-2);
@@ -35,5 +39,8 @@ mawk '
         read = pre base post;
     }     
 # print all fields
-    print read;
+    for (i=0; i++ < NF;) {
+        printf("%s\t",$i);
+    }
+    printf("\n");
 }'
