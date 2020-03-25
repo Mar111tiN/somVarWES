@@ -10,7 +10,7 @@ mawk '
     read = $0;
     
     # remove position traces from all read fields
-    gsub(/\^[^\t]|\$/,"",$col);
+    gsub(/\^[^\t]|\$/,"",read);
     # 
     while (match(read,/[+-][0-9]+/)) {
         pre = substr(read,1,RSTART-2);
