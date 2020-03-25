@@ -3,6 +3,7 @@ inputdirs:
   - /fast/users/szyskam_c/work/testdata/somvar2  # source of fastq files (subfolders allowed)
 workdir: /fast/users/szyskam_c/scratch/develop/FDAH1 # here your results are created
 snakedir: /fast/users/szyskam_c/snakes/develop/somVarWES
+envs: env # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
   samplesheet: /fast/users/szyskam_c/snakes/develop/somVarWES/sheets/sample002.csv
   tumor:
@@ -216,7 +217,7 @@ Fisher_strand:
 EBFilter:
   run: True
   pon_list: PoN/HAEv7_hg38_NovaSeq/Pon_list.txt # path relative to mystatic path
-  use_cache: True
+  use_cache: False
   cache_folder: PoN/HAEv7_hg38_NovaSeq # path relative to mystatic path
   full_pon_output: False
   threads:

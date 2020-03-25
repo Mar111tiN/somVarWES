@@ -59,7 +59,7 @@ rule varscan2table:
         "table/{sample}_{tumor}-{norm}.{chrom}.csv"
     threads: 2
     conda:
-        f"../{config['envs']}/varscan-env.yml"
+        f"../{config['envs']}/vcf-env.yml"
     params:
         vcf2table = get_script('vcf2table'),
         varscan2table = get_script('varscan2table')
