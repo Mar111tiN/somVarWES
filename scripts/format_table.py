@@ -54,7 +54,7 @@ new_cols = start_cols + quant_cols
 print(f'Loading FisherScore from file {fisher} and merging into annotation.')
 fisher_df = pd.read_csv(fisher, sep='\t', dtype={'Chr': str, 'Start': int, 'End': int}).fillna('.').sort_values(['Chr', 'Start'])
 anno_df = anno_df.merge(fisher_df, on=['Chr', 'Start', 'End', 'Ref', 'Alt', 'TR1', 'TR2'])  # merge with TR1 and TR2 to avoid duplication of duplicate varscan calls
-fisher_cols = list(fisher_df.columns[5:])
+fisher_cols = list(fisher_df.columns[5:6])
 new_cols += fisher_cols     # -->COLS
 if config['EBFilter']['run']:
     print(f'Loading EBScore from file {eb} and merging into annotation.')
