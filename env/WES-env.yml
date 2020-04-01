@@ -85,6 +85,7 @@ dependencies:
   - libxml2=2.9.10
   - lz4-c=1.8.3
   - markupsafe=1.1.1
+  - mawk=1.3.4
   - more-itertools=8.1.0
   - mpi=1.0
   - mpich=3.3.2
@@ -94,7 +95,7 @@ dependencies:
   - numpy=1.17.5
   - openjpeg=2.3.1
   - openpyxl=3.0.3
-  - openssl=1.1.1e
+  - openssl=1.1.1f
   - pandas=0.25.3
   - pango=1.40.14
   - paramiko=2.7.1

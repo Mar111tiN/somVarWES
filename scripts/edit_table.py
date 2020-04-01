@@ -11,6 +11,7 @@ config = snakemake.config
 extended_output = params.extended_output
 candidate_list = params.candidate_list
 driver_list = params.driver_list
+hotspot_list = params.hotspot_list
 
 print(f'Started editing and basic filtering for {input}.')
 anno_df = pd.read_csv(input, sep='\t')
@@ -248,10 +249,17 @@ def get_gene_lists(df, candidate_list, driver_list):
         df['isDriver'] = df['Gene'].isin(driver_list).astype(int)
         list_cols.append('isDriver')
 
+    # add the hotspot mutations to the file
+    if hotspot_list:
+        hotspot_file = os.path.join(STATIC, hotspot_list)
+        hotspots = pd.read_csv(hotspot_file, sep='\t').drop(columns=['Protein'])
+        df = df.merge(hotspots, how='left', on=['Chr', 'Start', 'Ref', 'Alt', 'Gene'])
+        list_cols += ['ChipID', 'ChipPub', 'ChipFreq']
+
     # resort columns
     cols = list(df.columns)
     start_cols = cols[:11]
-    # the last two columns are the newly addded columns isDriver and isCandidate
+    # the last columns are the newly addded columns isDriver and isCandidate
     # have to be omitted
     rest_cols = cols[11:-len(list_cols)]
     new_cols = start_cols + list_cols + rest_cols

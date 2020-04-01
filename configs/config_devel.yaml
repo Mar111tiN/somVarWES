@@ -237,6 +237,7 @@ filter:
     extended_output: False
     candidate_list: annotation/damm_lists/AML_candidates.txt
     driver_list: annotation/damm_lists/AML_drivers.txt
+    hotspot_list: annotation/damm_lists/CHIP_mutations_short_hg38.csv
   filter_name: damm
   run: True
   filter1: damm1.py

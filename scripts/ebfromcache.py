@@ -72,7 +72,7 @@ def main(s):
     show_output(f"Computing EBscore for chrom {chrom} of {tumor_bam} using EBcache {AB_cache_file}", color='normal')
 
     # get the mutation file for the chromosome
-    mut_df = pd.read_csv(mut_file, sep='\t', index_col=False).query('Chr == @chrom').iloc[:, :5]
+    mut_df = pd.read_csv(mut_file, sep='\t', index_col=False, header=None, names=['Chr', 'Start', 'End', 'Ref', 'Alt', 'somatic_status', 'TR1', 'TR1+', 'TR2', 'TR2+', 'NR1', 'NR1+', 'NR2', 'NR2+', 'somaticP', 'variantP']).query('Chr == @chrom').iloc[:, :5]
     mut_cols = list(mut_df.columns)
 
     # check for empty df

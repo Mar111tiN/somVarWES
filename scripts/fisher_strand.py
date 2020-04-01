@@ -48,7 +48,7 @@ def main(s):
     df_fisher = get_FS_col(df_table, threads)
 
     # reduce to important cols
-    cols = list(df_fisher.columns)[:5] + ['FisherScore']
+    cols = list(df_fisher.columns)[:5] + ['FisherScore', 'TR1', 'TR2'] # add TR1 and TR2 to make merge unique
     # write file to filtered
     df_fisher[cols].to_csv(output[0], sep='\t', index=False)
     show_output(f'FisherScore for file {input[0]} written to {output[0]}', color='success')

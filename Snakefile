@@ -35,7 +35,7 @@ include: "includes/processBAM.snk"
 include: "includes/dedup.snk"
 include: "includes/umi_filter.snk"
 include: "includes/varscan.snk"
-include: "includes/annotate.snk"
+include: "includes/annotate.snk" 
 include: "includes/EB.snk"
 include: "includes/filter.snk"
 
@@ -101,11 +101,14 @@ onsuccess:
 
         split_fastq_pattern = '\.[0-9]+\.fastq.gz'
         split_bam_pattern = 'chr[^.]+\..*'
+        split_table_pattern = 'chr[^.]+\.csv'
 
-        # remove split fastqs
         shell("rm -rf ubam realigned bam_metrics insert_metrics pileup varscan fastqc mapped bam_done")
 
+        # remove split table/..chr.csv
+        shell("ls table/ egrep '{}' | sed 's_^_table/_' | xargs -r rm -f")
 
+        # remove split fastqs
         shell("ls fastq | grep -E '{split_fastq_pattern}' | sed 's_^_fastq/_' | xargs -r rm -f")
         
         # remove split recalib bams

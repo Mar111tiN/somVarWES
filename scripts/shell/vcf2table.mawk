@@ -70,7 +70,7 @@ BEGIN {
 
 
 ##### PROCESS LINES #################
-/^[^#]/ {
+/^[^#]/ {   #  && $7 !~ /str10/  # remove hits with a str10 filter (No PASS)
     lines++;
     start=$2;
     R=$4
