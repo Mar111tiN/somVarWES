@@ -57,12 +57,20 @@ def get_tumor_normal_pairs(samples):
     samples = samples.reset_index()
     # extract the tumor-normal suffix (Name_A --> sample: "Name", TN: "A")
     samples[['sample', 'TN']] = samples['name'].str.extract('(?P<sample>^[^_]+)_(?P<TN>[^_]+)$')
-    tumor = config['samples']['tumor'][0]
+    tumor = config['samples']['tumor']
     normal = config['samples']['normal'][0]
 
     def TN_pair(group):
-        if tumor in list(group['TN']) and normal in list(group['TN']):
-            return f"{group['sample'].iloc[0]}_{tumor}-{normal}"
+        if normal in list(group['TN']):
+            TN_list = []
+            for t in tumor:
+                if t in list(group['TN']):
+                    TN_list.append(f"{group['sample'].iloc[0]}_{t}-{normal}")
+            return pd.Series(TN_list)
+
+    TN_df = pd.DataFrame()
+    TN_list = list(samples.groupby('sample').apply(TN_pair).reset_index().iloc[:,-1])
+    return TN_list
 
     TN_df = pd.DataFrame()
     TN_df['pairs'] = samples.groupby('sample').apply(TN_pair)
