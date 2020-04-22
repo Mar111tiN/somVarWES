@@ -83,7 +83,14 @@ def get_mergeEBscore_input(w):
         input_list = [f"eb/{w.sample}_{w.tumor}-{w.norm}-{chrom}.cachedEB" for chrom in chrom_list]
     else:
         input_list = [f"eb/{w.sample}_{w.tumor}-{w.norm}-{chrom}.EB" for chrom in chrom_list]
-    return input_list
+    val_list = []
+    for _input in input_list:
+        if os.path.isfile(_input):
+            if os.path.getsize(_input) > 20:
+                val_list.append(_input)
+        else:
+            continue
+    return val_list
 
 
 rule mergeEBscore:
@@ -96,35 +103,13 @@ rule mergeEBscore:
         4
     run:
         anno_df = pd.read_csv(input[0], sep='\t', index_col=False)
-        # maybe arrange columns so that EB is not last column?
-        # anno_cols = anno_df.columns[5:]
-
-        # # concatenate matrix file
-        # if not config['EBFilter']['use_cache']:
-        #     matrix_dfs = []
-        #     for EB_file in input:
-        #         matrix_file = EB_file.replace('.EB', '.mutmatrix')
-        #         if not os.path.isfile(matrix_file):
-        #             continue
-        #         matrix_df = pd.read_csv(matrix_file, sep='\t', index_col=False)
-        #         # cleanup after
-        #         shell(f"rm {matrix_file}")
-        #         matrix_dfs.append(matrix_df)
-        #     matrix_merge = pd.concat(matrix_dfs).sort_values(['Chr', 'Start'])
-        #     matrix_file = output[0].replace('csv', 'matrix')
-        #     matrix_merge.to_csv(matrix_file, sep='\t', index=False)
-        #     show_output(f"Written matrix_file to {matrix_file}", color='success')
-        #     # load in the input files (starting with 2nd input (1st is anno_file))
-
         EB_dfs = []
         for EB_file in input:
-            if os.path.getsize(EB_file) < 20:
-                continue
             EB_df = pd.read_csv(EB_file, sep='\t', index_col=False)
             # cleanup after
             # shell(f"rm {EB_file}")
             if EB_df.empty:
-                pass
+                continue
             EB_dfs.append(EB_df)
         EB_merge = pd.concat(EB_dfs).sort_values(['Chr', 'Start'])
 
