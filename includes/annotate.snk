@@ -88,7 +88,7 @@ rule combine_annotations:
     threads:
         2
     script:
-        "../scripts/format_table.py"
+        "../scripts/combine_tables.py
 
 
 rule edit_mutation_list:

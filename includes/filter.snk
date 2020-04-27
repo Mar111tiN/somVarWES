@@ -25,25 +25,6 @@ rule primer3:
         "../scripts/primer3.py"
 
 
-rule detect_HDR:
-    input:
-        filter_file = "table/{sample}_{tumor}-{normal}.filter1.csv",
-        filter_bam = "bam_done/{sample}_{tumor}-{normal}.filter1.done",
-        pileup = "pileup/{sample}_{tumor}-{normal}.filter1.pileup"
-    output:
-        HDR = "table/{sample}_{tumor}-{normal}.filter1.HDR.csv"
-    conda:
-        f"../{config['envs']}/HDR-env.yml"
-    threads:
-        2
-    params:
-        min_sim = config['HDR']['min_similarity'],
-        min_q = config['HDR']['min_q'],
-        min_HDR_count = config['HDR']['min_HDR_count']
-    script:
-        "../scripts/HDR.py"
-
-
 rule filter_bam:
     input:
         csv = "table/{sample}_{tumor}-{normal}.{filter}.csv",
@@ -56,7 +37,7 @@ rule filter_bam:
         # tumor_bai = "filterbam/{sample}_{tumor}.{filter}.bai",
         # normal_bam = "filterbam/{sample}_{normal}.{filter}.bam",
         # normal_bai = "filterbam/{sample}_{normal}.{filter}.bai",
-        done = "bam_done/{sample}_{tumor}-{normal}.{filter}.done"
+        done = "filterbam/{sample}_{tumor}-{normal}.{filter}.done"
     conda:
         f"../{config['envs']}/align-env.yml"
     threads:
@@ -77,7 +58,7 @@ rule filter_bam:
 
 rule filter_pileup:
     input:
-        bam = "bam_done/{sample}_{tumor}-{normal}.filter1.done"
+        bam = "filterbam/{sample}_{tumor}-{normal}.filter1.done"
     output:
         pileup = "pileup/{sample}_{tumor}-{normal}.filter1.pileup"
     threads:
@@ -91,6 +72,28 @@ rule filter_pileup:
         cleanpileup = get_script('cleanpileup')
     shell:
         "samtools mpileup -f {params.refgen} {params.qual} {params.input} | {params.cleanpileup} > {output.pileup}"
+
+
+
+
+rule detect_HDR:
+    input:
+        filter_file = "table/{sample}_{tumor}-{normal}.filter1.csv",
+        filter_bam = "filterbam/{sample}_{tumor}-{normal}.filter1.done",
+        pileup = "pileup/{sample}_{tumor}-{normal}.filter1.pileup"
+    output:
+        HDR = "table/{sample}_{tumor}-{normal}.filter1.HDR.csv"
+    conda:
+        f"../{config['envs']}/HDR-env.yml"
+    threads:
+        config['HDR']['threads']
+    params:
+        min_sim = config['HDR']['min_similarity'],
+        min_q = config['HDR']['min_q'],
+        min_HDR_count = config['HDR']['min_HDR_count']
+    script:
+        "../scripts/HDR.py"
+
 
 rule combine_filter1:
     input:
@@ -128,11 +131,10 @@ rule filter2:
         "../scripts/filters/damm2.py"
 
 
-
 rule IGVnav:
     input:
         filter = "filter/{sample}_{tumor}-{normal}.filter2.loose.csv",
-        bam = "bam_done/{sample}_{tumor}-{normal}.filter2.done"
+        bam = "filterbam/{sample}_{tumor}-{normal}.filter2.done"
     output:
         filterbam = "filterbam/{sample}_{tumor}-{normal}.filter2.IGVnav.txt"
     threads:

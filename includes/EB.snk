@@ -85,11 +85,7 @@ def get_mergeEBscore_input(w):
         input_list = [f"eb/{w.sample}_{w.tumor}-{w.norm}-{chrom}.EB" for chrom in chrom_list]
     val_list = []
     for _input in input_list:
-        if os.path.isfile(_input):
-            if os.path.getsize(_input) > 20:
-                val_list.append(_input)
-        else:
-            continue
+        val_list.append(_input)
     return val_list
 
 
@@ -105,12 +101,14 @@ rule mergeEBscore:
         anno_df = pd.read_csv(input[0], sep='\t', index_col=False)
         EB_dfs = []
         for EB_file in input:
-            EB_df = pd.read_csv(EB_file, sep='\t', index_col=False)
-            # cleanup after
-            # shell(f"rm {EB_file}")
-            if EB_df.empty:
-                continue
-            EB_dfs.append(EB_df)
+            if os.path.isfile(EB_file):
+                if os.path.getsize(_input) > 20:
+                    EB_df = pd.read_csv(EB_file, sep='\t', index_col=False)
+                    # cleanup after
+                    # shell(f"rm {EB_file}")
+                    if EB_df.empty:
+                        continue
+                    EB_dfs.append(EB_df)
         EB_merge = pd.concat(EB_dfs).sort_values(['Chr', 'Start'])
 
         # sort nicely
