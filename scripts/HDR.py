@@ -21,10 +21,10 @@ bam = os.path.join(config['filter_bam']['folder'], bam)
 
 # remove the normal part of the tumor-normal descriptor
 tumor_bam = bam.replace(
-    f"-{config['samples']['normal'][0]}", '').replace('.done', '.bam')
+    f"-{w.normal}", '').replace('.done', '.bam')
 # remove the tumor part of the tumor-normal descriptor
 normal_bam = bam.replace(
-    f"{config['samples']['tumor'][0]}-", '').replace('.done', '.bam')
+    f"{w.tumor}-", '').replace('.done', '.bam')
 print('tumor:', tumor_bam, 'normal:', normal_bam)
 
 filter_file = i.filter_file
