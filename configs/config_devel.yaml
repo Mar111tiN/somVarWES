@@ -203,7 +203,7 @@ annovar:
     - avsnp138
     - avsnp150
     - cosmic70
-    - cosmic90
+    - cosmic91
     # - clinvar_20150629
     # - clinvar_20170905
     - clinvar2019_short
@@ -232,7 +232,8 @@ EBFilter:
     fitting_penalty: 0.5
 filter:
   threads: 2
-  filter_settings: filter_AML.csv
+  filter_settings: filter_settings.xlsx
+  excel_sheet: AMLMono7
   edit:
     extended_output: False
     candidate_list: annotation/damm_lists/AML_candidates.txt

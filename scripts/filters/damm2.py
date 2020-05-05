@@ -24,7 +24,10 @@ print(f'Loading filter1 file {mut_file}.')
 filter1_df = pd.read_csv(mut_file, sep='\t')
 
 print(f"Loading filter file {filter_file}")
-filter_settings = pd.read_csv(filter_file, sep='\t', index_col=0)
+if "xls" in os.path.splitext(filter_file)[1]:
+    filter_settings = pd.read_excel(filter_file, sheet_name=sheet, index_col=0)[:4]
+else:
+    filter_settings = pd.read_csv(filter_file, sep='\t', index_col=0)
 
 
 def filter2(df, _filter='moderate'):

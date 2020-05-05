@@ -220,7 +220,7 @@ def get_primer_df(chrom, config, row):
     
     row['fwd-Primer'] = primers['PRIMER_LEFT_0_SEQUENCE']
     row['rev_Primer'] = primers['PRIMER_RIGHT_0_SEQUENCE']
-    row['AmpliconSize'] = sum(primers['PRIMER_RIGHT_0']) - primers['PRIMER_LEFT_0'][0]
+    row['AmpliconSize'] = primers['PRIMER_RIGHT_0'][0] - primers['PRIMER_LEFT_0'][0]
     row['Status'] = 'not established'
     row['Note'] = f"(fwd={int(primers['PRIMER_LEFT_0_TM'] * 10) / 10}|rev={int(primers['PRIMER_RIGHT_0_TM'] * 10) / 10})"
     return row

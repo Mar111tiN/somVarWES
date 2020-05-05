@@ -61,7 +61,11 @@ print(f"Writing basic filtered list to {filter_basic_file}.")
 
 # ############### FILTER1 ########################################
 print(f"Loading filter file {filter_setting_file}")
-filter_settings = pd.read_csv(filter_setting_file, sep='\t', index_col=0)
+
+if "xls" in os.path.splitext(filter_setting_file)[1]:
+    filter_settings = pd.read_excel(filter_file, sheet_name=sheet, index_col=0)[:4]
+else:
+    filter_settings = pd.read_csv(filter_setting_file, sep='\t', index_col=0)
 
 # filter1_setting = {
 #     'variantT': 2,
@@ -87,17 +91,21 @@ def filter1(df, _filter=''):
         eb = df['EBscore'] >= thresh['EBscore']
     else:
         eb = True
+    pon_eb = (eb & (df['PoN-Ratio'] < thresh['PoN-Ratio'])) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
 
-    # other PanelOfNormal metrices
-    pon = (df['PoN-Ratio'] < thresh['PoN-Ratio']
-           ) | (df['PoN-Alt-NonZeros'] <= thresh['PoN-Alt-NonZeros'])
+    noSNP = (df['gnomAD_exome_ALL'] < thresh['PopFreq']) & (df['esp6500siv2_all'] < thresh['PopFreq'])
 
-    # Strand Bias (as FS)
-    no_strand_bias = df['FisherScore'] < thresh['FisherScore']
-    VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >=
-                                            thresh['TVAF']) & (df['TVAF'] > df['NVAF'])
+    VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
 
-    return df[tumor_depth & (eb | pon) & no_strand_bias & VAF]
+    # ## FILTER1 RESCUE ##########
+    is7q = df['cytoBand'].str.contains('^7q')
+    isHot = (df['ChipFreq'] > 0) & (df['TVAF'] > thresh['TVAF'])
+    rescue = is7q | isHot
+
+    # FINAL FILTER1
+    filter_criteria = (tumor_depth & noSNP & (eb | pon) & (VAF | rescue)
+
+    return df[filter_criteria]
 
 
 # from Kenichi Data
