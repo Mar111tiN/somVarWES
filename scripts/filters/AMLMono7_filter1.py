@@ -16,7 +16,6 @@ filter_setting_file = os.path.join(
     config['paths']['filter_settings'],
     f_config['filter_settings']
 )
-sheet = f_config['excel_sheet']
 
 # get and run the respective filter as a shell script:
 print(f"Running filter {filter_name}")
@@ -64,7 +63,7 @@ print(f"Writing basic filtered list to {filter_basic_file}.")
 print(f"Loading filter file {filter_setting_file}")
 
 if "xls" in os.path.splitext(filter_setting_file)[1]:
-    filter_settings = pd.read_excel(filter_setting_file, sheet_name=sheet, index_col=0)[:4]
+    filter_settings = pd.read_excel(filter_file, sheet_name=sheet, index_col=0)[:4]
 else:
     filter_settings = pd.read_csv(filter_setting_file, sep='\t', index_col=0)
 
@@ -81,9 +80,7 @@ else:
 
 
 def filter1(df, _filter=''):
-    for col in ['gnomAD_exome_ALL','esp6500siv2_all']:
-        df.loc[df[col] == ".", col] = 0
-        df[col] = df[col].fillna(0).astype(float)
+
     # get thresholds from filter_setting_file
     thresh = filter_settings.loc[_filter, :]
     tumor_depth = (df['TR2'] > thresh['variantT']) & (
@@ -100,11 +97,13 @@ def filter1(df, _filter=''):
 
     VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
 
-    # there is no rescue in default
-    rescue = False
+    # ## FILTER1 RESCUE ##########
+    is7q = df['cytoBand'].str.contains('^7q')
+    isHot = (df['ChipFreq'] > 0) & (df['TVAF'] > thresh['TVAF'])
+    rescue = is7q | isHot
 
     # FINAL FILTER1
-    filter_criteria = tumor_depth & noSNP & pon_eb & (VAF | rescue)
+    filter_criteria = (tumor_depth & noSNP & (eb | pon) & (VAF | rescue)
 
     return df[filter_criteria]
 

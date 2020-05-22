@@ -30,8 +30,8 @@ cosmic70_dict = {
     'bone': 2
 }
 
-# ############## COSMIC90 ##############
-cosmic90_type_score = {
+# ############## COSMIC91 ##############
+cosmic91_type_score = {
     'acute_myeloid_leukaemia': 8,
     'lymphoid_neoplasm': 2,
     'diffuse_large_B_cell_lymphoma': 3,
@@ -60,7 +60,7 @@ cosmic90_type_score = {
     'benign': -1,
     'normal': -1
 }
-cosmic90_location_score = {
+cosmic91_location_score = {
     'haematopoietic_and_lymphoid_tissue': 3,
     'femur': 3,
     'bone': 3,
@@ -101,7 +101,7 @@ CLNSIG_score = {
 # ############## ====> CLINSCORE #################
 ClinScore = {
     'cosmic70_score': 2,  # derived score
-    'cosmic90_score': 2,  # derived score
+    'cosmic91_score': 2,  # derived score
     'clinvar_score': 2,  # derived score
     'icgc29_freq': 2000  # derived score --> adjust
 }
@@ -138,12 +138,12 @@ def resort_cols(df):
     quant_cols = cols[11:26] + ['FisherScore', 'EBscore', 'PoN-Ref', 'PoN-Alt', 'PoN-Ref-Sum', 'PoN-Alt-Sum', 'PoN-Alt-NonZeros', 'PoN-Ratio']
     if 'A|a|G|g|C|c|T|t|I|i|D|d' in cols:
         quant_cols.append('A|a|G|g|C|c|T|t|I|i|D|d')
-    clin_cols = ['ClinScore', 'cosmic90_MutID', 'cosmic90_type', 'cosmic90_score', 'cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq']
+    clin_cols = ['ClinScore', 'cosmic91_ID', 'cosmic91_type', 'cosmic91_score', 'cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq']
     pop_col = cols[30:33]
     # the added extracted and score columns make up 8 columns:
 
     # 4:    'icgc29_freq'
-    # 5-7:  'clinvar_score', 'cosmic70_score', 'cosmic90_score'
+    # 5-7:  'clinvar_score', 'cosmic70_score', 'cosmic91_score'
     # 8:    'ClinScore'
     # 9-12: PoN-info (4 columns)
     pred_col = cols[41:-13] if extended_output else cols[41:49]
@@ -182,10 +182,10 @@ def get_clinical_scores(df):
         else:
             return 0
 
-    def cosmic90_score(row):
-        return (1 + cosmic90_type_score.get(row['types'], 0) + cosmic90_location_score.get(row['location'], 0)) * (row['types'] != ".") * int(row['count'])
+    def cosmic91_score(row):
+        return (1 + cosmic91_type_score.get(row['types'], 0) + cosmic91_location_score.get(row['location'], 0)) * (row['types'] != ".") * int(row['count'])
 
-    cosmic90_pattern = r'(?P<count>[0-9]+)x\((?P<types>[^0-9@)]+)@(?P<location>[^0-9@)]+)\)'
+    cosmic91_pattern = r'(?P<count>[0-9]+)x\((?P<types>[^0-9@)]+)@(?P<location>[^0-9@)]+)\)'
 
     def get_CLINVARscore(row):
         '''
@@ -217,8 +217,8 @@ def get_clinical_scores(df):
     # SCALAR SCORES FROM CLINICAL DBS
     df['clinvar_score'] = df.apply(get_CLINVARscore, axis=1)
     df['cosmic70_score'] = df.apply(cosmic70score, axis=1)
-    df['cosmic90_score'] = df['cosmic90_type'].str.extractall(cosmic90_pattern).apply(cosmic90_score, axis=1).reset_index().drop(columns='match').groupby('level_0').sum()
-    df['cosmic90_score'] = df['cosmic90_score'].fillna(0)
+    df['cosmic91_score'] = df['cosmic91_type'].str.extractall(cosmic91_pattern).apply(cosmic91_score, axis=1).reset_index().drop(columns='match').groupby('level_0').sum()
+    df['cosmic91_score'] = df['cosmic91_score'].fillna(0)
 
     # GET COMBINED ClinScore
     df['ClinScore'] = 0

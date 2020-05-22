@@ -1,25 +1,20 @@
 #!/bin/bash
 
-#SBATCH -J testSLURM
-#SBATCH -o=clusterlogs
+# can be overruled on CLI with -J <NAME>
+#SBATCH --job-name DEVEL
+#SBATCH --output=logs/%x-%j.log
 #SBATCH -n=2
-# --nodes=1
-# SBATCH --mem-per-cpu=1G
+#SBATCH --nodes=1   
+#SBATCH --partition=medium
+#SBATCH --time=10:00:00
 
 
-#$ -V
-#$ -j y
-
-#$ -r yes
-#$ -cwd
-#$ -S /bin/bash
-#$ -P control
-
-export LOGDIR=/fast/users/${USER}/scratch/lox/WES/${JOB_ID}
+export LOGDIR=logs/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
 export TMPDIR=/fast/users/${USER}/scratch/tmp
 # export WRKDIR=$HOME/work/projects/whWES
 
 mkdir -p $LOGDIR
+unset DRMAA_LIBRARY_PATH
 
 # somehow my environments are not set
 # have to set it explicitly
@@ -29,11 +24,10 @@ conda activate WES-env
 set -x
 
 # !!! leading white space is important
-DRMAA=" -P medium -pe smp {threads}  -l h_rt=24:00:00 -l h_vmem=3.5g"
-DRMAA="$DRMAA -V -o $LOGDIR/ -j yes"
+DRMAA=" -p medium -t 10:00:00 --mem-per-cpu=3500M --nodes=1 -n {threads}"
+DRMAA="$DRMAA -o $LOGDIR/%x-%j.log"
 snakemake --unlock --rerun-incomplete
 snakemake --dag | dot -Tsvg > dax/dag.svg
-snakemake --use-conda  --rerun-incomplete --drmaa "$DRMAA" -j 128 -p -r -k
+snakemake --use-conda  --rerun-incomplete --restart-times 3 --drmaa "$DRMAA" -prkj 4
 # -k ..keep going if job fails
 # -p ..print out shell commands
-# 

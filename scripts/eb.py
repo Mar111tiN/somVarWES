@@ -98,6 +98,7 @@ def main(s):
         # convert mutmatrix to direct EBinput
         EB_matrix_input_file = f"{base_file}.EB.matrix"
         shell(f"cat {mutmatrix_file} | {matrix2EBinput} > {EB_matrix_input_file}")
+        
         # load in the EB.matrix file
         eb_matrix = pd.read_csv(EB_matrix_input_file, sep='\t')
 

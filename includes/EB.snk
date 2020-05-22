@@ -102,7 +102,7 @@ rule mergeEBscore:
         EB_dfs = []
         for EB_file in input:
             if os.path.isfile(EB_file):
-                if os.path.getsize(_input) > 20:
+                if os.path.getsize(EB_file ) > 20:
                     EB_df = pd.read_csv(EB_file, sep='\t', index_col=False)
                     # cleanup after
                     # shell(f"rm {EB_file}")

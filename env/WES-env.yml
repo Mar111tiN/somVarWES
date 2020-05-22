@@ -15,10 +15,10 @@ dependencies:
   - boto3=1.11.8
   - botocore=1.14.8
   - bzip2=1.0.8
-  - ca-certificates=2019.11.28
+  - ca-certificates=2020.4.5.1
   - cachetools=3.1.1
   - cairo=1.16.0
-  - certifi=2019.11.28
+  - certifi=2020.4.5.1
   - cffi=1.13.2
   - chardet=3.0.4
   - configargparse=0.13.0
@@ -95,7 +95,7 @@ dependencies:
   - numpy=1.17.5
   - openjpeg=2.3.1
   - openpyxl=3.0.3
-  - openssl=1.1.1f
+  - openssl=1.1.1g
   - pandas=0.25.3
   - pango=1.40.14
   - paramiko=2.7.1
@@ -140,6 +140,7 @@ dependencies:
   - urllib3=1.25.7
   - wheel=0.33.6
   - wrapt=1.11.2
+  - xlrd=1.2.0
   - xmlrunner=1.7.7
   - xorg-kbproto=1.0.7
   - xorg-libice=1.0.10

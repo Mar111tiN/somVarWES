@@ -57,11 +57,13 @@ rule varscan2table:
         unpack(get_anno_input)
     output:
         "table/{sample}_{tumor}-{norm}.{chrom}.csv"
-    threads: 2
+    threads: 6
     conda:
         f"../{config['envs']}/vcf-env.yml"
     params:
-        vcf2table = get_script('vcf2table'),
+        vcf2csv = get_script('vcf2csv'),
+        editcsv = get_script('editcsv'),
+        coords2annovar = get_script('coords2annovar'),
         varscan2table = get_script('varscan2table')
     script:
         "../scripts/varscan2table.py"

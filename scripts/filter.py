@@ -1,6 +1,6 @@
 import os
 import subprocess
-################### INIT (arguments and data)
+# ################## INIT (arguments and data)
 w = snakemake.wildcards
 config = snakemake.config
 
