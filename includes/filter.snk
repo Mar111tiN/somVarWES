@@ -9,7 +9,7 @@ rule filter1:
     threads:
         config['filter']['threads']
     script:
-        "../scripts/filters/damm1.py" 
+        f"../scripts/filters/{config['filter']['filter1']}" 
 
 
 rule primer3:
@@ -74,8 +74,6 @@ rule filter_pileup:
         "samtools mpileup -f {params.refgen} {params.qual} {params.input} | {params.cleanpileup} > {output.pileup}"
 
 
-
-
 rule detect_HDR:
     input:
         filter_file = "table/{sample}_{tumor}-{normal}.filter1.csv",
@@ -128,7 +126,7 @@ rule filter2:
     threads: 
         2
     script:
-        "../scripts/filters/damm2.py"
+        f"../scripts/filters/{config['filter']['filter2']}" 
 
 
 rule IGVnav:

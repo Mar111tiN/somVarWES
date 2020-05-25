@@ -6,19 +6,32 @@ import pandas as pd
 w = snakemake.wildcards
 config = snakemake.config
 f_config = config['filter']
-filter_name = f_config['filter_name']
-i = snakemake.input[0]
+
 filter1_file = snakemake.output.filter1
-filter_basic_file = snakemake.output.basic
-threads = f_config['threads']
-keep_syn = f_config['keep_syn']
-filter_setting_file = os.path.join(
+
+mut_file = snakemake.input[0]
+filter_name = f_config['filter1']
+filter_file = os.path.join(
     config['paths']['filter_settings'],
     f_config['filter_settings']
 )
+sheet = f_config['excel_sheet']
 
-# get and run the respective filter as a shell script:
-print(f"Running filter {filter_name}")
+threads = f_config['threads']
+keep_syn = f_config['keep_syn']
+
+
+print(f"Running filter1 {filter_name}")
+print(f'Loading mutation file {mut_file}.')
+filter1_df = pd.read_csv(mut_file, sep='\t')
+
+print(f"Loading filter file {filter_file}")
+if "xls" in os.path.splitext(filter_file)[1]:
+    filter_settings = pd.read_excel(filter_file, sheet_name=sheet, index_col=0)[:4]
+else:
+    filter_settings = pd.read_csv(filter_file, sep='\t', index_col=0)
+
+
 print(f"    keep_syn= {keep_syn}")
 
 print(f'Started editing and basic filtering for {i}.')

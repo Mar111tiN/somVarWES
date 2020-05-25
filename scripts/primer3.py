@@ -1,13 +1,10 @@
 import primer3
 import re
-import math
 import pandas as pd
-
-import os
 from functools import partial
 
 
-############# SNAKEMAKE ##################
+# ############ SNAKEMAKE ##################
 w = snakemake.wildcards
 config = snakemake.config
 p_config = config['primer3']
@@ -74,7 +71,7 @@ def get_chrom(chrom, chroms_folder='chroms'):
         "sequence": chrom_seq,
         "length": len(chrom_seq)
     }
-    return chrom 
+    return chrom
 
 
 def mut2insert(mut={}, seq={}, return_none=False):
@@ -102,7 +99,6 @@ def mut2insert(mut={}, seq={}, return_none=False):
         return None if return_none else seq['seq']
     if (mut['Start'] < seq['Start']) or (mut['End'] > seq['End']):
         return None if return_none else seq['seq']
-    bases = ['A', 'C', 'G', 'T']
     # case SNP
     start = mut['Start'] - seq['Start']
     end = mut['End'] - seq['Start']
@@ -126,9 +122,6 @@ def edit_seq(row):
     # convert mutation to dict
     def mut2dict(row):
         # mutation to dict
-        chrom = row['Chr']
-        start = row['Start']
-        end = row['End']
         mut_dict = {
             'Chr': row['Chr'],
             'Start': row['Start'],
@@ -138,7 +131,6 @@ def edit_seq(row):
         }
         return mut_dict
     mut_dict = mut2dict(row)
-
 
     insert_dict = {
         'Chr': row['Chr'],
@@ -182,20 +174,20 @@ def get_primer_df(chrom, config, row):
     if primers['PRIMER_PAIR_NUM_RETURNED'] == 0:
         row['fwd_seq'] = row['fwd_tmp'] = row['rev_seq'] = row['rev_tmp'] = row['prod_size'] = '--'
         return row
-    
-    ## get chrom coords
+
+    # # get chrom coords
     amp_start = seq_start + primers['PRIMER_LEFT_0'][0] + 1
     amp_end = seq_start + primers['PRIMER_RIGHT_0'][0] + 1
-    
+
     row['AmpliconRange'] = f"{chrom['name']}:{amp_start}-{amp_end}"
-    
+
     insert_start = amp_start + primers['PRIMER_LEFT_0'][1]
     insert_end = amp_end - primers['PRIMER_RIGHT_0'][1]
     row['InsertRange'] = f"{chrom['name']}:{insert_start}-{insert_end}"
     row['InsertSize'] = insert_end - insert_start
-    insert_seq = chrom['sequence'][insert_start -1:insert_end]
+    insert_seq = chrom['sequence'][insert_start - 1: insert_end]
     row['InsertSeq'] = insert_seq
-    
+
     mut_dict = {
         'Chr': row['Chr'],
         'Start': row['Start'],
@@ -203,24 +195,21 @@ def get_primer_df(chrom, config, row):
         'Ref': row['Ref'],
         'Alt': row['Alt']
     }
-    
+
     insert_dict = {
         'Chr': row['Chr'],
         'Start': insert_start,
         'End': insert_end,
         'seq': insert_seq
     }
-    
-    
+
     row['InsertSeq'] = mut2insert(mut=mut_dict, seq=insert_dict, return_none=True)
     row['offsetL'] = row['Start'] - insert_start
     row['offsetR'] = insert_end - row['End']
-    
-    
-    
-    row['fwd-Primer'] = primers['PRIMER_LEFT_0_SEQUENCE']
-    row['rev_Primer'] = primers['PRIMER_RIGHT_0_SEQUENCE']
-    row['AmpliconSize'] = primers['PRIMER_RIGHT_0'][0] - primers['PRIMER_LEFT_0'][0]
+
+    row['fwdPrimer'] = primers['PRIMER_LEFT_0_SEQUENCE']
+    row['revPrimer'] = primers['PRIMER_RIGHT_0_SEQUENCE']
+    row['AmpliconSize'] = primers['PRIMER_RIGHT_0'][0] - primers['PRIMER_LEFT_0'][0] + 1
     row['Status'] = 'not established'
     row['Note'] = f"(fwd={int(primers['PRIMER_LEFT_0_TM'] * 10) / 10}|rev={int(primers['PRIMER_RIGHT_0_TM'] * 10) / 10})"
     return row
@@ -247,8 +236,8 @@ def run_primer3(mut_df, chroms_folder='', pcr_config=PCR_config, primer3_config=
         df_list.append(primer_df)
     primer_df = pd.concat(df_list, sort=True)
     new_cols = [
-        'fwd-Primer', 
-        'rev_Primer',
+        'fwdPrimer', 
+        'revPrimer',
         'Status',
         'Note',
         'AmpliconRange',
@@ -264,7 +253,6 @@ def run_primer3(mut_df, chroms_folder='', pcr_config=PCR_config, primer3_config=
 
     primer_df = primer_df[org_cols + new_cols]
     return primer_df
-    
 
 
 filter1_df = pd.read_csv(i, sep='\t')

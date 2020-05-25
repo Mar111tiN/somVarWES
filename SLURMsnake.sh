@@ -1,33 +1,48 @@
 #!/bin/bash
 
 # can be overruled on CLI with -J <NAME>
-#SBATCH --job-name DEVEL
+#SBATCH --job-name=devel
+
+# Set the file to write the stdout and stderr to (if -e is not set; -o or --output).
 #SBATCH --output=logs/%x-%j.log
-#SBATCH -n=2
-#SBATCH --nodes=1   
+
+# Set the number of cores (-n or --ntasks).
+#SBATCH --ntasks=2
+
+# Force allocation of the two cores on ONE node.
+#SBATCH --nodes=1
+
+# Set the memory per CPU. Units can be given in T|G|M|K.
+#SBATCH --mem-per-cpu=1000M
+
+# Set the partition to be used (-p or --partition).
 #SBATCH --partition=medium
-#SBATCH --time=10:00:00
+
+# Set the expected running time of your job (-t or --time).
+# Formats are MM:SS, HH:MM:SS, Days-HH, Days-HH:MM, Days-HH:MM:SS
+#SBATCH --time=03:50:00
 
 
-export LOGDIR=logs/${SLURM_JOB_NAME}/${SLURM_JOB_ID}
-export TMPDIR=/fast/users/${USER}/scratch/tmp
-# export WRKDIR=$HOME/work/projects/whWES
+export LOGDIR=logs/${SLURM_JOB_NAME}-${SLURM_JOB_ID}
+export TMPDIR=/fast/users/${USER}/scratch/tmp;
+mkdir -p $LOGDIR;
 
-mkdir -p $LOGDIR
+
 unset DRMAA_LIBRARY_PATH
-
+eval "$($(which conda) shell.bash hook)"  # ??
 # somehow my environments are not set
 # have to set it explicitly
-# conda activate somVar-EB
-conda activate WES-env
-# outputs every output to the terminal
-set -x
+conda activate WES-env;
+
+
+set -x;
+
 
 # !!! leading white space is important
-DRMAA=" -p medium -t 10:00:00 --mem-per-cpu=3500M --nodes=1 -n {threads}"
-DRMAA="$DRMAA -o $LOGDIR/%x-%j.log"
-snakemake --unlock --rerun-incomplete
-snakemake --dag | dot -Tsvg > dax/dag.svg
-snakemake --use-conda  --rerun-incomplete --restart-times 3 --drmaa "$DRMAA" -prkj 4
+DRMAA=" -p medium -t 03:30:00 --mem-per-cpu=3000 --nodes=1 -n 20";
+DRMAA="$DRMAA -o $LOGDIR/%x-%j.log";
+snakemake --unlock --rerun-incomplete;
+snakemake --dag | dot -Tsvg > dax/dag.svg;
+snakemake --use-conda  --rerun-incomplete --drmaa "$DRMAA" -prk -j 200;
 # -k ..keep going if job fails
 # -p ..print out shell commands

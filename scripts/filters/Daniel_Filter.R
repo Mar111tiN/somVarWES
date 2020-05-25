@@ -348,11 +348,6 @@ Unambiuous_for_TP <- WES_mut_filt_2 %>%
   
   
   
-  
-  
-  
-  
-  
   VNum3_Depth10 <- WES_mut_filt_1 %>% 
   dplyr::filter(variantNum_tumor >=3 & variantNum_tumor < 4 | (depth_tumor >=10 & depth_tumor <12)) %>% 
   dplyr::filter(`P-value(EBCall)`>= 4) %>% 

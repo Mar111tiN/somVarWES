@@ -1,46 +1,48 @@
 #!/bin/sh
 
-### cleans samtools mpileup output 
-# removes from all reads the traces of base location and indel lengths
-
+### cleans samtools mpileup output
+# first any end-of-read markers like ^I or ^[ will be removed
+# next, the A+12T for inserts and the T-12A for deletions will be converted to I/i and D/d
 mawk '
 NR == 1 {
     samples = (NF - 3) / 3;
 }
 {
-    read = $0;
-    
-    # remove position traces from all read fields
-    for (i = 0; i++ < samples;) {
-        col = (i*3) + 2;
-        gsub(/\^[^\t]|\$/,"",$col);
-    }
-    # 
-    while (match(read,/[+-][0-9]+/)) {
-        pre = substr(read,1,RSTART-2);
-        indel = substr(read,RSTART,1); # + or -
-        base = substr(read,RSTART-1,1); # base before the deletion
-        l = substr(read,RSTART+1,RLENGTH-1);
-        post = substr(read,RSTART+RLENGTH+l);
-        if (indel == "-") {
-            if (match(base,/[ACGT]/)) {
-                base = "D";
-            } else {
-                base = "d";
-            }
-        } else {
-            if (match(base,/[ACGT]/)) {
-                base = "I";
-            } else {
-                base = "i";
-            }            
-        }
+  # cycle through the reads
+  for (i = 0; i++ < samples;) {
+    col = (i*3) + 2;
+    # remove position traces from all $col fields
+    gsub(/\^.|\$/,"",$col);
 
-        read = pre base post;
-    }     
+    # remove the indel traces
+    while (match($col,/[+-][0-9]+/)) {
+      pre = substr($col,1,RSTART-2);
+      indel = substr($col,RSTART,1); # + or -
+      base = substr($col,RSTART-1,1); # base before the deletion
+      l = substr($col,RSTART+1,RLENGTH-1);
+      post = substr($col,RSTART+RLENGTH+l);
+      if (indel == "-") {
+        if (match(base,/[ACGT.]/)) {
+          base = "D";
+        } else {
+          base = "d";
+        }
+      } else {
+        if (match(base,/[ACGT.]/)) {
+          base = "I";
+        } else {
+          base = "i";
+        }            
+      }
+      $col = pre base post;
+    } 
+  }
+  # 
+    
 # print all fields
-    for (i=0; i++ < NF;) {
-        printf("%s\t",$i);
-    }
-    printf("\n");
+  printf("%s",$1);
+  for (i=1; i++ < NF;) {
+    printf("\t%s",$i);
+  }
+  printf("\n");
 }'

@@ -65,7 +65,7 @@ ref:
 #### TOOLS SECTION ##############
 tools:
   gatk: gatk # 
-  gatk3: java -jar /fast/users/szyskam_c/work/utilså/gatk3.8/GenomeAnalysisTK.jar -T
+  gatk3: java -jar /fast/users/szyskam_c/work/utils/gatk3.8/GenomeAnalysisTK.jar -T
   # annovar: perl /fast/users/szyskam_c/tools/annovar2018
   annovar: perl /fast/users/szyskam_c/tools/annovar2019
 scripts:
@@ -200,7 +200,7 @@ annovar:
     - avsnp150
     - 1000g2014oct_all
     - gnomad_exome_all
-    - dbsnp153
+    - dbsnp153_HAEv7
     # - gnomad_af.lna # not indexed
     # - exac03_all
     # - dbscsnv11
@@ -238,6 +238,9 @@ EBFilter:
     fitting_penalty: 0.5
 filter:
   threads: 2
+  run: True
+  filter1: damm1.py
+  filter2: filter2_NHL.py
   filter_settings: filter_settings.xlsx
   excel_sheet: AMLMono7
   edit:
@@ -245,10 +248,6 @@ filter:
     candidate_list: annotation/damm_lists/NHL_candidates.txt
     driver_list: annotation/damm_lists/AML_drivers.txt
     hotspot_list: annotation/damm_lists/CHIP_mutations_short_hg38.csv
-  filter_name: damm1
-  run: True
-  filter1: damm1.py
-  filter2: filter2_NHL.py
   keep_syn: False
 filter_bam:
     threads: 4

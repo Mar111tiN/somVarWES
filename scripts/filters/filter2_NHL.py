@@ -1,26 +1,27 @@
 import os
 import pandas as pd
 
-############# SNAKEMAKE ##################
+# ############ SNAKEMAKE ##################
 
 w = snakemake.wildcards
 config = snakemake.config
 f_config = config['filter']
-filter_name = f_config['filter_name']
 
 mut_file = snakemake.input.filter1
-
-
-output_base = snakemake.output.filter2.replace('.loose.csv', '')
-threads = f_config['threads']
-keep_syn = f_config['keep_syn']
+filter_name = f_config['filter1']
 filter_file = os.path.join(
     config['paths']['filter_settings'],
     f_config['filter_settings']
 )
+sheet = f_config['excel_sheet']
 
-print(f"Running filter2")
-print(f'Loading filter1 file {mut_file}.')
+output_base = snakemake.output.filter2.replace('.loose.csv', '')
+threads = f_config['threads']
+keep_syn = f_config['keep_syn']
+
+
+print(f"Running filter2 {filter_name}")
+print(f'Loading mutation file {mut_file}.')
 filter1_df = pd.read_csv(mut_file, sep='\t')
 
 print(f"Loading filter file {filter_file}")

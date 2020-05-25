@@ -1,4 +1,5 @@
 import os
+import re
 import pandas as pd
 
 input = str(snakemake.input)
@@ -15,6 +16,10 @@ hotspot_list = params.hotspot_list
 
 print(f'Started editing and basic filtering for {input}.')
 anno_df = pd.read_csv(input, sep='\t')
+
+
+############# PREDICTIONS TO KEEP ################
+predictions = ["Polyphen2", "SIFT", "MutationTaster"]
 
 
 #####################################################################
@@ -132,22 +137,30 @@ def resort_cols(df):
     resort the columns and removes prediction columns based on
     '''
     cols = list(df.columns)
+
+    # #### DEBUGGING ######
+    print('All Columns:')
     for i, col in enumerate(cols):
         print(i, col)
+    ######################
     start_cols = cols[:11]
     quant_cols = cols[11:26] + ['FisherScore', 'EBscore', 'PoN-Ref', 'PoN-Alt', 'PoN-Ref-Sum', 'PoN-Alt-Sum', 'PoN-Alt-NonZeros', 'PoN-Ratio']
     if 'A|a|G|g|C|c|T|t|I|i|D|d' in cols:
         quant_cols.append('A|a|G|g|C|c|T|t|I|i|D|d')
     clin_cols = ['ClinScore', 'cosmic91_ID', 'cosmic91_type', 'cosmic91_score', 'cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq']
-    pop_col = cols[30:33]
-    # the added extracted and score columns make up 8 columns:
+    pop_cols = [col for col in cols if re.match("|".join(["avsnp", "dbSNP", "esp6500", "1000g", "gnomAD"]), col)]
+    print(f"Using population data: {' '.join(pop_cols)}")
+    # keep only the pred_cols defined in predictions list above
+    pred_cols = [col for col in cols if re.match("|".join(predictions), col)]
 
+    pred_cols = cols[47:-13] if extended_output else pred_cols
+    # 13 <== the added extracted and score columns make up 8 columns + 4 PoN columns = 12:
     # 4:    'icgc29_freq'
     # 5-7:  'clinvar_score', 'cosmic70_score', 'cosmic91_score'
     # 8:    'ClinScore'
     # 9-12: PoN-info (4 columns)
-    pred_col = cols[41:-13] if extended_output else cols[41:49]
-    new_cols = start_cols + quant_cols + clin_cols + pop_col + pred_col
+    print(f"Keeping predictions: {' '.join(pred_cols)}")
+    new_cols = start_cols + quant_cols + clin_cols + pop_cols + pred_cols
     return df[new_cols]
 
 

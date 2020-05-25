@@ -1,6 +1,7 @@
 #!/bin/sh
 
-### cleans output from samtools mpileup where only Chr, Start, and the read data has been lef
+### cleans output from samtools mpileup where only Chr, Start, and the read data has been left
+# Chr   Start   
 # this can be done with pon2cols tool
 # removes from all reads the traces of base location and indel lengths
 
