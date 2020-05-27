@@ -7,9 +7,14 @@ envs: env # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
   samplesheet: /fast/users/szyskam_c/snakes/develop/somVarWES/sheets/sample002.csv
   tumor:
-    - A  # 
+    - A  #
+    - A1
+    - A2 
+    - A3
+    - A12 
   normal:
     - B  # if more than one, the first normal will be used as default for tumor-sample
+    - B2
   reads:
     - R1
     - R2

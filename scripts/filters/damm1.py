@@ -7,22 +7,22 @@ w = snakemake.wildcards
 config = snakemake.config
 f_config = config['filter']
 
-filter1_file = snakemake.output.filter1
-
 mut_file = snakemake.input[0]
+
 filter_name = f_config['filter1']
 filter_file = os.path.join(
     config['paths']['filter_settings'],
     f_config['filter_settings']
 )
 sheet = f_config['excel_sheet']
-
 threads = f_config['threads']
 keep_syn = f_config['keep_syn']
 
+basic_file = snakemake.output.basic
+filter1_file = snakemake.output.filter1
 
 print(f"Running filter1 {filter_name}")
-print(f'Loading mutation file {mut_file}.')
+print(f"Loading mutation file {mut_file}.")
 filter1_df = pd.read_csv(mut_file, sep='\t')
 
 print(f"Loading filter file {filter_file}")
@@ -33,7 +33,6 @@ else:
 
 
 print(f"    keep_syn= {keep_syn}")
-
 print(f'Started editing and basic filtering for {mut_file}.')
 anno_df = pd.read_csv(mut_file, sep='\t')
 
@@ -69,16 +68,10 @@ def filter_basic(df, keep_syn=False):
 basic_df = filter_basic(anno_df, keep_syn=keep_syn)
 
 
-basic_df.to_csv(filter_basic_file, sep='\t', index=False)
-print(f"Writing basic filtered list to {filter_basic_file}.")
+basic_df.to_csv(basic_file, sep='\t', index=False)
+print(f"Writing basic filtered list to {basic_file}.")
 
 # ############### FILTER1 ########################################
-print(f"Loading filter file {filter_setting_file}")
-
-if "xls" in os.path.splitext(filter_setting_file)[1]:
-    filter_settings = pd.read_excel(filter_setting_file, sheet_name=sheet, index_col=0)[:4]
-else:
-    filter_settings = pd.read_csv(filter_setting_file, sep='\t', index_col=0)
 
 # filter1_setting = {
 #     'variantT': 2,
@@ -129,5 +122,6 @@ def filter1(df, _filter=''):
 # EBscore >=4 or CoSMIC OCCURRENCE
 
 filter1_df = filter1(basic_df, _filter='filter1')
+print("Lenge", len(filter1_df.index))
 print(f"Writing filter1 file to {filter1_file}")
 filter1_df.to_csv(filter1_file, sep='\t', index=False)

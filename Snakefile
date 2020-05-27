@@ -25,6 +25,7 @@ include: "includes/utils.snk"
 # retrieve the file_df with all the file paths from the samplesheet
 sample_df, short_sample_df = get_files(config['inputdirs'], config['samples']['samplesheet'])
 chrom_list = get_chrom_list(config)
+TN_list = get_tumor_normal_pairs(sample_df)
 
 # ############ INCLUDES ##############################  
 include: "includes/fastq.snk"
@@ -35,7 +36,7 @@ include: "includes/processBAM.snk"
 include: "includes/dedup.snk"
 include: "includes/umi_filter.snk"
 include: "includes/varscan.snk"
-include: "includes/annotate.snk" 
+include: "includes/annotate.snk"
 include: "includes/EB.snk"
 include: "includes/filter.snk"
 
@@ -48,8 +49,8 @@ wildcard_constraints:
     type = "[^_/.]+",
     read = "[^_/.]+",
     tumor_norm = "[^_/.]+",
-    tumor = "[A-Za-z]+",
-    norm = "[A-Za-z]+",
+    tumor = "[A-Za-z123]+",
+    norm = "[A-Za-z123]+",
     split = "[0-9]+",
     read_or_index = "[^_/.]+",
     trim = "[^_/.]+",
@@ -66,9 +67,9 @@ rule all:
         "QC/fastQC.html",
         "QC/libraryQC.html",
         "QC/insertQC.html",
-        # expand("coverBED/{samples}.txt", samples=sample_df.index),
-        expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=get_tumor_normal_pairs(sample_df)),
-        expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=get_tumor_normal_pairs(sample_df))
+        expand("coverBED/{samples}.txt", samples=sample_df.index),
+        expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
+        expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list)
 
 
 ###########################################################################
