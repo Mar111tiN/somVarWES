@@ -41,47 +41,70 @@ def filter2(df, _filter='moderate'):
     # get thresholds
     print("filter: ", f"filter2-{_filter}")
     thresh = filter_settings.loc[f"filter2-{_filter}", :]
+
+    # ##### TUMOR DEPTH ############
     tumor_depth = (df['TR2'] > thresh['variantT']) & (
         df['Tdepth'] > thresh['Tdepth'])
-    if thresh['EBscore']:
+
+    # ##### VAF ##################
+    # minimum TVAF if not candidate
+    is_candidate = (df['isCandidate'] == 1) | (df['isDriver'] == 1) | (df['ChipFreq'] > 0)
+    # either cand with higher TVAF or lower TVAF
+    TVAF = (is_candidate & (df['TVAF'] >= thresh['TVAF4Cand'])) | (df['TVAF'] >= thresh['TVAF'])
+    # NVAF is computed from upper threshold and a max similarity to TVAF
+    upper = (1 + thresh['VAFSim']) * df['NVAF']
+    lower = (1 - thresh['VAFSim']) * df['NVAF']
+    NVAF = (upper < df['TVAF']) | (df['TVAF'] < lower) & (df['NVAF'] <= thresh['NVAF'])
+    VAF = NVAF & TVAF
+
+
+    # ##### EB/PoN-Filter ##########
+    if thresh['EBscore'] == thresh['EBscore']:
         eb = df['EBscore'] >= thresh['EBscore']
     else:
         eb = True
+    pon_eb = (eb & (df['PoN-Ratio'] < thresh['PoN-Ratio'])) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
 
-    pon = (df['PoN-Ratio'] < thresh['PoN-Ratio']
-           ) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
+    # ############ HDR ####################
+    HDR = (df['TumorHDRcount'] <= thresh['HDRcount']) & (df['NormalHDRcount'] <= thresh['HDRcount'])
 
-    # minimum TVAF if not candidate
-    is_candidate = (df['isCandidate'] == 1) | (df['isDriver'] == 1)
-    no_noise = is_candidate | (df['TVAF'] > 0.05)
+    # ##### POPULATION #############
+    # reformat population columns for filtering
+    for col in ['gnomAD_exome_ALL', 'esp6500siv2_all', 'dbSNP153_AltFreq']:
+        df.loc[df[col] == ".", col] = 0
+        df[col] = df[col].fillna(0).astype(float)
 
+    if thresh['PopFreq'] == thresh['PopFreq']:
+        noSNP = (df['gnomAD_exome_ALL'] < thresh['PopFreq']) & (df['esp6500siv2_all'] < thresh['PopFreq']) & (df['dbSNP153_AltFreq'] < thresh['PopFreq'])
+    else:
+        noSNP = True
+
+    # ####### STRANDBIAS / POLARITY ##########################
     # Strand Ratio (as FisherScore and simple)
     no_strand_bias = df['FisherScore'] <= thresh['FisherScore']
-
     # Strand Polarity (filters out very uneven strand distribution of alt calls)
-    if thresh.get(['strand_polarity'], None):
+    if thresh['strand_polarity'] == thresh['strand_polarity']:
         pol = thresh['strand_polarity']
-        no_strand_polarity = (
-            df['TR2+'] <= df['TR2'] - pol) & (df['TR2+'] >= pol)
+        no_strand_polarity = no_strand_polarity = (df['TR2+'] / df['TR2'] <= pol) & (df['TR2+'] / df['TR2'] >= (1-pol))
     else:
         no_strand_polarity = True
 
-    strandedness = no_strand_bias & no_strand_polarity
+    strandOK = no_strand_bias & no_strand_polarity
 
-    # VAF is simple
-    VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
-
+    # ## FILTER2 RESCUE ##########
     # Clin_score is used for rescue of all mutations
     clin_score = df['ClinScore'] >= thresh['ClinScore']
 
+    rescue = clin_score
+
+    filter_criteria = tumor_depth & pon_eb & (noSNP & strandOK & VAF & HDR | rescue)
     # apply filters to dataframe
-    df = df[(tumor_depth & (pon | eb) & strandedness & VAF & no_noise)
-            | clin_score].sort_values(['TVAF'], ascending=False)
+    df = df[filter_criteria].sort_values(['TVAF'], ascending=False)
     list_len = len(df.index)
     return df, list_len
 
 
-################# OUTPUT #############################################################
+# ################ OUTPUT #############################################################
 print(f"Writing filter2 lists to {output_base}.<stringency>.csv")
 
 excel_file = f"{output_base}.xlsx"

@@ -75,8 +75,7 @@ def filter2(df, _filter='moderate'):
     clin_score = df['ClinScore'] >= thresh['ClinScore']
 
     # apply filters to dataframe
-    df = df[(tumor_depth & (pon | eb) & strandedness & VAF & no_noise)
-            | clin_score].sort_values(['TVAF'], ascending=False)
+    df = df[(tumor_depth & (pon | eb) & strandedness & VAF & no_noise) | clin_score].sort_values(['TVAF'], ascending=False)
     list_len = len(df.index)
     return df, list_len
 

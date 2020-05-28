@@ -1,29 +1,29 @@
 import os
 import pandas as pd
 
-############# SNAKEMAKE ##################
+# ############ SNAKEMAKE ##################
 
 w = snakemake.wildcards
 config = snakemake.config
 f_config = config['filter']
 
-filter1_file = snakemake.output.filter1
-
 mut_file = snakemake.input[0]
+
 filter_name = f_config['filter1']
 filter_file = os.path.join(
     config['paths']['filter_settings'],
     f_config['filter_settings']
 )
 sheet = f_config['excel_sheet']
-
 threads = f_config['threads']
 keep_syn = f_config['keep_syn']
 
+basic_file = snakemake.output.basic
+filter1_file = snakemake.output.filter1
 
-print(f"Running filter1 {filter_name}")
-print(f'Loading mutation file {mut_file}.')
-filter1_df = pd.read_csv(mut_file, sep='\t')
+print(f"Running filter1 \"{filter_name}\"")
+print(f"Loading mutation file {mut_file}.")
+anno_df = pd.read_csv(mut_file, sep='\t')
 
 print(f"Loading filter file {filter_file}")
 if "xls" in os.path.splitext(filter_file)[1]:
@@ -33,9 +33,7 @@ else:
 
 
 print(f"    keep_syn= {keep_syn}")
-
-print(f'Started editing and basic filtering for {i}.')
-anno_df = pd.read_csv(i, sep='\t')
+print(f'Started editing and basic filtering for {mut_file}.')
 
 
 #  ############## BASIC FILTER ####################################
@@ -96,19 +94,31 @@ def filter1(df, _filter=''):
 
     # get thresholds from filter_setting_file
     thresh = filter_settings.loc[_filter, :]
+
+    # ##### TUMOR DEPTH ############
     tumor_depth = (df['TR2'] > thresh['variantT']) & (
         df['Tdepth'] > thresh['Tdepth'])
 
-    # EBFilter
-    if thresh['EBscore']:
+    # ##### VAF ##################ä
+    VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
+
+    # ##### EB/PoN-Filter ##########
+    if thresh['EBscore'] == thresh['EBscore']:
         eb = df['EBscore'] >= thresh['EBscore']
     else:
         eb = True
     pon_eb = (eb & (df['PoN-Ratio'] < thresh['PoN-Ratio'])) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
 
-    noSNP = (df['gnomAD_exome_ALL'] < thresh['PopFreq']) & (df['esp6500siv2_all'] < thresh['PopFreq'])
+    # ##### POPULATION #############
+    # reformat population columns for filtering
+    for col in ['gnomAD_exome_ALL', 'esp6500siv2_all', 'dbSNP153_AltFreq']:
+        df.loc[df[col] == ".", col] = 0
+        df[col] = df[col].fillna(0).astype(float)
 
-    VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
+    if thresh['PopFreq'] == thresh['PopFreq']:
+        noSNP = (df['gnomAD_exome_ALL'] < thresh['PopFreq']) & (df['esp6500siv2_all'] < thresh['PopFreq']) & (df['dbSNP153_AltFreq'] < thresh['PopFreq'])
+    else:
+        noSNP = True
 
     # ## FILTER1 RESCUE ##########
     is7q = df['cytoBand'].str.contains('^7q')

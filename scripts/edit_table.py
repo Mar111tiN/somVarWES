@@ -139,9 +139,9 @@ def resort_cols(df):
     cols = list(df.columns)
 
     # #### DEBUGGING ######
-    print('All Columns:')
-    for i, col in enumerate(cols):
-        print(i, col)
+    # print('All Columns:')
+    # for i, col in enumerate(cols):
+    #     print(i, col)
     ######################
     start_cols = cols[:11]
     quant_cols = cols[11:26] + ['FisherScore', 'EBscore', 'PoN-Ref', 'PoN-Alt', 'PoN-Ref-Sum', 'PoN-Alt-Sum', 'PoN-Alt-NonZeros', 'PoN-Ratio']
@@ -285,9 +285,7 @@ pon_info_df = get_PoN_info(anno_df)
 clin_df = get_clinical_scores(pon_info_df)
 # RESORT THE COLUMNS
 sorted_df = resort_cols(clin_df)
-print('sorted', sorted_df.columns)
 candidate_df = get_gene_lists(sorted_df, candidate_list, driver_list, hotspot_list)
-print('cand', candidate_df.columns)
 
 # this is raw unfiltered data, only informative columns were added
 candidate_df.to_csv(output, sep='\t', index=False)

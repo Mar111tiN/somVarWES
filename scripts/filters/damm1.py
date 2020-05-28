@@ -21,9 +21,9 @@ keep_syn = f_config['keep_syn']
 basic_file = snakemake.output.basic
 filter1_file = snakemake.output.filter1
 
-print(f"Running filter1 {filter_name}")
+print(f"Running filter1 \"{filter_name}\"")
 print(f"Loading mutation file {mut_file}.")
-filter1_df = pd.read_csv(mut_file, sep='\t')
+anno_df = pd.read_csv(mut_file, sep='\t')
 
 print(f"Loading filter file {filter_file}")
 if "xls" in os.path.splitext(filter_file)[1]:
@@ -34,8 +34,6 @@ else:
 
 print(f"    keep_syn= {keep_syn}")
 print(f'Started editing and basic filtering for {mut_file}.')
-anno_df = pd.read_csv(mut_file, sep='\t')
-
 
 #  ############## BASIC FILTER ####################################
 def filter_basic(df, keep_syn=False):
@@ -67,9 +65,8 @@ def filter_basic(df, keep_syn=False):
 
 basic_df = filter_basic(anno_df, keep_syn=keep_syn)
 
-
 basic_df.to_csv(basic_file, sep='\t', index=False)
-print(f"Writing basic filtered list to {basic_file}.")
+print(f"Writing basic filtered list ({len(basic_df.index)} muts) to {basic_file}.")
 
 # ############### FILTER1 ########################################
 
@@ -87,32 +84,42 @@ print(f"Writing basic filtered list to {basic_file}.")
 
 def filter1(df, _filter=''):
 
-    for col in ['gnomAD_exome_ALL', 'esp6500siv2_all', 'dbSNP153_AltFreq']:
-        df.loc[df[col] == ".", col] = 0
-        df[col] = df[col].fillna(0).astype(float)
     # get thresholds from filter_setting_file
     thresh = filter_settings.loc[_filter, :]
+
+    # ##### TUMOR DEPTH ############
     tumor_depth = (df['TR2'] > thresh['variantT']) & (
         df['Tdepth'] > thresh['Tdepth'])
 
-    # EBFilter
-    if thresh['EBscore']:
+    # ##### VAF ##################
+    VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
+
+    # ##### EB/PoN-Filter ##########
+    if thresh['EBscore'] == thresh['EBscore']:
         eb = df['EBscore'] >= thresh['EBscore']
     else:
         eb = True
     pon_eb = (eb & (df['PoN-Ratio'] < thresh['PoN-Ratio'])) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
-    print(thresh['PopFreq'])
-    noSNP = (df['gnomAD_exome_ALL'] < thresh['PopFreq']) & (df['esp6500siv2_all'] < thresh['PopFreq']) & (df['dbSNP153_AltFreq'] < thresh['PopFreq'])
 
-    VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
+    # ##### POPULATION #############
+    # reformat population columns for filtering
+    for col in ['gnomAD_exome_ALL', 'esp6500siv2_all', 'dbSNP153_AltFreq']:
+        df.loc[df[col] == ".", col] = 0
+        df[col] = df[col].fillna(0).astype(float)
 
+    if thresh['PopFreq'] == thresh['PopFreq']:
+        noSNP = (df['gnomAD_exome_ALL'] < thresh['PopFreq']) & (df['esp6500siv2_all'] < thresh['PopFreq']) & (df['dbSNP153_AltFreq'] < thresh['PopFreq'])
+    else:
+        noSNP = True
+
+    # ## FILTER1 RESCUE ##########
     # there is no rescue in default
     rescue = False
 
     # FINAL FILTER1
     filter_criteria = tumor_depth & noSNP & pon_eb & (VAF | rescue)
 
-    return df[filter_criteria]
+    return df[filter_criteria].sort_values(['TVAF'], ascending=False)
 
 
 # from Kenichi Data
@@ -122,6 +129,5 @@ def filter1(df, _filter=''):
 # EBscore >=4 or CoSMIC OCCURRENCE
 
 filter1_df = filter1(basic_df, _filter='filter1')
-print("Lenge", len(filter1_df.index))
-print(f"Writing filter1 file to {filter1_file}")
+print(f"Writing filter1 list ({len(filter1_df.index)} muts) to {filter1_file}")
 filter1_df.to_csv(filter1_file, sep='\t', index=False)
