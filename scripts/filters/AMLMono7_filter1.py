@@ -126,9 +126,9 @@ def filter1(df, _filter=''):
     rescue = is7q | isHot
 
     # FINAL FILTER1
-    filter_criteria = (tumor_depth & noSNP & (eb | pon) & (VAF | rescue)
+    filter_criteria = tumor_depth & noSNP & pon_eb & (VAF | rescue)
 
-    return df[filter_criteria]
+    return df[filter_criteria].sort_values(['TVAF'], ascending=False)
 
 
 # from Kenichi Data
