@@ -244,10 +244,10 @@ EBFilter:
 filter:
   threads: 2
   run: True
-  filter1: damm1.py
-  filter2: filter2_NHL.py
-  filter_settings: filter_settings.xlsx
-  excel_sheet: NHL
+  filter1: damm1.py # which custom filter script should be run for filter 1
+  filter2: filter2_NHL.py # which custom filter script should be run for filter 2
+  filter_settings: filter_settings.xlsx # the filter file with the filter params
+  excel_sheet: NHL # the sheet in case filter_settings file is xlsx
   edit:
     extended_output: False
     candidate_list: annotation/damm_lists/NHL_candidates.txt

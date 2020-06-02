@@ -34,14 +34,16 @@ def get_files(folder_list, sample_sheet):
         index = config['samples']['umi_barcode']
 
         for file in fastq_list:
-            if f"{row['sample']}" in file:  # and f"_L00{row['Lane']} in file" 
-                if f'_{index}' in file:
+            # get the basename
+            base_file = os.path.basename(file)
+            if f"{row['sample']}_" in base_file:  # and f"_L00{row['Lane']} in file" 
+                if f'_{index}' in base_file:
                     row['index'] = file
-                elif 'barcode' in file:
+                elif 'barcode' in base_file:
                     row['barcode'] = file
-                elif f'_{read1}' in file:
+                elif f'_{read1}' in base_file:
                     row['R1'] = file
-                elif f'_{read2}' in file:
+                elif f'_{read2}' in base_file:
                     row['R2'] = file
         return row.reindex(['Lane', 'R1', 'R2', 'barcode', 'index'])
 
