@@ -7,30 +7,34 @@ w = snakemake.wildcards
 config = snakemake.config
 f_config = config['filter']
 
+# loading filter 1
 mut_file = snakemake.input.filter1
-filter_name = f_config['filter1']
+print(f'Loading mutation file {mut_file}.')
+filter1_df = pd.read_csv(mut_file, sep='\t')
+print('Done.')
+
+# loading filter 2 settings
+filter_name = f_config['filter2']
 filter_file = os.path.join(
     config['paths']['filter_settings'],
     f_config['filter_settings']
 )
 sheet = f_config['excel_sheet']
-
-output_base = snakemake.output.filter2.replace('.loose.csv', '')
-threads = f_config['threads']
-keep_syn = f_config['keep_syn']
-
-
 print(f"Running filter2 {filter_name}")
-print(f'Loading mutation file {mut_file}.')
-filter1_df = pd.read_csv(mut_file, sep='\t')
-
 print(f"Loading filter file {filter_file}")
 if "xls" in os.path.splitext(filter_file)[1]:
     filter_settings = pd.read_excel(filter_file, sheet_name=sheet, index_col=0)[:4]
 else:
     filter_settings = pd.read_csv(filter_file, sep='\t', index_col=0)
 
+print('Done.')
 
+output_base = snakemake.output.filter2.replace('.loose.csv', '')
+threads = f_config['threads']
+keep_syn = f_config['keep_syn']
+
+
+# ######## FILTER 2 ######################
 def filter2(df, _filter='moderate'):
     '''
     creates filtered output using the daniel filtering
