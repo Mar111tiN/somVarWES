@@ -36,7 +36,7 @@ def get_files(folder_list, sample_sheet):
         for file in fastq_list:
             # get the basename
             base_file = os.path.basename(file)
-            if f"{row['sample']}_" in base_file:  # and f"_L00{row['Lane']} in file" 
+            if f"{row['sample']}_" in base_file:
                 if f'_{index}' in base_file:
                     row['index'] = file
                 elif 'barcode' in base_file:
@@ -49,6 +49,12 @@ def get_files(folder_list, sample_sheet):
 
     samples_df = samples.apply(get_fastq_paths, axis=1, fastq_list=fastq_list)
     short_df = samples.apply(get_fastq_paths, axis=1, fastq_list=short_list)
+
+    ########## DEBUG #################
+    # print(short_df)
+    # print(samples_df)
+    ##################################
+
     return samples_df, short_df
 
 
@@ -73,6 +79,11 @@ def get_tumor_normal_pairs(samples):
                 return pd.Series(TN_list)
 
     TN_list = list(samples.groupby('sample').apply(TN_pair).reset_index().iloc[:, -1])
+
+    ########## DEBUG #################
+    # print(TN_list)
+    ##################################
+
     return TN_list
 
 

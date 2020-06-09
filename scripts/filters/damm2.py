@@ -61,7 +61,6 @@ def filter2(df, _filter='moderate'):
     NVAF = (upper < df['TVAF']) | (df['TVAF'] < lower) & (df['NVAF'] <= thresh['NVAF'])
     VAF = NVAF & TVAF
 
-
     # ##### EB/PoN-Filter ##########
     if thresh['EBscore'] == thresh['EBscore']:
         eb = df['EBscore'] >= thresh['EBscore']

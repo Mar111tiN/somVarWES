@@ -84,7 +84,7 @@ def filter2(df, _filter='moderate'):
     return df, list_len
 
 
-################# OUTPUT #############################################################
+# ################ OUTPUT #############################################################
 print(f"Writing filter2 lists to {output_base}.<stringency>.csv")
 
 excel_file = f"{output_base}.xlsx"
