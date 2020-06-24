@@ -29,7 +29,7 @@ rule realignGATK:
         unpack(get_IR_input),
         intervals = "realigned/{sample}_{type}.{chrom}.intervals"
     output:
-        "realigned/{sample}_{type}.{chrom}.bam"
+        bam= "realigned/{sample}_{type}.{chrom}.bam"
     log:
         "logs/realign/{sample}_{type}.{chrom}.log"
     threads:
@@ -42,13 +42,12 @@ rule realignGATK:
         deflater = "-jdk_deflater -jdk_inflater" if config['envs'] == "envMac" else ""
     shell:
         "{params.gatk} IndelRealigner {params.deflater} {params.ref} "
-        "-targetIntervals {input.intervals} -I {input.bam} -o {output} &>{log}"
+        "-targetIntervals {input.intervals} -I {input.bam} -o {output.bam} &>{log}; "
 
 
 rule base_recalib:
     input:
-        bam = "realigned/{sample}_{type}.{chrom}.bam",
-        bai = "realigned/{sample}_{type}.{chrom}.bai"
+        bam = "realigned/{sample}_{type}.{chrom}.bam"
     output:
         table = "recalib/{sample}_{type}.{chrom}.recal1"
     log:
@@ -70,7 +69,6 @@ rule base_recalib:
 rule apply_BQSR:
     input:
         bam = "realigned/{sample}_{type}.{chrom}.bam",
-        bai = "realigned/{sample}_{type}.{chrom}.bai",
         table = "recalib/{sample}_{type}.{chrom}.recal1"
     output:
         bam = "recalib/{sample}_{type}.{chrom}.bam",
@@ -89,4 +87,5 @@ rule apply_BQSR:
         # apply recalibration table on input
         "{params.gatk} ApplyBQSR -I {input.bam} {params.genome} --bqsr-recal-file {input.table} -O {output.bam}; "  #  &>>{log}
         # recreate recalibration table from output for QC
-        "{params.gatk} BaseRecalibrator -I {output.bam} {params.genome} {params.known_sites} -O {output.table}" #  &>>{log}
+        "{params.gatk} BaseRecalibrator -I {output.bam} {params.genome} {params.known_sites} -O {output.table}"  #  &>>{log}
+

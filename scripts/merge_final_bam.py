@@ -15,5 +15,4 @@ def main(s):
         shell(f"sambamba merge -t {threads} bamfinalsplit/{w.sample}_{w.type}.*.bam; ")
 
 
-if __name__ == "__main__":
-    main(snakemake)
+main(snakemake)

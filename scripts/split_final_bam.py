@@ -1,5 +1,6 @@
 from os import system as shell
 
+
 def main(s):
     w = s.wildcards
     threads = s.threads
@@ -15,5 +16,4 @@ def main(s):
         # create symlinks from the proper chrom-split bams into bamfinalsplit
         shell(f"ln -s {input.bam} {output.bam}; sambamba index {output.bam}")
 
-if __name__ == "__main__":
-    main(snakemake)
+main(snakemake)
