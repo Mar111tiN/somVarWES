@@ -58,6 +58,10 @@ def get_files(folder_list, sample_sheet):
     return samples_df, short_df
 
 
+def get_rerun_bam():
+    pass
+
+
 def get_tumor_normal_pairs(samples):
     '''
     turns valid_file_info into tuples of valid tumor normal pairs

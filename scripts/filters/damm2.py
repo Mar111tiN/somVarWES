@@ -58,7 +58,7 @@ def filter2(df, _filter='moderate'):
     # NVAF is computed from upper threshold and a max similarity to TVAF
     upper = (1 + thresh['VAFSim']) * df['NVAF']
     lower = (1 - thresh['VAFSim']) * df['NVAF']
-    NVAF = (upper < df['TVAF']) | (df['TVAF'] < lower) & (df['NVAF'] <= thresh['NVAF'])
+    NVAF = ((upper < df['TVAF']) | (df['TVAF'] < lower)) & (df['NVAF'] <= thresh['NVAF'])
     VAF = NVAF & TVAF
 
     # ##### EB/PoN-Filter ##########

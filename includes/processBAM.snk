@@ -65,6 +65,8 @@ rule base_recalib:
         "{params.gatk} BaseRecalibrator -I {input.bam} {params.genome} {params.known_sites} -O {output.table} &>{log}; "
 
 
+
+# here I need a switch to just split 
 rule apply_BQSR:
     input:
         bam = "realigned/{sample}_{type}.{chrom}.bam",

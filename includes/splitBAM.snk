@@ -51,11 +51,41 @@ rule resplit_bam:
     '''
 
     input:
-        bam = "bam_merge/{sample}_{type}.bam",
-        bai = "bam_merge/{sample}_{type}.bam.bai"
+        bam = "bam_merge/{sample}_{type}.bam"
     output:
         bam = "bam_merge/{sample}_{type}.{chrom}.bam",
         bai = "bam_merge/{sample}_{type}.{chrom}.bam.bai"
+    threads:
+        config['resplit_bam']['threads']
+    conda:
+        f"../{config['envs']}/samba-env.yml"
+    shell:
+        "sambamba view -t {threads} -h -f bam -o {output.bam} {input.bam} {wildcards.chrom} "
+
+
+############# rerun ##############################################
+
+rule get_rerun_bam:
+    input:
+        get_rerun_bam
+    output:
+        bam = "bamfinal/{sample}_{type}.bam"
+    threads:
+        1
+    shell:
+        "ln -s {input} {output}" # create a symlink in workdir/bamfinal
+    
+
+rule split_rerun_bam:
+    """
+    if you do a rerun of final bams, this creates the split bams needed to go on with the pipeline
+    """
+
+    input: 
+        bam = "bamfinal/{sample}_{type}.bam"
+    output:
+        bam = "rerunbamsplit/{sample}_{type}.{chrom}.bam",
+        bai = "rerunbamsplit/{sample}_{type}.{chrom}.bai"
     threads:
         config['resplit_bam']['threads']
     conda:

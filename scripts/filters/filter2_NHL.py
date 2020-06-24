@@ -70,16 +70,26 @@ def filter2(df, _filter='moderate'):
     else:
         no_strand_polarity = True
 
-    strandedness = no_strand_bias & no_strand_polarity
+    strandedness = no_strand_bias | no_strand_polarity
 
-    # VAF is simple
-    VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
+    # ##### VAF ##################
+    # minimum TVAF if not candidate
+    is_candidate = (df['isCandidate'] == 1) | (df['isDriver'] == 1) | (df['ChipFreq'] > 0)
+    # either cand with higher TVAF or lower TVAF
+    TVAF = (is_candidate & (df['TVAF'] >= thresh['TVAF4Cand'])) | (df['TVAF'] >= thresh['TVAF'])
+    # NVAF is computed from upper threshold and a max similarity to TVAF
+    upper = (1 + thresh['VAFSim']) * df['NVAF']
+    lower = (1 - thresh['VAFSim']) * df['NVAF']
+    NVAF = ((upper < df['TVAF']) | (df['TVAF'] < lower)) & (df['NVAF'] <= thresh['NVAF'])
+    VAF = NVAF & TVAF
 
     # Clin_score is used for rescue of all mutations
     clin_score = df['ClinScore'] >= thresh['ClinScore']
 
     # apply filters to dataframe
-    df = df[(tumor_depth & (pon | eb) & strandedness & VAF & no_noise) | clin_score].sort_values(['TVAF'], ascending=False)
+    filter_criteria = (tumor_depth & (pon | eb) & strandedness & VAF & no_noise) | clin_score
+
+    df = df[filter_criteria].sort_values(['TVAF'], ascending=False)
     list_len = len(df.index)
     return df, list_len
 

@@ -28,10 +28,10 @@ rule primer3:
 rule filter_bam:
     input:
         csv = "table/{sample}_{tumor}-{normal}.{filter}.csv",
-        tumor_bam = "recalib/{sample}_{tumor}.bam",
-        tumor_bai = "recalib/{sample}_{tumor}.bai",
-        normal_bam = "recalib/{sample}_{normal}.bam",
-        normal_bai = "recalib/{sample}_{normal}.bai",
+        tumor_bam = "bamfinal/{sample}_{tumor}.bam",
+        tumor_bai = "bamfinal/{sample}_{tumor}.bai",
+        normal_bam = "bamfinal/{sample}_{normal}.bam",
+        normal_bai = "bamfinal/{sample}_{normal}.bai",
     output:
         # tumor_bam = "filterbam/{sample}_{tumor}.{filter}.bam",
         # tumor_bai = "filterbam/{sample}_{tumor}.{filter}.bai",

@@ -50,8 +50,8 @@ rule merge_recal_bam:
     input:  # here I need a switch if no UMI is involved
         expand("recalib/{{sample}}_{{type}}.{chrom}.bam", chrom=chrom_list)
     output:
-        bam = "recalib/{sample}_{type}.bam",
-        bai = "recalib/{sample}_{type}.bam.bai"
+        bam = "bamfinal/{sample}_{type}.bam",
+        bai = "bamfinal/{sample}_{type}.bam.bai"
     threads:
         config['resplit_bam']['threads']
     conda:
@@ -64,7 +64,7 @@ rule merge_recal_bam:
 
 rule cover_BED:
     input:
-        sample = "recalib/{sample}_{type}.bam",
+        sample = "bamfinal/{sample}_{type}.bam",
         ref_gen = os.path.join(full_path('genome_path'), 'gen_ref.done')
     output:
         "coverBED/{sample}_{type}.txt"
@@ -84,8 +84,8 @@ rule cover_BED:
 
 rule bam_metrix:
     input:
-        bam = "recalib/{sample}_{type}.bam",
-        bai = "recalib/{sample}_{type}.bai"
+        bam = "bamfinal/{sample}_{type}.bam",
+        bai = "bamfinal/{sample}_{type}.bai"
     output:
         "bam_metrics/{sample}_{type}.metrics"
     conda:
@@ -117,8 +117,8 @@ rule bam_QC:
 # ##################### insert size QC ##############################################
 rule insert_metrix:
     input:
-        bam = "recalib/{sample}_{type}.bam",
-        bai = "recalib/{sample}_{type}.bai"
+        bam = "bamfinal/{sample}_{type}.bam",
+        bai = "bamfinal/{sample}_{type}.bai"
     output:
         metric = "insert_metrics/{sample}_{type}.metrics",
         pdf = "insert_metrics/{sample}_{type}.metrics.pdf"
