@@ -287,3 +287,920 @@ export CONDA_PREFIX_1='\''/fast/users/szyskam_c/work/miniconda'\'''
 + DRMAA=' -p medium -t 01:30 --mem-per-cpu=3000 --nodes=1 -n {threads} -o logs/%x-%j.log'
 + snakemake --unlock --rerun-incomplete
 Building DAG of jobs...
+Unlocking working directory.
++ snakemake --dag
++ dot -Tsvg
+Building DAG of jobs...
++ snakemake --use-conda --rerun-incomplete --drmaa ' -p medium -t 01:30 --mem-per-cpu=3000 --nodes=1 -n {threads} -o logs/%x-%j.log' -prk -j 500
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cluster nodes: 500
+Job counts:
+	count	jobs
+	1	IGVnav
+	1	all
+	18	anno2EB
+	1	annovar
+	1	bam_QC
+	2	bam_metrix
+	1	combine_annotations
+	1	combine_filter1
+	1	cover_BED
+	1	detect_HDR
+	1	edit_mutation_list
+	1	filter1
+	1	filter2
+	2	filter_bam
+	1	filter_pileup
+	1	fisher_strand
+	1	index_bam
+	1	insert_QC
+	2	insert_metrix
+	1	mergeEBscore
+	1	merge_table
+	1	primer3
+	8	varscan
+	16	varscan2table
+	66
+
+[Wed Jun 24 08:26:30 2020]
+rule anno2EB:
+    input: table/002_A-B.chrX.csv, recalib/002_A.chrX.bam, recalib/002_A.chrX.bai
+    output: eb/002_A-B-chrX.EB
+    log: logs/eb/002_A-B-chrX.log
+    jobid: 430
+    reason: Missing output files: eb/002_A-B-chrX.EB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chrX
+    threads: 20
+
+Submitted DRMAA job 430 with external jobid 1505246.
+
+[Wed Jun 24 08:26:30 2020]
+rule varscan:
+    input: pileup/002_A.chr12.pileup, pileup/002_B.chr12.pileup
+    output: varscan/002_A-B.chr12.indel.vcf, varscan/002_A-B.chr12.snp.vcf
+    log: logs/varscan/002_A-B.chr12.log
+    jobid: 568
+    reason: Missing output files: varscan/002_A-B.chr12.indel.vcf, varscan/002_A-B.chr12.snp.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr12
+    threads: 8
+
+varscan somatic pileup/002_B.chr12.pileup pileup/002_A.chr12.pileup --output-vcf 1 --output-snp varscan/002_A-B.chr12.snp.vcf --output-indel varscan/002_A-B.chr12.indel.vcf --min-coverage 1 --min-var-freq 0.01 --min-freq-for-hom 0.75 --p-value 0.99 --somatic-p-value 0.05 --normal-purity 0.95 --tumor-purity 0.8
+Submitted DRMAA job 568 with external jobid 1505247.
+
+[Wed Jun 24 08:26:30 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr17.indel.vcf, varscan/002_A-B.chr17.snp.vcf
+    output: table/002_A-B.chr17.csv
+    jobid: 487
+    reason: Missing output files: table/002_A-B.chr17.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr17
+    threads: 6
+
+Submitted DRMAA job 487 with external jobid 1505248.
+
+[Wed Jun 24 08:26:30 2020]
+rule insert_metrix:
+    input: bamfinal/002_A.bam, bamfinal/002_A.bai
+    output: insert_metrics/002_A.metrics, insert_metrics/002_A.metrics.pdf
+    log: logs/bam_metrix/002_A.log
+    jobid: 14
+    reason: Missing output files: insert_metrics/002_A.metrics; Updated input files: bamfinal/002_A.bai, bamfinal/002_A.bam
+    wildcards: sample=002, type=A
+    threads: 6
+
+picard CollectInsertSizeMetrics I=bamfinal/002_A.bam O=insert_metrics/002_A.metrics H=insert_metrics/002_A.metrics.pdf M=0.5
+Submitted DRMAA job 14 with external jobid 1505249.
+
+[Wed Jun 24 08:26:30 2020]
+rule varscan:
+    input: pileup/002_A.chr5.pileup, pileup/002_B.chr5.pileup
+    output: varscan/002_A-B.chr5.indel.vcf, varscan/002_A-B.chr5.snp.vcf
+    log: logs/varscan/002_A-B.chr5.log
+    jobid: 561
+    reason: Missing output files: varscan/002_A-B.chr5.snp.vcf, varscan/002_A-B.chr5.indel.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr5
+    threads: 8
+
+varscan somatic pileup/002_B.chr5.pileup pileup/002_A.chr5.pileup --output-vcf 1 --output-snp varscan/002_A-B.chr5.snp.vcf --output-indel varscan/002_A-B.chr5.indel.vcf --min-coverage 1 --min-var-freq 0.01 --min-freq-for-hom 0.75 --p-value 0.99 --somatic-p-value 0.05 --normal-purity 0.95 --tumor-purity 0.8
+Submitted DRMAA job 561 with external jobid 1505250.
+
+[Wed Jun 24 08:26:30 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr11.indel.vcf, varscan/002_A-B.chr11.snp.vcf
+    output: table/002_A-B.chr11.csv
+    jobid: 481
+    reason: Missing output files: table/002_A-B.chr11.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr11
+    threads: 6
+
+Submitted DRMAA job 481 with external jobid 1505251.
+
+[Wed Jun 24 08:26:30 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr7.indel.vcf, varscan/002_A-B.chr7.snp.vcf
+    output: table/002_A-B.chr7.csv
+    jobid: 477
+    reason: Missing output files: table/002_A-B.chr7.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr7
+    threads: 6
+
+Submitted DRMAA job 477 with external jobid 1505252.
+
+[Wed Jun 24 08:26:30 2020]
+rule anno2EB:
+    input: table/002_A-B.chr4.csv, recalib/002_A.chr4.bam, recalib/002_A.chr4.bai
+    output: eb/002_A-B-chr4.EB
+    log: logs/eb/002_A-B-chr4.log
+    jobid: 411
+    reason: Missing output files: eb/002_A-B-chr4.EB
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr4
+    threads: 20
+
+Submitted DRMAA job 411 with external jobid 1505253.
+
+[Wed Jun 24 08:26:30 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr22.indel.vcf, varscan/002_A-B.chr22.snp.vcf
+    output: table/002_A-B.chr22.csv
+    jobid: 492
+    reason: Missing output files: table/002_A-B.chr22.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr22
+    threads: 6
+
+Submitted DRMAA job 492 with external jobid 1505254.
+
+[Wed Jun 24 08:26:30 2020]
+rule bam_metrix:
+    input: bamfinal/002_A.bam, bamfinal/002_A.bai
+    output: bam_metrics/002_A.metrics
+    log: logs/bam_metrix/002_A.log
+    jobid: 12
+    reason: Missing output files: bam_metrics/002_A.metrics; Updated input files: bamfinal/002_A.bai, bamfinal/002_A.bam
+    wildcards: sample=002, type=A
+    threads: 6
+
+picard CollectHsMetrics I=bamfinal/002_A.bam O=bam_metrics/002_A.metrics R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta BAIT_INTERVALS=/fast/groups/ag_damm/work/ref/bed_files/SureSelect/hg38/SS_HAEv7_hg38.bait_interval TARGET_INTERVALS=/fast/groups/ag_damm/work/ref/bed_files/SureSelect/hg38/SS_HAEv7_hg38.target_interval
+Submitted DRMAA job 12 with external jobid 1505255.
+
+[Wed Jun 24 08:26:31 2020]
+rule cover_BED:
+    input: bamfinal/002_B.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: coverBED/002_B.txt
+    log: logs/coverBED/002_B.log
+    jobid: 5
+    reason: Missing output files: coverBED/002_B.txt
+    wildcards: sample=002, type=B
+    threads: 2
+
+Submitted DRMAA job 5 with external jobid 1505256.
+
+[Wed Jun 24 08:26:31 2020]
+rule varscan:
+    input: pileup/002_A.chr1.pileup, pileup/002_B.chr1.pileup
+    output: varscan/002_A-B.chr1.indel.vcf, varscan/002_A-B.chr1.snp.vcf
+    log: logs/varscan/002_A-B.chr1.log
+    jobid: 557
+    reason: Missing output files: varscan/002_A-B.chr1.indel.vcf, varscan/002_A-B.chr1.snp.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr1
+    threads: 8
+
+varscan somatic pileup/002_B.chr1.pileup pileup/002_A.chr1.pileup --output-vcf 1 --output-snp varscan/002_A-B.chr1.snp.vcf --output-indel varscan/002_A-B.chr1.indel.vcf --min-coverage 1 --min-var-freq 0.01 --min-freq-for-hom 0.75 --p-value 0.99 --somatic-p-value 0.05 --normal-purity 0.95 --tumor-purity 0.8
+Submitted DRMAA job 557 with external jobid 1505257.
+
+[Wed Jun 24 08:26:31 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr10.indel.vcf, varscan/002_A-B.chr10.snp.vcf
+    output: table/002_A-B.chr10.csv
+    jobid: 480
+    reason: Missing output files: table/002_A-B.chr10.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr10
+    threads: 6
+
+Submitted DRMAA job 480 with external jobid 1505258.
+
+[Wed Jun 24 08:26:31 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr20.indel.vcf, varscan/002_A-B.chr20.snp.vcf
+    output: table/002_A-B.chr20.csv
+    jobid: 490
+    reason: Missing output files: table/002_A-B.chr20.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr20
+    threads: 6
+
+Submitted DRMAA job 490 with external jobid 1505259.
+
+[Wed Jun 24 08:26:31 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr14.indel.vcf, varscan/002_A-B.chr14.snp.vcf
+    output: table/002_A-B.chr14.csv
+    jobid: 484
+    reason: Missing output files: table/002_A-B.chr14.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr14
+    threads: 6
+
+Submitted DRMAA job 484 with external jobid 1505260.
+
+[Wed Jun 24 08:26:31 2020]
+rule varscan:
+    input: pileup/002_A.chr16.pileup, pileup/002_B.chr16.pileup
+    output: varscan/002_A-B.chr16.indel.vcf, varscan/002_A-B.chr16.snp.vcf
+    log: logs/varscan/002_A-B.chr16.log
+    jobid: 572
+    reason: Missing output files: varscan/002_A-B.chr16.indel.vcf, varscan/002_A-B.chr16.snp.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr16
+    threads: 8
+
+varscan somatic pileup/002_B.chr16.pileup pileup/002_A.chr16.pileup --output-vcf 1 --output-snp varscan/002_A-B.chr16.snp.vcf --output-indel varscan/002_A-B.chr16.indel.vcf --min-coverage 1 --min-var-freq 0.01 --min-freq-for-hom 0.75 --p-value 0.99 --somatic-p-value 0.05 --normal-purity 0.95 --tumor-purity 0.8
+Submitted DRMAA job 572 with external jobid 1505261.
+
+[Wed Jun 24 08:26:31 2020]
+rule varscan:
+    input: pileup/002_A.chr9.pileup, pileup/002_B.chr9.pileup
+    output: varscan/002_A-B.chr9.indel.vcf, varscan/002_A-B.chr9.snp.vcf
+    log: logs/varscan/002_A-B.chr9.log
+    jobid: 565
+    reason: Missing output files: varscan/002_A-B.chr9.snp.vcf, varscan/002_A-B.chr9.indel.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr9
+    threads: 8
+
+varscan somatic pileup/002_B.chr9.pileup pileup/002_A.chr9.pileup --output-vcf 1 --output-snp varscan/002_A-B.chr9.snp.vcf --output-indel varscan/002_A-B.chr9.indel.vcf --min-coverage 1 --min-var-freq 0.01 --min-freq-for-hom 0.75 --p-value 0.99 --somatic-p-value 0.05 --normal-purity 0.95 --tumor-purity 0.8
+Submitted DRMAA job 565 with external jobid 1505262.
+
+[Wed Jun 24 08:26:31 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr19.indel.vcf, varscan/002_A-B.chr19.snp.vcf
+    output: table/002_A-B.chr19.csv
+    jobid: 489
+    reason: Missing output files: table/002_A-B.chr19.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr19
+    threads: 6
+
+Submitted DRMAA job 489 with external jobid 1505263.
+
+[Wed Jun 24 08:26:31 2020]
+rule index_bam:
+    input: bamfinal/002_B.bam
+    output: bamfinal/002_B.bai
+    jobid: 26
+    reason: Missing output files: bamfinal/002_B.bai; Updated input files: bamfinal/002_B.bam
+    wildcards: folder=bamfinal, sample=002, type=B
+    threads: 2
+
+picard BuildBamIndex INPUT=bamfinal/002_B.bam
+Submitted DRMAA job 26 with external jobid 1505264.
+
+[Wed Jun 24 08:26:31 2020]
+rule varscan:
+    input: pileup/002_A.chr3.pileup, pileup/002_B.chr3.pileup
+    output: varscan/002_A-B.chr3.indel.vcf, varscan/002_A-B.chr3.snp.vcf
+    log: logs/varscan/002_A-B.chr3.log
+    jobid: 559
+    reason: Missing output files: varscan/002_A-B.chr3.indel.vcf, varscan/002_A-B.chr3.snp.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr3
+    threads: 8
+
+varscan somatic pileup/002_B.chr3.pileup pileup/002_A.chr3.pileup --output-vcf 1 --output-snp varscan/002_A-B.chr3.snp.vcf --output-indel varscan/002_A-B.chr3.indel.vcf --min-coverage 1 --min-var-freq 0.01 --min-freq-for-hom 0.75 --p-value 0.99 --somatic-p-value 0.05 --normal-purity 0.95 --tumor-purity 0.8
+Submitted DRMAA job 559 with external jobid 1505265.
+
+[Wed Jun 24 08:26:32 2020]
+rule varscan:
+    input: pileup/002_A.chr6.pileup, pileup/002_B.chr6.pileup
+    output: varscan/002_A-B.chr6.indel.vcf, varscan/002_A-B.chr6.snp.vcf
+    log: logs/varscan/002_A-B.chr6.log
+    jobid: 562
+    reason: Missing output files: varscan/002_A-B.chr6.indel.vcf, varscan/002_A-B.chr6.snp.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr6
+    threads: 8
+
+varscan somatic pileup/002_B.chr6.pileup pileup/002_A.chr6.pileup --output-vcf 1 --output-snp varscan/002_A-B.chr6.snp.vcf --output-indel varscan/002_A-B.chr6.indel.vcf --min-coverage 1 --min-var-freq 0.01 --min-freq-for-hom 0.75 --p-value 0.99 --somatic-p-value 0.05 --normal-purity 0.95 --tumor-purity 0.8
+Submitted DRMAA job 562 with external jobid 1505266.
+
+[Wed Jun 24 08:26:32 2020]
+rule varscan:
+    input: pileup/002_A.chr2.pileup, pileup/002_B.chr2.pileup
+    output: varscan/002_A-B.chr2.indel.vcf, varscan/002_A-B.chr2.snp.vcf
+    log: logs/varscan/002_A-B.chr2.log
+    jobid: 558
+    reason: Missing output files: varscan/002_A-B.chr2.snp.vcf, varscan/002_A-B.chr2.indel.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr2
+    threads: 8
+
+varscan somatic pileup/002_B.chr2.pileup pileup/002_A.chr2.pileup --output-vcf 1 --output-snp varscan/002_A-B.chr2.snp.vcf --output-indel varscan/002_A-B.chr2.indel.vcf --min-coverage 1 --min-var-freq 0.01 --min-freq-for-hom 0.75 --p-value 0.99 --somatic-p-value 0.05 --normal-purity 0.95 --tumor-purity 0.8
+Submitted DRMAA job 558 with external jobid 1505267.
+[Wed Jun 24 08:27:04 2020]
+Finished job 487.
+1 of 66 steps (2%) done
+
+[Wed Jun 24 08:27:04 2020]
+rule anno2EB:
+    input: table/002_A-B.chr17.csv, recalib/002_A.chr17.bam, recalib/002_A.chr17.bai
+    output: eb/002_A-B-chr17.EB
+    log: logs/eb/002_A-B-chr17.log
+    jobid: 424
+    reason: Missing output files: eb/002_A-B-chr17.EB; Input files updated by another job: table/002_A-B.chr17.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr17
+    threads: 20
+
+[Wed Jun 24 08:27:04 2020]
+Finished job 481.
+2 of 66 steps (3%) done
+Submitted DRMAA job 424 with external jobid 1505269.
+
+[Wed Jun 24 08:27:04 2020]
+rule anno2EB:
+    input: table/002_A-B.chr11.csv, recalib/002_A.chr11.bam, recalib/002_A.chr11.bai
+    output: eb/002_A-B-chr11.EB
+    log: logs/eb/002_A-B-chr11.log
+    jobid: 418
+    reason: Missing output files: eb/002_A-B-chr11.EB; Input files updated by another job: table/002_A-B.chr11.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr11
+    threads: 20
+
+Submitted DRMAA job 418 with external jobid 1505270.
+[Wed Jun 24 08:27:05 2020]
+Finished job 480.
+3 of 66 steps (5%) done
+
+[Wed Jun 24 08:27:05 2020]
+rule anno2EB:
+    input: table/002_A-B.chr10.csv, recalib/002_A.chr10.bam, recalib/002_A.chr10.bai
+    output: eb/002_A-B-chr10.EB
+    log: logs/eb/002_A-B-chr10.log
+    jobid: 417
+    reason: Missing output files: eb/002_A-B-chr10.EB; Input files updated by another job: table/002_A-B.chr10.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr10
+    threads: 20
+
+Submitted DRMAA job 417 with external jobid 1505271.
+[Wed Jun 24 08:27:05 2020]
+Finished job 490.
+4 of 66 steps (6%) done
+[Wed Jun 24 08:27:05 2020]
+Finished job 484.
+5 of 66 steps (8%) done
+
+[Wed Jun 24 08:27:05 2020]
+rule anno2EB:
+    input: table/002_A-B.chr20.csv, recalib/002_A.chr20.bam, recalib/002_A.chr20.bai
+    output: eb/002_A-B-chr20.EB
+    log: logs/eb/002_A-B-chr20.log
+    jobid: 427
+    reason: Missing output files: eb/002_A-B-chr20.EB; Input files updated by another job: table/002_A-B.chr20.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr20
+    threads: 20
+
+[Wed Jun 24 08:27:05 2020]
+Finished job 489.
+6 of 66 steps (9%) done
+Submitted DRMAA job 427 with external jobid 1505272.
+
+[Wed Jun 24 08:27:05 2020]
+rule anno2EB:
+    input: table/002_A-B.chr14.csv, recalib/002_A.chr14.bam, recalib/002_A.chr14.bai
+    output: eb/002_A-B-chr14.EB
+    log: logs/eb/002_A-B-chr14.log
+    jobid: 421
+    reason: Missing output files: eb/002_A-B-chr14.EB; Input files updated by another job: table/002_A-B.chr14.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr14
+    threads: 20
+
+Submitted DRMAA job 421 with external jobid 1505273.
+
+[Wed Jun 24 08:27:05 2020]
+rule anno2EB:
+    input: table/002_A-B.chr19.csv, recalib/002_A.chr19.bam, recalib/002_A.chr19.bai
+    output: eb/002_A-B-chr19.EB
+    log: logs/eb/002_A-B-chr19.log
+    jobid: 426
+    reason: Missing output files: eb/002_A-B-chr19.EB; Input files updated by another job: table/002_A-B.chr19.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr19
+    threads: 20
+
+Submitted DRMAA job 426 with external jobid 1505274.
+[Wed Jun 24 08:27:17 2020]
+Finished job 477.
+7 of 66 steps (11%) done
+[Wed Jun 24 08:27:17 2020]
+Finished job 492.
+8 of 66 steps (12%) done
+
+[Wed Jun 24 08:27:17 2020]
+rule anno2EB:
+    input: table/002_A-B.chr7.csv, recalib/002_A.chr7.bam, recalib/002_A.chr7.bai
+    output: eb/002_A-B-chr7.EB
+    log: logs/eb/002_A-B-chr7.log
+    jobid: 414
+    reason: Missing output files: eb/002_A-B-chr7.EB; Input files updated by another job: table/002_A-B.chr7.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr7
+    threads: 20
+
+Submitted DRMAA job 414 with external jobid 1505275.
+
+[Wed Jun 24 08:27:17 2020]
+rule anno2EB:
+    input: table/002_A-B.chr22.csv, recalib/002_A.chr22.bam, recalib/002_A.chr22.bai
+    output: eb/002_A-B-chr22.EB
+    log: logs/eb/002_A-B-chr22.log
+    jobid: 429
+    reason: Missing output files: eb/002_A-B-chr22.EB; Input files updated by another job: table/002_A-B.chr22.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr22
+    threads: 20
+
+Submitted DRMAA job 429 with external jobid 1505276.
+[Wed Jun 24 08:27:54 2020]
+Finished job 562.
+9 of 66 steps (14%) done
+
+[Wed Jun 24 08:27:54 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr6.indel.vcf, varscan/002_A-B.chr6.snp.vcf
+    output: table/002_A-B.chr6.csv
+    jobid: 476
+    reason: Missing output files: table/002_A-B.chr6.csv; Input files updated by another job: varscan/002_A-B.chr6.indel.vcf, varscan/002_A-B.chr6.snp.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr6
+    threads: 6
+
+Submitted DRMAA job 476 with external jobid 1505277.
+[Wed Jun 24 08:28:05 2020]
+Finished job 561.
+10 of 66 steps (15%) done
+
+[Wed Jun 24 08:28:05 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr5.indel.vcf, varscan/002_A-B.chr5.snp.vcf
+    output: table/002_A-B.chr5.csv
+    jobid: 475
+    reason: Missing output files: table/002_A-B.chr5.csv; Input files updated by another job: varscan/002_A-B.chr5.snp.vcf, varscan/002_A-B.chr5.indel.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr5
+    threads: 6
+
+Submitted DRMAA job 475 with external jobid 1505278.
+[Wed Jun 24 08:28:05 2020]
+Finished job 572.
+11 of 66 steps (17%) done
+
+[Wed Jun 24 08:28:05 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr16.indel.vcf, varscan/002_A-B.chr16.snp.vcf
+    output: table/002_A-B.chr16.csv
+    jobid: 486
+    reason: Missing output files: table/002_A-B.chr16.csv; Input files updated by another job: varscan/002_A-B.chr16.indel.vcf, varscan/002_A-B.chr16.snp.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr16
+    threads: 6
+
+Submitted DRMAA job 486 with external jobid 1505279.
+[Wed Jun 24 08:28:17 2020]
+Finished job 565.
+12 of 66 steps (18%) done
+
+[Wed Jun 24 08:28:17 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr9.indel.vcf, varscan/002_A-B.chr9.snp.vcf
+    output: table/002_A-B.chr9.csv
+    jobid: 479
+    reason: Missing output files: table/002_A-B.chr9.csv; Input files updated by another job: varscan/002_A-B.chr9.snp.vcf, varscan/002_A-B.chr9.indel.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr9
+    threads: 6
+
+Submitted DRMAA job 479 with external jobid 1505280.
+[Wed Jun 24 08:28:17 2020]
+Finished job 26.
+13 of 66 steps (20%) done
+[Wed Jun 24 08:28:17 2020]
+Finished job 559.
+14 of 66 steps (21%) done
+
+[Wed Jun 24 08:28:17 2020]
+rule bam_metrix:
+    input: bamfinal/002_B.bam, bamfinal/002_B.bai
+    output: bam_metrics/002_B.metrics
+    log: logs/bam_metrix/002_B.log
+    jobid: 13
+    reason: Updated input files: bamfinal/002_B.bam; Input files updated by another job: bamfinal/002_B.bai
+    wildcards: sample=002, type=B
+    threads: 6
+
+picard CollectHsMetrics I=bamfinal/002_B.bam O=bam_metrics/002_B.metrics R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta BAIT_INTERVALS=/fast/groups/ag_damm/work/ref/bed_files/SureSelect/hg38/SS_HAEv7_hg38.bait_interval TARGET_INTERVALS=/fast/groups/ag_damm/work/ref/bed_files/SureSelect/hg38/SS_HAEv7_hg38.target_interval
+Submitted DRMAA job 13 with external jobid 1505281.
+
+[Wed Jun 24 08:28:17 2020]
+rule insert_metrix:
+    input: bamfinal/002_B.bam, bamfinal/002_B.bai
+    output: insert_metrics/002_B.metrics, insert_metrics/002_B.metrics.pdf
+    log: logs/bam_metrix/002_B.log
+    jobid: 15
+    reason: Updated input files: bamfinal/002_B.bam; Input files updated by another job: bamfinal/002_B.bai
+    wildcards: sample=002, type=B
+    threads: 6
+
+picard CollectInsertSizeMetrics I=bamfinal/002_B.bam O=insert_metrics/002_B.metrics H=insert_metrics/002_B.metrics.pdf M=0.5
+Submitted DRMAA job 15 with external jobid 1505282.
+
+[Wed Jun 24 08:28:17 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr3.indel.vcf, varscan/002_A-B.chr3.snp.vcf
+    output: table/002_A-B.chr3.csv
+    jobid: 473
+    reason: Missing output files: table/002_A-B.chr3.csv; Input files updated by another job: varscan/002_A-B.chr3.indel.vcf, varscan/002_A-B.chr3.snp.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr3
+    threads: 6
+
+Submitted DRMAA job 473 with external jobid 1505283.
+[Wed Jun 24 08:28:28 2020]
+Finished job 479.
+15 of 66 steps (23%) done
+[Wed Jun 24 08:28:28 2020]
+Finished job 473.
+16 of 66 steps (24%) done
+
+[Wed Jun 24 08:28:28 2020]
+rule anno2EB:
+    input: table/002_A-B.chr9.csv, recalib/002_A.chr9.bam, recalib/002_A.chr9.bai
+    output: eb/002_A-B-chr9.EB
+    log: logs/eb/002_A-B-chr9.log
+    jobid: 416
+    reason: Missing output files: eb/002_A-B-chr9.EB; Input files updated by another job: table/002_A-B.chr9.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr9
+    threads: 20
+
+Submitted DRMAA job 416 with external jobid 1505284.
+[Wed Jun 24 08:28:28 2020]
+Finished job 475.
+17 of 66 steps (26%) done
+
+[Wed Jun 24 08:28:28 2020]
+rule anno2EB:
+    input: table/002_A-B.chr5.csv, recalib/002_A.chr5.bam, recalib/002_A.chr5.bai
+    output: eb/002_A-B-chr5.EB
+    log: logs/eb/002_A-B-chr5.log
+    jobid: 412
+    reason: Missing output files: eb/002_A-B-chr5.EB; Input files updated by another job: table/002_A-B.chr5.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr5
+    threads: 20
+
+[Wed Jun 24 08:28:28 2020]
+Finished job 486.
+18 of 66 steps (27%) done
+Submitted DRMAA job 412 with external jobid 1505285.
+
+[Wed Jun 24 08:28:28 2020]
+rule anno2EB:
+    input: table/002_A-B.chr3.csv, recalib/002_A.chr3.bam, recalib/002_A.chr3.bai
+    output: eb/002_A-B-chr3.EB
+    log: logs/eb/002_A-B-chr3.log
+    jobid: 410
+    reason: Missing output files: eb/002_A-B-chr3.EB; Input files updated by another job: table/002_A-B.chr3.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr3
+    threads: 20
+
+Submitted DRMAA job 410 with external jobid 1505286.
+
+[Wed Jun 24 08:28:28 2020]
+rule anno2EB:
+    input: table/002_A-B.chr16.csv, recalib/002_A.chr16.bam, recalib/002_A.chr16.bai
+    output: eb/002_A-B-chr16.EB
+    log: logs/eb/002_A-B-chr16.log
+    jobid: 423
+    reason: Missing output files: eb/002_A-B-chr16.EB; Input files updated by another job: table/002_A-B.chr16.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr16
+    threads: 20
+
+Submitted DRMAA job 423 with external jobid 1505287.
+[Wed Jun 24 08:28:29 2020]
+Finished job 568.
+19 of 66 steps (29%) done
+
+[Wed Jun 24 08:28:29 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr12.indel.vcf, varscan/002_A-B.chr12.snp.vcf
+    output: table/002_A-B.chr12.csv
+    jobid: 482
+    reason: Missing output files: table/002_A-B.chr12.csv; Input files updated by another job: varscan/002_A-B.chr12.indel.vcf, varscan/002_A-B.chr12.snp.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr12
+    threads: 6
+
+Submitted DRMAA job 482 with external jobid 1505288.
+[Wed Jun 24 08:28:30 2020]
+Finished job 558.
+20 of 66 steps (30%) done
+
+[Wed Jun 24 08:28:30 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr2.indel.vcf, varscan/002_A-B.chr2.snp.vcf
+    output: table/002_A-B.chr2.csv
+    jobid: 472
+    reason: Missing output files: table/002_A-B.chr2.csv; Input files updated by another job: varscan/002_A-B.chr2.snp.vcf, varscan/002_A-B.chr2.indel.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr2
+    threads: 6
+
+Submitted DRMAA job 472 with external jobid 1505289.
+[Wed Jun 24 08:28:30 2020]
+Finished job 476.
+21 of 66 steps (32%) done
+
+[Wed Jun 24 08:28:30 2020]
+rule anno2EB:
+    input: table/002_A-B.chr6.csv, recalib/002_A.chr6.bam, recalib/002_A.chr6.bai
+    output: eb/002_A-B-chr6.EB
+    log: logs/eb/002_A-B-chr6.log
+    jobid: 413
+    reason: Missing output files: eb/002_A-B-chr6.EB; Input files updated by another job: table/002_A-B.chr6.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr6
+    threads: 20
+
+Submitted DRMAA job 413 with external jobid 1505290.
+[Wed Jun 24 08:29:05 2020]
+Finished job 482.
+22 of 66 steps (33%) done
+
+[Wed Jun 24 08:29:05 2020]
+[Wed Jun 24 08:29:05 2020]
+rule anno2EB:
+    input: table/002_A-B.chr12.csv, recalib/002_A.chr12.bam, recalib/002_A.chr12.bai
+    output: eb/002_A-B-chr12.EB
+    log: logs/eb/002_A-B-chr12.log
+    jobid: 419
+    reason: Missing output files: eb/002_A-B-chr12.EB; Input files updated by another job: table/002_A-B.chr12.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr12
+    threads: 20
+Finished job 472.
+
+23 of 66 steps (35%) done
+Submitted DRMAA job 419 with external jobid 1505291.
+
+[Wed Jun 24 08:29:05 2020]
+rule anno2EB:
+    input: table/002_A-B.chr2.csv, recalib/002_A.chr2.bam, recalib/002_A.chr2.bai
+    output: eb/002_A-B-chr2.EB
+    log: logs/eb/002_A-B-chr2.log
+    jobid: 409
+    reason: Missing output files: eb/002_A-B-chr2.EB; Input files updated by another job: table/002_A-B.chr2.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr2
+    threads: 20
+
+Submitted DRMAA job 409 with external jobid 1505292.
+[Wed Jun 24 08:29:19 2020]
+Finished job 557.
+24 of 66 steps (36%) done
+
+[Wed Jun 24 08:29:19 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr1.indel.vcf, varscan/002_A-B.chr1.snp.vcf
+    output: table/002_A-B.chr1.csv
+    jobid: 471
+    reason: Missing output files: table/002_A-B.chr1.csv; Input files updated by another job: varscan/002_A-B.chr1.indel.vcf, varscan/002_A-B.chr1.snp.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr1
+    threads: 6
+
+Submitted DRMAA job 471 with external jobid 1505293.
+[Wed Jun 24 08:29:30 2020]
+Finished job 14.
+25 of 66 steps (38%) done
+[Wed Jun 24 08:29:31 2020]
+Finished job 471.
+26 of 66 steps (39%) done
+
+[Wed Jun 24 08:29:31 2020]
+rule merge_table:
+    input: table/002_A-B.chr1.csv, table/002_A-B.chr2.csv, table/002_A-B.chr3.csv, table/002_A-B.chr4.csv, table/002_A-B.chr5.csv, table/002_A-B.chr6.csv, table/002_A-B.chr7.csv, table/002_A-B.chr8.csv, table/002_A-B.chr9.csv, table/002_A-B.chr10.csv, table/002_A-B.chr11.csv, table/002_A-B.chr12.csv, table/002_A-B.chr13.csv, table/002_A-B.chr14.csv, table/002_A-B.chr15.csv, table/002_A-B.chr16.csv, table/002_A-B.chr17.csv, table/002_A-B.chr18.csv, table/002_A-B.chr19.csv, table/002_A-B.chr20.csv, table/002_A-B.chr21.csv, table/002_A-B.chr22.csv, table/002_A-B.chrX.csv
+    output: table/002_A-B.csv
+    jobid: 407
+    reason: Missing output files: table/002_A-B.csv; Input files updated by another job: table/002_A-B.chr12.csv, table/002_A-B.chr10.csv, table/002_A-B.chr11.csv, table/002_A-B.chr1.csv, table/002_A-B.chr5.csv, table/002_A-B.chr14.csv, table/002_A-B.chr3.csv, table/002_A-B.chr9.csv, table/002_A-B.chr7.csv, table/002_A-B.chr17.csv, table/002_A-B.chr20.csv, table/002_A-B.chr2.csv, table/002_A-B.chr16.csv, table/002_A-B.chr19.csv, table/002_A-B.chr6.csv, table/002_A-B.chr22.csv
+    wildcards: sample=002, tumor=A, norm=B
+    threads: 2
+
+Submitted DRMAA job 407 with external jobid 1505294.
+
+[Wed Jun 24 08:29:31 2020]
+rule anno2EB:
+    input: table/002_A-B.chr1.csv, recalib/002_A.chr1.bam, recalib/002_A.chr1.bai
+    output: eb/002_A-B-chr1.EB
+    log: logs/eb/002_A-B-chr1.log
+    jobid: 408
+    reason: Missing output files: eb/002_A-B-chr1.EB; Input files updated by another job: table/002_A-B.chr1.csv
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr1
+    threads: 20
+
+Submitted DRMAA job 408 with external jobid 1505295.
+[Wed Jun 24 08:29:55 2020]
+Finished job 407.
+27 of 66 steps (41%) done
+
+[Wed Jun 24 08:29:55 2020]
+rule fisher_strand:
+    input: table/002_A-B.csv
+    output: table/002_A-B.fisher.csv
+    log: logs/fisher/002_A-B.log
+    jobid: 403
+    reason: Missing output files: table/002_A-B.fisher.csv; Input files updated by another job: table/002_A-B.csv
+    wildcards: sample=002, tumor_norm=A-B
+    threads: 20
+
+Submitted DRMAA job 403 with external jobid 1505296.
+
+[Wed Jun 24 08:29:55 2020]
+rule annovar:
+    input: table/002_A-B.csv
+    output: table/002_A-B.anno.csv
+    log: logs/annovar/002_A-B.log
+    jobid: 402
+    reason: Missing output files: table/002_A-B.anno.csv; Input files updated by another job: table/002_A-B.csv
+    wildcards: sample=002, tumor_norm=A-B
+    threads: 10
+
+Submitted DRMAA job 402 with external jobid 1505297.
+[Wed Jun 24 08:30:17 2020]
+Finished job 15.
+28 of 66 steps (42%) done
+
+[Wed Jun 24 08:30:17 2020]
+rule insert_QC:
+    input: insert_metrics/002_A.metrics, insert_metrics/002_B.metrics
+    output: QC/insertQC.html
+    jobid: 3
+    reason: Input files updated by another job: insert_metrics/002_B.metrics, insert_metrics/002_A.metrics
+    threads: 2
+
+multiqc -f -o QC/ -n insertQC --interactive insert_metrics/; 
+Submitted DRMAA job 3 with external jobid 1505298.
+[Wed Jun 24 08:30:53 2020]
+Finished job 3.
+29 of 66 steps (44%) done
+[Wed Jun 24 08:32:18 2020]
+Finished job 5.
+30 of 66 steps (45%) done
+[Wed Jun 24 08:33:06 2020]
+Error in rule anno2EB:
+    jobid: 416
+    output: eb/002_A-B-chr9.EB
+    log: logs/eb/002_A-B-chr9.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 416, external: 1505284, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.416.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:33:06 2020]
+Error in rule anno2EB:
+    jobid: 412
+    output: eb/002_A-B-chr5.EB
+    log: logs/eb/002_A-B-chr5.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 412, external: 1505285, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.412.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:33:06 2020]
+Error in rule anno2EB:
+    jobid: 414
+    output: eb/002_A-B-chr7.EB
+    log: logs/eb/002_A-B-chr7.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 414, external: 1505275, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.414.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:33:06 2020]
+Error in rule anno2EB:
+    jobid: 429
+    output: eb/002_A-B-chr22.EB
+    log: logs/eb/002_A-B-chr22.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 429, external: 1505276, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.429.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:33:07 2020]
+Error in rule anno2EB:
+    jobid: 417
+    output: eb/002_A-B-chr10.EB
+    log: logs/eb/002_A-B-chr10.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 417, external: 1505271, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.417.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:33:07 2020]
+Error in rule anno2EB:
+    jobid: 427
+    output: eb/002_A-B-chr20.EB
+    log: logs/eb/002_A-B-chr20.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 427, external: 1505272, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.427.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:33:07 2020]
+Error in rule anno2EB:
+    jobid: 421
+    output: eb/002_A-B-chr14.EB
+    log: logs/eb/002_A-B-chr14.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 421, external: 1505273, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.421.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:33:07 2020]
+Error in rule anno2EB:
+    jobid: 426
+    output: eb/002_A-B-chr19.EB
+    log: logs/eb/002_A-B-chr19.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 426, external: 1505274, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.426.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:33:07 2020]
+Finished job 430.
+31 of 66 steps (47%) done
+[Wed Jun 24 08:33:40 2020]
+Finished job 12.
+32 of 66 steps (48%) done
+[Wed Jun 24 08:34:13 2020]
+Finished job 13.
+33 of 66 steps (50%) done
+
+[Wed Jun 24 08:34:13 2020]
+rule bam_QC:
+    input: bam_metrics/002_A.metrics, bam_metrics/002_B.metrics
+    output: QC/libraryQC.html
+    jobid: 2
+    reason: Input files updated by another job: bam_metrics/002_A.metrics, bam_metrics/002_B.metrics
+    threads: 2
+
+multiqc -f -o QC/ -n libraryQC --interactive bam_metrics/; 
+Submitted DRMAA job 2 with external jobid 1505332.
+[Wed Jun 24 08:35:08 2020]
+Finished job 2.
+34 of 66 steps (52%) done
+[Wed Jun 24 08:36:58 2020]
+Error in rule anno2EB:
+    jobid: 419
+    output: eb/002_A-B-chr12.EB
+    log: logs/eb/002_A-B-chr12.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 419, external: 1505291, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.419.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:36:58 2020]
+Error in rule anno2EB:
+    jobid: 409
+    output: eb/002_A-B-chr2.EB
+    log: logs/eb/002_A-B-chr2.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 409, external: 1505292, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.409.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:36:58 2020]
+Finished job 411.
+35 of 66 steps (53%) done
+[Wed Jun 24 08:36:58 2020]
+Error in rule anno2EB:
+    jobid: 413
+    output: eb/002_A-B-chr6.EB
+    log: logs/eb/002_A-B-chr6.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 413, external: 1505290, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.413.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:36:58 2020]
+Error in rule anno2EB:
+    jobid: 408
+    output: eb/002_A-B-chr1.EB
+    log: logs/eb/002_A-B-chr1.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 408, external: 1505295, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.408.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:37:09 2020]
+Error in rule anno2EB:
+    jobid: 423
+    output: eb/002_A-B-chr16.EB
+    log: logs/eb/002_A-B-chr16.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b3a2d491
+
+Error executing rule anno2EB on cluster (jobid: 423, external: 1505287, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.anno2EB.423.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:37:09 2020]
+Error in rule fisher_strand:
+    jobid: 403
+    output: table/002_A-B.fisher.csv
+    log: logs/fisher/002_A-B.log (check log file(s) for error message)
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/f4ecb045
+
+Error executing rule fisher_strand on cluster (jobid: 403, external: 1505296, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.vwcslo4f/snakejob.fisher_strand.403.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Wed Jun 24 08:38:30 2020]
+Finished job 424.
+36 of 66 steps (55%) done
+[Wed Jun 24 08:40:30 2020]
+Finished job 402.
+37 of 66 steps (56%) done
+[Wed Jun 24 08:44:31 2020]
+Finished job 418.
+38 of 66 steps (58%) done
+[Wed Jun 24 08:47:51 2020]
+Finished job 410.
+39 of 66 steps (59%) done
+Exiting because a job execution failed. Look above for error message
+Complete log: /fast/home/users/szyskam_c/snakes/develop/somVarWES/.snakemake/log/2020-06-24T082628.084181.snakemake.log
+    EXOM SEQUENCING PIPELINE STARTING.......
+samples                                         R1  ...                                     index
+name                                        ...                                          
+002_A  FD_AH_001_002A_L001_R1_001.fastq.gz  ...  FD_AH_001_002A_L001_index_1_001.fastq.gz
+002_B  FD_AH_001_002B_L001_R1_001.fastq.gz  ...  FD_AH_001_002B_L001_index_1_001.fastq.gz
+
+[2 rows x 3 columns]
+genomicSuperDups snp138 snp138NonFlagged 1000g2014oct_all spidex not found for hg38! Doing without.. 

@@ -6,50 +6,81 @@ import re
 def get_files(folder_list, sample_sheet):
     '''
     retrieves the path to all the files in the sample_sheet
+    if rerun == False, it looks for fastq files
+    if rerun == True, it looks for bam files
     '''
 
     # check whether single folder or folder list
     if len(folder_list[0]) == 1:
         folder_list = [folder_list]
 
-    fastq_list = []
-    short_list = []
-    for input_folder in folder_list:
-        for folder, _, files in os.walk(input_folder):
-            for file in files:
-                if '.fastq.' in file and '.md5' not in file and 'trim' not in file and 'sub' not in file:
-                    fastq_list.append(os.path.join(folder, file))
-                    short_list.append(file)
     # import the sample sheet
     samples = pd.read_csv(sample_sheet, sep='\t', index_col=0).set_index('name')
+    # for fastq files:
+    if config['setup']['rerun'] == False:
+        fastq_list = []
+        short_list = []
+        # cycle through the input folders and look for matching fastq files
+        for input_folder in folder_list:
+            for folder, _, files in os.walk(input_folder):
+                for file in files:
+                    if '.fastq.' in file and '.md5' not in file and 'trim' not in file and 'sub' not in file:
+                        fastq_list.append(os.path.join(folder, file))
+                        short_list.append(file)
 
-    def get_fastq_paths(row, fastq_list=None):
-        '''
-        go through the sample list and find the respective read and index fastqs in the respective fastq_list
-        '''
+        def get_fastq_paths(row, fastq_list=None):
+            '''
+            go through the sample list and find the respective read and index fastqs in the respective fastq_list
+            '''
 
-        # get the nomenclature for the fastq files from config
-        read1 = config['samples']['reads'][0]
-        read2 = config['samples']['reads'][1]
-        index = config['samples']['umi_barcode']
+            # get the nomenclature for the fastq files from config
+            read1 = config['samples']['reads'][0]
+            read2 = config['samples']['reads'][1]
+            index = config['samples']['umi_barcode']
 
-        for file in fastq_list:
-            # get the basename
-            base_file = os.path.basename(file)
-            if f"{row['sample']}_" in base_file:
-                if f'_{index}' in base_file:
-                    row['index'] = file
-                elif 'barcode' in base_file:
-                    row['barcode'] = file
-                elif f'_{read1}' in base_file:
-                    row['R1'] = file
-                elif f'_{read2}' in base_file:
-                    row['R2'] = file
-        return row.reindex(['Lane', 'R1', 'R2', 'barcode', 'index'])
+            for file in fastq_list:
+                # get the basename
+                base_file = os.path.basename(file)
+                if f"{row['sample']}_" in base_file:
+                    if f'_{index}' in base_file:
+                        row['index'] = file
+                    elif 'barcode' in base_file:
+                        row['barcode'] = file
+                    elif f'_{read1}' in base_file:
+                        row['R1'] = file
+                    elif f'_{read2}' in base_file:
+                        row['R2'] = file
+            return row.reindex(['Lane', 'R1', 'R2', 'barcode', 'index'])
 
-    samples_df = samples.apply(get_fastq_paths, axis=1, fastq_list=fastq_list)
-    short_df = samples.apply(get_fastq_paths, axis=1, fastq_list=short_list)
+        samples_df = samples.apply(get_fastq_paths, axis=1, fastq_list=fastq_list)
+        short_df = samples.apply(get_fastq_paths, axis=1, fastq_list=short_list)
 
+    # rerun with preexisting bam files
+    else:
+        bam_list = []
+        short_list = []
+        # cycle through the input folders and look for matching bam files
+        for input_folder in folder_list:
+            for folder, _, files in os.walk(input_folder):
+                for file in files:
+                    if '.bam' in file and '.md5' not in file:
+                        bam_list.append(os.path.join(folder, file))
+                        short_list.append(file)
+        print(bam_list)
+        def get_bam_paths(row, bam_list=None):
+            '''
+            go through the sample list and find the respective read and index bams in the respective bam_list
+            '''
+            print(row.name)
+            for file in bam_list:
+                # get the basename
+                base_file = os.path.basename(file)
+                if row.name in base_file and not "chr" in base_file:
+                    row['bam_path'] = file
+            return row['bam_path']
+
+        samples_df = samples.apply(get_bam_paths, axis=1, bam_list=bam_list)
+        short_df = samples.apply(get_bam_paths, axis=1, bam_list=short_list)
     ########## DEBUG #################
     # print(short_df)
     # print(samples_df)
@@ -58,8 +89,10 @@ def get_files(folder_list, sample_sheet):
     return samples_df, short_df
 
 
-def get_rerun_bam():
-    pass
+def get_rerun_bam(w):
+    sample_name = f"{w.sample}_{w.type}"
+    bam_path = sample_df.loc[sample_name]['bam_path']
+    return bam_path
 
 
 def get_tumor_normal_pairs(samples):

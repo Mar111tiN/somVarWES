@@ -64,7 +64,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        "QC/fastQC.html",
+        # "QC/fastQC.html",
         "QC/libraryQC.html",
         "QC/insertQC.html",
         expand("coverBED/{samples}.txt", samples=sample_df.index),
@@ -78,7 +78,11 @@ rule all:
 # print out of installed tools
 onstart:
     print("    EXOM SEQUENCING PIPELINE STARTING.......")
-    print('samples', short_sample_df.loc[:, ['R1', 'R2', 'index']])
+    if config['setup']['rerun']:
+        print('Rerun variant calling for existing bam files')
+        print('bam:', short_sample_df.loc[:, ['R1', 'R2', 'index']])
+    else:
+        print('fastq:', short_sample_df.loc[:, ['R1', 'R2', 'index']])
     ##########################
     # shell("echo Conda-environment: $CONDA_PREFIX")
     # shell('echo $PATH')
