@@ -1,7 +1,7 @@
 
 rule umi_group:
     input:
-        get_umi_filter_input
+        "finalbamsplit/{sample}_{tumor}.{chrom}.bam"
     output:
         "umi/{sample}_{type}.{chrom}.UG.bam"  # UG --> Umi-grouped
     threads:

@@ -29,14 +29,8 @@ rule filter_bam:
     input:
         csv = "table/{sample}_{tumor}-{normal}.{filter}.csv",
         tumor_bam = "bamfinal/{sample}_{tumor}.bam",
-        tumor_bai = "bamfinal/{sample}_{tumor}.bai",
-        normal_bam = "bamfinal/{sample}_{normal}.bam",
-        normal_bai = "bamfinal/{sample}_{normal}.bai",
+        normal_bam = "bamfinal/{sample}_{normal}.bam"
     output:
-        # tumor_bam = "filterbam/{sample}_{tumor}.{filter}.bam",
-        # tumor_bai = "filterbam/{sample}_{tumor}.{filter}.bai",
-        # normal_bam = "filterbam/{sample}_{normal}.{filter}.bam",
-        # normal_bai = "filterbam/{sample}_{normal}.{filter}.bai",
         done = "filterbam/{sample}_{tumor}-{normal}.{filter}.done"
     conda:
         f"../{config['envs']}/align-env.yml"

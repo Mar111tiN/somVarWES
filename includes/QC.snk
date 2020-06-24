@@ -41,27 +41,6 @@ rule fast_multiQC:
 
 # ####################### BAM QC ########################################
 
-rule merge_recal_bam:
-    '''
-    here the chr-split recalibrated bams are merged
-    this step is needed if samples are needed for PoN-list
-    '''
-
-    input:  # here I need a switch if no UMI is involved
-        expand("recalib/{{sample}}_{{type}}.{chrom}.bam", chrom=chrom_list)
-    output:
-        bam = "bamfinal/{sample}_{type}.bam",
-        bai = "bamfinal/{sample}_{type}.bam.bai"
-    threads:
-        config['resplit_bam']['threads']
-    conda:
-        f"../{config['envs']}/samba-env.yml"
-    shell:
-        # merge all split bams into one bam using samtools merge (also sorts the merged bam)
-        "sambamba merge -t {threads} {output.bam} recalib/{wildcards.sample}_{wildcards.type}.*.bam; "
-        # "rm {input}"
-
-
 rule cover_BED:
     input:
         sample = "bamfinal/{sample}_{type}.bam",
@@ -84,8 +63,7 @@ rule cover_BED:
 
 rule bam_metrix:
     input:
-        bam = "bamfinal/{sample}_{type}.bam",
-        bai = "bamfinal/{sample}_{type}.bai"
+        bam = "bamfinal/{sample}_{type}.bam"
     output:
         "bam_metrics/{sample}_{type}.metrics"
     conda:
@@ -117,8 +95,7 @@ rule bam_QC:
 # ##################### insert size QC ##############################################
 rule insert_metrix:
     input:
-        bam = "bamfinal/{sample}_{type}.bam",
-        bai = "bamfinal/{sample}_{type}.bai"
+        bam = "bamfinal/{sample}_{type}.bam"
     output:
         metric = "insert_metrics/{sample}_{type}.metrics",
         pdf = "insert_metrics/{sample}_{type}.metrics.pdf"

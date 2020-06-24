@@ -1,27 +1,3 @@
-rule index_split_bam:
-    input:
-        "{folder}/{sample}_{type}.{chrom_split}.bam"
-    output:
-        "{folder}/{sample}_{type}.{chrom_split}.bai"
-    threads:
-        config['bamindex']['threads']
-    conda:
-        f"../{config['envs']}/align-env.yml"
-    shell:
-        "picard BuildBamIndex INPUT={input}"
-
-rule index_bam:
-    input:
-        "{folder}/{sample}_{type}.bam"
-    output:
-        "{folder}/{sample}_{type}.bai"
-    threads:
-        config['bamindex']['threads']
-    conda:
-        f"../{config['envs']}/align-env.yml"
-    shell:
-        "picard BuildBamIndex INPUT={input}"
-
 rule merge_bam:
     '''
     here the split and umified bams are merged
@@ -33,8 +9,7 @@ rule merge_bam:
     input:  # here I need a switch if no UMI is involved
         expand("mapped/{{sample}}_{{type}}.{split}.bam", split=list(range(config['fastq']['split_factor'])))
     output:
-        bam = "bam_merge/{sample}_{type}.bam",
-        bai = "bam_merge/{sample}_{type}.bam.bai"  # sambamba automatically creates a bam.bai
+        bam = "bam_merge/{sample}_{type}.bam"    # sambamba automatically creates a bam.bai
     threads:
         config['resplit_bam']['threads']
     conda:
@@ -53,8 +28,7 @@ rule resplit_bam:
     input:
         bam = "bam_merge/{sample}_{type}.bam"
     output:
-        bam = "bam_merge/{sample}_{type}.{chrom}.bam",
-        bai = "bam_merge/{sample}_{type}.{chrom}.bam.bai"
+        bam = "bam_merge/{sample}_{type}.{chrom}.bam"
     threads:
         config['resplit_bam']['threads']
     conda:
@@ -63,32 +37,46 @@ rule resplit_bam:
         "sambamba view -t {threads} -h -f bam -o {output.bam} {input.bam} {wildcards.chrom} "
 
 
-############# rerun ##############################################
+######### FINAL BAM AND SPLIT ########################
 
-rule get_rerun_bam:
+rule merge_final_bam:
+    '''
+    here the chr-split bams files corresponding to the mpileup output are created
+    this step is needed for PoN-list
+    bamfinal is also consumed by the bam QC
+    '''
+
     input:
-        get_rerun_bam
+        bam = expand("bamfinalsplit/{{sample}}_{{type}}.{chrom}.bam", chrom=chrom_list)
     output:
         bam = "bamfinal/{sample}_{type}.bam"
+    params:
+        rerun_bam = get_rerun_bam
     threads:
-        1
-    shell:
-        "ln -s {input} {output}" # create a symlink in workdir/bamfinal
-    
+        config['resplit_bam']['threads']
+    conda:
+        f"../{config['envs']}/samba-env.yml"
+    script:
+        "../scripts/merge_final_bam.py"
 
-rule split_rerun_bam:
+
+############# rerun ##############################################
+
+
+rule split_final_bam:
     """
     if you do a rerun of final bams, this creates the split bams needed to go on with the pipeline
     """
 
     input: 
-        bam = "bamfinal/{sample}_{type}.bam"
+        bam = get_bamfinalsplit_input
     output:
-        bam = "rerunbamsplit/{sample}_{type}.{chrom}.bam",
-        bai = "rerunbamsplit/{sample}_{type}.{chrom}.bai"
+        bam = "bamfinalsplit/{sample}_{type}.{chrom}.bam"
+    params:
+        rerun_bam = get_rerun_bam
     threads:
         config['resplit_bam']['threads']
     conda:
         f"../{config['envs']}/samba-env.yml"
-    shell:
-        "sambamba view -t {threads} -h -f bam -o {output.bam} {input.bam} {wildcards.chrom} "
+    script:
+        "../scripts/split_final_bam.py"

@@ -28,12 +28,12 @@ chrom_list = get_chrom_list(config)
 TN_list = get_tumor_normal_pairs(sample_df)
 
 # ############ INCLUDES ##############################  
-include: "includes/fastq.snk"
+# include: "includes/fastq.snk"
 include: "includes/QC.snk"
-include: "includes/map.snk"
+# include: "includes/map.snk"
 include: "includes/splitBAM.snk"
-include: "includes/processBAM.snk"
-include: "includes/dedup.snk"
+# include: "includes/processBAM.snk"
+# include: "includes/dedup.snk"
 include: "includes/umi_filter.snk"
 include: "includes/varscan.snk"
 include: "includes/annotate.snk"
@@ -80,7 +80,7 @@ onstart:
     print("    EXOM SEQUENCING PIPELINE STARTING.......")
     if config['setup']['rerun']:
         print('Rerun variant calling for existing bam files')
-        print('bam:', short_sample_df.loc[:, ['R1', 'R2', 'index']])
+        print('bam:', short_sample_df.loc[:, ['bam_path']])
     else:
         print('fastq:', short_sample_df.loc[:, ['R1', 'R2', 'index']])
     ##########################

@@ -66,18 +66,17 @@ def get_files(folder_list, sample_sheet):
                     if '.bam' in file and '.md5' not in file:
                         bam_list.append(os.path.join(folder, file))
                         short_list.append(file)
-        print(bam_list)
         def get_bam_paths(row, bam_list=None):
             '''
             go through the sample list and find the respective read and index bams in the respective bam_list
             '''
-            print(row.name)
+
             for file in bam_list:
                 # get the basename
                 base_file = os.path.basename(file)
                 if row.name in base_file and not "chr" in base_file:
                     row['bam_path'] = file
-            return row['bam_path']
+            return row
 
         samples_df = samples.apply(get_bam_paths, axis=1, bam_list=bam_list)
         short_df = samples.apply(get_bam_paths, axis=1, bam_list=short_list)
@@ -87,12 +86,6 @@ def get_files(folder_list, sample_sheet):
     ##################################
 
     return samples_df, short_df
-
-
-def get_rerun_bam(w):
-    sample_name = f"{w.sample}_{w.type}"
-    bam_path = sample_df.loc[sample_name]['bam_path']
-    return bam_path
 
 
 def get_tumor_normal_pairs(samples):
@@ -151,6 +144,8 @@ def get_normal_samples(samples):
 
 def get_fastqs(w):
     sample_name = f"{w.sample}_{w.type}"
+    if config['setup']['rerun']:
+        return "None"
     fastq_path = sample_df.loc[sample_name][w.read_or_index]
     return fastq_path
 
@@ -311,25 +306,26 @@ def get_fastq_pair(w):
     return [f"fastq/{w.sample}_{w.type}_R{read}.fastq" for read in [1, 2]]
 
 
-def get_pileup_input(w):
-    '''
-    input switch for mpileup
-    '''
+####################### BAM FILE SWITCHES ###########################
 
+def get_rerun_bam(w):
+    sample_name = f"{w.sample}_{w.type}"
+    if config['setup']['rerun']:
+        return sample_df.loc[sample_name]['bam_path']
+    return None
+
+
+def get_bamfinalsplit_input(w):
+    '''
+    input switch for splitting bamfinal
+    '''
     file_name = f"{w.sample}_{w.type}.{w.chrom}"
+
+    # if not rerun, then use the appropriate chrom-split-bams to create symlinks in bamfinalsplit
+    if config['setup']['rerun']:
+        return get_rerun_bam(w)
     if config['setup']['UMI'] and config['UMI_filter']['run']:
         return f"umi/{file_name}.UF.bam"
     elif config['recalib']['run']:
-        return f"recalib/{file_name}.bam"
-    return f"realigned/{file_name}.bam"
-
-
-def get_umi_filter_input(w):
-    '''
-    input switch for umi_filter
-    either recalib or realign depending in config['recalib']['run']
-    '''
-    file_name = f"{w.sample}_{w.type}.{w.chrom}"
-    if config['recalib']['run']:
         return f"recalib/{file_name}.bam"
     return f"realigned/{file_name}.bam"

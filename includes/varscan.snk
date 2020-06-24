@@ -1,6 +1,6 @@
 rule mpileup:
     input:
-        get_pileup_input
+        "bamfinalsplit/{sample}_{type}.{chrom}.bam"
     output:
         "pileup/{sample}_{type}.{chrom}.pileup"
     log:

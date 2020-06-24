@@ -1,8 +1,7 @@
 rule anno2EB:
     input:
         table = "table/{sample}_{tumor}-{norm}.{chrom}.csv",
-        tumor_bam = "recalib/{sample}_{tumor}.{chrom}.bam",
-        tumor_bai = "recalib/{sample}_{tumor}.{chrom}.bai"
+        tumor_bam = "bamfinalsplit/{sample}_{tumor}.{chrom}.bam"
     output:
         "eb/{sample}_{tumor}-{norm}-{chrom}.EB"
     log:
@@ -40,8 +39,8 @@ def get_cache(w):
 rule anno2EB_EBcache:
     input:
         table = "table/{sample}_{tumor}-{norm}.{chrom}.csv",
-        tumor_bam = "recalib/{sample}_{tumor}.{chrom}.bam",
-        tumor_bai = "recalib/{sample}_{tumor}.{chrom}.bai",
+        tumor_bam = "bamfinalsplit/{sample}_{tumor}.{chrom}.bam",
+        tumor_bai = "bamfinalsplit/{sample}_{tumor}.{chrom}.bai",
         EBcache = get_cache
     output:
         "eb/{sample}_{tumor}-{norm}-{chrom}.cachedEB"
