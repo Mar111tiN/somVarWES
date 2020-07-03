@@ -1,0 +1,345 @@
++ unset DRMAA_LIBRARY_PATH
++ conda activate WES-env
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
++ echo /fast/users/szyskam_c/work/miniconda/envs/WES-env activated
+/fast/users/szyskam_c/work/miniconda/envs/WES-env activated
++ DRMAA=' -p medium -t 01:00 --mem-per-cpu=1000 --nodes=1 -n {threads}'
++ DRMAA=' -p medium -t 01:00 --mem-per-cpu=1000 --nodes=1 -n {threads} -o Slogs/%x-%j.log'
++ snakemake --unlock --rerun-incomplete
+Building DAG of jobs...
+Unlocking working directory.
++ snakemake --dag
++ dot -Tsvg
+Building DAG of jobs...
++ snakemake --use-conda --rerun-incomplete --drmaa ' -p medium -t 01:00 --mem-per-cpu=1000 --nodes=1 -n {threads} -o Slogs/%x-%j.log' -prk -j 1000
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cluster nodes: 1000
+Job counts:
+	count	jobs
+	1	IGVnav
+	1	all
+	1	anno2EB
+	1	annovar
+	1	bam_QC
+	2	bam_metrix
+	1	combine_annotations
+	1	combine_filter1
+	2	cover_BED
+	1	detect_HDR
+	1	edit_mutation_list
+	1	filter1
+	1	filter2
+	2	filter_bam
+	1	filter_pileup
+	1	fisher_strand
+	1	insert_QC
+	2	insert_metrix
+	1	mergeEBscore
+	1	merge_final_bam
+	1	merge_table
+	2	mpileup
+	1	primer3
+	1	split_final_bam
+	1	varscan
+	1	varscan2table
+	31
+
+[Fri Jul  3 07:31:41 2020]
+rule cover_BED:
+    input: bamfinal/002_B.bam, /fast/groups/ag_damm/work/ref/genome/gatk/hg38/gen_ref.done
+    output: coverBED/002_B.txt
+    log: logs/coverBED/002_B.log
+    jobid: 4
+    reason: Missing output files: coverBED/002_B.txt
+    wildcards: sample=002, type=B
+    threads: 2
+
+Submitted DRMAA job 4 with external jobid 1587602.
+
+[Fri Jul  3 07:31:41 2020]
+rule mpileup:
+    input: bamfinalsplit/002_B.chr10.bam
+    output: pileup/002_B.chr10.pileup
+    log: logs/pileup/002_B.chr10.log
+    jobid: 519
+    reason: Missing output files: pileup/002_B.chr10.pileup; Updated input files: bamfinalsplit/002_B.chr10.bam
+    wildcards: sample=002, type=B, chrom=chr10
+    threads: 2
+
+samtools mpileup -f /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta -q 20 -Q 25 -l /fast/groups/ag_damm/work/ref/bed_files/SureSelect/hg38/SS_HAEv7_hg38_Covered.bed bamfinalsplit/002_B.chr10.bam > pileup/002_B.chr10.pileup 2>logs/pileup/002_B.chr10.log
+Submitted DRMAA job 519 with external jobid 1587603.
+
+[Fri Jul  3 07:31:41 2020]
+rule split_final_bam:
+    input: recalib/002_A.chr10.bam
+    output: bamfinalsplit/002_A.chr10.bam
+    jobid: 25
+    reason: Updated input files: recalib/002_A.chr10.bam
+    wildcards: sample=002, type=A, chrom=chr10
+    threads: 20
+
+Submitted DRMAA job 25 with external jobid 1587604.
+
+[Fri Jul  3 07:31:41 2020]
+rule bam_metrix:
+    input: bamfinal/002_B.bam
+    output: bam_metrics/002_B.metrics
+    log: logs/bam_metrix/002_B.log
+    jobid: 8
+    reason: Missing output files: bam_metrics/002_B.metrics
+    wildcards: sample=002, type=B
+    threads: 6
+
+picard CollectHsMetrics I=bamfinal/002_B.bam O=bam_metrics/002_B.metrics R=/fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta BAIT_INTERVALS=/fast/groups/ag_damm/work/ref/bed_files/SureSelect/hg38/SS_HAEv7_hg38.bait_interval TARGET_INTERVALS=/fast/groups/ag_damm/work/ref/bed_files/SureSelect/hg38/SS_HAEv7_hg38.target_interval
+Submitted DRMAA job 8 with external jobid 1587605.
+
+[Fri Jul  3 07:31:41 2020]
+rule insert_metrix:
+    input: bamfinal/002_B.bam
+    output: insert_metrics/002_B.metrics, insert_metrics/002_B.metrics.pdf
+    log: logs/bam_metrix/002_B.log
+    jobid: 10
+    reason: Missing output files: insert_metrics/002_B.metrics
+    wildcards: sample=002, type=B
+    threads: 6
+
+picard CollectInsertSizeMetrics I=bamfinal/002_B.bam O=insert_metrics/002_B.metrics H=insert_metrics/002_B.metrics.pdf M=0.5
+Submitted DRMAA job 10 with external jobid 1587606.
+[Fri Jul  3 07:32:01 2020]
+Finished job 25.
+1 of 31 steps (3%) done
+
+[Fri Jul  3 07:32:01 2020]
+rule mpileup:
+    input: bamfinalsplit/002_A.chr10.bam
+    output: pileup/002_A.chr10.pileup
+    log: logs/pileup/002_A.chr10.log
+    jobid: 518
+    reason: Updated input files: ; Input files updated by another job: bamfinalsplit/002_A.chr10.bam
+    wildcards: sample=002, type=A, chrom=chr10
+    threads: 2
+
+samtools mpileup -f /fast/groups/ag_damm/work/ref/genome/gatk/hg38/hg38.fasta -q 20 -Q 25 -l /fast/groups/ag_damm/work/ref/bed_files/SureSelect/hg38/SS_HAEv7_hg38_Covered.bed bamfinalsplit/002_A.chr10.bam > pileup/002_A.chr10.pileup 2>logs/pileup/002_A.chr10.log
+Submitted DRMAA job 518 with external jobid 1587607.
+
+[Fri Jul  3 07:32:01 2020]
+rule merge_final_bam:
+    input: bamfinalsplit/002_A.chr1.bam, bamfinalsplit/002_A.chr2.bam, bamfinalsplit/002_A.chr3.bam, bamfinalsplit/002_A.chr4.bam, bamfinalsplit/002_A.chr5.bam, bamfinalsplit/002_A.chr6.bam, bamfinalsplit/002_A.chr7.bam, bamfinalsplit/002_A.chr8.bam, bamfinalsplit/002_A.chr9.bam, bamfinalsplit/002_A.chr10.bam, bamfinalsplit/002_A.chr11.bam, bamfinalsplit/002_A.chr12.bam, bamfinalsplit/002_A.chr13.bam, bamfinalsplit/002_A.chr14.bam, bamfinalsplit/002_A.chr15.bam, bamfinalsplit/002_A.chr16.bam, bamfinalsplit/002_A.chr17.bam, bamfinalsplit/002_A.chr18.bam, bamfinalsplit/002_A.chr19.bam, bamfinalsplit/002_A.chr20.bam, bamfinalsplit/002_A.chr21.bam, bamfinalsplit/002_A.chr22.bam, bamfinalsplit/002_A.chrX.bam
+    output: bamfinal/002_A.bam
+    jobid: 11
+    reason: Missing output files: bamfinal/002_A.bam; Input files updated by another job: bamfinalsplit/002_A.chr10.bam
+    wildcards: sample=002, type=A
+    threads: 20
+
+Submitted DRMAA job 11 with external jobid 1587608.
+[Fri Jul  3 07:32:11 2020]
+Finished job 518.
+2 of 31 steps (6%) done
+[Fri Jul  3 07:32:11 2020]
+Error in rule merge_final_bam:
+    jobid: 11
+    output: bamfinal/002_A.bam
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/3654ada5
+
+Error executing rule merge_final_bam on cluster (jobid: 11, external: 1587608, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.lf0ya794/snakejob.merge_final_bam.11.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Jul  3 07:34:52 2020]
+Finished job 10.
+3 of 31 steps (10%) done
+[Fri Jul  3 07:38:58 2020]
+Finished job 4.
+4 of 31 steps (13%) done
+[Fri Jul  3 07:44:39 2020]
+Finished job 8.
+5 of 31 steps (16%) done
+[Fri Jul  3 07:54:50 2020]
+Finished job 519.
+6 of 31 steps (19%) done
+
+[Fri Jul  3 07:54:50 2020]
+rule varscan:
+    input: pileup/002_A.chr10.pileup, pileup/002_B.chr10.pileup
+    output: varscan/002_A-B.chr10.indel.vcf, varscan/002_A-B.chr10.snp.vcf
+    log: logs/varscan/002_A-B.chr10.log
+    jobid: 446
+    reason: Input files updated by another job: pileup/002_B.chr10.pileup, pileup/002_A.chr10.pileup
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr10
+    threads: 8
+
+varscan somatic pileup/002_B.chr10.pileup pileup/002_A.chr10.pileup --output-vcf 1 --output-snp varscan/002_A-B.chr10.snp.vcf --output-indel varscan/002_A-B.chr10.indel.vcf --min-coverage 1 --min-var-freq 0.01 --min-freq-for-hom 0.75 --p-value 0.99 --somatic-p-value 0.05 --normal-purity 0.95 --tumor-purity 0.8
+Submitted DRMAA job 446 with external jobid 1587609.
+[Fri Jul  3 07:55:10 2020]
+Finished job 446.
+7 of 31 steps (23%) done
+
+[Fri Jul  3 07:55:10 2020]
+rule varscan2table:
+    input: varscan/002_A-B.chr10.indel.vcf, varscan/002_A-B.chr10.snp.vcf
+    output: table/002_A-B.chr10.csv
+    jobid: 383
+    reason: Input files updated by another job: varscan/002_A-B.chr10.indel.vcf, varscan/002_A-B.chr10.snp.vcf
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr10
+    threads: 6
+
+Submitted DRMAA job 383 with external jobid 1587610.
+[Fri Jul  3 07:55:20 2020]
+Finished job 383.
+8 of 31 steps (26%) done
+
+[Fri Jul  3 07:55:20 2020]
+rule merge_table:
+    input: table/002_A-B.chr1.csv, table/002_A-B.chr2.csv, table/002_A-B.chr3.csv, table/002_A-B.chr4.csv, table/002_A-B.chr5.csv, table/002_A-B.chr6.csv, table/002_A-B.chr7.csv, table/002_A-B.chr8.csv, table/002_A-B.chr9.csv, table/002_A-B.chr10.csv, table/002_A-B.chr11.csv, table/002_A-B.chr12.csv, table/002_A-B.chr13.csv, table/002_A-B.chr14.csv, table/002_A-B.chr15.csv, table/002_A-B.chr16.csv, table/002_A-B.chr17.csv, table/002_A-B.chr18.csv, table/002_A-B.chr19.csv, table/002_A-B.chr20.csv, table/002_A-B.chr21.csv, table/002_A-B.chr22.csv, table/002_A-B.chrX.csv
+    output: table/002_A-B.csv
+    jobid: 348
+    reason: Input files updated by another job: table/002_A-B.chr10.csv
+    wildcards: sample=002, tumor=A, norm=B
+    threads: 2
+
+Submitted DRMAA job 348 with external jobid 1587611.
+
+[Fri Jul  3 07:55:20 2020]
+rule anno2EB:
+    input: table/002_A-B.chr10.csv, bamfinalsplit/002_A.chr10.bam
+    output: eb/002_A-B-chr10.EB
+    log: logs/eb/002_A-B-chr10.log
+    jobid: 358
+    reason: Updated input files: ; Input files updated by another job: table/002_A-B.chr10.csv, bamfinalsplit/002_A.chr10.bam
+    wildcards: sample=002, tumor=A, norm=B, chrom=chr10
+    threads: 20
+
+Submitted DRMAA job 358 with external jobid 1587612.
+[Fri Jul  3 07:55:30 2020]
+Finished job 348.
+9 of 31 steps (29%) done
+
+[Fri Jul  3 07:55:30 2020]
+rule annovar:
+    input: table/002_A-B.csv
+    output: table/002_A-B.anno.csv
+    log: logs/annovar/002_A-B.log
+    jobid: 299
+    reason: Input files updated by another job: table/002_A-B.csv
+    wildcards: sample=002, tumor_norm=A-B
+    threads: 10
+
+Submitted DRMAA job 299 with external jobid 1587613.
+
+[Fri Jul  3 07:55:30 2020]
+rule fisher_strand:
+    input: table/002_A-B.csv
+    output: table/002_A-B.fisher.csv
+    log: logs/fisher/002_A-B.log
+    jobid: 300
+    reason: Input files updated by another job: table/002_A-B.csv
+    wildcards: sample=002, tumor_norm=A-B
+    threads: 20
+
+Submitted DRMAA job 300 with external jobid 1587614.
+[Fri Jul  3 07:55:40 2020]
+Finished job 358.
+10 of 31 steps (32%) done
+
+[Fri Jul  3 07:55:40 2020]
+rule mergeEBscore:
+    input: eb/002_A-B-chr1.EB, eb/002_A-B-chr2.EB, eb/002_A-B-chr3.EB, eb/002_A-B-chr4.EB, eb/002_A-B-chr5.EB, eb/002_A-B-chr6.EB, eb/002_A-B-chr7.EB, eb/002_A-B-chr8.EB, eb/002_A-B-chr9.EB, eb/002_A-B-chr10.EB, eb/002_A-B-chr11.EB, eb/002_A-B-chr12.EB, eb/002_A-B-chr13.EB, eb/002_A-B-chr14.EB, eb/002_A-B-chr15.EB, eb/002_A-B-chr16.EB, eb/002_A-B-chr17.EB, eb/002_A-B-chr18.EB, eb/002_A-B-chr19.EB, eb/002_A-B-chr20.EB, eb/002_A-B-chr21.EB, eb/002_A-B-chr22.EB, eb/002_A-B-chrX.EB
+    output: table/002_A-B.EB.csv
+    jobid: 301
+    reason: Input files updated by another job: eb/002_A-B-chr10.EB
+    wildcards: sample=002, tumor=A, norm=B
+    threads: 4
+
+Submitted DRMAA job 301 with external jobid 1587615.
+[Fri Jul  3 07:55:50 2020]
+Finished job 301.
+11 of 31 steps (35%) done
+[Fri Jul  3 07:56:20 2020]
+Finished job 300.
+12 of 31 steps (39%) done
+[Fri Jul  3 08:01:11 2020]
+Finished job 299.
+13 of 31 steps (42%) done
+
+[Fri Jul  3 08:01:11 2020]
+rule combine_annotations:
+    input: table/002_A-B.anno.csv, table/002_A-B.fisher.csv, table/002_A-B.EB.csv
+    output: table/002_A-B.raw.csv
+    jobid: 206
+    reason: Input files updated by another job: table/002_A-B.EB.csv, table/002_A-B.fisher.csv, table/002_A-B.anno.csv
+    wildcards: sample=002, tumor_norm=A-B
+    threads: 2
+
+Submitted DRMAA job 206 with external jobid 1587616.
+[Fri Jul  3 08:01:21 2020]
+Finished job 206.
+14 of 31 steps (45%) done
+
+[Fri Jul  3 08:01:21 2020]
+rule edit_mutation_list:
+    input: table/002_A-B.raw.csv
+    output: filter/002_A-B.csv
+    jobid: 111
+    reason: Input files updated by another job: table/002_A-B.raw.csv
+    wildcards: sample=002, tumor_norm=A-B
+    threads: 2
+
+Submitted DRMAA job 111 with external jobid 1587617.
+[Fri Jul  3 08:01:51 2020]
+Finished job 111.
+15 of 31 steps (48%) done
+
+[Fri Jul  3 08:01:51 2020]
+rule filter1:
+    input: filter/002_A-B.csv
+    output: table/002_A-B.filter1.csv, filter/002_A-B.basic.csv
+    jobid: 62
+    reason: Input files updated by another job: filter/002_A-B.csv
+    wildcards: sample=002, tumor=A, normal=B
+    threads: 2
+
+Submitted DRMAA job 62 with external jobid 1587618.
+[Fri Jul  3 08:02:01 2020]
+Finished job 62.
+16 of 31 steps (52%) done
+
+[Fri Jul  3 08:02:01 2020]
+rule primer3:
+    input: table/002_A-B.filter1.csv
+    output: table/002_A-B.filter1.primer.csv
+    jobid: 63
+    reason: Input files updated by another job: table/002_A-B.filter1.csv
+    wildcards: sample=002, tumor=A, normal=B
+    threads: 10
+
+Submitted DRMAA job 63 with external jobid 1587619.
+[Fri Jul  3 08:03:01 2020]
+Finished job 63.
+17 of 31 steps (55%) done
+Exiting because a job execution failed. Look above for error message
+Complete log: /fast/home/users/szyskam_c/snakes/develop/somVarWES/.snakemake/log/2020-07-03T073139.989910.snakemake.log
+    EXOM SEQUENCING PIPELINE STARTING.......
+fastq:                                         R1  ...                                     index
+name                                        ...                                          
+002_A  FD_AH_001_002A_L001_R1_001.fastq.gz  ...  FD_AH_001_002A_L001_index_1_001.fastq.gz
+002_B  FD_AH_001_002B_L001_R1_001.fastq.gz  ...  FD_AH_001_002B_L001_index_1_001.fastq.gz
+
+[2 rows x 3 columns]
+genomicSuperDups snp138 snp138NonFlagged 1000g2014oct_all spidex not found for hg38! Doing without.. 

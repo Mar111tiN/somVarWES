@@ -82,3 +82,4 @@ rule merge_table:
             table_dfs.append(table_df)
         table_df = pd.concat(table_dfs).sort_values(['Chr', 'Start'])
         table_df.to_csv(output[0], sep='\t', index=False)
+

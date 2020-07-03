@@ -1,5 +1,6 @@
 from os import system as shell
 
+
 def main(s):
     w = s.wildcards
     threads = s.threads
@@ -9,10 +10,14 @@ def main(s):
 
     if config['setup']['rerun']:
         rerun_bam = s.params.rerun_bam
-        shell(f"ln -s {rerun_bam} {output.bam}; sambamba index {output.bam}")
+        merge_cmd = f"ln -s {rerun_bam} {output.bam}; sambamba index {output.bam}"
+        print(merge_cmd)
+        shell(merge_cmd)
     else:
-        # merge all split bams into one bam using samtools merge (also sorts the merged bam)
-        shell(f"sambamba merge -t {threads} bamfinalsplit/{w.sample}_{w.type}.*.bam; ")
+        # merge all split bams into one bam using sambamba merge (also sorts the merged bam)
+        merge_cmd = f"sambamba merge -t {threads} {output.bam} bamfinalsplit/{w.sample}_{w.type}.*.bam; sambamba index {output.bam}"
+        print(merge_cmd)
+        shell(merge_cmd)
 
 
 main(snakemake)

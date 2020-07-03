@@ -206,7 +206,8 @@ annovar:
     - snp138NonFlagged
     - avsnp150
     - 1000g2014oct_all
-    - gnomad_exome_all
+    # - gnomad_exome_all
+    - gnomad30_HAEv7
     - dbsnp153_HAEv7
     # - gnomad_af.lna # not indexed
     # - exac03_all
@@ -219,7 +220,8 @@ annovar:
     - icgc29
     # - clinvar_20150629
     # - clinvar_20170905
-    - clinvar2019_short
+    # - clinvar2019_short
+    - clinvar2020_short
     ##### PREDICTIONS ########
     # - ljb26_all
     # - dbnsfp30a

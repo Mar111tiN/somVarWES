@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # can be overruled on CLI with -J <NAME>
-#SBATCH --job-name=devel
+#SBATCH --job-name=WES
 
 # Set the file to write the stdout and stderr to (if -e is not set; -o or --output).
 #SBATCH --output=logs/%x-%j.log
@@ -30,20 +30,20 @@ mkdir -p $LOGDIR;
 set -x;
 
 unset DRMAA_LIBRARY_PATH
-eval "$($(which conda) shell.bash hook)"  # ??
+
+# what does this do
+# eval "$($(which conda) shell.bash hook)"  # ??
 # somehow my environments are not set
 # have to set it explicitly
 conda activate WES-env;
 echo $CONDA_PREFIX "activated";
 
 
-
-
 # !!! leading white space is important
-DRMAA=" -p medium -t 01:30 --mem-per-cpu=3000 --nodes=1 -n {threads}";
-DRMAA="$DRMAA -o logs/%x-%j.log";
+DRMAA=" -p medium -t 01:00 --mem-per-cpu=1000 --nodes=1 -n {threads}";
+DRMAA="$DRMAA -o Slogs/%x-%j.log";
 snakemake --unlock --rerun-incomplete;
 snakemake --dag | dot -Tsvg > dax/dag.svg;
-snakemake --use-conda --rerun-incomplete --drmaa "$DRMAA" -prk -j 500;
+snakemake --use-conda  --rerun-incomplete --drmaa "$DRMAA" -prk -j 1000;
 # -k ..keep going if job fails
 # -p ..print out shell commands

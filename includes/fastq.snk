@@ -3,7 +3,8 @@ rule get_fastq:
         get_fastqs  # looks up samples from file_list
     output:
         "fastq/{sample}_{type}_{read_or_index}.fastq.gz"
-    threads: config['fastq']['threads']
+    threads: 
+        config['fastq']['threads']
     wildcard_constraints:
         sample = "[^/]+"
     run:
@@ -29,6 +30,8 @@ rule split_fastq:
         split_factor = config['fastq']['split_factor'],
         split_tool = get_script('split_fastq'),
         output_base = lambda w, input: str(input).replace(".fastq.gz", "")
+    conda:
+        "../env/compress-env.yml"
     shell:
         "{params.split_tool} {input} {params.split_factor} {params.output_base}"
 
@@ -38,9 +41,12 @@ rule compress_split_fastq:
         "fastq/{sample}_{type}_{read}.{split}.fastq"
     output:
         "fastq/{sample}_{type}_{read}.{split}.fastq.gz"
-    threads: config['fastq']['threads']
+    threads: 
+        config['fastq']['threads']
+    conda:
+        "../env/compress-env.yml"
     shell:
-        "pigz -5 -p {threads} {input}"
+        "pigz -5 -p {threads} {input} 2>> /fast/users/szyskam_c/snakes/develop/somVarWES/what.txt"
 
 
 def get_trim_params(w, input, output, threads):

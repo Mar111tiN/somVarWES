@@ -1,0 +1,14 @@
+channels:
+  - conda-forge
+  - bioconda
+  - default
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1
+  - _openmp_mutex=4.5
+  - libgcc-ng=9.2.0
+  - libgomp=9.2.0
+  - mawk=1.3.4
+  - pigz=2.3.4
+  - zlib=1.2.11
+

@@ -1,8 +1,4 @@
-import os
-import re
 import yaml
-import argparse
-import math
 
 # ############ SETUP ##############################
 configfile: "configs/config_devel.yaml"
@@ -91,9 +87,6 @@ onstart:
     with open(path_to_config, 'w+') as stream:
         yaml.dump(config, stream, default_flow_style=False)
     # create logs folder
-#     shell("conda list | show_awk")
-#     shell("ls -l ${{TOOLS}}/bulltools/links | sed -nr '/->/s_.* ([^/]+ -> .*)_  \\1_p' ")
-    # create scratch/tmp/hWES folder for storing stuff
 
 
 onsuccess:
