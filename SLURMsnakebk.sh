@@ -4,7 +4,8 @@
 #SBATCH --job-name=WES
 
 # Set the file to write the stdout and stderr to (if -e is not set; -o or --output).
-#SBATCH --output=slogs/%x-%j.log
+# this folder is relative to the snakemake folder
+#SBATCH --output=slog/%x-%j.log
 
 # Set the number of cores (-n or --ntasks).
 #SBATCH --ntasks=2
@@ -23,7 +24,8 @@
 #SBATCH --time=20:00:00
 
 
-export LOGDIR=slogs/${SLURM_JOB_NAME}-${SLURM_JOB_ID}
+# this folder is relative to the workdir of the snakemake run
+export LOGDIR=slog/${SLURM_JOB_NAME}-${SLURM_JOB_ID}
 export TMPDIR=/fast/users/${USER}/scratch/tmp;
 mkdir -p $LOGDIR;
 
@@ -41,9 +43,10 @@ echo $CONDA_PREFIX "activated";
 
 # !!! leading white space is important
 DRMAA=" -p medium -t 01:00 --mem-per-cpu=1000 --nodes=1 -n {threads}";
-DRMAA="$DRMAA -o slogs/%x-%j.log";
+DRMAA="$DRMAA -o ${LOGDIR}/%x-%j.log";
 snakemake --unlock --rerun-incomplete;
 snakemake --dag | dot -Tsvg > dax/dag.svg;
 snakemake --use-conda  --rerun-incomplete --drmaa "$DRMAA" -prk -j 1000;
 # -k ..keep going if job fails
 # -p ..print out shell commands
+

@@ -46,7 +46,7 @@ rule compress_split_fastq:
     conda:
         "../env/compress-env.yml"
     shell:
-        "pigz -5 -p {threads} {input} 2>> /fast/users/szyskam_c/snakes/develop/somVarWES/what.txt"
+        "pigz -5 -p {threads} {input}"
 
 
 def get_trim_params(w, input, output, threads):

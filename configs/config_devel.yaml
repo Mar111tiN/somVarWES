@@ -195,17 +195,18 @@ annovar:
   threads: 10
   path_to_humandb: annotation/annovar/humandb
   annofiles:
-    - refGene
+    # - refGene
+    - ensGene34
     - cytoBand
     - genomicSuperDups
     ##### POPULATIONS ########
     # - esp6500_all
     - esp6500siv2_all  #
     # - 1000g2010nov_all
-    - snp138
-    - snp138NonFlagged
-    - avsnp150
-    - 1000g2014oct_all
+    # - 1000g2014oct_all
+    # - snp138
+    # - snp138NonFlagged
+    - avsnp150_HAEv7
     # - gnomad_exome_all
     - gnomad30_HAEv7
     - dbsnp153_HAEv7
@@ -225,7 +226,7 @@ annovar:
     ##### PREDICTIONS ########
     # - ljb26_all
     # - dbnsfp30a
-    - dbnsfp35a  # 70 columns packed with predictions !!
+    - dbnsfp35a_HAEv7  # 70 columns packed with predictions !!
     - spidex
 Fisher_strand:
   threads: 20

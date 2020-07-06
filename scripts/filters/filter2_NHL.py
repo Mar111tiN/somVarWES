@@ -42,35 +42,14 @@ def filter2(df, _filter='moderate'):
     output:
     - filtered/sample_tumor-normal_daniel.csv
     '''
+
     # get thresholds
     print("filter: ", f"filter2-{_filter}")
     thresh = filter_settings.loc[f"filter2-{_filter}", :]
+
+    # ##### TUMOR DEPTH ############
     tumor_depth = (df['TR2'] > thresh['variantT']) & (
         df['Tdepth'] > thresh['Tdepth'])
-    if thresh['EBscore']:
-        eb = df['EBscore'] >= thresh['EBscore']
-    else:
-        eb = True
-
-    pon = (df['PoN-Ratio'] < thresh['PoN-Ratio']
-           ) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
-
-    # minimum TVAF if not candidate
-    is_candidate = (df['isCandidate'] == 1) | (df['isDriver'] == 1)
-    no_noise = is_candidate | (df['TVAF'] > 0.05)
-
-    # Strand Ratio (as FisherScore and simple)
-    no_strand_bias = df['FisherScore'] <= thresh['FisherScore']
-
-    # Strand Polarity (filters out very uneven strand distribution of alt calls)
-    if thresh.get(['strand_polarity'], None):
-        pol = thresh['strand_polarity']
-        no_strand_polarity = (
-            df['TR2+'] <= df['TR2'] - pol) & (df['TR2+'] >= pol)
-    else:
-        no_strand_polarity = True
-
-    strandedness = no_strand_bias | no_strand_polarity
 
     # ##### VAF ##################
     # minimum TVAF if not candidate
@@ -78,41 +57,76 @@ def filter2(df, _filter='moderate'):
     # either cand with higher TVAF or lower TVAF
     TVAF = (is_candidate & (df['TVAF'] >= thresh['TVAF4Cand'])) | (df['TVAF'] >= thresh['TVAF'])
     # NVAF is computed from upper threshold and a max similarity to TVAF
-    upper = (1 + thresh['VAFSim']) * df['NVAF']
-    lower = (1 - thresh['VAFSim']) * df['NVAF']
-    NVAF = ((upper < df['TVAF']) | (df['TVAF'] < lower)) & (df['NVAF'] <= thresh['NVAF'])
-    VAF = NVAF & TVAF
+    NVAF = (df['TVAF'] > ((1 + thresh['VAFSim']) * df['NVAF'])) & (df['NVAF'] <= thresh['NVAF'])
+
+    # ##### EB/PoN-Filter ##########
+    eb = (df['EBscore'] >= thresh['EBscore']) if thresh['EBscore'] else True
+
+    pon_eb = (eb & (df['PoN-Ratio'] < thresh['PoN-Ratio'])) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
+
+    # ############ HDR ####################
+    HDR = (df['TumorHDRcount'] <= thresh['HDRcount']) & (df['NormalHDRcount'] <= thresh['HDRcount'])
+
+    # ##### POPULATION #############
+    if thresh['PopFreq'] == thresh['PopFreq']:
+        # reformat population columns for filtering
+        for col in ['gnomAD_exome_ALL', 'esp6500siv2_all', 'dbSNP153_AltFreq']:
+            df.loc[df[col] == ".", col] = 0
+            df[col] = df[col].fillna(0).astype(float)
+        noSNP = (df['gnomAD_exome_ALL'] < thresh['PopFreq']) & (df['esp6500siv2_all'] < thresh['PopFreq']) & (df['dbSNP153_AltFreq'] < thresh['PopFreq'])
+    else:
+        noSNP = True
+
+    # ####### STRANDBIAS / POLARITY ##########################
+    # Strand Ratio (as FisherScore and simple)
+    no_strand_bias = df['FisherScore'] <= thresh['FisherScore']
+    # Strand Polarity (filters out very uneven strand distribution of alt calls)
+    if thresh.get(['strand_polarity'], None):
+        pol = thresh['strand_polarity']
+        no_strand_polarity = no_strand_polarity = (df['TR2+'] / df['TR2'] <= pol) & (df['TR2+'] / df['TR2'] >= (1-pol))
+    else:
+        no_strand_polarity = True
+
+    strandOK = no_strand_bias | no_strand_polarity
 
     # Clin_score is used for rescue of all mutations
     clin_score = df['ClinScore'] >= thresh['ClinScore']
+    rescue = clin_score
 
     # apply filters to dataframe
-    filter_criteria = (tumor_depth & (pon | eb) & strandedness & VAF & no_noise) | clin_score
+    filter_criteria = tumor_depth & pon_eb & NVAF & (noSNP & strandOK & TVAF & HDR | rescue)
 
-    df = df[filter_criteria].sort_values(['TVAF'], ascending=False)
+    dropped_candidates_df = df[~filter_criteria & is_candidate]
     list_len = len(df.index)
-    return df, list_len
+    return df, dropped_candidates_df, list_len
 
 
 # ################ OUTPUT #############################################################
 print(f"Writing filter2 lists to {output_base}.<stringency>.csv")
 
 excel_file = f"{output_base}.xlsx"
+print(f"Writing combined filters to excel file {excel_file}.")
+
 with pd.ExcelWriter(excel_file) as writer:
+    # filter1
+    filter1_df.to_excel(
+        writer, sheet_name=f'filter1', index=False)
     filter2_dfs = {}
+    dropped_dfs = {}
     df_lengths = {}
     for stringency in ['loose', 'moderate', 'strict']:
-        filter2_dfs[stringency], df_lengths[stringency] = filter2(
+        filter2_dfs[stringency], dropped_dfs[stringency], df_lengths[stringency] = filter2(
             filter1_df, _filter=stringency)
         print(f"{stringency}: {df_lengths[stringency]}")
         output_file = f"{output_base}.{stringency}.csv"
         filter2_dfs[stringency].to_csv(output_file, sep='\t', index=False)
         filter2_dfs[stringency].to_excel(
-            writer, sheet_name=f'{stringency} <{df_lengths[stringency]}>', index=False)
-    print(f"Writing combined filters to excel file {excel_file}.")
-    filter1_df.to_excel(
-        writer, sheet_name=f'filter1 <{len(filter1_df.index)}>', index=False)
+            writer, sheet_name=f'{stringency}', index=False)
 
+    # write dropped files
+    output_file = "{output_base}.dropped.csv"
+    dropped_dfs['loose'].to_csv(output_file, sep='\t', index=False)
+    dropped_dfs['loose'].to_excel(writer, sheet_name='dropped', index=False)
 
 # Writing mutation list for filterbam
 stringency = config['filter_bam']['stringency_for_bam']

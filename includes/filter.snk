@@ -31,7 +31,7 @@ rule filter_bam:
         tumor_bam = "bamfinal/{sample}_{tumor}.bam",
         normal_bam = "bamfinal/{sample}_{normal}.bam"
     output:
-        done = "filterbam/{sample}_{tumor}-{normal}.{filter}.done"
+        done = "filterbamdone/{sample}_{tumor}-{normal}.{filter}.done"
     conda:
         f"../{config['envs']}/align-env.yml"
     threads:
@@ -52,7 +52,7 @@ rule filter_bam:
 
 rule filter_pileup:
     input:
-        bam = "filterbam/{sample}_{tumor}-{normal}.filter1.done"
+        bam = "filterbamdone/{sample}_{tumor}-{normal}.filter1.done"
     output:
         pileup = "pileup/{sample}_{tumor}-{normal}.filter1.pileup"
     threads:
@@ -71,7 +71,7 @@ rule filter_pileup:
 rule detect_HDR:
     input:
         filter_file = "table/{sample}_{tumor}-{normal}.filter1.csv",
-        filter_bam = "filterbam/{sample}_{tumor}-{normal}.filter1.done",
+        filter_bam = "filterbamdone/{sample}_{tumor}-{normal}.filter1.done",
         pileup = "pileup/{sample}_{tumor}-{normal}.filter1.pileup"
     output:
         HDR = "table/{sample}_{tumor}-{normal}.filter1.HDR.csv"
@@ -126,7 +126,7 @@ rule filter2:
 rule IGVnav:
     input:
         filter = "filter/{sample}_{tumor}-{normal}.filter2.loose.csv",
-        bam = "filterbam/{sample}_{tumor}-{normal}.filter2.done"
+        bam = "filterbamdone/{sample}_{tumor}-{normal}.filter2.done"
     output:
         filterbam = "filterbam/{sample}_{tumor}-{normal}.filter2.IGVnav.txt"
     threads:

@@ -49,7 +49,7 @@ rule base_recalib:
     input:
         bam = "realigned/{sample}_{type}.{chrom}.bam"
     output:
-        table = "recalib/{sample}_{type}.{chrom}.recal1"
+        table = "recaltable/{sample}_{type}.{chrom}.recal1"
     log:
         "logs/recalib/{sample}_{type}.{chrom}.log"
     threads:
@@ -69,10 +69,10 @@ rule base_recalib:
 rule apply_BQSR:
     input:
         bam = "realigned/{sample}_{type}.{chrom}.bam",
-        table = "recalib/{sample}_{type}.{chrom}.recal1"
+        table = "recaltable/{sample}_{type}.{chrom}.recal1"
     output:
         bam = "recalib/{sample}_{type}.{chrom}.bam",
-        table = "recalib/{sample}_{type}.{chrom}.recal2"
+        table = "recaltable/{sample}_{type}.{chrom}.recal2"
     log:
         "logs/apply_BQSR/{sample}_{type}.{chrom}.log"
     threads:

@@ -1,0 +1,197 @@
++ unset DRMAA_LIBRARY_PATH
++ conda activate WES-env
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
++ echo /fast/users/szyskam_c/work/miniconda/envs/WES-env activated
+/fast/users/szyskam_c/work/miniconda/envs/WES-env activated
++ DRMAA=' -p medium -t 01:00 --mem-per-cpu=1000 --nodes=1 -n {threads}'
++ DRMAA=' -p medium -t 01:00 --mem-per-cpu=1000 --nodes=1 -n {threads} -o slog/devel-1588325/%x-%j.log'
++ snakemake --unlock --rerun-incomplete
+Building DAG of jobs...
+Unlocking working directory.
++ snakemake --dag
++ dot -Tsvg
+Building DAG of jobs...
++ snakemake --use-conda --rerun-incomplete --drmaa ' -p medium -t 01:00 --mem-per-cpu=1000 --nodes=1 -n {threads} -o slog/devel-1588325/%x-%j.log' -prk -j 1000
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cluster nodes: 1000
+Job counts:
+	count	jobs
+	1	IGVnav
+	1	all
+	23	anno2EB
+	1	annovar
+	46	apply_BQSR
+	1	bam_QC
+	2	bam_metrix
+	46	base_recalib
+	1	combine_annotations
+	1	combine_filter1
+	120	compress_split_fastq
+	2	cover_BED
+	46	create_GATK_target_list
+	46	dedup_umi
+	1	detect_HDR
+	1	edit_mutation_list
+	1	filter1
+	1	filter2
+	2	filter_bam
+	1	filter_pileup
+	1	fisher_strand
+	5	get_fastq
+	1	insert_QC
+	2	insert_metrix
+	40	map_ubam
+	1	mergeEBscore
+	2	merge_bam
+	2	merge_final_bam
+	1	merge_table
+	46	mpileup
+	1	primer3
+	46	realignGATK
+	46	resplit_bam
+	6	split_fastq
+	46	split_final_bam
+	40	ubamXT
+	23	varscan
+	23	varscan2table
+	676
+
+[Fri Jul  3 11:15:50 2020]
+rule get_fastq:
+    input: /fast/users/szyskam_c/work/testdata/somvar1/FD_AH_001_002A_L001_index_1_001.fastq.gz
+    output: fastq/002_A_index.fastq.gz
+    jobid: 674
+    reason: Missing output files: fastq/002_A_index.fastq.gz
+    wildcards: sample=002, type=A, read_or_index=index
+    threads: 20
+
+Submitted DRMAA job 674 with external jobid 1588326.
+
+[Fri Jul  3 11:15:50 2020]
+rule get_fastq:
+    input: /fast/users/szyskam_c/work/testdata/somvar1/FD_AH_001_002B_L001_R1_001.fastq.gz
+    output: fastq/002_B_R1.fastq.gz
+    jobid: 675
+    reason: Missing output files: fastq/002_B_R1.fastq.gz
+    wildcards: sample=002, type=B, read_or_index=R1
+    threads: 20
+
+Submitted DRMAA job 675 with external jobid 1588327.
+
+[Fri Jul  3 11:15:50 2020]
+rule get_fastq:
+    input: /fast/users/szyskam_c/work/testdata/somvar1/FD_AH_001_002B_L001_R2_001.fastq.gz
+    output: fastq/002_B_R2.fastq.gz
+    jobid: 676
+    reason: Missing output files: fastq/002_B_R2.fastq.gz
+    wildcards: sample=002, type=B, read_or_index=R2
+    threads: 20
+
+Submitted DRMAA job 676 with external jobid 1588328.
+
+[Fri Jul  3 11:15:50 2020]
+rule split_fastq:
+    input: fastq/002_A_R2.fastq.gz
+    output: fastq/002_A_R2.0.fastq, fastq/002_A_R2.1.fastq, fastq/002_A_R2.2.fastq, fastq/002_A_R2.3.fastq, fastq/002_A_R2.4.fastq, fastq/002_A_R2.5.fastq, fastq/002_A_R2.6.fastq, fastq/002_A_R2.7.fastq, fastq/002_A_R2.8.fastq, fastq/002_A_R2.9.fastq, fastq/002_A_R2.10.fastq, fastq/002_A_R2.11.fastq, fastq/002_A_R2.12.fastq, fastq/002_A_R2.13.fastq, fastq/002_A_R2.14.fastq, fastq/002_A_R2.15.fastq, fastq/002_A_R2.16.fastq, fastq/002_A_R2.17.fastq, fastq/002_A_R2.18.fastq, fastq/002_A_R2.19.fastq
+    jobid: 667
+    reason: Missing output files: fastq/002_A_R2.15.fastq, fastq/002_A_R2.4.fastq, fastq/002_A_R2.6.fastq, fastq/002_A_R2.14.fastq, fastq/002_A_R2.1.fastq, fastq/002_A_R2.16.fastq, fastq/002_A_R2.3.fastq, fastq/002_A_R2.19.fastq, fastq/002_A_R2.13.fastq, fastq/002_A_R2.0.fastq, fastq/002_A_R2.5.fastq, fastq/002_A_R2.7.fastq, fastq/002_A_R2.18.fastq, fastq/002_A_R2.12.fastq, fastq/002_A_R2.2.fastq, fastq/002_A_R2.8.fastq, fastq/002_A_R2.11.fastq, fastq/002_A_R2.17.fastq, fastq/002_A_R2.9.fastq, fastq/002_A_R2.10.fastq
+    wildcards: sample=002, type=A, read_or_index=R2
+
+/fast/users/szyskam_c/snakes/develop/somVarWES/scripts/shell/split_fastq.mawk fastq/002_A_R2.fastq.gz 20 fastq/002_A_R2
+Submitted DRMAA job 667 with external jobid 1588329.
+
+[Fri Jul  3 11:15:50 2020]
+rule get_fastq:
+    input: /fast/users/szyskam_c/work/testdata/somvar1/FD_AH_001_002B_L001_index_1_001.fastq.gz
+    output: fastq/002_B_index.fastq.gz
+    jobid: 677
+    reason: Missing output files: fastq/002_B_index.fastq.gz
+    wildcards: sample=002, type=B, read_or_index=index
+    threads: 20
+
+Submitted DRMAA job 677 with external jobid 1588330.
+
+[Fri Jul  3 11:15:50 2020]
+rule get_fastq:
+    input: /fast/users/szyskam_c/work/testdata/somvar1/FD_AH_001_002A_L001_R1_001.fastq.gz
+    output: fastq/002_A_R1.fastq.gz
+    jobid: 672
+    reason: Missing output files: fastq/002_A_R1.fastq.gz
+    wildcards: sample=002, type=A, read_or_index=R1
+    threads: 20
+
+Submitted DRMAA job 672 with external jobid 1588331.
+[Fri Jul  3 11:16:00 2020]
+Error in rule get_fastq:
+    jobid: 674
+    output: fastq/002_A_index.fastq.gz
+
+Error executing rule get_fastq on cluster (jobid: 674, external: 1588326, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.53ldn6mr/snakejob.get_fastq.674.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Jul  3 11:16:00 2020]
+Error in rule get_fastq:
+    jobid: 675
+    output: fastq/002_B_R1.fastq.gz
+
+Error executing rule get_fastq on cluster (jobid: 675, external: 1588327, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.53ldn6mr/snakejob.get_fastq.675.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Jul  3 11:16:00 2020]
+Error in rule get_fastq:
+    jobid: 676
+    output: fastq/002_B_R2.fastq.gz
+
+Error executing rule get_fastq on cluster (jobid: 676, external: 1588328, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.53ldn6mr/snakejob.get_fastq.676.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Jul  3 11:16:00 2020]
+Error in rule split_fastq:
+    jobid: 667
+    output: fastq/002_A_R2.0.fastq, fastq/002_A_R2.1.fastq, fastq/002_A_R2.2.fastq, fastq/002_A_R2.3.fastq, fastq/002_A_R2.4.fastq, fastq/002_A_R2.5.fastq, fastq/002_A_R2.6.fastq, fastq/002_A_R2.7.fastq, fastq/002_A_R2.8.fastq, fastq/002_A_R2.9.fastq, fastq/002_A_R2.10.fastq, fastq/002_A_R2.11.fastq, fastq/002_A_R2.12.fastq, fastq/002_A_R2.13.fastq, fastq/002_A_R2.14.fastq, fastq/002_A_R2.15.fastq, fastq/002_A_R2.16.fastq, fastq/002_A_R2.17.fastq, fastq/002_A_R2.18.fastq, fastq/002_A_R2.19.fastq
+    conda-env: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/conda/b4361ac4
+    shell:
+        /fast/users/szyskam_c/snakes/develop/somVarWES/scripts/shell/split_fastq.mawk fastq/002_A_R2.fastq.gz 20 fastq/002_A_R2
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Error executing rule split_fastq on cluster (jobid: 667, external: 1588329, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.53ldn6mr/snakejob.split_fastq.667.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Jul  3 11:16:00 2020]
+Error in rule get_fastq:
+    jobid: 677
+    output: fastq/002_B_index.fastq.gz
+
+Error executing rule get_fastq on cluster (jobid: 677, external: 1588330, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.53ldn6mr/snakejob.get_fastq.677.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+[Fri Jul  3 11:16:00 2020]
+Error in rule get_fastq:
+    jobid: 672
+    output: fastq/002_A_R1.fastq.gz
+
+Error executing rule get_fastq on cluster (jobid: 672, external: 1588331, jobscript: /fast/scratch/users/szyskam_c/develop/FDAH1/.snakemake/tmp.53ldn6mr/snakejob.get_fastq.672.sh). For error details see the cluster log and the log files of the involved rule(s).
+Job failed, going on with independent jobs.
+Exiting because a job execution failed. Look above for error message
+Complete log: /fast/home/users/szyskam_c/snakes/develop/somVarWES/.snakemake/log/2020-07-03T111548.134092.snakemake.log
+    EXOM SEQUENCING PIPELINE STARTING.......
+fastq:                                         R1  ...                                     index
+name                                        ...                                          
+002_A  FD_AH_001_002A_L001_R1_001.fastq.gz  ...  FD_AH_001_002A_L001_index_1_001.fastq.gz
+002_B  FD_AH_001_002B_L001_R1_001.fastq.gz  ...  FD_AH_001_002B_L001_index_1_001.fastq.gz
+
+[2 rows x 3 columns]

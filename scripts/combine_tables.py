@@ -1,5 +1,5 @@
 import pandas as pd
-
+import re
 
 # ############## SNAKEMAKE ################################
 w = snakemake.wildcards
@@ -30,6 +30,8 @@ anno_df['NVAF'] = (anno_df['NR2'] / (anno_df['NR1'] + anno_df['NR2'])).round(3)
 
 # get rename dict for .refGene annotation
 refgen_dict = {col: col.replace(".refGene", "") for col in anno_df.columns if ".refGene" in col}
+# get rename dict for .ensGene annotation
+refgen_dict = {col: re.sub(".ensGene[0-9]*", "", col) for col in anno_df.columns if ".ensGene" in col}
 # rename the columns
 anno_df = anno_df.rename(columns=refgen_dict)
 

@@ -71,12 +71,6 @@ basic_df.to_csv(filter_basic_file, sep='\t', index=False)
 print(f"Writing basic filtered list to {filter_basic_file}.")
 
 # ############### FILTER1 ########################################
-print(f"Loading filter file {filter_setting_file}")
-
-if "xls" in os.path.splitext(filter_setting_file)[1]:
-    filter_settings = pd.read_excel(filter_file, sheet_name=sheet, index_col=0)[:4]
-else:
-    filter_settings = pd.read_csv(filter_setting_file, sep='\t', index_col=0)
 
 # filter1_setting = {
 #     'variantT': 2,
@@ -126,7 +120,7 @@ def filter1(df, _filter=''):
     rescue = is7q | isHot
 
     # FINAL FILTER1
-    filter_criteria = tumor_depth & noSNP & pon_eb & (VAF | rescue)
+    filter_criteria = (tumor_depth & noSNP & pon_eb & VAF) | rescue
 
     return df[filter_criteria].sort_values(['TVAF'], ascending=False)
 

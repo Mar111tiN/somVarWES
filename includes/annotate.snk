@@ -35,7 +35,7 @@ def get_anno_params(_):
     # create the operation string 'g,r,f,f,f,f' assuming all but the first three dbs (ref, cytoBand, superDups) in config to be filter-based
     operation_list = []
     for anno in anno_list:
-        if anno == "refGene":
+        if "Gene" in anno:
             operation_list.append('g')
         elif anno in ['cytoBand', 'genomicSuperDups']:
             operation_list.append('r')

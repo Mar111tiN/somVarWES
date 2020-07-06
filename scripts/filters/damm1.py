@@ -87,6 +87,7 @@ def filter1(df, _filter=''):
     # get thresholds from filter_setting_file
     thresh = filter_settings.loc[_filter, :]
 
+    
     # ##### TUMOR DEPTH ############
     tumor_depth = (df['TR2'] > thresh['variantT']) & (
         df['Tdepth'] > thresh['Tdepth'])
@@ -113,11 +114,12 @@ def filter1(df, _filter=''):
         noSNP = True
 
     # ## FILTER1 RESCUE ##########
-    # there is no rescue in default
-    rescue = False
+    # per default, rescue all candidate genes
+    is_candidate = (df['isCandidate'] == 1) | (df['isDriver'] == 1) | (df['ChipFreq'] > 0)
+    rescue = is_candidate
 
     # FINAL FILTER1
-    filter_criteria = tumor_depth & noSNP & pon_eb & (VAF | rescue)
+    filter_criteria = (tumor_depth & noSNP & pon_eb & VAF) | rescue
 
     return df[filter_criteria].sort_values(['TVAF'], ascending=False)
 
