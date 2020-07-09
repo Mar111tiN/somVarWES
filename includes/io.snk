@@ -64,7 +64,7 @@ def get_files(folder_list, sample_sheet):
             print(f"Looking for bam files in {input_folder}")
             for folder, _, files in os.walk(input_folder):
                 for file in files:
-                    if '.bam' in file and '.md5' not in file:
+                    if '.bam' in file and '.md5' not in file and '.bai' not in file:
                         bam_list.append(os.path.join(folder, file))
                         short_list.append(file)
 
