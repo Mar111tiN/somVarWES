@@ -61,11 +61,14 @@ def get_files(folder_list, sample_sheet):
         short_list = []
         # cycle through the input folders and look for matching bam files
         for input_folder in folder_list:
+            print(f"Looking for bam files in {input_folder}")
             for folder, _, files in os.walk(input_folder):
                 for file in files:
                     if '.bam' in file and '.md5' not in file:
                         bam_list.append(os.path.join(folder, file))
                         short_list.append(file)
+
+        # include check for empty list
         def get_bam_paths(row, bam_list=None):
             '''
             go through the sample list and find the respective read and index bams in the respective bam_list

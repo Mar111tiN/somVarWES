@@ -23,7 +23,8 @@ sheet = f_config['excel_sheet']
 print(f"Running filter2 {filter_name}")
 print(f"Loading filter file {filter_file}")
 if "xls" in os.path.splitext(filter_file)[1]:
-    filter_settings = pd.read_excel(filter_file, sheet_name=sheet, index_col=0)[:4]
+    filter_settings = pd.read_excel(
+        filter_file, sheet_name=sheet, index_col=0)[:4]
 else:
     filter_settings = pd.read_csv(filter_file, sep='\t', index_col=0)
 
@@ -53,19 +54,24 @@ def filter2(df, _filter='moderate'):
 
     # ##### VAF ##################
     # minimum TVAF if not candidate
-    is_candidate = (df['isCandidate'] == 1) | (df['isDriver'] == 1) | (df['ChipFreq'] > 0)
+    is_candidate = (df['isCandidate'] == 1) | (
+        df['isDriver'] == 1) | (df['ChipFreq'] > 0)
     # either cand with higher TVAF or lower TVAF
-    TVAF = (is_candidate & (df['TVAF'] >= thresh['TVAF4Cand'])) | (df['TVAF'] >= thresh['TVAF'])
+    TVAF = (is_candidate & (df['TVAF'] >= thresh['TVAF4Cand'])) | (
+        df['TVAF'] >= thresh['TVAF'])
     # NVAF is computed from upper threshold and a max similarity to TVAF
-    NVAF = (df['TVAF'] > ((1 + thresh['VAFSim']) * df['NVAF'])) & (df['NVAF'] <= thresh['NVAF'])
+    NVAF = (df['TVAF'] > ((1 + thresh['VAFSim']) * df['NVAF'])
+            ) & (df['NVAF'] <= thresh['NVAF'])
 
     # ##### EB/PoN-Filter ##########
     eb = (df['EBscore'] >= thresh['EBscore']) if thresh['EBscore'] else True
 
-    pon_eb = (eb & (df['PoN-Ratio'] < thresh['PoN-Ratio'])) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
+    pon_eb = (eb & (df['PoN-Ratio'] < thresh['PoN-Ratio'])
+              ) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
 
     # ############ HDR ####################
-    HDR = (df['TumorHDRcount'] <= thresh['HDRcount']) & (df['NormalHDRcount'] <= thresh['HDRcount'])
+    HDR = (df['TumorHDRcount'] <= thresh['HDRcount']) & (
+        df['NormalHDRcount'] <= thresh['HDRcount'])
 
     # ##### POPULATION #############
     if thresh['PopFreq'] == thresh['PopFreq']:
@@ -73,7 +79,8 @@ def filter2(df, _filter='moderate'):
         for col in ['gnomAD_exome_ALL', 'esp6500siv2_all', 'dbSNP153_AltFreq']:
             df.loc[df[col] == ".", col] = 0
             df[col] = df[col].fillna(0).astype(float)
-        noSNP = (df['gnomAD_exome_ALL'] < thresh['PopFreq']) & (df['esp6500siv2_all'] < thresh['PopFreq']) & (df['dbSNP153_AltFreq'] < thresh['PopFreq'])
+        noSNP = (df['gnomAD_exome_ALL'] < thresh['PopFreq']) & (
+            df['esp6500siv2_all'] < thresh['PopFreq']) & (df['dbSNP153_AltFreq'] < thresh['PopFreq'])
     else:
         noSNP = True
 
@@ -83,7 +90,8 @@ def filter2(df, _filter='moderate'):
     # Strand Polarity (filters out very uneven strand distribution of alt calls)
     if thresh['strand_polarity'] == thresh['strand_polarity']:
         pol = thresh['strand_polarity']
-        no_strand_polarity = no_strand_polarity = (df['TR2+'] / df['TR2'] <= pol) & (df['TR2+'] / df['TR2'] >= (1-pol))
+        no_strand_polarity = no_strand_polarity = (
+            df['TR2+'] / df['TR2'] <= pol) & (df['TR2+'] / df['TR2'] >= (1-pol))
     else:
         no_strand_polarity = True
 
@@ -94,7 +102,8 @@ def filter2(df, _filter='moderate'):
     clin_score = df['ClinScore'] >= thresh['ClinScore']
     rescue = clin_score
 
-    filter_criteria = pon_eb & NVAF & (tumor_depth & noSNP & strandOK & TVAF & HDR | rescue)
+    filter_criteria = pon_eb & NVAF & (
+        tumor_depth & noSNP & strandOK & TVAF & HDR | rescue)
     # apply filters to dataframe
     df = df[filter_criteria].sort_values(['TVAF'], ascending=False)
     dropped_candidates_df = df[~filter_criteria & is_candidate]
@@ -109,7 +118,7 @@ excel_file = f"{output_base}.xlsx"
 print(f"Writing combined filters to excel file {excel_file}.")
 
 with pd.ExcelWriter(excel_file) as writer:
-    #filter1
+    # filter1
     filter1_df.to_excel(
         writer, sheet_name=f'filter1', index=False)
     filter2_dfs = {}
@@ -125,7 +134,7 @@ with pd.ExcelWriter(excel_file) as writer:
             writer, sheet_name=f'{stringency}', index=False)
 
     # write dropped files
-    output_file = "{output_base}.dropped.csv"
+    output_file = f"{output_base}.dropped.csv"
     dropped_dfs['loose'].to_csv(output_file, sep='\t', index=False)
     dropped_dfs['loose'].to_excel(writer, sheet_name='dropped', index=False)
 
