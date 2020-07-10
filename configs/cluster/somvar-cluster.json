@@ -1,0 +1,23 @@
+{
+    "__default__" :
+    {
+        "t" : "00:10",
+        "mem": "200",
+        "nodes" : 1,
+        "partition" : "medium",
+        "threads": "{threads}",
+        "name": "{rule}"
+    },
+    "filter2" :
+    {
+        "t" : "00:05"
+    },
+    "filterbam" :
+    {
+        "t" : "00:05"
+    },
+    "IGVnav" :
+    {
+        "t" : "00:05"
+    }
+}

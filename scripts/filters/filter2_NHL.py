@@ -101,20 +101,21 @@ def filter2(df, _filter='moderate'):
     clin_score = df['ClinScore'] >= thresh['ClinScore']
     rescue = clin_score
 
-    # apply filters to dataframe
+    # collect filter_criteria
+    # rescue is only applied to disputable values
     filter_criteria = tumor_depth & pon_eb & NVAF & (
         noSNP & strandOK & TVAF & HDR | rescue)
 
+    filter2_df = df[filter_criteria]
+    print(stringency, len(filter2_df.index))
     dropped_candidates_df = df[~filter_criteria & is_candidate]
-    list_len = len(df.index)
-    return df, dropped_candidates_df, list_len
+    list_len = len(filter2_df.index)
+    return filter2_df, dropped_candidates_df, list_len
 
 
 # ################ OUTPUT #############################################################
-print(f"Writing filter2 lists to {output_base}.<stringency>.csv")
 
 excel_file = f"{output_base}.xlsx"
-print(f"Writing combined filters to excel file {excel_file}.")
 
 with pd.ExcelWriter(excel_file) as writer:
     # filter1
@@ -126,15 +127,19 @@ with pd.ExcelWriter(excel_file) as writer:
     for stringency in ['loose', 'moderate', 'strict']:
         filter2_dfs[stringency], dropped_dfs[stringency], df_lengths[stringency] = filter2(
             filter1_df, _filter=stringency)
-        print(f"{stringency}: {df_lengths[stringency]}")
         output_file = f"{output_base}.{stringency}.csv"
+        print(f"Writing filter2.{stringency} ({df_lengths[stringency]}) to {output_file}")
         filter2_dfs[stringency].to_csv(output_file, sep='\t', index=False)
         filter2_dfs[stringency].to_excel(
             writer, sheet_name=f'{stringency}', index=False)
 
     # write dropped files
-    output_file = f"{output_base}.dropped.csv"
-    dropped_dfs['loose'].to_csv(output_file, sep='\t', index=False)
+    drop_file = f"{output_base}.dropped.csv"
+    print(f"Writing {len(dropped_dfs['loose'].index)} muts to {drop_file}.")
+    dropped_dfs['loose'].to_csv(drop_file, sep='\t', index=False)
+
+    print(f"Writing combined filters to excel file {excel_file}.")
+    
     dropped_dfs['loose'].to_excel(writer, sheet_name='dropped', index=False)
 
 # Writing mutation list for filterbam

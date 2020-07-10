@@ -8,6 +8,8 @@
 #$ -cwd
 #$ -S /bin/bash
 #$ -P control
+#$ -pe smp 2
+#s -l h_rt=10:00:00
 
 export LOGDIR=/fast/users/${USER}/scratch/lox/WES/${JOB_ID}
 export TMPDIR=/fast/users/${USER}/scratch/tmp
@@ -18,16 +20,15 @@ mkdir -p $LOGDIR
 # somehow my environments are not set
 # have to set it explicitly
 # conda activate somVar-EB
-conda activate WES-env
+conda activate somvar-env
 # outputs every output to the terminal
 set -x
 
 # !!! leading white space is important
-DRMAA=" -P medium -pe smp {threads}  -l h_rt=70:00:00 -l h_vmem=3.5g"
+DRMAA=" -P medium -pe smp {threads}  -l h_rt=01:30:00 -l h_vmem=3.5g"
 DRMAA="$DRMAA -V -o $LOGDIR/ -j yes"
-snakemake --unlock --rerun-incomplete
-snakemake --dag | dot -Tsvg > dax/dag.svg
-snakemake --use-conda  --rerun-incomplete --drmaa "$DRMAA" -j 128 -p -r -k
+snakemake --snakefile Snakefile1 --unlock --rerun-incomplete
+snakemake --snakefile Snakefile1 --dag | dot -Tsvg > dax/dag.svg
+snakemake --snakefile Snakefile1 --use-conda  --rerun-incomplete --drmaa "$DRMAA" -j 1000 -p -r -k
 # -k ..keep going if job fails
 # -p ..print out shell commands
-# 

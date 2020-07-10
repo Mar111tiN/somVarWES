@@ -11,7 +11,7 @@ rule merge_bam:
     output:
         bam = "bam_merge/{sample}_{type}.bam"    # sambamba automatically creates a bam.bai
     threads:
-        config['resplit_bam']['threads']
+        config['merge_bam']['threads']
     conda:
         f"../{config['envs']}/samba-env.yml"
     shell:
@@ -53,7 +53,7 @@ rule merge_final_bam:
     params:
         rerun_bam = get_rerun_bam
     threads:
-        config['resplit_bam']['threads']
+        config['merge_bam']['threads']
     conda:
         f"../{config['envs']}/samba-env.yml"
     script:

@@ -1,11 +1,10 @@
 #!/bin/bash
 
 # can be overruled on CLI with -J <NAME>
-#SBATCH --job-name=WES
+#SBATCH --job-name=EBcache
 
 # Set the file to write the stdout and stderr to (if -e is not set; -o or --output).
-# this folder is relative to the snakemake folder
-#SBATCH --output=slog/%x-%j.log
+#SBATCH --output=slogs/%x-%j.log
 
 # Set the number of cores (-n or --ntasks).
 #SBATCH --ntasks=2
@@ -23,9 +22,9 @@
 # Formats are MM:SS, HH:MM:SS, Days-HH, Days-HH:MM, Days-HH:MM:SS
 #SBATCH --time=20:00:00
 
+SNAKE_HOME=$(pwd);
 
-# this folder is relative to the workdir of the snakemake run
-export LOGDIR=slog/${SLURM_JOB_NAME}-${SLURM_JOB_ID}
+export LOGDIR=${SNAKE_HOME}/slogs/${SLURM_JOB_NAME}-${SLURM_JOB_ID}
 export TMPDIR=/fast/users/${USER}/scratch/tmp;
 mkdir -p $LOGDIR;
 
@@ -37,16 +36,15 @@ unset DRMAA_LIBRARY_PATH
 # eval "$($(which conda) shell.bash hook)"  # ??
 # somehow my environments are not set
 # have to set it explicitly
-conda activate WES-env;
+conda activate somvar-env;
 echo $CONDA_PREFIX "activated";
 
-
 # !!! leading white space is important
-DRMAA=" -p medium -t 01:00 --mem-per-cpu=1000 --nodes=1 -n {threads}";
-DRMAA="$DRMAA -o ${LOGDIR}/%x-%j.log";
-snakemake --unlock --rerun-incomplete;
-snakemake --dag | dot -Tsvg > dax/dag.svg;
-snakemake --use-conda  --rerun-incomplete --drmaa "$DRMAA" -prk -j 1000;
+DRMAA=" -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} --nodes={cluster.nodes} -n {cluster.threads}";
+DRMAA="$DRMAA -o ${LOGDIR}/{rule}-%j.log";
+snakemake --snakefile EBcacheSnakefile --unlock --rerun-incomplete
+snakemake --snakefile EBcacheSnakefile --dag | dot -Tsvg > dax/EBcache_dag.svg
+snakemake --snakefile EBcacheSnakefile --cluster-config EBcache-cluster.json --use-conda --restart-times 3 --rerun-incomplete --drmaa "$DRMAA" -j 3000 -p -r -k
 # -k ..keep going if job fails
 # -p ..print out shell commands
-
+# -P medium

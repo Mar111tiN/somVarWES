@@ -4,7 +4,7 @@ workdir: /Users/mahtin/Bio/SnakeOutput/somVarTest # here your results are create
 snakedir: /Users/mahtin/Sites/Bio/somVarWES
 envs: envMac # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
-  samplesheet: /Users/mahtin/Sites/Bio/somVarWES/sheets/test_sheet.csv
+  samplesheet: /Users/mahtin/Sites/Bio/somVarWES/configs/sheets/test.csv
   tumor:
     - A  # 
   normal:
@@ -225,8 +225,8 @@ filter:
     driver_list: annotation/damm_lists/AML_drivers.txt
   filter_name: damm
   run: True
-  filter1: damm1.py
-  filter2: damm2.py
+  filter1: filter1.py
+  filter2: filter2.py
   keep_syn: False
 filter_bam:
     threads: 4

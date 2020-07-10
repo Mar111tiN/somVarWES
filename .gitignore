@@ -1,7 +1,14 @@
-.snakemake/
+.snakemake
 .ipynb_checkpoints
 fastq/
 dax/
 .DS_Store
 .vscode/
-__pycache__/
+__pycache__
+sheets/test*
+slogs
+logs
+configs
+!config_master.yaml
+sheets
+!test.csv

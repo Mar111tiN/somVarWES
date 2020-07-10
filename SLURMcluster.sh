@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # can be overruled on CLI with -J <NAME>
-#SBATCH --job-name=EBcache
+#SBATCH --job-name=somVar
 
 # Set the file to write the stdout and stderr to (if -e is not set; -o or --output).
 #SBATCH --output=slogs/%x-%j.log
@@ -39,12 +39,12 @@ unset DRMAA_LIBRARY_PATH
 conda activate somvar-env;
 echo $CONDA_PREFIX "activated";
 
+
 # !!! leading white space is important
 DRMAA=" -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} --nodes={cluster.nodes} -n {cluster.threads}";
 DRMAA="$DRMAA -o ${LOGDIR}/{rule}-%j.log";
-snakemake --snakefile Snakefiles/EBcacheSnakefile --unlock --rerun-incomplete
-snakemake --snakefile Snakefiles/EBcacheSnakefile --dag | dot -Tsvg > dax/EBcache_dag.svg
-snakemake --snakefile Snakefiles/EBcacheSnakefile --cluster-config configs/cluster/EBcache-cluster.json --use-conda --restart-times 3 --rerun-incomplete --drmaa "$DRMAA" -j 3000 -p -r -k
+snakemake --unlock --rerun-incomplete;
+snakemake --dag | dot -Tsvg > dax/dag.svg;
+snakemake --use-conda --rerun-incomplete --cluster-config configs/cluster/somvarFull-cluster.json --drmaa "$DRMAA" -prk -j 1000;
 # -k ..keep going if job fails
 # -p ..print out shell commands
-# -P medium

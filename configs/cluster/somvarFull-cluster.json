@@ -1,0 +1,237 @@
+{
+    "__default__" :
+    {
+        "t" : "00:10",
+        "mem": "200",
+        "nodes" : 1,
+        "partition" : "medium",
+        "threads": "{threads}",
+        "name": "{rule}:{wildcards.sample}"
+    },
+    "get_fastq" :
+    {
+        "t" : "00:45"
+    },
+    "split_fastq" :
+    {
+        "t" : "00:45"
+    },
+    "trim_fastq_PE" :
+    {
+        "t" : "01:15"
+    },
+    "ubamXT" :
+    {
+        "t" : "00:45",
+        "mem": 1000
+    },
+    "make_ref_genome" :
+    {
+        "t" : "02:00",
+        "mem": 2000
+    },
+    "map_ubam" :
+    {
+        "t" : "00:45",
+        "mem": 2000
+    },
+    "merge_bam" :
+    {
+        "t" : "01:30",
+        "mem": 500
+    },
+    "resplit_bam" :
+    {
+        "t" : "00:30"
+    },
+    "merge_final_bam" :
+    {
+        "t" : "00:45",
+        "mem": 500
+    },
+    "split_final_bam" :
+    {
+        "t" : "00:45",
+        "mem": 2000
+    },
+    "dedup" :
+    {
+        "t" : "00:45",
+        "mem": 2000
+    },
+    "dedup_umi" :
+    {
+        "t" : "00:45",
+        "mem": 2000
+    },
+    "create_GATK_target_list" :
+    {
+        "t" : "01:00",
+        "mem": 2000
+    },
+    "realignGATK" :
+    {
+        "t" : "00:45",
+        "mem": 2000
+    },
+
+    "base_recalib" :
+    {
+        "t" : "00:45",
+        "mem": 1000
+    },
+    "apply_BQSR" :
+    {
+        "t" : "00:45",
+        "mem": 1000
+    },
+    "concat_fastq" :
+    {
+        "t" : "01:30"
+    },
+    "fastqc" :
+    {
+        "t" : "00:45"
+    },
+    "fast_multiQC" :
+    {
+        "t" : "00:05"
+    },
+    "cover_BED" :
+    {
+        "t" : "00:45",
+        "mem": 300
+    },
+    "bam_metrix" :
+    {
+        "t" : "02:00",
+        "mem": 1000
+    },
+    "bam_QC" :
+    {
+        "t" : "00:05"
+    },
+    "insert_metrix" :
+    {
+        "t" : "00:45",
+        "mem": 1000
+    },
+    "insert_QC" :
+    {
+        "t" : "00:05"
+    },
+    "umi_group" :
+    {
+        "t" : "00:45",
+        "mem": 500
+    },
+    "call_consensus" :
+    {
+        "t" : "00:30",
+        "mem": 1000
+    },
+    "mark_CR" :
+    {
+        "t" : "00:30",
+        "mem": 300
+    },
+    "remap_CR" :
+    {
+        "t" : "00:45",
+        "mem": 2000
+    },
+    "filter_consensus" :
+    {
+        "t" : "00:45",
+        "mem": 2000
+    },
+    "mpileup" :
+    {
+        "t" : "01:30"
+    },
+    "varscan" :
+    {
+        "t" : "00:45"
+    },
+    "varscan2table" :
+    {
+        "t" : "00:05"
+    },
+    "merge_table" :
+    {
+        "t" : "00:45",
+        "mem": 1000
+    },
+    "annovar" :
+    {
+        "t" : "02:00",
+        "mem": 500
+    },
+    "fisher_strand" :
+    {
+        "t" : "00:30"
+    },
+    "anno2EB" :
+    {
+        "t" : "00:45",
+        "mem": 1000
+    },
+    "anno2EB_EBcache" :
+    {
+        "t" : "00:15",
+        "mem": 1000
+    },
+    "combine_annotations" :
+    {
+        "t" : "00:05"
+    },
+    "edit_mutation_list" :
+    {
+        "t" : "00:10"
+    },
+    "mergeEBscore" :
+    {
+        "t" : "00:05",
+        "mem": 500
+    },
+    "filter1" :
+    {   
+        "name": "{rule}:{wildcards.sample}-{wildcards.tumor}_{wildcards.normal}"
+    },
+    "primer3" :
+    {
+        "name": "{rule}:{wildcards.sample}-{wildcards.tumor}_{wildcards.normal}"
+    },
+    "filter_bam" :
+    {
+        "name": "{rule}:{wildcards.sample}-{wildcards.tumor}_{wildcards.normal}.{wildcards.filter}",
+        "t" : "00:20"
+    },
+    "filter_pileup" :
+    {
+        "name": "{rule}:{wildcards.sample}-{wildcards.tumor}_{wildcards.normal}.filter1",
+        "t" : "00:20"
+    },
+    "detect_HDR" :
+    {
+        "name": "{rule}:{wildcards.sample}-{wildcards.tumor}_{wildcards.normal}.filter1",
+        "t" : "00:45",
+        "mem": 1000
+    },
+    "combine_filter1" :
+    {
+        "name": "{rule}:{wildcards.sample}-{wildcards.tumor}_{wildcards.normal}",
+        "t" : "00:20",
+        "mem": 1000
+    },
+    "filter2" :
+    {
+        "name": "{rule}:{wildcards.sample}-{wildcards.tumor}_{wildcards.normal}",
+        "t" : "00:05"
+    },
+    "IGVnav" :
+    {
+        "name": "{rule}:{wildcards.sample}-{wildcards.tumor}_{wildcards.normal}",
+        "t" : "00:05"
+    }
+}
