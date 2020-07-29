@@ -6,9 +6,12 @@ dax/
 .vscode/
 __pycache__
 sheets/test*
-slogs
+slogs/
 logs
-configs
-!config_master.yaml
+config_*.yaml
+!config_*master.yaml
 sheets
 !test.csv
+oldconfigs
+scripts/filters/filter1-*
+scripts/filters/filter2-*
