@@ -27,10 +27,14 @@ anno_df = pd.read_csv(mut_file, sep='\t')
 
 print(f"Loading filter file {filter_file}")
 if "xls" in os.path.splitext(filter_file)[1]:
-    filter_settings = pd.read_excel(filter_file, sheet_name=sheet, index_col=0)[:4]
+    filter_settings = pd.read_excel(
+        filter_file, sheet_name=sheet, index_col=0)[:4]
 else:
     filter_settings = pd.read_csv(filter_file, sep='\t', index_col=0)
 
+# use these population columns for checking PopFreq
+# could be refactored into params
+pop_cols = ['gnomAD_exome_ALL', 'esp6500siv2_all', 'dbSNP153_AltFreq']
 
 print(f"    keep_syn= {keep_syn}")
 print(f'Started editing and basic filtering for {mut_file}.')
@@ -66,9 +70,9 @@ def filter_basic(df, keep_syn=False):
 
 basic_df = filter_basic(anno_df, keep_syn=keep_syn)
 
-
-basic_df.to_csv(filter_basic_file, sep='\t', index=False)
-print(f"Writing basic filtered list to {filter_basic_file}.")
+basic_df.to_csv(basic_file, sep='\t', index=False)
+print(
+    f"Writing basic filtered list ({len(basic_df.index)} muts) to {basic_file}.")
 
 # ############### FILTER1 ########################################
 
@@ -93,7 +97,7 @@ def filter1(df, _filter=''):
     tumor_depth = (df['TR2'] > thresh['variantT']) & (
         df['Tdepth'] > thresh['Tdepth'])
 
-    # ##### VAF ##################ä
+    # ##### VAF ##################
     VAF = (df['NVAF'] <= thresh['NVAF']) & (df['TVAF'] >= thresh['TVAF'])
 
     # ##### EB/PoN-Filter ##########
@@ -101,35 +105,33 @@ def filter1(df, _filter=''):
         eb = df['EBscore'] >= thresh['EBscore']
     else:
         eb = True
-    pon_eb = (eb & (df['PoN-Ratio'] < thresh['PoN-Ratio'])) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
+    pon_eb = (eb & (df['PoN-Ratio'] < thresh['PoN-Ratio'])
+              ) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
 
     # ##### POPULATION #############
-    # reformat population columns for filtering
-    for col in ['gnomAD_exome_ALL', 'esp6500siv2_all', 'dbSNP153_AltFreq']:
-        df.loc[df[col] == ".", col] = 0
-        df[col] = df[col].fillna(0).astype(float)
-
     if thresh['PopFreq'] == thresh['PopFreq']:
-        noSNP = (df['gnomAD_exome_ALL'] < thresh['PopFreq']) & (df['esp6500siv2_all'] < thresh['PopFreq']) & (df['dbSNP153_AltFreq'] < thresh['PopFreq'])
+        # init a noSNP series with True values for the looping
+        noSNP = pd.Series(True, index=df.index)
+        # go through pop_cols and filter..
+        for col in pop_cols:
+            # reformat population columns for filtering
+            df.loc[df[col] == ".", col] = 0
+            df[col] = df[col].fillna(0).astype(float)
+            # combine the looped noSNP with the columns PopFreq checks
+            noSNP = noSNP & (df[col] <= thresh['PopFreq'])
     else:
         noSNP = True
 
     # ## FILTER1 RESCUE ##########
     is7q = df['cytoBand'].str.contains('^7q')
-    isHot = (df['ChipFreq'] > 0) & (df['TVAF'] > thresh['TVAF'])
-    rescue = is7q | isHot
+    is_candidate = (df['isCandidate'] == 1) | (df['isDriver'] == 1) | (df['ChipFreq'] > 0)
+    rescue = is7q | is_candidate
 
     # FINAL FILTER1
     filter_criteria = (tumor_depth & noSNP & pon_eb & VAF) | rescue
 
     return df[filter_criteria].sort_values(['TVAF'], ascending=False)
 
-
-# from Kenichi Data
-# misRate_tumor > 0.05 or CoSMIC OCCURRENCE
-# depth_tumor > 30 ?
-# variantNum_tumor > 3
-# EBscore >=4 or CoSMIC OCCURRENCE
 
 filter1_df = filter1(basic_df, _filter='filter1')
 print(f"Writing filter1 file to {filter1_file}")

@@ -30,6 +30,10 @@ else:
 
 print('Done.')
 
+# use these population columns for checking PopFreq
+# could be refactored into params
+pop_cols = ['gnomAD_exome_ALL', 'esp6500siv2_all', 'dbSNP153_AltFreq']
+
 output_base = snakemake.output.filter2.replace('.loose.csv', '')
 threads = f_config['threads']
 keep_syn = f_config['keep_syn']
@@ -37,29 +41,27 @@ keep_syn = f_config['keep_syn']
 
 # ######## FILTER 2 ######################
 def filter2(df, _filter='moderate'):
-    '''
-    creates filtered output using the daniel filtering
-    input: pd.dataframe of unfiltered annovar output
-    output:
-    - filtered/sample_tumor-normal_daniel.csv
-    '''
 
     # get thresholds
     print("filter: ", f"filter2-{_filter}")
     thresh = filter_settings.loc[f"filter2-{_filter}", :]
 
-    # ##### TUMOR DEPTH ############
-    tumor_depth = (df['TR2'] > thresh['variantT']) & (
-        df['Tdepth'] > thresh['Tdepth'])
-
-    # ##### VAF ##################
-    # minimum TVAF if not candidate
+    # DEFINE CANDIDATE
+    # used for rescue and special thresholds
     is_candidate = (df['isCandidate'] == 1) | (
         df['isDriver'] == 1) | (df['ChipFreq'] > 0)
-    # either cand with higher TVAF or lower TVAF
+
+    # ##### TUMOR DEPTH ############
+    tumor_depth = (df['TR2'] >= thresh['variantT']) & (
+        df['Tdepth'] >= thresh['Tdepth'])
+
+    # ##### VAF ##################
+    # #### TVAF
+    # either cand with lower TVAF or threshold TVAF
     TVAF = (is_candidate & (df['TVAF'] >= thresh['TVAF4Cand'])) | (
         df['TVAF'] >= thresh['TVAF'])
-    # NVAF is computed from upper threshold and a max similarity to TVAF
+    # ##### NVAF
+    # NVAF is computed from upper threshold and a max proximity to TVAF (VAFSim)
     NVAF = (df['TVAF'] > ((1 + thresh['VAFSim']) * df['NVAF'])
             ) & (df['NVAF'] <= thresh['NVAF'])
 
@@ -75,12 +77,15 @@ def filter2(df, _filter='moderate'):
 
     # ##### POPULATION #############
     if thresh['PopFreq'] == thresh['PopFreq']:
-        # reformat population columns for filtering
-        for col in ['gnomAD_exome_ALL', 'esp6500siv2_all', 'dbSNP153_AltFreq']:
+        # init a noSNP series with True values for the looping
+        noSNP = pd.Series(True, index=df.index)
+        # go through pop_cols and filter..
+        for col in pop_cols:
+            # reformat population columns for filtering
             df.loc[df[col] == ".", col] = 0
             df[col] = df[col].fillna(0).astype(float)
-        noSNP = (df['gnomAD_exome_ALL'] < thresh['PopFreq']) & (
-            df['esp6500siv2_all'] < thresh['PopFreq']) & (df['dbSNP153_AltFreq'] < thresh['PopFreq'])
+            # combine the looped noSNP with the columns PopFreq checks
+            noSNP = noSNP & (df[col] <= thresh['PopFreq'])
     else:
         noSNP = True
 
@@ -88,8 +93,8 @@ def filter2(df, _filter='moderate'):
     # Strand Ratio (as FisherScore and simple)
     no_strand_bias = df['FisherScore'] <= thresh['FisherScore']
     # Strand Polarity (filters out very uneven strand distribution of alt calls)
-    if thresh['strand_polarity'] == thresh['strand_polarity']:
-        pol = thresh['strand_polarity']
+    if thresh.get('strandPolarity', None):
+        pol = thresh['strandPolarity']
         no_strand_polarity = no_strand_polarity = (
             df['TR2+'] / df['TR2'] <= pol) & (df['TR2+'] / df['TR2'] >= (1-pol))
     else:
@@ -97,25 +102,27 @@ def filter2(df, _filter='moderate'):
 
     strandOK = no_strand_bias | no_strand_polarity
 
-    # ## FILTER2 RESCUE ##########
+    # ########## RESCUE #####################
     # Clin_score is used for rescue of all mutations
     clin_score = df['ClinScore'] >= thresh['ClinScore']
     rescue = clin_score
 
-    filter_criteria = pon_eb & NVAF & (
-        tumor_depth & noSNP & strandOK & TVAF & HDR | rescue)
-    # apply filters to dataframe
-    df = df[filter_criteria].sort_values(['TVAF'], ascending=False)
+    # ########### COMBINE CRITERIA ###############
+    # rescue is only applied to disputable values within parens
+    # criteria outside of parens are hard-filtered
+    filter_criteria = tumor_depth & pon_eb & NVAF & (
+        noSNP & strandOK & TVAF & HDR | rescue)
+
+    filter2_df = df[filter_criteria]
+    print(stringency, len(filter2_df.index))
     dropped_candidates_df = df[~filter_criteria & is_candidate]
-    list_len = len(df.index)
-    return df, dropped_candidates_df, list_len
+    list_len = len(filter2_df.index)
+    return filter2_df, dropped_candidates_df, list_len
 
 
 # ################ OUTPUT #############################################################
-print(f"Writing filter2 lists to {output_base}.<stringency>.csv")
 
 excel_file = f"{output_base}.xlsx"
-print(f"Writing combined filters to excel file {excel_file}.")
 
 with pd.ExcelWriter(excel_file) as writer:
     # filter1
@@ -127,15 +134,19 @@ with pd.ExcelWriter(excel_file) as writer:
     for stringency in ['loose', 'moderate', 'strict']:
         filter2_dfs[stringency], dropped_dfs[stringency], df_lengths[stringency] = filter2(
             filter1_df, _filter=stringency)
-        print(f"{stringency}: {df_lengths[stringency]}")
         output_file = f"{output_base}.{stringency}.csv"
+        print(f"Writing filter2.{stringency} ({df_lengths[stringency]}) to {output_file}")
         filter2_dfs[stringency].to_csv(output_file, sep='\t', index=False)
         filter2_dfs[stringency].to_excel(
             writer, sheet_name=f'{stringency}', index=False)
 
     # write dropped files
-    output_file = f"{output_base}.dropped.csv"
-    dropped_dfs['loose'].to_csv(output_file, sep='\t', index=False)
+    drop_file = f"{output_base}.dropped.csv"
+    print(f"Writing {len(dropped_dfs['loose'].index)} muts to {drop_file}.")
+    dropped_dfs['loose'].to_csv(drop_file, sep='\t', index=False)
+
+    print(f"Writing combined filters to excel file {excel_file}.")
+
     dropped_dfs['loose'].to_excel(writer, sheet_name='dropped', index=False)
 
 # Writing mutation list for filterbam
