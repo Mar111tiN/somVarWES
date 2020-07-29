@@ -1,18 +1,3 @@
-rule concat_fastq:
-    '''
-    fastq are concatenated for use in fastQC
-    takes a long time
-    '''
-    input:
-        expand("fastq_trimmed/{{sample}}_{{type}}_{{read}}.{split}.{{trim}}.fastq.gz", split=list(range(config['fastq']['split_factor'])))
-    output:
-        "fastq_trimmed/{sample}_{type}_{read}.{trim}.fastq.gz"
-
-    threads: config['fastq']['threads']
-    shell:
-        "zcat fastq_trimmed/{wildcards.sample}_{wildcards.type}_{wildcards.read}.*.{wildcards.trim}.fastq.gz | pigz -5 -p {threads} > {output}"
-
-
 rule fastqc:
     input: get_fastq_input
     output:
@@ -26,7 +11,7 @@ rule fastqc:
         "../scripts/fastQC.py"
 
 
-rule fast_multiQC:
+rule fastq_multiQC:
     input:
         get_fastqc_list
     output:
@@ -38,6 +23,7 @@ rule fast_multiQC:
         "multiqc -f -o QC/ -n fastQC --interactive fastqc/; "  # interactive for big number of files
         "rm -f fastqc/*_fastqc.html fastq/*.sub"  # leave the zip files for accumulated multiQC of all processed samples
 
+        
 
 # ####################### BAM QC ########################################
 
@@ -61,6 +47,7 @@ rule cover_BED:
     script:
         "../scripts/bedcover.py"
 
+
 rule bam_metrix:
     input:
         bam = "bamfinal/{sample}_{type}.bam"
@@ -80,7 +67,7 @@ rule bam_metrix:
         "BAIT_INTERVALS={params.bait} "
         "TARGET_INTERVALS={params.target}"
 
-rule bam_QC:
+rule bam_multiQC:
     input:
         expand("bam_metrics/{samples}.metrics", samples=sample_df.index)
     output:
@@ -108,7 +95,7 @@ rule insert_metrix:
         "picard CollectInsertSizeMetrics I={input.bam} O={output.metric} H={output.pdf} M=0.5"
 
 
-rule insert_QC:
+rule insert_multiQC:
     input:
         expand("insert_metrics/{samples}.metrics", samples=sample_df.index)
     output:

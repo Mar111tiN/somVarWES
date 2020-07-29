@@ -36,15 +36,15 @@ unset DRMAA_LIBRARY_PATH
 # eval "$($(which conda) shell.bash hook)"  # ??
 # somehow my environments are not set
 # have to set it explicitly
-conda activate somvar-env;
+conda activate WES-env;
 echo $CONDA_PREFIX "activated";
 
 
 # !!! leading white space is important
-DRMAA=" -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} --nodes={cluster.nodes} -n {cluster.threads}";
+DRMAA=" -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads}";
 DRMAA="$DRMAA -o ${LOGDIR}/{rule}-%j.log";
 snakemake --unlock --rerun-incomplete;
 snakemake --dag | dot -Tsvg > dax/dag.svg;
-snakemake --use-conda --rerun-incomplete --cluster-config configs/cluster/somvarFull-cluster.json --drmaa "$DRMAA" -prk -j 1000;
+snakemake --use-conda --rerun-incomplete --cluster-config configs/cluster/somvar-cluster.json --drmaa "$DRMAA" -prk -j 1000;
 # -k ..keep going if job fails
 # -p ..print out shell commands

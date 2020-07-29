@@ -1,7 +1,7 @@
 import yaml
 
 # ############ SETUP ##############################
-configfile: "configs/config_devel.yaml"
+configfile: "configs/config_devel_rerun.yaml"
 # configfile: "configs/config.json"
 workdir: config['workdir']
 
@@ -60,7 +60,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        "QC/fastQC.html",
+        # "QC/fastQC.html",
         "QC/libraryQC.html",
         "QC/insertQC.html",
         expand("coverBED/{samples}.txt", samples=sample_df.index),

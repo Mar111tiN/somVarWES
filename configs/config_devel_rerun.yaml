@@ -1,6 +1,5 @@
 inputdirs: 
-  - /fast/users/szyskam_c/work/testdata/somvar1
-  - /fast/users/szyskam_c/work/testdata/somvar2  # source of fastq files (subfolders allowed) [or bam files in case of rerun]
+  - /fast/users/szyskam_c/scratch/develop/testbam # source of fastq files (subfolders allowed) [or bam files in case of rerun]
 workdir: /fast/users/szyskam_c/scratch/develop/FDAH1 # here your results are created
 snakedir: /fast/users/szyskam_c/snakes/develop/somVarWES
 envs: env # the folder of the env-files (MacOS requires different environments)
@@ -20,7 +19,7 @@ samples: # here go all your samples
     - R2
   umi_barcode: index # suffix for the fastq containing the umi-barcode
 setup:
-  rerun: False # set to true if you want to rerun variant calling for existing bams (have to be in input dir)
+  rerun: True # set to true if you want to rerun variant calling for existing bams (have to be in input dir)
   cleanup:
     run: False
     keep_only_final_bam: True

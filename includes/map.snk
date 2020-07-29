@@ -28,7 +28,7 @@ rule ubamXT:
         read_structure = "+T +T +M" if config['setup']['UMI'] else "+T +T",
         deflater = "use_jdk_deflater=true use_jdk_inflater=true" if config['ubamXT']['use_jdk'] else ""
     shell:
-        "fgbio FastqToBam -i {input} {params.read_group_info} -s --read-structure {params.read_structure} -o /dev/stdout| "
+        "fgbio FastqToBam -i {input} {params.read_group_info} -s --read-structure {params.read_structure} -o /dev/stdout | "
         "picard MarkIlluminaAdapters {params.deflater} I=/dev/stdin O={output.bam} M={output.metrix} TMP_DIR=$TMPDIR"
 
 

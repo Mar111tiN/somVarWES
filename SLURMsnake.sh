@@ -36,7 +36,7 @@ unset DRMAA_LIBRARY_PATH
 # eval "$($(which conda) shell.bash hook)"  # ??
 # somehow my environments are not set
 # have to set it explicitly
-conda activate somvar-env;
+conda activate WES-env;
 echo $CONDA_PREFIX "activated";
 
 

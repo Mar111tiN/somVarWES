@@ -21,10 +21,10 @@ rule mpileup:
 rule varscan:
     input:
         tumor = "pileup/{sample}_{tumor}.{chrom}.pileup",
-        norm = "pileup/{sample}_{norm}.{chrom}.pileup"
+        normal = "pileup/{sample}_{normal}.{chrom}.pileup"
     output:
-        indel = "varscan/{sample}_{tumor}-{norm}.{chrom}.indel.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{norm}.{chrom}.indel",
-        snp = "varscan/{sample}_{tumor}-{norm}.{chrom}.snp.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{norm}.{chrom}.snp"
+        indel = "varscan/{sample}_{tumor}-{normal}.{chrom}.indel.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{normal}.{chrom}.indel",
+        snp = "varscan/{sample}_{tumor}-{normal}.{chrom}.snp.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{normal}.{chrom}.snp"
     threads:
         config['varscan']['threads']
     params:
@@ -35,20 +35,20 @@ rule varscan:
     conda:
         f"../{config['envs']}/varscan-env.yml"
     log:
-        "logs/varscan/{sample}_{tumor}-{norm}.{chrom}.log"
+        "logs/varscan/{sample}_{tumor}-{normal}.{chrom}.log"
     shell:
-        "varscan somatic {input.norm} {input.tumor} {params.vcf}"
+        "varscan somatic {input.normal} {input.tumor} {params.vcf}"
         "--output-snp {output.snp} --output-indel {output.indel} {params.min} {params.p} {params.np}"
         # " &>{log}"
 
 
 def get_anno_input(_):
     if config['varscan']['vcf']:
-        indel = "varscan/{sample}_{tumor}-{norm}.{chrom}.indel.vcf"
-        snp = "varscan/{sample}_{tumor}-{norm}.{chrom}.snp.vcf"
+        indel = "varscan/{sample}_{tumor}-{normal}.{chrom}.indel.vcf"
+        snp = "varscan/{sample}_{tumor}-{normal}.{chrom}.snp.vcf"
     else:
-        indel = "varscan/{sample}_{tumor}-{norm}.{chrom}.indel"
-        snp = "varscan/{sample}_{tumor}-{norm}.{chrom}.snp"
+        indel = "varscan/{sample}_{tumor}-{normal}.{chrom}.indel"
+        snp = "varscan/{sample}_{tumor}-{normal}.{chrom}.snp"
     return {'indel': indel, 'snp': snp}
 
 
@@ -56,7 +56,7 @@ rule varscan2table:
     input:
         unpack(get_anno_input)
     output:
-        "table/{sample}_{tumor}-{norm}.{chrom}.csv"
+        "table/{sample}_{tumor}-{normal}.{chrom}.csv"
     threads: 6
     conda:
         f"../{config['envs']}/vcf-env.yml"
@@ -69,11 +69,11 @@ rule varscan2table:
         "../scripts/varscan2table.py"
 
 
-rule merge_table:
+rule merge_varscan:
     input:
-        expand("table/{{sample}}_{{tumor}}-{{norm}}.{chrom}.csv", chrom=chrom_list)
+        expand("table/{{sample}}_{{tumor}}-{{normal}}.{chrom}.csv", chrom=chrom_list)
     output:
-        "table/{sample}_{tumor}-{norm}.csv"
+        "table/{sample}_{tumor}-{normal}.csv"
     threads: 1
     run:
         table_dfs = []
