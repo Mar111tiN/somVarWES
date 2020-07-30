@@ -78,7 +78,6 @@ scripts:
   # fastq
   split_fastq: shell/split_fastq.mawk
   # BEDcoverage
-  format_bed_coverage: shell/formatCoverage.sh
   prettifyBED : shell/prettify_BEDcoverage.awk
   # varscan2anno
   vcf2csv: shell/vcf2csv.mawk
