@@ -1,7 +1,7 @@
 from coverage import get_cover_svg
 
 import os
-
+import sys
 
 def main(s):
 

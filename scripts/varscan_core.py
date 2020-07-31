@@ -2,7 +2,7 @@ from os import system as shell
 from script_utils import show_output, run_cmd
 
 
-def varscan2table(input_files, o, refgen, isVCF, varscan2table, vcf2csv, editcsv, coords2annovar):
+def convert_varscan2table(input_files, o, refgen, isVCF, varscan2table, vcf2csv, editcsv, coords2annovar):
 
     output_files = []
     if isVCF:

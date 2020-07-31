@@ -78,26 +78,26 @@ rule fisher_strand:
         "../scripts/fisher_strand.py"
 
 
-rule combine_annotations:
+rule merge_annos:
     input:
-        annovar = "table/{sample}_{tumor_norm}.anno.csv",
-        fisher = "table/{sample}_{tumor_norm}.fisher.csv",
-        eb_score = "table/{sample}_{tumor_norm}.EB.csv"
+        annovar = "table/{sample}_{tumor_normal}.anno.csv",
+        fisher = "table/{sample}_{tumor_normal}.fisher.csv",
+        eb_score = "table/{sample}_{tumor_normal}.EB.csv"
     output:
-        "table/{sample}_{tumor_norm}.raw.csv"
+        "table/{sample}_{tumor_normal}.raw.csv"
     threads:
-        2
+        1
     script:
-        "../scripts/combine_tables.py"
+        "../scripts/merge_annos.py"
 
 
-rule edit_mutation_list:
+rule edit_table:
     input:
-        "table/{sample}_{tumor_norm}.raw.csv"
+        "table/{sample}_{tumor_normal}.raw.csv"
     output:
-        "filter/{sample}_{tumor_norm}.csv"
+        "filter/{sample}_{tumor_normal}.csv"
     threads:
-        2
+        1
     params:
         extended_output = config['filter']['edit']['extended_output'],
         candidate_list = config['filter']['edit']['candidate_list'],

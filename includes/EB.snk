@@ -1,11 +1,11 @@
 rule anno2EB:
     input:
-        table = "table/{sample}_{tumor}-{norm}.{chrom}.csv",
+        table = "table/{sample}_{tumor}-{normal}.{chrom}.csv",
         tumor_bam = "bamfinalsplit/{sample}_{tumor}.{chrom}.bam"
     output:
-        "eb/{sample}_{tumor}-{norm}-{chrom}.EB"
+        "eb/{sample}_{tumor}-{normal}-{chrom}.EB"
     log:
-        "logs/eb/{sample}_{tumor}-{norm}-{chrom}.log"
+        "logs/eb/{sample}_{tumor}-{normal}-{chrom}.log"
     threads:
         config['EBFilter']['threads']['EBscore']
     conda:
@@ -20,7 +20,6 @@ rule anno2EB:
         # refgen = full_path('genome')
     script:
         "../scripts/eb.py"
-        # should I repileup the target with separate Q and q --> ask Kenyishi
 
 
 def get_cache(w):
@@ -38,24 +37,16 @@ def get_cache(w):
 
 rule anno2EB_EBcache:
     input:
-        table = "table/{sample}_{tumor}-{norm}.{chrom}.csv",
+        table = "table/{sample}_{tumor}-{normal}.{chrom}.csv",
         tumor_bam = "bamfinalsplit/{sample}_{tumor}.{chrom}.bam",
         tumor_bai = "bamfinalsplit/{sample}_{tumor}.{chrom}.bai",
         EBcache = get_cache
     output:
-        "eb/{sample}_{tumor}-{norm}-{chrom}.cachedEB"
+        "eb/{sample}_{tumor}-{normal}-{chrom}.cachedEB"
     log:
-        "logs/eb/{sample}_{tumor}-{norm}-{chrom}.log"
+        "logs/eb/{sample}_{tumor}-{normal}-{chrom}.log"
     threads:
         config['EBFilter']['threads']['EBscore']
-    resources:
-        # ebfromcache.py fails for some files with higher thread numbers during the process pooling
-        # no idea why that is but gradually reducing the threads incrementally allows more files to run to completion
-        # solution:
-        # run snakemake with the --restart-times option and compute adjusted thread with the resources option, ..
-        # that decreases depending on the attempts used
-        threads_adjusted = lambda wildcards, threads, attempt: max(1, threads - (attempt - 1) * 6),
-        attempts = lambda _, attempt: attempt
     conda:
         f"../{config['envs']}/eb-env.yml"
     params:
@@ -95,7 +86,7 @@ rule mergeEBscore:
     output:
         "table/{sample}_{tumor}-{norm}.EB.csv"
     threads:
-        4
+        1
     run:
         anno_df = pd.read_csv(input[0], sep='\t', index_col=False)
         EB_dfs = []

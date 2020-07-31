@@ -76,5 +76,3 @@ dependencies:
   - xz=5.2.4
   - zlib=1.2.11
   - zstd=1.4.4
-prefix: /Users/mahtin/Bio/SnakeOutput/somVarTest/.snakemake/conda/eaf2c569
-

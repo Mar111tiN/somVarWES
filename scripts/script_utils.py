@@ -1,5 +1,5 @@
 import os
-from os import system as shell
+from subprocess import check_call as shell
 from datetime import datetime as dt
 
 
@@ -46,5 +46,6 @@ def show_command(command, list=False, multi=True):
 
 
 def run_cmd(cmd, multi=False):
-    show_command(cmd, multi)
-    shell(cmd)
+    show_command(cmd, multi=multi)
+    exit = shell(cmd, shell=True)
+    return exit==0
