@@ -13,6 +13,7 @@ config_*.yaml
 !config_*master.yaml
 sheets
 !test.csv
+!testMac.csv
 oldconfigs
 scripts/filters/filter1-*
 scripts/filters/filter2-*
