@@ -42,7 +42,7 @@ rule cover_BED:
         fastq = get_fastq_pair,
         refgen = full_path('genome')
     conda:
-        "../env/bedcover-env.yml"
+        f"../{config['envs']}/bedcover-env.yml"
     script:
         "../scripts/bedcover.py"
 

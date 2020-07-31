@@ -1,10 +1,10 @@
 inputdirs: 
-    - /Users/martinscience/Dropbox/Icke/Work/somVar/somVarTest/fastq  # source of fastq files (subfolders allowed)
-workdir: /Users/martinscience/Bio/SnakeOutput/somVarTest # here your results are created
-snakedir: /Users/martinscience/Sites/Bio/snakes/somVarWES
+    - /Users/mahtin/Dropbox/Icke/Work/somVar/somVarTest/fastq  # source of fastq files (subfolders allowed)
+workdir: /Users/mahtin/Bio/SnakeOutput/somVarTest # here your results are created
+snakedir: /Users/mahtin/Sites/Bio/snakes/somVarWES
 envs: envMac # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
-    samplesheet: /Users/martinscience/Sites/Bio/snakes/somVarWES/configs/sheets/testMac.csv
+    samplesheet: /Users/mahtin/Sites/Bio/snakes/somVarWES/configs/sheets/testMac.csv
     tumor:
         - A  # 
     normal:
@@ -32,9 +32,9 @@ setup:
 
 #### ABSOLUTE PATHS ############
 paths:
-    mystatic: /Users/martinscience/Dropbox/Icke/Work/static
+    mystatic: /Users/mahtin/Dropbox/Icke/Work/static
     scripts: scripts/ # folder relative to snakedir
-    filter_settings: /Users/martinscience/Sites/Bio/somVarWES/info
+    filter_settings: /Users/mahtin/Sites/Bio/somVarWES/info
 #### REF SECTION ###############
 ref:
     build: hg38
@@ -52,9 +52,9 @@ ref:
 #### TOOLS SECTION ##############
 tools:
     gatk: gatk # 
-    gatk3: java -jar /Users/martinscience/Dropbox/Icke/Work/somVar/somVarTest/tools/gatk3.8/GenomeAnalysisTK.jar -T
+    gatk3: java -jar /Users/mahtin/Dropbox/Icke/Work/somVar/somVarTest/tools/gatk3.8/GenomeAnalysisTK.jar -T
     # annovar: perl /fast/users/szyskam_c/tools/annovar2018
-    annovar: perl /Users/martinscience/Dropbox/Icke/Work/somVar/somVarTest/tools/annovar2019
+    annovar: perl /Users/mahtin/Dropbox/Icke/Work/somVar/somVarTest/tools/annovar2019
 scripts:
     # fastq
     split_fastq: shell/split_fastq.mawk
