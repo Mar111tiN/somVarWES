@@ -1,159 +1,131 @@
 {
-    "__default__" :
-    {
-        "t" : "00:45",
-        "mem": "1000",
-        "nodes" : 1,
-        "partition" : "medium",
-        "threads": "{threads}",
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
-    },
-    "get_fastq" :
-    {
-        "t" : "00:45",
-        "mem": 20,
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}_{wildcards.read_or_index}"
-    },
-    "split_fastq" :
-    {
-        "t" : "00:45",
-        "mem": 20,
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}_{wildcards.read_or_index}"
-    },
-    "compress_split_fastq" :
-    {
-        "t" : "00:20",
-        "mem": 20,
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}_{wildcards.read}.{wildcards.split}"
-    },
-    "ubamXT" :
-    {
-        "t" : "00:45",
-        "mem": 1000,
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.split}"
-    },
-    "make_ref_genome" :
-    {
-        "t" : "02:00",
-        "mem": 2000,
-        "name": "{rule}"
-    },
-    "map_ubam" :
-    {
-        "t" : "00:45",
-        "mem": 2000,
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.split}"
-    },
-    "merge_bam" :
-    {
-        "t" : "01:30",
-        "mem": 500,
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}"
-    },
-    "resplit_bam" :
-    {
-        "t" : "00:20",
-        "mem": 50,
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}"
-    },
-    "merge_final_bam" :
-    {
-        "t" : "00:20",
-        "mem": 50,
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}"
-    },
-    "split_final_bam" :
-    {
-        "t" : "00:30",
-        "mem": 50
-    },
-    "fastqc" :
-    {
-        "t" : "00:30",
-        "mem": 50,
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}_{wildcards.readtrim}"
-    },
-    "fastq_multiQC" :
-    {
-        "t" : "00:10",
-        "mem": 10,
-        "name": "{rule}"
-    },
-    "cover_BED" :
-    {
-        "t" : "00:45",
-        "mem": 500,
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}"
-    },
-    "bam_metrix" :
-    {
-        "t" : "02:45",
-        "mem": 500,
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}"
-    },
-    "bam_multiQC" :
-    {
-        "t" : "00:10",
-        "mem": 10,
-        "name": "{rule}"
-    },
-    "insert_metrix" :
-    {
-        "t" : "00:45",
-        "mem": 500,
-        "name": "{rule}:{wildcards.sample}_{wildcards.type}"
-    },
-    "insert_multiQC" :
-    {
-        "t" : "00:10",
-        "mem": 10,
-        "name": "{rule}"
-    },
-    "dedup" :
-    {
-        "t" : "00:30",
-        "mem": 400
-    },
-    "dedup_umi" :
-    {
-        "t" : "00:45",
-        "mem": 1000
-    },
-    "create_GATK_target_list" :
-    {
-        "t" : "01:00",
-        "mem": 1000
-    },
-    "realignGATK" :
-    {
-        "t" : "00:45",
-        "mem": 1000
-    },
-    "base_recalib" :
-    {},
-    "apply_BQSR" :
-    {},
-    "mpileup" :
-    {
-        "t" : "00:45",
-        "mem": 200
-    },
-    "varscan" :
-    {
-        "t" : "00:45",
-        "mem": 500,
-        "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
-    },
-    "varscan2table" :
-    {
-        "t" : "00:20",
-        "mem": 100,
-        "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
-    },
-    "merge_varscan_tables" :
-    {
-        "t" : "00:10",
-        "mem": 1000,
-        "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
-    }
+  "__default__": {
+    "t": "00:45",
+    "mem": "1000",
+    "nodes": 1,
+    "partition": "medium",
+    "threads": "{threads}",
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
+  },
+  "get_fastq": {
+    "t": "00:45",
+    "mem": 20,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}_{wildcards.read_or_index}"
+  },
+  "split_fastq": {
+    "t": "00:45",
+    "mem": 20,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}_{wildcards.read_or_index}"
+  },
+  "compress_split_fastq": {
+    "t": "00:20",
+    "mem": 20,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}_{wildcards.read}.{wildcards.split}"
+  },
+  "ubamXT": {
+    "t": "00:45",
+    "mem": 1000,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.split}"
+  },
+  "make_ref_genome": {
+    "t": "02:00",
+    "mem": 2000,
+    "name": "{rule}"
+  },
+  "map_ubam": {
+    "t": "00:45",
+    "mem": 2000,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.split}"
+  },
+  "merge_bam": {
+    "t": "01:30",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}"
+  },
+  "resplit_bam": {
+    "t": "00:20",
+    "mem": 50,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}"
+  },
+  "merge_final_bam": {
+    "t": "00:20",
+    "mem": 50,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}"
+  },
+  "split_final_bam": {
+    "t": "00:30",
+    "mem": 50
+  },
+  "fastqc": {
+    "t": "00:30",
+    "mem": 50,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}_{wildcards.readtrim}"
+  },
+  "fastq_multiQC": {
+    "t": "00:10",
+    "mem": 10,
+    "name": "{rule}"
+  },
+  "cover_BED": {
+    "t": "00:45",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}"
+  },
+  "bam_metrix": {
+    "t": "02:45",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}"
+  },
+  "bam_multiQC": {
+    "t": "00:10",
+    "mem": 10,
+    "name": "{rule}"
+  },
+  "insert_metrix": {
+    "t": "00:45",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}"
+  },
+  "insert_multiQC": {
+    "t": "00:10",
+    "mem": 10,
+    "name": "{rule}"
+  },
+  "dedup": {
+    "t": "00:30",
+    "mem": 400
+  },
+  "dedup_umi": {
+    "t": "00:45",
+    "mem": 1000
+  },
+  "create_GATK_target_list": {
+    "t": "01:00",
+    "mem": 1000
+  },
+  "realignGATK": {
+    "t": "00:45",
+    "mem": 1000
+  },
+  "base_recalib": {},
+  "apply_BQSR": {},
+  "mpileup": {
+    "t": "00:45",
+    "mem": 200
+  },
+  "varscan": {
+    "t": "00:45",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
+  },
+  "varscan2table": {
+    "t": "00:20",
+    "mem": 100,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
+  },
+  "merge_varscan_tables": {
+    "t": "00:10",
+    "mem": 1000,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
+  },
 }

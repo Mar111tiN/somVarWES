@@ -37,7 +37,6 @@ rule cover_BED:
         "logs/coverBED/{sample}_{type}.log"
     threads: 2
     params:
-        format_coverage = get_script('format_bed_coverage'),
         exon_cover = get_bed_file('Covered'),
         prettifyBed = get_script('prettifyBED'),
         fastq = get_fastq_pair,
