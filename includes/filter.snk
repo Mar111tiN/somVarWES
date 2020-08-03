@@ -60,6 +60,7 @@ rule filter_pileup:
     conda:
         f"../{config['envs']}/align-env.yml"
     params:
+        # get both the tumor and the normal bam file as input to mpileup
         input = lambda w: f"{config['filter_bam']['folder']}/{w.sample}_{w.tumor}.filter1.bam {config['filter_bam']['folder']}/{w.sample}_{w.normal}.filter1.bam",
         refgen = full_path('genome'),
         qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}",
@@ -74,7 +75,7 @@ rule detect_HDR:
         filter_bam = "filterbamdone/{sample}_{tumor}-{normal}.filter1.done",
         pileup = "pileup/{sample}_{tumor}-{normal}.filter1.pileup"
     output:
-        HDR = "table/{sample}_{tumor}-{normal}.filter1.HDR.csv"
+        HDR_table = "table/{sample}_{tumor}-{normal}.filter1.HDR.csv"
     conda:
         f"../{config['envs']}/HDR-env.yml"
     threads:
@@ -93,7 +94,7 @@ rule combine_filter1:
         primer = "table/{sample}_{tumor}-{normal}.filter1.primer.csv",
         HDR = "table/{sample}_{tumor}-{normal}.filter1.HDR.csv"
     output: "filter/{sample}_{tumor}-{normal}.filter1.csv"
-    threads: 2
+    threads: 1
     run:
         ## merge the files
         print(f'Merging {input.primer} and {input.HDR} into {input.filter1}..')
@@ -107,6 +108,7 @@ rule combine_filter1:
         print(f"Writing merged filter1-list to {output}.")
         merge_df.to_csv(output, sep='\t', index = False)
 
+
 rule filter2:
     input: 
         filter1 = "filter/{sample}_{tumor}-{normal}.filter1.csv"
@@ -118,7 +120,7 @@ rule filter2:
         filter2 = "filter/{sample}_{tumor}-{normal}.filter2.loose.csv",
         filter2_for_filterbam = "table/{sample}_{tumor}-{normal}.filter2.csv"
     threads: 
-        2
+        1
     script:
         f"../scripts/filters/{config['filter']['filter2']}" 
 

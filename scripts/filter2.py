@@ -1,5 +1,5 @@
 import os
-from filters.filter1_core import filter1
+from filters.filter2_core import get_filter2
 
 
 def main(s):
@@ -13,14 +13,15 @@ def main(s):
         fconfig['filter_settings']
     )
 
-    filter1(
-        mut_file=s.input[0],
-        basic_output=s.output.basic,
-        filter1_output=s.output.filter1,
+    get_filter2(
+        mut_file=s.input.filter1,
+        filter2_output=s.output.filter2,
         filter_file=filter_file,
         filter_sheet=fconfig['excel_sheet'],
-        filter_name=fconfig['filter1'],
-        keep_syn=fconfig['keep_syn']
+        filter_name=fconfig['filter2'],
+        keep_syn=fconfig['keep_syn'],
+        filterbam_output=s.output.filter2_for_filterbam,
+        filterbam_stringency=s.config['filter_bam']['stringency_for_bam']
     )
 
 

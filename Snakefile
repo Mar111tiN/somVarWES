@@ -1,7 +1,7 @@
 import yaml
 
 # ############ SETUP ##############################
-configfile: "configs/config_MacTest.yaml"
+configfile: "configs/config_devel.yaml"
 # configfile: "configs/config.json"
 workdir: config['workdir']
 

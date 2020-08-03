@@ -64,8 +64,7 @@ def bam2df(bam_file, q=20):
 
 def editbamdf(df):
     '''
-    reads the sub bam into a df using pysam
-    pysam is only used to extract the read columns in a sensible way
+    clean_up the bam file
     '''
 
     # convert position into integer
@@ -210,7 +209,7 @@ def condense_HDR_info(HDR_df, MINSIM=0.9):
     HDRmeanSimilarity: the average similarity of these lanes
     HDRinfo: concated string info of all relevant lanes
     '''
-    # print(HDR_df)
+    # show_output(HDR_df)
     # select the relevant HDR-lanes / exclude the mutation itself
 
     HDR_select = HDR_df.query(
@@ -229,7 +228,7 @@ def get_HDR_info(mut_row, hotspot_df, bam_df, MINSIM=0.9, min_q=25):
     compute the HDR_info for each mut_row 
     --> to be used in filter_HDR.apply
     '''
-    print(f"Analysing Mutation {mut_row['Chr']}:{mut_row['Start']}")
+    show_output(f"Analysing Mutation {mut_row['Chr']}:{mut_row['Start']}")
 
     # reduce bam_df to reads covering mutation
     cover_bam = get_covering_reads(bam_df, mut_row)
@@ -254,45 +253,27 @@ def get_HDR_info(mut_row, hotspot_df, bam_df, MINSIM=0.9, min_q=25):
     return HDR_series
 
 
-def getHDR(bam_file, filter_df, pileup_file='', _type='Tumor', MINSIM=.90, padding=100, min_HDR_count=1, min_q=25):
+def getHDR(bam_file, mut_df, pileup_file, _type, MINSIM, padding, min_HDR_count, min_q):
 
     # get the right pileup_df (different cols for Tumor and Normal)
     pileup_df = get_count_pileup(pileup_file, _type=_type)
-    print(f"Loading pileup file {pileup_file} finished.")
+    show_output(f"Loading pileup file {pileup_file} finished.")
     hotspot_df = filter_hotspots(pileup_df)
-    print(
+    show_output(
         f"Detected {len(hotspot_df.index)} putative HDR lanes in {bam_file}.")
     # enumerate the HDRs in vicinity of mutations
-    filter_df.loc[:, 'HDR'] = filter_df.apply(
+    mut_df.loc[:, 'HDR'] = mut_df.apply(
         get_HDR_count, axis=1, args=(hotspot_df,), padding=padding)
 
     # continue with HDR-rich mutations
-    filter_HDR = filter_df.query('HDR >= @min_HDR_count')
-    print(f"Found {len(filter_HDR.index)} HDR-rich mutations")
+    filter_HDR = mut_df.query('HDR >= @min_HDR_count')
+    show_output(f"Found {len(filter_HDR.index)} HDR-rich mutations")
     ####### BAM ANALYSIS ##################################
     # get the bam_df for analysis in single-read resolution
     bam_df = editbamdf(bam2df(bam_file))
-    print(f'Loaded the bam_file {bam_file} for read analysis')
-    filter_df[['HDRcount', 'HDRinfo']] = filter_HDR.apply(
+    show_output(f'Loaded the bam_file {bam_file} for read analysis')
+    mut_df[['HDRcount', 'HDRinfo']] = filter_HDR.apply(
         get_HDR_info, axis=1, args=(hotspot_df, bam_df), MINSIM=MINSIM, min_q=min_q)
-    filter_df.loc[:, 'HDRcount'] = filter_df['HDRcount'].fillna(0).astype(int)
-    filter_df.loc[:, 'HDRinfo'] = filter_df['HDRinfo'].fillna('no HDR')
-    return filter_df
-
-
-####### THE NEW MASTERHDR ############################################
-
-def masterHDR(filter_df, tumor_bam='', normal_bam='', pileup_file='', min_q=25, MINSIM=.90, padding=100, min_HDR_count=1):
-
-    bam_dict = {'Tumor': tumor_bam, 'Normal': normal_bam}
-    ####### PILEUP ANALYSIS ##############################
-    for type in ['Tumor', 'Normal']:
-        print(f'Analysing {type}')
-        filter_df = getHDR(bam_dict[type], filter_df, _type=type, pileup_file=pileup_file,
-                           MINSIM=MINSIM, padding=padding, min_HDR_count=min_HDR_count, min_q=min_q)
-        filter_df = filter_df.rename(columns={
-            'HDR': f'{type}HDRcand',
-            'HDRcount': f'{type}HDRcount',
-            'HDRinfo': f'{type}HDRinfo'
-        })
-    return filter_df
+    mut_df.loc[:, 'HDRcount'] = mut_df['HDRcount'].fillna(0).astype(int)
+    mut_df.loc[:, 'HDRinfo'] = mut_df['HDRinfo'].fillna('no HDR')
+    return mut_df

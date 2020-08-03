@@ -258,9 +258,9 @@ filter:
     candidate_list: annotation/damm_lists/NHL_candidates.txt
     driver_list: annotation/damm_lists/AML_drivers.txt
     hotspot_list: annotation/damm_lists/CHIP_mutations_short_hg38.csv
-  keep_syn: True
+  keep_syn: True # only applies to the first filter step; in filter2 lists synmuts are always deleted
 filter_bam:
-    threads: 4
+    threads: 1
     stringency_for_bam: loose # from which filter2 should the filter bam be generated
     stringency_for_IGVnav: moderate
     padding: 200
