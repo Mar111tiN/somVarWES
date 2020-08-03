@@ -247,7 +247,7 @@ EBFilter:
     Q: 25
     fitting_penalty: 0.5
 filter:
-  threads: 2
+  threads: 1
   run: True
   filter1: filter1 # which custom filter script should be run for filter 1
   filter2: filter2 # which custom filter script should be run for filter 2

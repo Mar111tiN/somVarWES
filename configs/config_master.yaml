@@ -249,10 +249,10 @@ EBFilter:
     Q: 25
     fitting_penalty: 0.5
 filter:
-  threads: 2
+  threads: 1
   run: True
-  filter1: filter1.py # which custom filter script should be run for filter 1
-  filter2: filter2.py # which custom filter script should be run for filter 2
+  filter1: filter1 # which custom filter script should be run for filter 1
+  filter2: filter2 # which custom filter script should be run for filter 2
   filter_settings: filter_settings.xlsx # the filter file with the filter params
   excel_sheet: NHL # the sheet in case filter_settings file is xlsx
   edit:
@@ -262,7 +262,7 @@ filter:
     hotspot_list: annotation/damm_lists/CHIP_mutations_short_hg38.csv
   keep_syn: False
 filter_bam:
-    threads: 4
+    threads: 1
     stringency_for_bam: loose # from which filter2 should the filter bam be generated
     stringency_for_IGVnav: moderate
     padding: 200
