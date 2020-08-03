@@ -3,7 +3,7 @@ import re
 import pandas as pd
 from multiprocessing import Pool
 from functools import partial
-
+from script_utils import show_output
 
 def file2str(file):
     '''
@@ -103,9 +103,9 @@ def edit_seq(row):
     return edited_seq
 
 
-def compute_primers(row, chrom, onfig):
+def compute_primers(row, chrom, config):
     '''
-    row_based primer3 worker 
+    row_based primer3 worker
     returns the best primer pair for a given position
     return value is [fwd_seq, fwd_tmp, rev_seq, rev_tmp, prod_size]
     active chromosome sequence is global variable chrom
@@ -228,7 +228,7 @@ def run_primer3(mut_df, chroms_folder, pcr_config, primer3_config, threads):
     return primer_df
 
 
-def primer3_main(i, o, chroms_folder, genome_split, threads, PCR_config={
+def primer3_main(i, o, chroms_folder, threads, PCR_config={
         'seq_len': 500,
         'mut_pad': 5,
         'prod_size_min': 120,
@@ -240,7 +240,7 @@ def primer3_main(i, o, chroms_folder, genome_split, threads, PCR_config={
     and controls input and output
     '''
 
-    Primer3_config = {
+    primer3_config = {
         'PRIMER_OPT_SIZE': 20,
         'PRIMER_PICK_INTERNAL_OLIGO': 0,
         'PRIMER_INTERNAL_MAX_SELF_END': 8,
@@ -266,11 +266,11 @@ def primer3_main(i, o, chroms_folder, genome_split, threads, PCR_config={
 
     primer_df = run_primer3(
         filter1_df,
-        chroms_folder=genome_split,
+        chroms_folder,
         pcr_config=PCR_config,
-        primer3_config=Primer3_config,
+        primer3_config=primer3_config,
         threads=threads
     )
 
     primer_df.to_csv(o, sep='\t', index=False)
-    print(f"Writing primer list to {o}.")
+   show_command(f"Writing primer list to {o}.")

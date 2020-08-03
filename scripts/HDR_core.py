@@ -1,11 +1,11 @@
 import pandas as pd
-from HDR_utils import getHDR
+from HDR_utils import get_HDR
 from script_utils import show_output
 
 
 def run_HDR(mut_file, tumor_bam, normal_bam, filter_pileup, out_file, MINSIM=.90, PAD=100, MINQ=25, HDRMINCOUNT=1):
     '''
-
+    runs the HDR computation for both tumor and normal and populates the table with the respective columns
     '''
 
     show_output(f'Starting HDR analysis of {mut_file}. [MIN_SIM={MINSIM}, PAD={PAD}]')
@@ -40,17 +40,16 @@ def run_HDR(mut_file, tumor_bam, normal_bam, filter_pileup, out_file, MINSIM=.90
     # ###### PILEUP ANALYSIS ##############################
     for T_or_N in bam_dict.keys():
         show_output(f'Analysing {T_or_N}')
-        HDR_df = getHDR(bam_dict[T_or_N], HDR_df, _T_or_N=T_or_N, pileup_file=filter_pileup,
-                        MINSIM=MINSIM, padding=PAD, min_HDR_count=HDRMINCOUNT, MINQ=MINQ)
+        HDR_df = get_HDR(bam_dict[T_or_N], HDR_df, _type=T_or_N, pileup_file=filter_pileup,
+                         MINSIM=MINSIM, padding=PAD, min_HDR_count=HDRMINCOUNT, MINQ=MINQ)
         HDR_df = HDR_df.rename(columns={
             'HDR': f'{T_or_N}HDRcand',
             'HDRcount': f'{T_or_N}HDRcount',
             'HDRinfo': f'{T_or_N}HDRinfo'
-        })   
+        })
 
     HDR_len = len(HDR_df.query('TumorHDRcount > 0').index)
 
     show_output(
         f"Found {HDR_len} possible HDR mutations. Writing to file {out_file}")
     HDR_df.to_csv(out_file, sep='\t', index=False)
-s

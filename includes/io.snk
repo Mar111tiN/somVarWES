@@ -83,10 +83,10 @@ def get_files(folder_list, sample_sheet):
 
         samples_df = samples.apply(get_bam_paths, axis=1, bam_list=bam_list)
         short_df = samples.apply(get_bam_paths, axis=1, bam_list=short_list)
-    ########## DEBUG #################
-    print(short_df)
-    print(samples_df)
-    ##################################
+    # ########## DEBUG #################
+    # print(short_df)
+    # print(samples_df)
+    # ##################################
 
     return samples_df, short_df
 

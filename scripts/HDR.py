@@ -19,7 +19,7 @@ def main(s):
     # remove the tumor part of the tumor-normal descriptor
     normal_bam = bam.replace(
         f"{w.tumor}-", '').replace('.done', '.bam').replace('filterbamdone', 'filterbam')
-    print('tumor:', tumor_bam, 'normal:', normal_bam)
+    # print('tumor:', tumor_bam, 'normal:', normal_bam)
 
     # ## run the main HDR function
     run_HDR(

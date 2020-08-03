@@ -296,5 +296,5 @@ def main(s):
     candidate_df.to_csv(output, sep='\t', index=False)
     print(f"Writing edited mutation list with added columns to {output}.")
 
-if __main__ == "__main__":
-    main(s)
+if __name__ == "__main__":
+    main(snakemake)

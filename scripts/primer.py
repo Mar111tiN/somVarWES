@@ -1,4 +1,4 @@
-from primer3 import primer3_main
+from primer3_core import primer3_main
 
 
 def main(s):
@@ -17,7 +17,7 @@ def main(s):
         s.input[0],
         s.output[0],
         PCR_config=PCR_config,
-        genome_split=s.params.genome_split,
+        chroms_folder=s.params.genome_split,
         threads=pconfig['threads']
         )
 

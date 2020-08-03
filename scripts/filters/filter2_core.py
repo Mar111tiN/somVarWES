@@ -1,15 +1,15 @@
 import pandas as pd
 import os
-from script_utils import show_command
+from script_utils import show_output
 
 
 def get_filter2(mut_file, filter2_output,
                 filter_file, filter_sheet, filter_name, keep_syn=False,
                 filterbam_output=None, filterbam_stringency='moderate'):
 
-    show_command(f'Loading mutation file {mut_file}.')
+    show_output(f'Loading mutation file {mut_file}.')
     filter1_df = pd.read_csv(mut_file, sep='\t')
-    show_command('Done.')
+    show_output('Done.', time=False)
 
     # remove syngeneic mutations if keep_syn is active (only valid for filter1)
     if keep_syn:
@@ -17,14 +17,14 @@ def get_filter2(mut_file, filter2_output,
         filter1_df = filter1_df[is_exonic]
 
     # ########### LOADING FILTERS
-    show_command(f"Running filter2 {filter_name}")
-    show_command(f"\tLoading filter file {filter_file}")
+    show_output(f"Running filter2 {filter_name}")
+    show_output(f"\tLoading filter file {filter_file}", time=False)
     if "xls" in os.path.splitext(filter_file)[1]:
         filter_settings = pd.read_excel(
             filter_file, sheet_name=filter_sheet, index_col=0)[:4]
     else:
         filter_settings = pd.read_csv(filter_file, sep='\t', index_col=0)
-    show_command('Done.')
+    show_output('Done.', time=False)
 
     # use these population columns for checking PopFreq
     # could be refactored into params
@@ -36,7 +36,7 @@ def get_filter2(mut_file, filter2_output,
     def filter2(df, _filter='moderate'):
 
         # get thresholds
-        show_command("filter: ", f"filter2-{_filter}")
+        show_output("filter: ", f"filter2-{_filter}")
         thresh = filter_settings.loc[f"filter2-{_filter}", :]
 
         # DEFINE CANDIDATE
@@ -112,7 +112,7 @@ def get_filter2(mut_file, filter2_output,
             noSNP & strandOK & TVAF & HDR | rescue)
 
         filter2_df = df[filter_criteria]
-        show_command(stringency, len(filter2_df.index))
+        show_output(stringency, len(filter2_df.index))
         dropped_candidates_df = df[~filter_criteria & is_candidate]
         list_len = len(filter2_df.index)
         return filter2_df, dropped_candidates_df, list_len
@@ -131,17 +131,17 @@ def get_filter2(mut_file, filter2_output,
             filter2_dfs[stringency], dropped_dfs[stringency], df_lengths[stringency] = filter2(
                 filter1_df, _filter=stringency)
             output_file = f"{output_base}.{stringency}.csv"
-            show_command(f"Writing filter2.{stringency} ({df_lengths[stringency]}) to {output_file}")
+            show_output(f"Writing filter2.{stringency} ({df_lengths[stringency]}) to {output_file}")
             filter2_dfs[stringency].to_csv(output_file, sep='\t', index=False)
             filter2_dfs[stringency].to_excel(
                 writer, sheet_name=stringency, index=False)
 
         # write dropped files
         drop_file = f"{output_base}.dropped.csv"
-        show_command(f"Writing {len(dropped_dfs['loose'].index)} muts to {drop_file}.")
+        show_output(f"Writing {len(dropped_dfs['loose'].index)} muts to {drop_file}.", time=False)
         dropped_dfs['loose'].to_csv(drop_file, sep='\t', index=False)
 
-        show_command(f"Writing combined filters to excel file {excel_file}.")
+        show_output(f"Writing combined filters to excel file {excel_file}.")
 
         dropped_dfs['loose'].to_excel(writer, sheet_name='dropped', index=False)
 

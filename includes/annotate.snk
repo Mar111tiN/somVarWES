@@ -49,11 +49,11 @@ def get_anno_params(_):
 
 rule annovar:
     input:
-        "table/{sample}_{tumor_norm}.csv"
+        "table/{sample}_{tumor_normal}.csv"
     output:
-        "table/{sample}_{tumor_norm}.anno.csv"
+        "table/{sample}_{tumor_normal}.anno.csv"
     log:
-        "logs/annovar/{sample}_{tumor_norm}.log"
+        "logs/annovar/{sample}_{tumor_normal}.log"
     threads:
         config["annovar"]["threads"]
     params:
@@ -67,11 +67,11 @@ rule annovar:
 
 rule fisher_strand:
     input:
-        "table/{sample}_{tumor_norm}.csv"
+        "table/{sample}_{tumor_normal}.csv"
     output:
-        "table/{sample}_{tumor_norm}.fisher.csv"
+        "table/{sample}_{tumor_normal}.fisher.csv"
     log:
-        "logs/fisher/{sample}_{tumor_norm}.log"
+        "logs/fisher/{sample}_{tumor_normal}.log"
     threads:
         config["FisherStrand"]["threads"]
     conda:
