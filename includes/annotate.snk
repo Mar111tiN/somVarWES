@@ -59,6 +59,8 @@ rule annovar:
     params:
         anno = get_anno_params,
         anno_info = get_script('anno_info')
+    conda:
+        f"../{config['envs']}/anno-env.yml"
     script:
         "../scripts/anno.py"
 
@@ -71,7 +73,7 @@ rule fisher_strand:
     log:
         "logs/fisher/{sample}_{tumor_norm}.log"
     threads:
-        config["Fisher_strand"]["threads"]
+        config["FisherStrand"]["threads"]
     conda:
         f"../{config['envs']}/fisher-env.yml"
     script:

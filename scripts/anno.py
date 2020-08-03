@@ -15,7 +15,8 @@ output_base = output[0].replace('.csv', '')
 # remove header because otherwise annovar will use header as first row
 headerless_input = f"{output_base}.nohead.csv"
 shell(f"mawk 'NR > 1 {{print}}' < {input} > {headerless_input}")
-anno_cmd = f"{annovar}/table_annovar.pl {headerless_input} --outfile {output_base} {anno_params}"  # &>{log}
+# &>{log}
+anno_cmd = f"{annovar}/table_annovar.pl {headerless_input} --outfile {output_base} {anno_params}"
 print(anno_cmd)
 shell(anno_cmd)
 
