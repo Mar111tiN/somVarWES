@@ -9,7 +9,7 @@ rule filter1:
     threads:
         config['filter']['threads']
     script:
-        f"../scripts/filters/{config['filter']['filter1']}" 
+        f"../scripts/filter1" 
 
 
 rule primer3:

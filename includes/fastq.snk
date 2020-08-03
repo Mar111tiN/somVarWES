@@ -7,17 +7,8 @@ rule get_fastq:
         config['fastq']['threads']
     wildcard_constraints:
         sample = "[^/]+"
-    run:
-        extension = os.path.splitext(input[0])[1]
-        if extension == '.fastq':
-            # compress fastq as fastq.gz into workdir
-            shell("pigz -5 -p {threads} {input} > {output}")
-        elif extension == '.gz':
-            show_output(f"Creating symlink for file {input}")
-            shell("ln -s {input} {output}")   # create shortcut to fastq.gz in workdir/fastq
-        elif extension == '.bz2':
-            show_output(f"file extension {extension} --> unzipping with bzcat")
-            shell("bzcat {input} | pigz -5 -p {threads} > {output}")  # uncompress fastq.b2 and recompress to fastq.gz in workdir/fastq 
+    script:
+        "../scripts/get_fastq.py"
 
 
 rule split_fastq:

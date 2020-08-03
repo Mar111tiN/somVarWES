@@ -126,16 +126,56 @@
   "merge_varscan_tables": {
     "t": "00:10",
     "mem": 1000,
-    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
   },
   "annovar": {
     "t": "00:45",
     "mem": 100,
-    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
   },
   "fisher_strand": {
-    "t": "00:10",
-    "mem": 1000,
+    "t": "00:25",
+    "mem": 200,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
+  },
+  "anno2EB": {
+    "t": "01:15",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
+  },
+  "anno2EBcache": {
+    "t": "00:30",
+    "mem": 250,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
+  },
+  "mergeEBscore": {
+    "t": "00:05",
+    "mem": 200,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
+  },
+  "merge_annos": {
+    "t": "00:25",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
+  },
+  "edit_table": {
+    "t": "00:15",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
+  },
+  "filter1": {
+    "t": "00:15",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
+  },
+  "primer3": {
+    "t": "00:30",
+    "mem": 200,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
+  "edit_table": {
+    "t": "00:15",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
+  }
 }

@@ -87,4 +87,3 @@ rule apply_BQSR:
         "{params.gatk} ApplyBQSR -I {input.bam} {params.genome} --bqsr-recal-file {input.table} -O {output.bam}; "  #  &>>{log}
         # recreate recalibration table from output for QC
         "{params.gatk} BaseRecalibrator -I {output.bam} {params.genome} {params.known_sites} -O {output.table}"  #  &>>{log}
-

@@ -32,5 +32,5 @@ params_list += ['-ref_split', config['ref']
                 [config['ref']['build']]['genome_split']]
 filter_cmd = [filter_script, *params_list, input_file, output_file]
 
-print(f" ".join(filter_cmd))
+print(" ".join(filter_cmd))
 success = subprocess.call(filter_cmd)
