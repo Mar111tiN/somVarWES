@@ -209,7 +209,7 @@ annovar:
         # - dbnsfp30a
         - dbnsfp35a_HAEv7  # 70 columns packed with predictions !!
         - spidex
-Fisher_strand:
+FisherStrand:
     threads: 20
 EBFilter:
     run: True
