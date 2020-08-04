@@ -21,17 +21,17 @@ colors = {
 }
 
 
-def show_output(text, color='normal', multi=False, time=True):
+def show_output(text, color='normal', multi=False, time=True, **kwargs):
     '''
     get colored output to the terminal
     '''
     time = f"\033{colors['time']}{dt.now().strftime('%H:%M:%S')}\033[0m : " if time else ''
     proc = f"\033{colors['process']}Process {os.getpid()}\033[0m : " if multi else ''
     text = f"\033{colors[color]}{text}\033[0m"
-    print(time + proc + text)
+    print(time + proc + text, **kwargs)
 
 
-def show_command(command, list=False, multi=True):
+def show_command(command, list=False, multi=True, **kwargs):
     '''
     prints the command line if debugging is active
     '''
@@ -41,7 +41,7 @@ def show_command(command, list=False, multi=True):
         command = f"\033[1m$ {' '.join(command)}\033[0m"
     else:
         command = f"\033[1m$ {command}\033[0m"
-    print(proc + command)
+    print(proc + command, **kwargs)
     return
 
 

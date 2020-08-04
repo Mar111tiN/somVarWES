@@ -70,9 +70,9 @@ def get_mergeEBscore_input(w):
     '''
 
     if config['EBFilter']['use_cache']:
-        input_list = [f"eb/{w.sample}_{w.tumor}-{w.norm}-{chrom}.cachedEB" for chrom in chrom_list]
+        input_list = [f"eb/{w.sample}_{w.tumor}-{w.normal}-{chrom}.cachedEB" for chrom in chrom_list]
     else:
-        input_list = [f"eb/{w.sample}_{w.tumor}-{w.norm}-{chrom}.EB" for chrom in chrom_list]
+        input_list = [f"eb/{w.sample}_{w.tumor}-{w.normal}-{chrom}.EB" for chrom in chrom_list]
     val_list = []
     for _input in input_list:
         val_list.append(_input)
@@ -84,7 +84,7 @@ rule mergeEBscore:
         get_mergeEBscore_input
         # input switch for cached eb-files
     output:
-        "table/{sample}_{tumor}-{norm}.EB.csv"
+        "table/{sample}_{tumor}-{normal}.EB.csv"
     threads:
         1
     run:

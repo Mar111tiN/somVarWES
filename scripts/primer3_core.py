@@ -180,10 +180,11 @@ def get_primer_df(mut_df, primer3_config, chroms_folder, chrom):
     '''
     allocates dfs chrom-wise and controls row-wise computation
     '''
-
+    show_output(f"Running primer3 for chrom {chrom}.", multi=True)
     chrom_dict = get_chrom(chrom, chroms_folder)
     chr_df = mut_df.query('Chr == @chrom')
     primer_df = chr_df.apply(compute_primers, chrom=chrom_dict, config=primer3_config, axis=1)
+    show_output(f"Finished chrom {chrom}.", multi=True)
     return primer_df
 
 
@@ -204,6 +205,7 @@ def run_primer3(mut_df, chroms_folder, pcr_config, primer3_config, threads):
 
     # ##### MULTIPROCESSING
     chrom_list = mut_df['Chr'].unique()
+    show_output(f"Allocating processor pool for {threads} threads.")
     pool = Pool(threads)
     df_list = pool.map(partial(get_primer_df, mut_df, primer3_config, chroms_folder), chrom_list)
 
@@ -261,9 +263,12 @@ def primer3_main(i, o, chroms_folder, threads, PCR_config={
         'PRIMER_PAIR_MAX_COMPL_ANY': 12,
         'PRIMER_PAIR_MAX_COMPL_END': 8,
     }
-
+    # #### LOAD file ###################
+    show_output(f"Loading {i} for primer3 computation. ", end='')
     filter1_df = pd.read_csv(i, sep='\t')
+    show_output(f"{len(filter1_df.index)} mutations found.", time=False)
 
+    # #### run primer3 #################
     primer_df = run_primer3(
         filter1_df,
         chroms_folder,
@@ -272,5 +277,6 @@ def primer3_main(i, o, chroms_folder, threads, PCR_config={
         threads=threads
     )
 
+    # ###### write to file #############
     primer_df.to_csv(o, sep='\t', index=False)
-   show_command(f"Writing primer list to {o}.")
+    show_output(f"Writing primer list to {o}.")

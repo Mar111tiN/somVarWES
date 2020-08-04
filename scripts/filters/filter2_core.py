@@ -7,24 +7,23 @@ def get_filter2(mut_file, filter2_output,
                 filter_file, filter_sheet, filter_name, keep_syn=False,
                 filterbam_output=None, filterbam_stringency='moderate'):
 
-    show_output(f'Loading mutation file {mut_file}.')
-    filter1_df = pd.read_csv(mut_file, sep='\t')
+    # ########### LOADING FILTERS
+    show_output(f"Running \'{filter_name}'")
+    show_output(f"Loading filter file {filter_file}.. ", time=False, end='')
+    if "xls" in os.path.splitext(filter_file)[1]:
+        filter_settings = pd.read_excel(filter_file, sheet_name=filter_sheet, index_col=0)[:4]
+    else:
+        filter_settings = pd.read_csv(filter_file, sep='\t', index_col=0)
     show_output('Done.', time=False)
+
+    show_output(f'Loading mutation file {mut_file}. ', time=False, end='')
+    filter1_df = pd.read_csv(mut_file, sep='\t')
+    show_output(f'{len(filter1_df.index)} mutations found.', time=False)
 
     # remove syngeneic mutations if keep_syn is active (only valid for filter1)
     if keep_syn:
         is_exonic = ~filter1_df['ExonicFunc'].isin(["unknown", "synonymous SNV"])
         filter1_df = filter1_df[is_exonic]
-
-    # ########### LOADING FILTERS
-    show_output(f"Running filter2 {filter_name}")
-    show_output(f"\tLoading filter file {filter_file}", time=False)
-    if "xls" in os.path.splitext(filter_file)[1]:
-        filter_settings = pd.read_excel(
-            filter_file, sheet_name=filter_sheet, index_col=0)[:4]
-    else:
-        filter_settings = pd.read_csv(filter_file, sep='\t', index_col=0)
-    show_output('Done.', time=False)
 
     # use these population columns for checking PopFreq
     # could be refactored into params
@@ -36,7 +35,7 @@ def get_filter2(mut_file, filter2_output,
     def filter2(df, _filter='moderate'):
 
         # get thresholds
-        show_output("filter: ", f"filter2-{_filter}")
+        show_output(f"filter: filter2-{_filter}")
         thresh = filter_settings.loc[f"filter2-{_filter}", :]
 
         # DEFINE CANDIDATE
@@ -46,6 +45,7 @@ def get_filter2(mut_file, filter2_output,
 
         # #### SWITCH FOR AML7
         if "AML7" in filter_name:
+            show_output('Including mutations on 7q to candidate list.', time=False)
             is7q = df['cytoBand'].str.contains('^7q')
             is_candidate = is_candidate | is7q
 
@@ -112,7 +112,7 @@ def get_filter2(mut_file, filter2_output,
             noSNP & strandOK & TVAF & HDR | rescue)
 
         filter2_df = df[filter_criteria]
-        show_output(stringency, len(filter2_df.index))
+        show_output(f"{stringency} {len(filter2_df.index)}", time=False)
         dropped_candidates_df = df[~filter_criteria & is_candidate]
         list_len = len(filter2_df.index)
         return filter2_df, dropped_candidates_df, list_len

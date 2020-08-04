@@ -59,7 +59,7 @@ def get_chrom_list(config):
                 chrom = "Y"
         else:
             chrom = c + 1
-        return f"chr{chrom}" if use_chr else chrom
+        return f"chr{chrom}" if use_chr else str(chrom)
 
     # switch for use of "chr"-prefix
     is_hg38 = (config['ref']['build'] == 'hg38')

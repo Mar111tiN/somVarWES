@@ -97,7 +97,7 @@ rule combine_filter1:
     threads: 1
     run:
         ## merge the files
-        print(f'Merging {input.primer} and {input.HDR} into {input.filter1}..')
+        show_output(f'Merging {input.primer} and {input.HDR} into {input.filter1}..')
         filter1_df = pd.read_csv(input.filter1, sep='\t')
         HDR_df = pd.read_csv(input.HDR, sep='\t')
         primer_df = pd.read_csv(input.primer, sep='\t')
@@ -105,7 +105,7 @@ rule combine_filter1:
         merge_df = pd.merge(merge, primer_df, how='inner', on=['Chr', 'Start', 'End', 'Ref', 'Alt', 'Gene'])
 
         output = str(output)
-        print(f"Writing merged filter1-list to {output}.")
+        show_output(f"Writing merged filter1-list to {output}.", time=False)
         merge_df.to_csv(output, sep='\t', index = False)
 
 

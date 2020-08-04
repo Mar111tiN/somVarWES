@@ -126,7 +126,7 @@
   "merge_varscan_tables": {
     "t": "00:10",
     "mem": 1000,
-    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
   "annovar": {
     "t": "00:45",
@@ -151,7 +151,7 @@
   "mergeEBscore": {
     "t": "00:05",
     "mem": 200,
-    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
   "merge_annos": {
     "t": "00:25",
@@ -166,7 +166,7 @@
   "filter1": {
     "t": "00:15",
     "mem": 500,
-    "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
   "primer3": {
     "t": "00:30",

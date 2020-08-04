@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # can be overruled on CLI with -J <NAME>
-#SBATCH --job-name=WES
+#SBATCH --job-name=somVar
 
 # Set the file to write the stdout and stderr to (if -e is not set; -o or --output).
 #SBATCH --output=slogs/%x-%j.log
@@ -41,10 +41,10 @@ echo $CONDA_PREFIX "activated";
 
 
 # !!! leading white space is important
-DRMAA=" -p medium -t 00:30 --mem-per-cpu=500 --nodes=1 -n {threads}";
+DRMAA=" -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads}";
 DRMAA="$DRMAA -o ${LOGDIR}/{rule}-%j.log";
-snakemake --unlock --rerun-incomplete;
-snakemake --dag | dot -Tsvg > dax/dag.svg;
-snakemake --use-conda --rerun-incomplete --drmaa "$DRMAA" -prk -j 1000;
+snakemake --unlock -s SnakefileRerun --rerun-incomplete;
+snakemake -s SnakefileRerun --dag | dot -Tsvg > dax/dag.svg;
+snakemake -s SnakefileRerun --use-conda --rerun-incomplete --cluster-config configs/cluster/somvar-cluster.json --drmaa "$DRMAA" -prk -j 1000;
 # -k ..keep going if job fails
 # -p ..print out shell commands

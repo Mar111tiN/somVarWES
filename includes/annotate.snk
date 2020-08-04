@@ -1,5 +1,5 @@
 #################################
-# add information to table/{sample}_{tumor_norm}.csv
+# add information to table/{sample}_{tumor_normal}.csv
 def get_anno_params(_):
     '''
     helper function to create full annovar parameters from input_output[1]

@@ -69,7 +69,7 @@ rule varscan2table:
         "../scripts/varscan2table.py"
 
 
-rule merge_varscan:
+rule merge_varscan_tables:
     input:
         expand("table/{{sample}}_{{tumor}}-{{normal}}.{chrom}.csv", chrom=chrom_list)
     output:
