@@ -35,11 +35,10 @@ def get_cache(w):
     return EB_cache_file
 
 
-rule anno2EB_EBcache:
+rule anno2EBfromEBcache:
     input:
         table = "table/{sample}_{tumor}-{normal}.{chrom}.csv",
         tumor_bam = "bamfinalsplit/{sample}_{tumor}.{chrom}.bam",
-        tumor_bai = "bamfinalsplit/{sample}_{tumor}.{chrom}.bai",
         EBcache = get_cache
     output:
         "eb/{sample}_{tumor}-{normal}-{chrom}.cachedEB"

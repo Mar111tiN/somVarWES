@@ -32,10 +32,9 @@ set -x;
 
 unset DRMAA_LIBRARY_PATH
 
-# what does this do
-# eval "$($(which conda) shell.bash hook)"  # ??
-# somehow my environments are not set
-# have to set it explicitly
+# make conda available
+eval "$($(which conda) shell.bash hook)"
+# activate snakemake env
 conda activate WES-env;
 echo $CONDA_PREFIX "activated";
 

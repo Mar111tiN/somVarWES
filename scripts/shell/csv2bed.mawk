@@ -3,7 +3,7 @@ mawk '
 BEGIN {
     OFS="\t";
 }
-NR > 1 {
+$0 !~ "Chr" {
     start = $2 - 1;
     if ($5 == "-") {
         start = start -1;

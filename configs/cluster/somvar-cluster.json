@@ -23,7 +23,7 @@
     "name": "{rule}:{wildcards.sample}_{wildcards.type}_{wildcards.read}.{wildcards.split}"
   },
   "ubamXT": {
-    "t": "00:45",
+    "t": "00:25",
     "mem": 1000,
     "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.split}"
   },
@@ -33,12 +33,12 @@
     "name": "{rule}"
   },
   "map_ubam": {
-    "t": "00:45",
-    "mem": 2000,
+    "t": "00:15",
+    "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.split}"
   },
   "merge_bam": {
-    "t": "01:30",
+    "t": "00:45",
     "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.type}"
   },
@@ -48,7 +48,7 @@
     "name": "{rule}:{wildcards.sample}_{wildcards.type}"
   },
   "merge_final_bam": {
-    "t": "00:20",
+    "t": "01:30",
     "mem": 50,
     "name": "{rule}:{wildcards.sample}_{wildcards.type}"
   },
@@ -72,7 +72,7 @@
     "name": "{rule}:{wildcards.sample}_{wildcards.type}"
   },
   "bam_metrix": {
-    "t": "02:45",
+    "t": "02:30",
     "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.type}"
   },
@@ -92,34 +92,38 @@
     "name": "{rule}"
   },
   "dedup": {
-    "t": "00:30",
+    "t": "00:20",
     "mem": 400
   },
   "dedup_umi": {
-    "t": "00:45",
-    "mem": 1000
+    "t": "00:30",
+    "mem": 2000
   },
   "create_GATK_target_list": {
-    "t": "01:00",
+    "t": "00:20",
     "mem": 1000
   },
   "realignGATK": {
-    "t": "00:45",
+    "t": "00:20",
     "mem": 1000
   },
-  "base_recalib": {},
-  "apply_BQSR": {},
+  "base_recalib": {
+    "t": "00:15"
+  },
+  "apply_BQSR": {
+    "t": "00:45"
+  },
   "mpileup": {
     "t": "00:45",
-    "mem": 200
+    "mem": 400
   },
   "varscan": {
-    "t": "00:45",
-    "mem": 500,
+    "t": "00:30",
+    "mem": 200,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
   },
   "varscan2table": {
-    "t": "00:20",
+    "t": "00:05",
     "mem": 100,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
   },
@@ -134,12 +138,12 @@
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
   },
   "fisher_strand": {
-    "t": "00:25",
+    "t": "00:05",
     "mem": 200,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
   },
   "anno2EB": {
-    "t": "01:15",
+    "t": "00:45",
     "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
   },
@@ -154,17 +158,17 @@
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
   "merge_annos": {
-    "t": "00:25",
+    "t": "00:05",
     "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
   },
   "edit_table": {
-    "t": "00:15",
+    "t": "00:05",
     "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
   },
   "filter1": {
-    "t": "00:15",
+    "t": "00:05",
     "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
@@ -174,7 +178,7 @@
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
   "filter_bam": {
-    "t": "00:30",
+    "t": "00:45",
     "mem": 200,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.filter}"
   },
@@ -184,7 +188,7 @@
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
   "detect_HDR": {
-    "t": "00:45",
+    "t": "01:00",
     "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },

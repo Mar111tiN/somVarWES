@@ -80,13 +80,10 @@ def compute_matrix2EB_multi(df, pen, threads):
     split --> Pool --> compute --> concate
     '''
 
-    # !!!!!!!!!!!!!!!!!!
-    eb_pool = Pool(threads)  # !!!!!!!
-    # !!!!!!!!!!!!!!!!!
-    print('Pooling threads: ', threads)
+    eb_pool = Pool(threads)
 
-    # minimal length of 1000 lines
-    split_factor = min(math.ceil(len(df.index) / 1000), threads)
+    # minimal length of 200 lines
+    split_factor = min(math.ceil(len(df.index) / 200), threads)
     split = np.array_split(df, split_factor)
     dfs = eb_pool.starmap(compute_matrix2EB, zip(split, repeat(pen)))
 
