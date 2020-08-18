@@ -9,6 +9,7 @@ def main(s):
     i = s.input
     p = s.params
     PAD = min(config['HDR']['padding'], config['filter_bam']['padding'])
+    threads = config['HDR']['threads']
     bam = os.path.split(s.input.filter_bam)[1]
     bam = os.path.join(config['filter_bam']['folder'], bam)
 
@@ -28,6 +29,7 @@ def main(s):
         normal_bam=normal_bam,
         filter_pileup=i.pileup,
         out_file=s.output.HDR_table,
+        threads=threads,
         MINSIM=p.min_sim,
         PAD=PAD,
         MINQ=p.min_q,

@@ -58,20 +58,16 @@ wildcard_constraints:
 
 # ############## MASTER RULE ##############################################
 
-
 rule all:
     input:
-        lambda _:  None if config['setup']['rerun'] else "QC/fastQC.html",
-        "QC/libraryQC.html",
-        "QC/insertQC.html",
+        QC_output,
         expand("coverBED/{samples}.txt", samples=sample_df.index),
         expand("table/{tumor_normal_pair}.EB.csv", tumor_normal_pair=TN_list),
-        # expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
-        # expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list)
+        expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
+        expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list)
 
 
 ###########################################################################
-
 
 # print out of installed tools
 onstart:

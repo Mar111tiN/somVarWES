@@ -87,7 +87,6 @@ rule mergeEBscore:
     threads:
         1
     run:
-        anno_df = pd.read_csv(input[0], sep='\t', index_col=False)
         EB_dfs = []
         for EB_file in input:
             if os.path.isfile(EB_file):

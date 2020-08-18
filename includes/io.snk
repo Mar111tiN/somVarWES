@@ -3,6 +3,15 @@ import os
 import re
 
 
+def QC_output(_):
+    '''
+    switch for fastQC output depending on config rerun option
+    '''
+    out = ["QC/libraryQC.html", "QC/insertQC.html"]
+    if not config['setup']['rerun']:
+        out += "QC/fastQC.html"
+    return out
+    
 def get_files(folder_list, sample_sheet):
     '''
     retrieves the path to all the files in the sample_sheet
