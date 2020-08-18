@@ -27,6 +27,7 @@ def main(s):
         mut_file=i.filter_file,
         tumor_bam=tumor_bam,
         normal_bam=normal_bam,
+        chrom=w.chrom,
         filter_pileup=i.pileup,
         out_file=s.output.HDR_table,
         threads=threads,

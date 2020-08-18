@@ -34,6 +34,7 @@ include: "includes/umi_filter.snk"
 include: "includes/varscan.snk"
 include: "includes/annotate.snk"
 include: "includes/EB.snk"
+include: "includes/HDR.snk"
 include: "includes/filter.snk"
 
 # convenience variables

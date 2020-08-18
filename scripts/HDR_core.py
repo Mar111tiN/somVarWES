@@ -3,7 +3,7 @@ from HDR_utils import get_HDR_multi
 from script_utils import show_output
 
 
-def run_HDR(mut_file, tumor_bam, normal_bam, filter_pileup, out_file, threads, MINSIM=.90, PAD=100, MINQ=25, HDRMINCOUNT=1):
+def run_HDR(mut_file, tumor_bam, normal_bam, chrom, filter_pileup, out_file, threads, MINSIM=.90, PAD=100, MINQ=25, HDRMINCOUNT=1):
     '''
     runs the HDR computation for both tumor and normal and populates the table with the respective columns
     '''
@@ -13,7 +13,7 @@ def run_HDR(mut_file, tumor_bam, normal_bam, filter_pileup, out_file, threads, M
     # GET THE mutation file for masterHDR
     show_output(f'Importing {mut_file} for HDR detection', time=False)
     HDR_df = pd.read_csv(mut_file, sep='\t').loc[:, [
-        'Chr', 'Start', 'End', 'Ref', 'Alt', 'Gene']]
+        'Chr', 'Start', 'End', 'Ref', 'Alt', 'Gene']].query('Chr == @chrom')
 
     # check for empty file
     if len(HDR_df.index) == 0:
@@ -42,7 +42,7 @@ def run_HDR(mut_file, tumor_bam, normal_bam, filter_pileup, out_file, threads, M
     # ###### PILEUP ANALYSIS ##############################
     for T_or_N in bam_dict.keys():
         show_output(f'Analysing {T_or_N}')
-        HDR_df = get_HDR_multi(bam_dict[T_or_N], HDR_df, pileup_file=filter_pileup, threads=threads, _type=T_or_N,
+        HDR_df = get_HDR_multi(bam_dict[T_or_N], HDR_df, chrom=chrom, pileup_file=filter_pileup, threads=threads, _type=T_or_N,
                                MINSIM=MINSIM, padding=PAD, min_HDR_count=HDRMINCOUNT, MINQ=MINQ)
 
         HDR_df = HDR_df.rename(columns={

@@ -44,7 +44,7 @@ def filter_hotspots(pileup_df, hotspot_config={
 # cigar_pattern = re.compile(r'^([0-9]+)([NMDIS])(.*)')
 
 
-def bam2df(bam_file, q=20):
+def bam2df(bam_file, chrom, q=20):
     '''
     reads the sub bam into a df using pysam
     pysam is only used to extract the read columns in a sensible way
@@ -53,8 +53,8 @@ def bam2df(bam_file, q=20):
     lst = []
     # read the bam file line by line into a list of dicts
     with pysam.AlignmentFile(bam_file, "r") as bam_file:
-        for i, line in enumerate(bam_file):
-            row = line.to_dict()
+        for read in bam_file.fetch(chrom):
+            row = read.to_dict()
             # extract the tag elements into dictionary keys
             row.update({tag.split(':')[0]: tag.split(':')[2]
                         for tag in row['tags']})
@@ -276,7 +276,7 @@ def get_HDR(bam_df, hotspot_df, MINSIM, padding, min_HDR_count, MINQ, hdr_df):
     return hdr_df
 
 
-def get_HDR_multi(bam_file, HDR_df, pileup_file, threads, _type, MINSIM, padding, min_HDR_count, MINQ):
+def get_HDR_multi(bam_file, HDR_df, chrom, pileup_file, threads, _type, MINSIM, padding, min_HDR_count, MINQ):
     # get the right pileup_df (different cols for Tumor and Normal)
     pileup_df = get_count_pileup(pileup_file, _type=_type)
     show_output(f"Loading pileup file {pileup_file} finished.")
@@ -286,7 +286,7 @@ def get_HDR_multi(bam_file, HDR_df, pileup_file, threads, _type, MINSIM, padding
 
     # ###### BAM ANALYSIS ##################################
     # get the bam_df for analysis in single-read resolution
-    bam_df = editbamdf(bam2df(bam_file))
+    bam_df = editbamdf(bam2df(bam_file, chrom))
     show_output(f'Loaded the bam_file {bam_file} for read analysis')
 
     # MULTITHREADING

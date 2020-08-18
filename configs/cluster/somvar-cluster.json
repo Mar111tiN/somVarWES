@@ -188,8 +188,8 @@
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
   "detect_HDR": {
-    "t": "01:00",
-    "mem": 500,
+    "t": "00:30",
+    "mem": 200,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
   "combine_filter1": {
