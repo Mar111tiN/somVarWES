@@ -185,9 +185,14 @@
   "filter_pileup": {
     "t": "00:30",
     "mem": 200,
-    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
   },
   "detect_HDR": {
+    "t": "00:30",
+    "mem": 200,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
+  },
+  "merge_HDR": {
     "t": "00:30",
     "mem": 200,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
