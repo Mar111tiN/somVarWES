@@ -19,45 +19,71 @@ rule filter_pileup:
 
 rule detect_HDR:
     input:
+        bam = "filterbam/{sample}_{type}.filter1.bam",
         filter_file = "table/{sample}_{tumor}-{normal}.filter1.csv",
-        filter_bam = "filterbamdone/{sample}_{tumor}-{normal}.filter1.done",
         pileup = "hdr/{sample}_{tumor}-{normal}.{chrom}.filter1.pileup"
     output:
-        HDR_table = "hdr/{sample}_{tumor}-{normal}.{chrom}.filter1.HDR.csv"
+        HDR_table = "hdr/{sample}_{tumor}-{normal}.{chrom}.{type}.filter1.HDR.csv"
     conda:
         f"../{config['envs']}/HDR-env.yml"
     threads:
         config['HDR']['threads']
     params:
-        min_sim = config['HDR']['min_similarity'],
-        min_q = config['HDR']['min_q'],
-        min_HDR_count = config['HDR']['min_HDR_count']
+        editbamdf =  get_script('editbamdf')
     script:
         "../scripts/HDR.py"
 
 
+
 rule mergeHDR:
     input:
-        expand("hdr/{{sample}}_{{tumor}}-{{normal}}.{chrom}.filter1.HDR.csv", chrom=chrom_list)
+        expand("hdr/{{sample}}_{{tumor}}-{{normal}}.{chrom}.{{normal}}.filter1.HDR.csv", chrom=chrom_list),
+        expand("hdr/{{sample}}_{{tumor}}-{{normal}}.{chrom}.{{tumor}}.filter1.HDR.csv", chrom=chrom_list)
     output:
         "table/{sample}_{tumor}-{normal}.filter1.HDR.csv"
     threads:
         1
     run:
-        HDR_dfs = []
-        for HDR_file in input:
-            if os.path.isfile(HDR_file):
-                if os.path.getsize(HDR_file ) > 20:
-                    HDR_df = pd.read_csv(HDR_file, sep='\t', index_col=False)
-                    # cleanup aftHDR
-                    # shell(f"rm {EB_file}")
-                    if HDR_df.empty:
-                        continue
-                    HDR_dfs.append(HDR_df)
-        HDR_merge = pd.concat(HDR_dfs).sort_values(['Chr', 'Start'])
+        tumor_pattern = f"{wildcards.tumor}.filter1"
+        normal_pattern = f"{wildcards.normal}.filter1"
+        # populate an input dict for better looping
+        input_list = {'Tumor': [i for i in input if tumor_pattern in i], 'Normal': [i for i in input if normal_pattern in i]}
+        base_cols = ['Chr', 'Start', 'End', 'Ref', 'Alt', 'Gene']
+        cols = base_cols.copy()
+        dfs = {}
+        for T_or_N in ['Tumor', 'Normal']:
+            HDR_dfs = []
+            for HDR_file in input_list[T_or_N]:
+                if os.path.isfile(HDR_file):
+                    if os.path.getsize(HDR_file ) > 20:
+                        HDR_df = pd.read_csv(HDR_file, sep='\t', index_col=False)
+                        # cleanup aftHDR
+                        # shell(f"rm {EB_file}")
+                        if HDR_df.empty:
+                            continue
+                        HDR_dfs.append(HDR_df)
+            # concat
+            HDR_df = pd.concat(HDR_dfs).sort_values(['Chr', 'Start'])
+            # change columns
+            new_cols = {
+                'HDRcand': f'{T_or_N}HDRcand',
+                'HDRcount': f'{T_or_N}HDRcount',
+                'HDRinfo': f'{T_or_N}HDRinfo'
+            }
 
-        # sort nicely
-        cols = ['Chr', 'Start', 'End', 'Gene', 'Ref', 'Alt', 'NormalHDRcand', 'NormalHDRcount', 'NormalHDRinfo', 'Ref', 'Start', 'TumorHDRcand', 'TumorHDRcount', 'TumorHDRinfo']
+            HDR_df = HDR_df.rename(columns=new_cols)
+            # add new_cols to cols
+            cols += new_cols.values()
+            # load into dfs dict
+            dfs[T_or_N] = HDR_df
+        
+        HDR_merge = pd.merge(dfs['Tumor'], dfs['Normal'], on=base_cols).sort_values(base_cols[:3])
+        # sort columns
         HDR_merge = HDR_merge[cols]
+
+        # ###### PILEUP ANALYSIS ##############################
+
+
+        HDR_len = len(HDR_merge.query('TumorHDRcount > 0').index)
         HDR_merge.to_csv(output[0], sep='\t', index=False)
-        show_output(f"Written HDR file to {output[0]}", color='success')
+        show_output(f"Found {HDR_len} possible HDR mutations. Written HDR file to {output[0]}", color='success')

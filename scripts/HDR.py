@@ -1,5 +1,5 @@
 import os
-from HDR_core import run_HDR
+from HDR_core import HDR_master
 
 
 def main(s):
@@ -8,33 +8,32 @@ def main(s):
     config = s.config
     i = s.input
     p = s.params
-    PAD = min(config['HDR']['padding'], config['filter_bam']['padding'])
     threads = config['HDR']['threads']
-    bam = os.path.split(s.input.filter_bam)[1]
-    bam = os.path.join(config['filter_bam']['folder'], bam)
+    bam = i.bam
 
-    # get the tumor and normal bam files from the tumor-normal file name
-    # remove the normal part of the tumor-normal descriptor
-    tumor_bam = bam.replace(
-        f"-{w.normal}", '').replace('.done', '.bam').replace('filterbamdone', 'filterbam')
-    # remove the tumor part of the tumor-normal descriptor
-    normal_bam = bam.replace(
-        f"{w.tumor}-", '').replace('.done', '.bam').replace('filterbamdone', 'filterbam')
-    # print('tumor:', tumor_bam, 'normal:', normal_bam)
+    # load all HDR params into HDR_config
+    #
+    HDR_config = {
+        'MINSIM': config['HDR']['min_similarity'],
+        'MINQ': config['mpileup']['Q'],
+        'MINq': config['mpileup']['MAPQ'],
+        'MinHDRCount': config['HDR']['min_HDR_count'],
+        'PAD': min(config['HDR']['padding'], config['filter_bam']['padding']),
+        'MinAltSupport': config['HDR']['min_alt_support']
+    }
 
+    # add the editbamdf tool to the config
+    HDR_config['editbamdf'] = p.editbamdf
     # ## run the main HDR function
-    run_HDR(
+
+    HDR_df = HDR_master(
         mut_file=i.filter_file,
-        tumor_bam=tumor_bam,
-        normal_bam=normal_bam,
+        bam_file=i.bam,
         chrom=w.chrom,
-        filter_pileup=i.pileup,
-        out_file=s.output.HDR_table,
+        pileup_file=i.pileup,
         threads=threads,
-        MINSIM=p.min_sim,
-        PAD=PAD,
-        MINQ=p.min_q,
-        HDRMINCOUNT=p.min_HDR_count
+        HDR_config=HDR_config,
+        out_file=s.output.HDR_table
     )
 
 

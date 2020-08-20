@@ -1,14 +1,19 @@
 import pandas as pd
-import pysam
-from script_utils import show_output
+from script_utils import show_output, show_command
 from multiprocessing import Pool
 import numpy as np
 import math
 from functools import partial
+from io import StringIO
+from subprocess import Popen, PIPE, run
 
 
-def get_count_pileup(filename, _type='Tumor'):
-    cols = [0, 1, 2, 3, 4, 5] if _type == 'Tumor' else [0, 1, 2, 6, 7, 8]
+def get_count_pileup(filename, sample_count=1):
+    '''
+    get_count_pileup for different numbers of pileups
+    '''
+    cols = [0, 1, 2]
+    cols += [i + 3 * sample_count for i in [3, 4, 5]]
     pileup = pd.read_csv(
         filename,
         sep='\t',
@@ -41,50 +46,26 @@ def filter_hotspots(pileup_df, hotspot_config={
         '(AltSum >= @minAlt) and (@minRatio <= AltRatio <= @maxRatio)')
     return hotspot_df
 
-# cigar_pattern = re.compile(r'^([0-9]+)([NMDIS])(.*)')
 
-
-def bam2df(bam_file, chrom, q=20):
+def bam2df2(bam_file, HDR_config, bamtags="", tool='samtools', mut_row=None, region=''):
     '''
-    reads the sub bam into a df using pysam
-    pysam is only used to extract the read columns in a sensible way
+    set the region requires 3 threads
     '''
 
-    lst = []
-    # read the bam file line by line into a list of dicts
-    with pysam.AlignmentFile(bam_file, "r") as bam_file:
-        for read in bam_file.fetch(chrom):
-            row = read.to_dict()
-            # extract the tag elements into dictionary keys
-            row.update({tag.split(':')[0]: tag.split(':')[2]
-                        for tag in row['tags']})
-            row.pop('tags')
-            lst.append(row)
-    # read list into a dataframe
-    bam_df = pd.DataFrame(lst)
-    bam_df['map_quality'] = bam_df['map_quality'].astype(int)
-    return bam_df.query('map_quality >= @q')
-
-
-def editbamdf(df):
-    '''
-    clean_up the bam file
-    '''
-
-    # convert position into integer
-    df['ref_pos'] = df['ref_pos'].astype(int)
-    df['read_len'] = df['seq'].str.len()  # only for debugging
-    # extract the intron sizes from the cigar string
-    df['Chr_len'] = df['read_len']
-    # extraction of soft-clipped bases
-    df['soft_start'] = df['cigar'].str.extract(
-        r'(^[0-9]+)S').fillna(0).astype(int)
-    # filter out reads without a Cell barcode and return only desired columns
-    df = df[['name', 'ref_name', 'ref_pos', 'read_len',
-             'seq', 'qual', 'soft_start', 'cigar']]
-    df.columns = ['name', 'Chr', 'Pos', 'read_len',
-                  'Seq', 'Qual', 'Soft_start', 'Cigar']
-    return df
+    if region:
+        mut_pos = region
+    elif isinstance(mut_row, pd.Series):
+        chrom = mut_row['Chr']
+        pos = mut_row['Pos']
+        mut_pos = f"{chrom}:{pos}-{pos} "
+        print(mut_pos)
+    else:
+        mut_pos = ''
+    cmd = f"{tool} view {bam_file} {mut_pos} | bam2csv | {HDR_config['editbamdf']} {HDR_config['MINq']}"
+    # show_command(cmd)
+    bam_df = pd.read_csv(StringIO(
+        run(cmd, stdout=PIPE, check=True, shell=True).stdout.decode('utf-8')), sep='\t')
+    return bam_df
 
 
 def get_base(read, mut_row, min_q=25):
@@ -203,7 +184,7 @@ def concat(row):
     return f"∆{row['distance']}<Ref:{ref_sim}%({ref_support})><Alt:{alt_sim}%({alt_support})>"
 
 
-def condense_HDR_info(HDR_df, MINSIM=0.9):
+def condense_HDR_info(HDR_df, MinSim=0.9, MinAltSupport=13):
     '''
     reduces the entire HDR_df to entries:
     HDRcount: the number of relevant (similar) lanes around mutation
@@ -214,7 +195,7 @@ def condense_HDR_info(HDR_df, MINSIM=0.9):
     # select the relevant HDR-lanes / exclude the mutation itself
 
     HDR_select = HDR_df.query(
-        'AltSupport > 13 and (RefSupport == 0 or RefSim >= @MINSIM) and AltSim >= @MINSIM')
+        '(AltSupport > @MinAltSupport) and (RefSupport == 0 or RefSim >= @MinSim) and AltSim >= @MinSim')
     if HDR_select.empty:
         return pd.Series([0, 'no similarity in HDR-pattern'], index=['HDRcount', 'HDRinfo'])
     # add info field
@@ -224,18 +205,18 @@ def condense_HDR_info(HDR_df, MINSIM=0.9):
     return pd.Series([count, info], index=['HDRcount', 'HDRinfo'])
 
 
-def get_HDR_info(mut_row, hotspot_df, bam_df, MINSIM=0.9, min_q=25):
+def get_HDR_info(mut_row, hotspot_df, bam_df, HDR_config):
     '''
     compute the HDR_info for each mut_row
     --> to be used in filter_HDR.apply
     '''
 
-    # show_output(
-    #     f"Analysing Mutation {mut_row['Chr']}:{mut_row['Start']}", multi=True)
+    show_output(
+        f"Analysing Mutation {mut_row['Chr']}:{mut_row['Start']}", multi=True)
 
     # reduce bam_df to reads covering mutation
     cover_bam = get_covering_reads(bam_df, mut_row)
-    # in case there is no coverage on the bam file (should only happen if mutation file is less stringenty filtered than filterbam)
+    # in case there is no coverage on the bam file (should only happen if mutation file is less stringently filtered than filterbam)
     if cover_bam.empty:
         s = pd.Series([0, 'no bam coverage for that mutation'],
                       index=['HDRcount', 'HDRinfo'])
@@ -250,55 +231,93 @@ def get_HDR_info(mut_row, hotspot_df, bam_df, MINSIM=0.9, min_q=25):
                       index=['HDRcount', 'HDRinfo'])
         return s
     HDR_df[['RefSim', 'RefSupport', 'AltSim', 'AltSupport', 'support']] = HDR_df.apply(
-        compute_similarity, axis=1, args=(cover_bam,), min_q=min_q).fillna(0)
+        compute_similarity, axis=1, args=(cover_bam,), min_q=HDR_config['MINq']).fillna(0)
     # HDR_series with fields ['HDRcount', 'HDRmeanSimilarity', 'HDRinfo']
-    HDR_series = condense_HDR_info(HDR_df, MINSIM=MINSIM)
+    HDR_series = condense_HDR_info(
+        HDR_df, MinSim=HDR_config['MINSIM'], MinAltSupport=HDR_config['MinAltSupport'])
     return HDR_series
 
 
-def get_HDR(bam_df, hotspot_df, MINSIM, padding, min_HDR_count, MINQ, hdr_df):
-
+def get_filter_hdr(hotspot_df, HDR_config, hdr_df):
     # enumerate the HDRs in vicinity of mutations
-    hdr_df.loc[:, 'HDR'] = hdr_df.apply(
-        get_HDR_count, axis=1, args=(hotspot_df,), padding=padding)
-
-    # continue with HDR-rich mutations
-    filter_HDR = hdr_df.query('HDR >= @min_HDR_count')
+    hdr_df.loc[:, 'HDRcand'] = hdr_df.apply(
+        get_HDR_count, axis=1, args=(hotspot_df,), padding=HDR_config['PAD'])
+    min_HDR_count = HDR_config['MinHDRCount']
+    # filter HDR-rich mutations
+    filter_HDR = hdr_df.query('HDRcand >= @min_HDR_count')
     show_output(
         f"Found {len(filter_HDR.index)} HDR-rich mutations", multi=True)
-
-    hdr_df[['HDRcount', 'HDRinfo']] = filter_HDR.apply(
-        get_HDR_info, axis=1, args=(hotspot_df, bam_df), MINSIM=MINSIM, min_q=MINQ)
-    hdr_df.loc[:, 'HDRcount'] = hdr_df['HDRcount'].fillna(0).astype(int)
-    hdr_df.loc[:, 'HDRinfo'] = hdr_df['HDRinfo'].fillna('no HDR')
-    show_output(
-        f"Done analysing {len(filter_HDR.index)} HDR-rich mutations", multi=True)
-    return hdr_df
+    return filter_HDR
 
 
-def get_HDR_multi(bam_file, HDR_df, chrom, pileup_file, threads, _type, MINSIM, padding, min_HDR_count, MINQ):
-    # get the right pileup_df (different cols for Tumor and Normal)
-    pileup_df = get_count_pileup(pileup_file, _type=_type)
-    show_output(f"Loading pileup file {pileup_file} finished.")
-    hotspot_df = filter_hotspots(pileup_df)
-    show_output(
-        f"Detected {len(hotspot_df.index)} putative HDR lanes in {bam_file}.")
-
-    # ###### BAM ANALYSIS ##################################
-    # get the bam_df for analysis in single-read resolution
-    bam_df = editbamdf(bam2df(bam_file, chrom))
-    show_output(f'Loaded the bam_file {bam_file} for read analysis')
-
+def get_filter_hdr_multi(HDR_df, hotspot_df, threads, HDR_config):
+    # compute the filter_hdr using multicores
     # MULTITHREADING
     # pool
-    hdr_pool = Pool(threads)
-    show_output(f"Using {threads} cores for HDR computation")
+    filter_pool = Pool(threads)
     # split
     # minimal length of 200 lines
     split_factor = min(math.ceil(len(HDR_df.index) / 200), threads)
+    show_output(f"Using {split_factor} cores for filtering HDR-rich mutations")
     hdr_split = np.array_split(HDR_df, split_factor)
     # apply
-    HDR_dfs = hdr_pool.map(partial(get_HDR, bam_df, hotspot_df,
-                                   MINSIM, padding, min_HDR_count, MINQ), hdr_split)
+    filter_HDRs = filter_pool.map(
+        partial(get_filter_hdr, hotspot_df, HDR_config), hdr_split)
     # concat
+    filter_HDR = pd.concat(filter_HDRs).sort_values(['Chr', 'Start'])
+    filter_pool.close()
+    filter_pool.terminate()
+    filter_pool.join()
+    return filter_HDR
+
+
+def get_HDR(bam_file, hotspot_df, chrom, HDR_config, filter_HDR):
+
+    # get the bam_df for analysis in single-read resolution
+    # get the required region for bam analysis
+    padding = HDR_config['PAD']
+    _min = filter_HDR['Start'].min() - padding
+    _max = filter_HDR['Start'].max() + padding
+    region = f"{chrom}:{_min}-{_max}"
+    bam_df = bam2df2(bam_file, region=region, HDR_config=HDR_config)
+    show_output(
+        f'Loaded the bam_file {bam_file} on region {region} for read analysis - {len(bam_df.index)} reads', multi=True)
+
+    filter_HDR[['HDRcount', 'HDRinfo']] = filter_HDR.apply(
+        get_HDR_info, axis=1, args=(hotspot_df, bam_df), HDR_config=HDR_config)
+    filter_HDR.loc[:, 'HDRcount'] = filter_HDR['HDRcount'].fillna(
+        0).astype(int)
+    filter_HDR.loc[:, 'HDRinfo'] = filter_HDR['HDRinfo'].fillna('no HDR')
+    show_output(
+        f"Done analysing {len(filter_HDR.index)} HDR-rich mutations", multi=True)
+    return filter_HDR
+
+
+def get_HDR_multi(filter_HDR, bam_file, hotspot_df, threads,
+                  chrom, HDR_config):
+    # compute true HDRs using multicores
+    # MULTITHREADING
+    show_output(f"Using {threads} cores for HDR computation")
+    hdr_pool = Pool(threads)
+    # split
+    # minimal length of 2 mutations
+    split_factor = min(math.ceil(len(filter_HDR.index) / 2), threads)
+    filter_hdr_split = np.array_split(filter_HDR, split_factor)
+    # apply
+    HDR_dfs = hdr_pool.map(partial(get_HDR, bam_file, hotspot_df,
+                                   chrom, HDR_config), filter_hdr_split)
+    hdr_pool.close()
+    hdr_pool.terminate()
+    hdr_pool.join()
+    # concat and return
     return pd.concat(HDR_dfs, sort=True)
+
+
+def get_hotspot_df(pileup_file):
+    '''
+    here comes the pileup computation straight from the bam file
+    '''
+    pileup_df = get_count_pileup(pileup_file)
+    show_output(f"Loading pileup file {pileup_file} finished.")
+    hotspot_df = filter_hotspots(pileup_df)
+    return hotspot_df

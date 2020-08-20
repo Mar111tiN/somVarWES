@@ -189,7 +189,7 @@
   },
   "detect_HDR": {
     "t": "00:30",
-    "mem": 200,
+    "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
   },
   "merge_HDR": {
@@ -199,7 +199,7 @@
   },
   "combine_filter1": {
     "t": "00:15",
-    "mem": 500,
+    "mem": 1000,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
   "filter2": {

@@ -118,6 +118,8 @@ scripts:
     varscan2table: shell/varscan2table.mawk
     # annovar
     anno_info: shell/anno_info.mawk
+    # HDR 
+    editbamdf: shell/editbamdf.mawk
     # EBfilter
     cleanpileup: shell/cleanpileup.mawk
     pile2count: shell/pile2count.mawk
@@ -280,3 +282,4 @@ HDR:
     min_similarity: .85 # which similarities to consider as HDR
     padding: 150  # range around mutation to be scanned
     min_q: 25 # minimum base quality to be used for HDR-calculation
+    min_alt_support: 10  # how many mutation reads must be there
