@@ -190,10 +190,10 @@
   "detect_HDR": {
     "t": "00:30",
     "mem": 500,
-    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
   },
   "merge_HDR": {
-    "t": "00:30",
+    "t": "00:05",
     "mem": 200,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
