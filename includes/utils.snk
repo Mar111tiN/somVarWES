@@ -151,30 +151,26 @@ def reduce_regions(df, padding):
     df['gap'] = df['gap'].cumsum()
     # groupby the coverage break group and condense individual coverage islands
     # agg has to contain the neccessary shared columns TransLength because it is needed for coverage computation
-    new_df = df.groupby('gap').agg({'Start': 'min', 'End':'max'})
-    new_df = new_df
-    return new_df.reset_index('gap').drop(columns='gap')
+    df = df.groupby('gap').agg({'Chr': 'first', 'Start': 'min', 'End': 'max'})
+    return df.reset_index('gap').drop(columns='gap')
 
 
-def mut2bed(mut_file, padding, bed_file):
+def mut2bed(mut_df, chrom, padding, output):
     # check for filter_bam folder (using general declaration for easy folder name changing)
-    folder = os.path.split(bed_file)[0]
+    folder = os.path.split(output)[0]
     if not os.path.isdir(folder):
         os.makedirs(folder)
+    # empty file
+    if not len(mut_df.index):
+        mut_df.to_csv(output, index=False, sep='\t', header=False)
+        return output
+    # get the bedfile with padded and collapsed regions
+    bed_df = reduce_regions(mut_df.sort_values(
+        ['Chr', 'Start']).iloc[:, :5], padding)
 
-    # read the anno_file
-    anno_df = pd.read_csv(mut_file, sep='\t').sort_values(['Chr', 'Start']).iloc[:,:5]
-    if not len(anno_df.index):
-        anno_df.to_csv(bed_file, index=False, sep='\t', header=False)
-        return bed_file
-
-    # get the bedfie with padded and collapsed regions
-    bed_df = anno_df.groupby('Chr').apply(reduce_regions, padding)
-    # remove Chr index
-    bed_df = bed_df.reset_index().drop(columns='level_1')
     # write bed_df to file
-    bed_df.to_csv(bed_file, index=False, sep='\t', header=False)
-    return bed_file
+    bed_df.to_csv(output, index=False, sep='\t', header=False)
+    return output
 
 
 def get_mut_bed(w, input):

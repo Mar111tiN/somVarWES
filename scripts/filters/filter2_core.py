@@ -11,7 +11,8 @@ def get_filter2(mut_file, filter2_output,
     show_output(f"Running \'{filter_name}'")
     show_output(f"Loading filter file {filter_file}.. ", time=False, end='')
     if "xls" in os.path.splitext(filter_file)[1]:
-        filter_settings = pd.read_excel(filter_file, sheet_name=filter_sheet, index_col=0)[:4]
+        filter_settings = pd.read_excel(
+            filter_file, sheet_name=filter_sheet, index_col=0)[:4]
     else:
         filter_settings = pd.read_csv(filter_file, sep='\t', index_col=0)
     show_output('Done.', time=False)
@@ -22,7 +23,8 @@ def get_filter2(mut_file, filter2_output,
 
     # remove syngeneic mutations if keep_syn is active (only valid for filter1)
     if keep_syn:
-        is_exonic = ~filter1_df['ExonicFunc'].isin(["unknown", "synonymous SNV"])
+        is_exonic = ~filter1_df['ExonicFunc'].isin(
+            ["unknown", "synonymous SNV"])
         filter1_df = filter1_df[is_exonic]
 
     # use these population columns for checking PopFreq
@@ -45,7 +47,8 @@ def get_filter2(mut_file, filter2_output,
 
         # #### SWITCH FOR AML7
         if "AML7" in filter_name:
-            show_output('Including mutations on 7q to candidate list.', time=False)
+            show_output(
+                'Including mutations on 7q to candidate list.', time=False)
             is7q = df['cytoBand'].str.contains('^7q')
             is_candidate = is_candidate | is7q
 
@@ -64,10 +67,11 @@ def get_filter2(mut_file, filter2_output,
                 ) & (df['NVAF'] <= thresh['NVAF'])
 
         # ##### EB/PoN-Filter ##########
-        eb = (df['EBscore'] >= thresh['EBscore']) if thresh['EBscore'] else True
+        eb = (df['EBscore'] >= thresh['EBscore']
+              ) if thresh['EBscore'] else True
 
         pon_eb = (eb & (df['PoN-Ratio'] < thresh['PoN-Ratio'])
-                ) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
+                  ) | (df['PoN-Alt-NonZeros'] < thresh['PoN-Alt-NonZeros'])
 
         # ############ HDR ####################
         HDR = (df['TumorHDRcount'] <= thresh['HDRcount']) & (
@@ -131,19 +135,31 @@ def get_filter2(mut_file, filter2_output,
             filter2_dfs[stringency], dropped_dfs[stringency], df_lengths[stringency] = filter2(
                 filter1_df, _filter=stringency)
             output_file = f"{output_base}.{stringency}.csv"
-            show_output(f"Writing filter2.{stringency} ({df_lengths[stringency]}) to {output_file}")
+            show_output(
+                f"Writing filter2.{stringency} ({df_lengths[stringency]}) to {output_file}")
             filter2_dfs[stringency].to_csv(output_file, sep='\t', index=False)
             filter2_dfs[stringency].to_excel(
                 writer, sheet_name=stringency, index=False)
 
         # write dropped files
         drop_file = f"{output_base}.dropped.csv"
-        show_output(f"Writing {len(dropped_dfs['loose'].index)} muts to {drop_file}.", time=False)
+        show_output(
+            f"Writing {len(dropped_dfs['loose'].index)} muts to {drop_file}.", time=False)
         dropped_dfs['loose'].to_csv(drop_file, sep='\t', index=False)
 
         show_output(f"Writing combined filters to excel file {excel_file}.")
 
-        dropped_dfs['loose'].to_excel(writer, sheet_name='dropped', index=False)
+        dropped_dfs['loose'].to_excel(
+            writer, sheet_name='dropped', index=False)
 
+    # create the filterbam_table for the selected stringency to be used by filterbam
     if filterbam_output:
-        filter2_dfs[filterbam_stringency].to_csv(filterbam_output, sep='\t', index=False)
+        if filterbam_stringency in filter2_dfs:
+            filter2_dfs[filterbam_stringency].to_csv(
+                filterbam_output, sep='\t', index=False)
+        # if stringency is all or any other, use combination of loose and dropped for filterbam
+        else:
+            all_df = pd.concat[filter2_dfs['loose'],
+                               dropped_dfs['loose']].drop_duplicates()
+            all_df.to_csv(
+                filterbam_output, sep='\t', index=False)

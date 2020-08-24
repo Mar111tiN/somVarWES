@@ -268,10 +268,9 @@ FisherStrand:
     threads: 20
 filter_bam:
     threads: 1
-    stringency_for_bam: loose # from which filter2 should the filter bam be generated
+    stringency_for_bam: all # from which filter2 should the filter bam be generated (if all -> loose+dropped)
     stringency_for_IGVnav: moderate
     padding: 200
-    folder: filterbam
 primer3:  # is applied after filter step 1
     threads: 10
     min_size: 120

@@ -10,7 +10,7 @@ def main(s):
     i = s.input
     p = s.params
     threads = config['HDR']['threads']
-    bam_file = p.in_bam
+    bam_file = i.bam
     out_file = s.output.HDR_table
     # load all HDR params into HDR_config
     #

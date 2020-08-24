@@ -1,28 +1,29 @@
 rule filter_pileup:
     input:
-        bamdone = "filterbamdone/{sample}_{tumor}-{normal}.{type}.filter1.done"
+        filter1 = "table/{sample}_{tumor}-{normal}.filter1.csv",
+        bam = "bamfinalsplit/{sample}_{type}.{chrom}.bam"
     output:
-        pileup = "hdr/{sample}_{tumor}-{normal}.{chrom}.{type}.filter1.pileup"
+        pileup = "hdr/{sample}_{tumor}-{normal}_{type}.{chrom}.filter1.pileup"
     threads:
         2
     conda:
         f"../{config['envs']}/align-env.yml"
     params:
-        in_bam = lambda w, input: input.bamdone.replace("bamdone", "bam").replace(f"{w.tumor}-{w.normal}.", "").replace(".done", f".bam"),
         refgen = full_path('genome'),
         qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}",
-        cleanpileup = get_script('cleanpileup')
+        cleanpileup = get_script('cleanpileup'),
+        mut_bedfile = get_mut_bed
     shell:
-        "samtools mpileup -f {params.refgen} -r {wildcards.chrom} {params.qual} {params.in_bam} | {params.cleanpileup} > {output.pileup}"
+        "samtools mpileup -l {params.mut_bedfile} -f {params.refgen} -r {wildcards.chrom} {params.qual} {params.in_bam} | {params.cleanpileup} > {output.pileup}"
 
 
 rule detect_HDR:
     input:
-        bamdone = "filterbamdone/{sample}_{tumor}-{normal}.{type}.filter1.done",
+        bam = "bamfinalsplit/{sample}_{type}.{chrom}.bam",
         filter_file = "table/{sample}_{tumor}-{normal}.filter1.csv",
-        pileup = "hdr/{sample}_{tumor}-{normal}.{chrom}.{type}.filter1.pileup"
+        pileup = "hdr/{sample}_{tumor}-{normal}_{type}.{chrom}.filter1.pileup"
     output:
-        HDR_table = "hdr/{sample}_{tumor}-{normal}.{chrom}.{type}.filter1.HDR.csv"
+        HDR_table = "hdr/{sample}_{tumor}-{normal}_{type}.{chrom}.filter1.HDR.csv"
     conda:
         f"../{config['envs']}/HDR-env.yml"
     threads:
@@ -32,15 +33,14 @@ rule detect_HDR:
         editbam =  get_script('editbam'),
         pile2hotspot =  get_script('pile2hotspot'),
         pile2hotspot_chrom =  get_script('pile2hotspot_chrom'),
-        in_bam = lambda w, input: input.bamdone.replace("bamdone", "bam").replace(f"{w.tumor}-{w.normal}.", "").replace(".done", f".bam")
     script:
         "../scripts/HDR.py"
 
 
 rule mergeHDR:
     input:
-        expand("hdr/{{sample}}_{{tumor}}-{{normal}}.{chrom}.{{normal}}.filter1.HDR.csv", chrom=chrom_list),
-        expand("hdr/{{sample}}_{{tumor}}-{{normal}}.{chrom}.{{tumor}}.filter1.HDR.csv", chrom=chrom_list)
+        expand("hdr/{{sample}}_{{tumor}}-{{normal}}_{{normal}}.{chrom}.filter1.HDR.csv", chrom=chrom_list),
+        expand("hdr/{{sample}}_{{tumor}}-{{normal}}_{{tumor}}.{chrom}.filter1.HDR.csv", chrom=chrom_list)
     output:
         "table/{sample}_{tumor}-{normal}.filter1.HDR.csv"
     threads:

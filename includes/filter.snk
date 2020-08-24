@@ -25,28 +25,6 @@ rule primer3:
         "../scripts/primer.py"
 
 
-rule filter_bam:
-    input:
-        csv = "table/{sample}_{tumor}-{normal}.{filter}.csv",
-        bam = "bamfinal/{sample}_{type}.bam",
-    output:
-        bamdone = "filterbamdone/{sample}_{tumor}-{normal}.{type}.{filter}.done"
-    conda:
-        f"../{config['envs']}/align-env.yml"
-    threads:
-        config['filter_bam']['threads']
-    params:
-        folder = config['filter_bam']['folder'],
-        mut_bed_file = get_mut_bed,
-        out_bam = lambda w, output: output.bamdone.replace("bamdone", "bam").replace(f"{w.tumor}-{w.normal}.", "").replace(".done", f".bam")
-    shell:
-        "mkdir -p {params.folder}; "
-        "samtools view -bhL {params.mut_bed_file} {input.bam} > {params.out_bam}; "
-        "picard BuildBamIndex INPUT={params.out_bam}; "
-        "rm -f {params.mut_bed_file}; "
-        "touch {output.bamdone}"
-
-
 rule combine_filter1:
     input:
         filter1 = "table/{sample}_{tumor}-{normal}.filter1.csv",
@@ -77,19 +55,40 @@ rule filter2:
         #  moderate.csv
         #  strict.csv
         filter2 = "filter/{sample}_{tumor}-{normal}.filter2.loose.csv",
-        filter2_for_filterbam = "table/{sample}_{tumor}-{normal}.filter2.csv"
+        filter2_for_filterbam = "table/{sample}_{tumor}-{normal}.filter2.csv"  # contains mutations at stringency defined in "filter_bam->stringency_for_bam"
     threads: 
         1
     script:
         f"../scripts/filter2.py" 
 
 
+rule filter_bam:
+    input:
+        csv = "table/{sample}_{tumor}-{normal}.filter2.csv",
+        bam = "bamfinal/{sample}_{type}.bam",
+    output:
+        filterbam = "filterbam/{sample}_{tumor}-{normal}.{type}.bam"
+    conda:
+        f"../{config['envs']}/align-env.yml"
+    threads:
+        config['filter_bam']['threads']
+    params:
+        mut_bedfile = get_mut_bed
+    shell:
+        "mkdir -p {params.folder}; "
+        "samtools view -bhL {params.mut_bedfile} {input.bam} > {output.filterbam}; "
+        "picard BuildBamIndex INPUT={output.filterbam}; "
+        "rm -f {params.mut_bedfile}; "
+        "touch {output.bamdone}"
+
+
 rule IGVnav:
     input:
         filter = "filter/{sample}_{tumor}-{normal}.filter2.loose.csv",
-        bam = "filterbamdone/{sample}_{tumor}-{normal}.{normal}.filter2.done"
+        tumor_filterbam = "filterbam/{sample}_{tumor}-{normal}.{normal}.bam",
+        normal_filterbam = "filterbam/{sample}_{tumor}-{normal}.{tumor}.bam"
     output:
-        filterbam = "filterbam/{sample}_{tumor}-{normal}.filter2.IGVnav.txt"
+        IGVnav = "filterbam/{sample}_{tumor}-{normal}.filter2.IGVnav.txt"
     threads:
         1
     run:
@@ -101,6 +100,6 @@ rule IGVnav:
             df[col] = ''
         df.loc[:, 'Chr'] = df['Chr'].str.replace('chr', '')
         df.to_csv(str(output), sep='\t', index=False)
-        print(f"Written to {output.filterbam}")
+        print(f"Written to {output.IGVnav}")
 
 
