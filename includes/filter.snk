@@ -28,10 +28,9 @@ rule primer3:
 rule filter_bam:
     input:
         csv = "table/{sample}_{tumor}-{normal}.{filter}.csv",
-        tumor_bam = "bamfinal/{sample}_{tumor}.bam",
-        normal_bam = "bamfinal/{sample}_{normal}.bam"
+        bam = "bamfinal/{sample}_{type}.bam",
     output:
-        done = "filterbamdone/{sample}_{tumor}-{normal}.{filter}.done"
+        bamdone = "filterbamdone/{sample}_{tumor}-{normal}.{type}.{filter}.done"
     conda:
         f"../{config['envs']}/align-env.yml"
     threads:
@@ -39,16 +38,13 @@ rule filter_bam:
     params:
         folder = config['filter_bam']['folder'],
         mut_bed_file = get_mut_bed,
-        tumor_bam = lambda w, input: input.tumor_bam.replace(os.path.split(input.tumor_bam)[0], config['filter_bam']['folder']).replace(".bam", f".{w.filter}.bam"),
-        normal_bam = lambda w, input: input.normal_bam.replace(os.path.split(input.normal_bam)[0], config['filter_bam']['folder']).replace(".bam", f".{w.filter}.bam")
+        out_bam = lambda w, output: output.bamdone.replace("bamdone", "bam").replace(f"{w.tumor}-{w.normal}.", "").replace(".done", f".bam")
     shell:
         "mkdir -p {params.folder}; "
-        "samtools view -bhL {params.mut_bed_file} {input.tumor_bam} > {params.tumor_bam}; "
-        "picard BuildBamIndex INPUT={params.tumor_bam}; "
-        "samtools view -bhL {params.mut_bed_file} {input.normal_bam} > {params.normal_bam}; "
-        "picard BuildBamIndex INPUT={params.normal_bam}; "
+        "samtools view -bhL {params.mut_bed_file} {input.bam} > {params.out_bam}; "
+        "picard BuildBamIndex INPUT={params.out_bam}; "
         "rm -f {params.mut_bed_file}; "
-        "touch {output.done}"
+        "touch {output.bamdone}"
 
 
 rule combine_filter1:
@@ -91,7 +87,7 @@ rule filter2:
 rule IGVnav:
     input:
         filter = "filter/{sample}_{tumor}-{normal}.filter2.loose.csv",
-        bam = "filterbamdone/{sample}_{tumor}-{normal}.filter2.done"
+        bam = "filterbamdone/{sample}_{tumor}-{normal}.{normal}.filter2.done"
     output:
         filterbam = "filterbam/{sample}_{tumor}-{normal}.filter2.IGVnav.txt"
     threads:
