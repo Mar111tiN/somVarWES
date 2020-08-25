@@ -1,9 +1,8 @@
 rule filter_pileup:
     input:
-        filter1 = "table/{sample}_{tumor}-{normal}.filter1.csv",
+        filter_file = "table/{sample}_{tumor}-{normal}.filter1.csv",
         bam = "bamfinalsplit/{sample}_{type}.{chrom}.bam"
-    output:
-        pileup = "hdr/{sample}_{tumor}-{normal}_{type}.{chrom}.filter1.pileup"
+    output: "hdr/{sample}_{tumor}-{normal}_{type}.{chrom}.filter1.pileup"
     threads:
         2
     conda:
@@ -14,7 +13,8 @@ rule filter_pileup:
         cleanpileup = get_script('cleanpileup'),
         mut_bedfile = get_mut_bed
     shell:
-        "samtools mpileup -l {params.mut_bedfile} -f {params.refgen} -r {wildcards.chrom} {params.qual} {params.in_bam} | {params.cleanpileup} > {output.pileup}"
+        "samtools mpileup -l {params.mut_bedfile} -f {params.refgen} -r {wildcards.chrom} {params.qual} {input.bam} | {params.cleanpileup} > {output}; "
+        "rm -f {params.mut_bedfile} "
 
 
 rule detect_HDR:
@@ -33,6 +33,7 @@ rule detect_HDR:
         editbam =  get_script('editbam'),
         pile2hotspot =  get_script('pile2hotspot'),
         pile2hotspot_chrom =  get_script('pile2hotspot_chrom'),
+        bam2csv = get_script('bam2csv')
     script:
         "../scripts/HDR.py"
 
@@ -46,10 +47,11 @@ rule mergeHDR:
     threads:
         1
     run:
-        tumor_pattern = f"{wildcards.tumor}.filter1"
-        normal_pattern = f"{wildcards.normal}.filter1"
+        tumor_pattern = f"{wildcards.tumor}-{wildcards.normal}_{wildcards.tumor}"
+        normal_pattern = f"{wildcards.tumor}-{wildcards.normal}_{wildcards.normal}"
         # populate an input dict for better looping
         input_list = {'Tumor': [i for i in input if tumor_pattern in i], 'Normal': [i for i in input if normal_pattern in i]}
+        print(input_list)
         base_cols = ['Chr', 'Start', 'End', 'Ref', 'Alt', 'Gene']
         cols = base_cols.copy()
         dfs = {}

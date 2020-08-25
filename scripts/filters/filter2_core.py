@@ -9,7 +9,7 @@ def get_filter2(mut_file, filter2_output,
 
     # ########### LOADING FILTERS
     show_output(f"Running \'{filter_name}'")
-    show_output(f"Loading filter file {filter_file}.. ", time=False, end='')
+    show_output(f"Loading filter file {filter_file}\t", time=False, end='')
     if "xls" in os.path.splitext(filter_file)[1]:
         filter_settings = pd.read_excel(
             filter_file, sheet_name=filter_sheet, index_col=0)[:4]
@@ -18,7 +18,7 @@ def get_filter2(mut_file, filter2_output,
     show_output('Done.', time=False)
 
     show_output(f'Loading mutation file {mut_file}. ', time=False, end='')
-    filter1_df = pd.read_csv(mut_file, sep='\t')
+    filter1_df = pd.read_csv(mut_file, sep='\t', low_memory=False)
     show_output(f'{len(filter1_df.index)} mutations found.', time=False)
 
     # remove syngeneic mutations if keep_syn is active (only valid for filter1)
@@ -159,7 +159,7 @@ def get_filter2(mut_file, filter2_output,
                 filterbam_output, sep='\t', index=False)
         # if stringency is all or any other, use combination of loose and dropped for filterbam
         else:
-            all_df = pd.concat[filter2_dfs['loose'],
-                               dropped_dfs['loose']].drop_duplicates()
+            all_df = pd.concat([filter2_dfs['loose'],
+                                dropped_dfs['loose']]).drop_duplicates()
             all_df.to_csv(
                 filterbam_output, sep='\t', index=False)

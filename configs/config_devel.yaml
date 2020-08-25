@@ -6,7 +6,7 @@ workdir: /fast/users/szyskam_c/scratch/develop/SNAKETEST # here your results are
 snakedir: /fast/users/szyskam_c/snakes/develop/somVarWES
 envs: env # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
-    samplesheet: /fast/users/szyskam_c/snakes/develop/somVarWES/configs/sheets/test_small.csv
+    samplesheet: /fast/users/szyskam_c/snakes/develop/somVarWES/configs/sheets/test_large.csv
     tumor:
         - A  #
         - A1
@@ -120,8 +120,9 @@ scripts:
     anno_info: shell/anno_info.mawk
     # HDR 
     editbam: shell/editbam.mawk
-    pile2hotspot: pile2hotspot.mawk
-    pile2hotspot_chrom: pile2hotspot_chrom.mawk
+    pile2hotspot: shell/pile2hotspot.mawk
+    pile2hotspot_chrom: shell/pile2hotspot_chrom.mawk
+    bam2csv: shell/bam2csv.mawk
     # EBfilter
     cleanpileup: shell/cleanpileup.mawk
     pile2count: shell/pile2count.mawk
@@ -280,11 +281,11 @@ primer3:  # is applied after filter step 1
 HDR:
     threads: 20
     # initial HDR detection
-    min_alt_sum: 5  # minimum Alt count to be considered above threshold
+    min_alt_sum: 2  # minimum Alt count to be considered above threshold
     min_alt_ratio: .1 # minimum Alt Ratio in pileup to be considered above threshold
     max_alt_ratio: .85 # maximum Alt Ratio in pileup to be considered somatic (and not germline)
     # filter HDRs for significance
-    min_HDR_count: 2 # minimum lanes around mutation to make it a putative HDR
+    min_HDR_count: 1 # minimum lanes around mutation to make it a putative HDR
     min_similarity: .85 # which similarities to consider as HDR
     padding: 150  # range around mutation to be scanned (if filterbam padding is smaller, that will be used)
-    min_alt_support: 10  # how many mutation reads must be there
+    min_alt_support: 2  # how many mutation reads must be there

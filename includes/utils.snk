@@ -155,15 +155,7 @@ def reduce_regions(df, padding):
     return df.reset_index('gap').drop(columns='gap')
 
 
-def mut2bed(mut_df, chrom, padding, output):
-    # check for filter_bam folder (using general declaration for easy folder name changing)
-    folder = os.path.split(output)[0]
-    if not os.path.isdir(folder):
-        os.makedirs(folder)
-    # empty file
-    if not len(mut_df.index):
-        mut_df.to_csv(output, index=False, sep='\t', header=False)
-        return output
+def mut2bed(mut_df, padding, output):
     # get the bedfile with padded and collapsed regions
     bed_df = reduce_regions(mut_df.sort_values(
         ['Chr', 'Start']).iloc[:, :5], padding)
@@ -173,11 +165,25 @@ def mut2bed(mut_df, chrom, padding, output):
     return output
 
 
-def get_mut_bed(w, input):
+def get_mut_bed(_, input, output):
     '''
     serves as a params function creating and returning the bed file for the samtools view
     '''
+
+    folder = os.path.dirname(output[0])
+
+    if not os.path.exists(folder):
+        print(f"Creating folder {folder}")
+        os.makedirs(folder)
+
     conf = config['filter_bam']
     padding = conf['padding']
-    bed_file = mut2bed(input.csv, padding, f"{conf['folder']}/{w.sample}_{w.tumor}-{w.normal}.bed")
+    mut_df = pd.read_csv(input.filter_file, sep='\t')
+    # empty file
+    ext = os.path.splitext(output[0])[1]
+    output_file = output[0].replace(ext, ".bed")
+    if not len(mut_df.index):
+        mut_df.to_csv(output_file, index=False, sep='\t', header=False)
+        return output_file
+    bed_file = mut2bed(mut_df, padding, output_file)
     return bed_file

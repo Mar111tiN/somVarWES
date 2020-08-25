@@ -64,10 +64,9 @@ rule filter2:
 
 rule filter_bam:
     input:
-        csv = "table/{sample}_{tumor}-{normal}.filter2.csv",
+        filter_file = "table/{sample}_{tumor}-{normal}.filter2.csv",
         bam = "bamfinal/{sample}_{type}.bam",
-    output:
-        filterbam = "filterbam/{sample}_{tumor}-{normal}.{type}.bam"
+    output: "filterbam/{sample}_{tumor}-{normal}_{type}.bam"
     conda:
         f"../{config['envs']}/align-env.yml"
     threads:
@@ -75,25 +74,23 @@ rule filter_bam:
     params:
         mut_bedfile = get_mut_bed
     shell:
-        "mkdir -p {params.folder}; "
-        "samtools view -bhL {params.mut_bedfile} {input.bam} > {output.filterbam}; "
-        "picard BuildBamIndex INPUT={output.filterbam}; "
-        "rm -f {params.mut_bedfile}; "
-        "touch {output.bamdone}"
+        "samtools view -bhL {params.mut_bedfile} {input.bam} > {output}; "
+        "picard BuildBamIndex INPUT={output}; "
+        "rm -f {params.mut_bedfile}"
 
 
 rule IGVnav:
     input:
-        filter = "filter/{sample}_{tumor}-{normal}.filter2.loose.csv",
-        tumor_filterbam = "filterbam/{sample}_{tumor}-{normal}.{normal}.bam",
-        normal_filterbam = "filterbam/{sample}_{tumor}-{normal}.{tumor}.bam"
+        filter_file = "filter/{sample}_{tumor}-{normal}.filter2.loose.csv",
+        tumor_filterbam = "filterbam/{sample}_{tumor}-{normal}_{normal}.bam",
+        normal_filterbam = "filterbam/{sample}_{tumor}-{normal}_{tumor}.bam"
     output:
         IGVnav = "filterbam/{sample}_{tumor}-{normal}.filter2.IGVnav.txt"
     threads:
         1
     run:
         # selectinng the right filter2 file from the configs
-        filter_file = input.filter.replace(".loose.csv", f".{config['filter_bam']['stringency_for_IGVnav']}.csv")
+        filter_file = input.filter_file.replace(".loose.csv", f".{config['filter_bam']['stringency_for_IGVnav']}.csv")
         df = pd.read_csv(filter_file, sep='\t', index_col=False).iloc[:, :5]
         print(f'Loaded {filter_file}')
         for col in ['Call', 'Tags', 'Notes']:

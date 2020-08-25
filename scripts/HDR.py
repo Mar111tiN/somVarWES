@@ -1,5 +1,5 @@
 import os
-from HDR_core import HDR_master
+from HDR_run import HDR_master
 from script_utils import show_output
 
 
@@ -31,6 +31,7 @@ def main(s):
     HDR_config['genome_split_path']: p.genome_split
     # add the tools to the config
     HDR_config['editbam'] = p.editbam
+    HDR_config['bam2csv'] = p.bam2csv
     HDR_config['pile2hotspot'] = p.pile2hotspot
     HDR_config['pile2hotspot_chrom'] = p.pile2hotspot_chrom
     # ## run the main HDR function

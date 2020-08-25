@@ -3,6 +3,7 @@ from HDR_core import get_HDR_multi, get_filter_hdr_multi
 from script_utils import show_output
 from HDR_hotspot import bam2hotspot_multi, pileup2hotspot
 
+
 COLS = [
     'Chr',
     'Start',
@@ -30,7 +31,7 @@ def HDR_master(mut_file, bam_file, chrom, threads, HDR_config, pileup_file=''):
     if len(mut_df.index) == 0:
         # return an empty df
         show_output(
-            f"Mutation file {mut_file} is empty! Writing empty file {out_file}", color="warning")
+            f"Mutation file {mut_file} is empty! Writing empty file", color="warning")
         return pd.DataFrame(columns=COLS)
 
     # make Chr column categorical for sorting .. and sort
@@ -39,17 +40,27 @@ def HDR_master(mut_file, bam_file, chrom, threads, HDR_config, pileup_file=''):
     mut_df = mut_df.sort_values(['Chr', 'Start'])
 
     if chrom:
-        return HDR_run(mut_df, mut_file, bam_file, chrom, threads, HDR_config, pileup_file)
-
-    # if no chroms are given
-    chroms = mut_df['Chr'].unique()
-    HDR_dfs = []
-    for chrom in chroms:
-        hdr_df = HDR_run(mut_df, mut_file, bam_file, chrom,
+        HDR_df = HDR_run(mut_df, mut_file, bam_file, chrom,
                          threads, HDR_config, pileup_file)
-        HDR_dfs.append(hdr_df)
+    else:
+        # if no chroms are given
+        chroms = mut_df['Chr'].unique()
+        HDR_dfs = []
+        for chrom in chroms:
+            hdr_df = HDR_run(mut_df, mut_file, bam_file, chrom,
+                             threads, HDR_config, pileup_file)
+            HDR_dfs.append(hdr_df)
 
-    return pd.concat(HDR_dfs).sort_values('Chr')
+        HDR_df = pd.concat(HDR_dfs).sort_values('Chr')
+
+    # merge the HDR output into mut_df
+    HDR_df = mut_df.merge(
+        HDR_df, on=COLS[:6], how="outer").sort_values(COLS[:2])
+    for col in COLS[6:8]:
+        HDR_df[col] = HDR_df[col].fillna(0).astype(int)
+    HDR_df['HDRinfo'] = HDR_df['HDRinfo'].fillna('no HDR in vincinity')
+
+    return HDR_df
 
 
 def HDR_run(mut_df, mut_file, bam_file, chrom, threads, HDR_config, pileup_file):
@@ -63,28 +74,39 @@ def HDR_run(mut_df, mut_file, bam_file, chrom, threads, HDR_config, pileup_file)
     # restrict mut_df to chrom
     mut_df = mut_df.query('Chr == @chrom')
 
+    ############ FIND HOTSPOTS ###########################
     if pileup_file:
+        source = pileup_file
         hotspot_df = pileup2hotspot(
             mut_df, pileup_file, chrom=chrom, HDR_config=HDR_config)
-        show_output(
-            f"Detected {len(hotspot_df.index)} putative HDR lanes in {pileup_file}.")
     else:
+        source = bam_file
         # hotspot_df = bam2hotspot(bam_file, chrom=chrom, HDR_config=HDR_config, mut_df=mut_df)
         hotspot_df = bam2hotspot_multi(
             bam_file, chrom=chrom, HDR_config=HDR_config, mut_df=mut_df, threads=threads)
+    hotspot_len = len(hotspot_df.index)
+
+    # check empty
+    if hotspot_len == 0:
         show_output(
-            f"Detected {len(hotspot_df.index)} putative HDR lanes in {bam_file}.")
-    filter_HDR = get_filter_hdr_multi(mut_df, hotspot_df, threads, HDR_config)
+            f"Found no putative HDR lanes in {source}.")
+        return pd.DataFrame(columns=COLS)
+
     show_output(
-        f"Found a total of {len(filter_HDR.index)} HDR-rich mutations", multi=False)
+        f"Detected {hotspot_len} putative HDR lanes in {source}.")
+
+    ############ FILTER HOTSPOTS ###########################
+    filter_HDR = get_filter_hdr_multi(mut_df, hotspot_df, threads, HDR_config)
+    filter_HDR_len = len(filter_HDR.index)
+
+    if filter_HDR_len == 0:
+        show_output(
+            f"Found no HDR-rich mutations in {source}", multi=False)
+        return pd.DataFrame(columns=COLS)
+    show_output(
+        f"Found a total of {filter_HDR_len} HDR-rich mutations", multi=False)
 
     HDR_df = get_HDR_multi(filter_HDR, bam_file=bam_file, hotspot_df=hotspot_df, threads=threads,
                            chrom=chrom, HDR_config=HDR_config)
-
-    HDR_df = mut_df.merge(
-        HDR_df, on=COLS[:6], how="outer").sort_values(COLS[:2])
-    for col in COLS[6:8]:
-        HDR_df[col] = HDR_df[col].fillna(0).astype(int)
-    HDR_df['HDRinfo'] = HDR_df['HDRinfo'].fillna('no HDR in vincinity')
 
     return HDR_df
