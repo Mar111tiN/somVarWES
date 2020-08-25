@@ -180,17 +180,17 @@
   "filter_bam": {
     "t": "00:45",
     "mem": 200,
-    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.filter}"
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}_{wildcards.type}"
   },
   "filter_pileup": {
     "t": "00:30",
     "mem": 200,
-    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}_{wildcards.type}.{wildcards.chrom}"
   },
   "detect_HDR": {
     "t": "00:30",
     "mem": 500,
-    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}_{wildcards.type}.{wildcards.chrom}"
   },
   "merge_HDR": {
     "t": "00:05",

@@ -38,7 +38,7 @@ rule detect_HDR:
         "../scripts/HDR.py"
 
 
-rule mergeHDR:
+rule merge_HDR:
     input:
         expand("hdr/{{sample}}_{{tumor}}-{{normal}}_{{normal}}.{chrom}.filter1.HDR.csv", chrom=chrom_list),
         expand("hdr/{{sample}}_{{tumor}}-{{normal}}_{{tumor}}.{chrom}.filter1.HDR.csv", chrom=chrom_list)
@@ -51,7 +51,6 @@ rule mergeHDR:
         normal_pattern = f"{wildcards.tumor}-{wildcards.normal}_{wildcards.normal}"
         # populate an input dict for better looping
         input_list = {'Tumor': [i for i in input if tumor_pattern in i], 'Normal': [i for i in input if normal_pattern in i]}
-        print(input_list)
         base_cols = ['Chr', 'Start', 'End', 'Ref', 'Alt', 'Gene']
         cols = base_cols.copy()
         dfs = {}

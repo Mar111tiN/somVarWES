@@ -53,13 +53,6 @@ def HDR_master(mut_file, bam_file, chrom, threads, HDR_config, pileup_file=''):
 
         HDR_df = pd.concat(HDR_dfs).sort_values('Chr')
 
-    # merge the HDR output into mut_df
-    HDR_df = mut_df.merge(
-        HDR_df, on=COLS[:6], how="outer").sort_values(COLS[:2])
-    for col in COLS[6:8]:
-        HDR_df[col] = HDR_df[col].fillna(0).astype(int)
-    HDR_df['HDRinfo'] = HDR_df['HDRinfo'].fillna('no HDR in vincinity')
-
     return HDR_df
 
 
@@ -74,7 +67,7 @@ def HDR_run(mut_df, mut_file, bam_file, chrom, threads, HDR_config, pileup_file)
     # restrict mut_df to chrom
     mut_df = mut_df.query('Chr == @chrom')
 
-    ############ FIND HOTSPOTS ###########################
+    # ########### FIND HOTSPOTS ###########################
     if pileup_file:
         source = pileup_file
         hotspot_df = pileup2hotspot(
@@ -95,7 +88,7 @@ def HDR_run(mut_df, mut_file, bam_file, chrom, threads, HDR_config, pileup_file)
     show_output(
         f"Detected {hotspot_len} putative HDR lanes in {source}.")
 
-    ############ FILTER HOTSPOTS ###########################
+    # ########### FILTER HOTSPOTS ###########################
     filter_HDR = get_filter_hdr_multi(mut_df, hotspot_df, threads, HDR_config)
     filter_HDR_len = len(filter_HDR.index)
 
@@ -108,5 +101,12 @@ def HDR_run(mut_df, mut_file, bam_file, chrom, threads, HDR_config, pileup_file)
 
     HDR_df = get_HDR_multi(filter_HDR, bam_file=bam_file, hotspot_df=hotspot_df, threads=threads,
                            chrom=chrom, HDR_config=HDR_config)
+
+    # merge the HDR output into mut_df
+    HDR_df = mut_df.merge(
+        HDR_df, on=COLS[:6], how="outer").sort_values(COLS[:2])
+    for col in COLS[6:8]:
+        HDR_df[col] = HDR_df[col].fillna(0).astype(int)
+    HDR_df['HDRinfo'] = HDR_df['HDRinfo'].fillna('no HDR in vincinity')
 
     return HDR_df
