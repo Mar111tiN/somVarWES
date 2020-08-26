@@ -1,6 +1,6 @@
 rule anno2EB:
     input:
-        table = "table/{sample}_{tumor}-{normal}.{chrom}.csv",
+        table = "varscan/{sample}_{tumor}-{normal}.{chrom}.csv",
         tumor_bam = "bamfinalsplit/{sample}_{tumor}.{chrom}.bam"
     output:
         "eb/{sample}_{tumor}-{normal}-{chrom}.EB"
@@ -37,7 +37,7 @@ def get_cache(w):
 
 rule anno2EBfromEBcache:
     input:
-        table = "table/{sample}_{tumor}-{normal}.{chrom}.csv",
+        table = "varscan/{sample}_{tumor}-{normal}.{chrom}.csv",
         tumor_bam = "bamfinalsplit/{sample}_{tumor}.{chrom}.bam",
         EBcache = get_cache
     output:
@@ -97,8 +97,9 @@ rule mergeEBscore:
                     if EB_df.empty:
                         continue
                     EB_dfs.append(EB_df)
-        EB_merge = pd.concat(EB_dfs).sort_values(['Chr', 'Start'])
+        EB_merge = pd.concat(EB_dfs)
 
+        EB_merge = sort_df(EB_merge)
         # sort nicely
         cols = ['Chr', 'Start', 'End', 'Ref', 'Alt', 'EBscore', 'PoN-Ref', 'PoN-Alt']
         if config['EBFilter']['full_pon_output']:

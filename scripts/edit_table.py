@@ -2,13 +2,22 @@ import os
 import re
 import pandas as pd
 
+
+def sort_df(df):
+    '''
+    helper for sorting dfs for chromosomes
+    '''
+    # make Chr column categorical for sorting .. and sort
+    chrom_list = [f"chr{i}" for i in range(23)] + ['chrX', 'chrY']
+    df['Chr'] = pd.Categorical(df['Chr'], chrom_list)
+    return df.sort_values(['Chr', 'Start'])
+
+
 def main(s):
     input = str(s.input)
     output = str(s.output)
     params = s.params
     config = s.config
-
-
 
     # ############## COSMIC70 ##############
     cosmic70_dict = {
@@ -66,7 +75,7 @@ def main(s):
         'melanoma': 1.5,
         'myeloma': 5,
         'lymphoma': 5,
-        'lymphatic':3,
+        'lymphatic': 3,
         'blastoma': 1.5,
         'immunodeficiency': 1.25
     }
@@ -83,7 +92,6 @@ def main(s):
         'Uncertain_significance': 0
     }
 
-
     # ############## ====> CLINSCORE #################
     ClinScore = {
         'cosmic70_score': 2,  # derived score
@@ -91,7 +99,6 @@ def main(s):
         'clinvar_score': 2,  # derived score
         'icgc29_freq': 2000  # derived score --> adjust
     }
-
 
     # import the scripts
     extended_output = params.extended_output
@@ -102,18 +109,14 @@ def main(s):
     print(f'Started editing and basic filtering for {input}.')
     anno_df = pd.read_csv(input, sep='\t')
 
-
     ############# PREDICTIONS TO KEEP ################
     predictions = ["Polyphen2", "SIFT", "MutationTaster"]
-
 
     #####################################################################
     # #################### CUSTOM WEIGHTS ################################
     '''
     impacts how the cosmic string is translated into scalar value
     '''
-
-
 
     # only get the non-zero keys
     clinscore_cols = [col for col in ClinScore.keys() if ClinScore[col]]
@@ -127,15 +130,16 @@ def main(s):
     #             return True
     #     return False
 
-
     def get_PoN_info(df):
         print('Calculating PoN metrix')
-        df.loc[:, 'PoN-Alt-Sum'] = df['PoN-Alt'].str.replace('-', '|').str.split('|').apply(lambda array: sum([int(count) for count in array]))
-        df.loc[:, 'PoN-Ref-Sum'] = df['PoN-Ref'].str.replace('-', '|').str.split('|').apply(lambda array: sum([int(count) for count in array]))
-        df.loc[:, 'PoN-Alt-NonZeros'] = df['PoN-Alt'].str.count(r'[0-9]+') - df['PoN-Alt'].str.count('0')
+        df.loc[:, 'PoN-Alt-Sum'] = df['PoN-Alt'].str.replace('-', '|').str.split(
+            '|').apply(lambda array: sum([int(count) for count in array]))
+        df.loc[:, 'PoN-Ref-Sum'] = df['PoN-Ref'].str.replace('-', '|').str.split(
+            '|').apply(lambda array: sum([int(count) for count in array]))
+        df.loc[:, 'PoN-Alt-NonZeros'] = df['PoN-Alt'].str.count(
+            r'[0-9]+') - df['PoN-Alt'].str.count('0')
         df.loc[:, 'PoN-Ratio'] = df['PoN-Alt-Sum'] / df['PoN-Ref-Sum']
         return df
-
 
     def resort_cols(df):
         '''
@@ -149,14 +153,18 @@ def main(s):
         #     print(i, col)
         ######################
         start_cols = cols[:11]
-        quant_cols = cols[11:26] + ['FisherScore', 'EBscore', 'PoN-Ref', 'PoN-Alt', 'PoN-Ref-Sum', 'PoN-Alt-Sum', 'PoN-Alt-NonZeros', 'PoN-Ratio']
+        quant_cols = cols[11:26] + ['FisherScore', 'EBscore', 'PoN-Ref',
+                                    'PoN-Alt', 'PoN-Ref-Sum', 'PoN-Alt-Sum', 'PoN-Alt-NonZeros', 'PoN-Ratio']
         if 'A|a|G|g|C|c|T|t|I|i|D|d' in cols:
             quant_cols.append('A|a|G|g|C|c|T|t|I|i|D|d')
-        clin_cols = ['ClinScore', 'cosmic91_ID', 'cosmic91_type', 'cosmic91_score', 'cosmic70_ID', 'cosmic70_freq', 'cosmic70_type', 'cosmic70_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq']
-        pop_cols = [col for col in cols if re.match("|".join(["avsnp", "dbSNP", "esp6500", "1000g", "gnomAD"]), col)]
+        clin_cols = ['ClinScore', 'cosmic91_ID', 'cosmic91_type', 'cosmic91_score', 'cosmic70_ID', 'cosmic70_freq',
+                     'cosmic70_type', 'cosmic70_score', 'CLNALLELEID', 'CLNDN', 'CLNSIG', 'clinvar_score', 'icgc29_ID', 'icgc29_freq']
+        pop_cols = [col for col in cols if re.match(
+            "|".join(["avsnp", "dbSNP", "esp6500", "1000g", "gnomAD"]), col)]
         print(f"Using population data: {' '.join(pop_cols)}")
         # keep only the pred_cols defined in predictions list above
-        pred_cols = [col for col in cols if re.match("|".join(predictions), col)]
+        pred_cols = [col for col in cols if re.match(
+            "|".join(predictions), col)]
 
         pred_cols = cols[47:-13] if extended_output else pred_cols
         # 13 <== the added extracted and score columns make up 8 columns + 4 PoN columns = 12:
@@ -168,7 +176,6 @@ def main(s):
         new_cols = start_cols + quant_cols + clin_cols + pop_cols + pred_cols
         return df[new_cols]
 
-
     def get_clinical_scores(df):
         '''
         extract, score and realign clinical columns
@@ -176,15 +183,18 @@ def main(s):
         # ############## CONVERSION OF COLUMNS ##############################
         # ############## ICGC29 ###########
         def addICGC(df):
-            ICGC = df['icgc29_Affected'].str.extract(r'^([0-9]+)/([0-9]+)$').fillna(0).astype('int')
+            ICGC = df['icgc29_Affected'].str.extract(
+                r'^([0-9]+)/([0-9]+)$').fillna(0).astype('int')
             df['icgc29_freq'] = (ICGC[0] / ICGC[1]).round(4).fillna(".")
             return df.drop(columns='icgc29_Affected')
 
         # ############## COSMIC70 #########
         def addCosmic70(df):
             pattern = r'(?:ID=(?P<cosmID>COSM[0-9]+(?:,COSM[0-9]+)?);OCCURENCE=)?(?P<freq>[0-9]+)\((?P<organ>[A-Z_a-z]+)\)'
-            df[['cosmic70_ID', 'cosmic70_freq', 'cosmic70_type']] = df['cosmic70'].str.extractall(pattern).astype({'cosmID':'str', 'freq':'int', 'organ':'str'}).reset_index('match').drop(columns='match').reset_index().groupby('index').aggregate({'cosmID':'min', 'freq':'sum', 'organ': lambda col: col.str.cat(sep='+')})
-            df.loc[:, 'cosmic70_freq'] = df['cosmic70_freq'].fillna(0).astype('int')
+            df[['cosmic70_ID', 'cosmic70_freq', 'cosmic70_type']] = df['cosmic70'].str.extractall(pattern).astype({'cosmID': 'str', 'freq': 'int', 'organ': 'str'}).reset_index(
+                'match').drop(columns='match').reset_index().groupby('index').aggregate({'cosmID': 'min', 'freq': 'sum', 'organ': lambda col: col.str.cat(sep='+')})
+            df.loc[:, 'cosmic70_freq'] = df['cosmic70_freq'].fillna(
+                0).astype('int')
             df.loc[:, 'cosmic70_ID'] = df['cosmic70_ID'].fillna('.')
             df.loc[:, 'cosmic70_type'] = df['cosmic70_type'].fillna('.')
             return df.drop(columns='cosmic70')
@@ -235,7 +245,8 @@ def main(s):
         # SCALAR SCORES FROM CLINICAL DBS
         df['clinvar_score'] = df.apply(get_CLINVARscore, axis=1)
         df['cosmic70_score'] = df.apply(cosmic70score, axis=1)
-        df['cosmic91_score'] = df['cosmic91_type'].str.extractall(cosmic91_pattern).apply(cosmic91_score, axis=1).reset_index().drop(columns='match').groupby('level_0').sum()
+        df['cosmic91_score'] = df['cosmic91_type'].str.extractall(cosmic91_pattern).apply(
+            cosmic91_score, axis=1).reset_index().drop(columns='match').groupby('level_0').sum()
         df['cosmic91_score'] = df['cosmic91_score'].fillna(0)
 
         # GET COMBINED ClinScore
@@ -243,9 +254,9 @@ def main(s):
         print('      Combining clinical scores into ClinScore')
         for col in clinscore_cols:
             print("            ", col)
-            df.loc[df[col] != ".", 'ClinScore'] += ClinScore[col] * df[df[col] != "."][col]
+            df.loc[df[col] != ".", 'ClinScore'] += ClinScore[col] * \
+                df[df[col] != "."][col]
         return df
-
 
     def get_gene_lists(df, candidate_list, driver_list, hotspot_list):
         '''
@@ -272,8 +283,10 @@ def main(s):
         # add the hotspot mutations to the file
         if hotspot_list:
             hotspot_file = os.path.join(STATIC, hotspot_list)
-            hotspots = pd.read_csv(hotspot_file, sep='\t').drop(columns=['Protein'])
-            df = df.merge(hotspots, how='left', on=['Chr', 'Start', 'Ref', 'Alt', 'Gene'])
+            hotspots = pd.read_csv(hotspot_file, sep='\t').drop(
+                columns=['Protein'])
+            df = df.merge(hotspots, how='left', on=[
+                          'Chr', 'Start', 'Ref', 'Alt', 'Gene'])
             list_cols += ['ChipID', 'ChipPub', 'ChipFreq']
 
         # resort columns
@@ -285,16 +298,19 @@ def main(s):
         new_cols = start_cols + list_cols + rest_cols
         return df[new_cols]
 
-
     pon_info_df = get_PoN_info(anno_df)
     clin_df = get_clinical_scores(pon_info_df)
     # RESORT THE COLUMNS
     sorted_df = resort_cols(clin_df)
-    candidate_df = get_gene_lists(sorted_df, candidate_list, driver_list, hotspot_list)
+    candidate_df = get_gene_lists(
+        sorted_df, candidate_list, driver_list, hotspot_list)
 
+    # sort by chrom
+    candidate_df = sort_df(candidate_df)
     # this is raw unfiltered data, only informative columns were added
     candidate_df.to_csv(output, sep='\t', index=False)
     print(f"Writing edited mutation list with added columns to {output}.")
+
 
 if __name__ == "__main__":
     main(snakemake)

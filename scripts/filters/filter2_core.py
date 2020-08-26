@@ -3,6 +3,16 @@ import os
 from script_utils import show_output
 
 
+def sort_filter2_df(df, cols={'Chr': True, 'TVAF': False, 'NVAF': False, 'Start': True}):
+    '''
+    helper for sorting dfs for chromosomes using Chr, Start + cols in cols
+    '''
+    # make Chr column categorical for sorting .. and sort
+    chrom_list = [f"chr{i}" for i in range(23)] + ['chrX', 'chrY']
+    df['Chr'] = pd.Categorical(df['Chr'], chrom_list)
+    return df.sort_values(list(cols.keys()), ascending=list(cols.values()))
+
+
 def get_filter2(mut_file, filter2_output,
                 filter_file, filter_sheet, filter_name, keep_syn=False,
                 filterbam_output=None, filterbam_stringency='moderate'):
@@ -98,7 +108,7 @@ def get_filter2(mut_file, filter2_output,
         if thresh.get('strandPolarity', None):
             pol = thresh['strandPolarity']
             no_strand_polarity = no_strand_polarity = (
-                df['TR2+'] / df['TR2'] <= pol) & (df['TR2+'] / df['TR2'] >= (1-pol))
+                df['TR2+'] / df['TR2'] <= pol) & (df['TR2+'] / df['TR2'] >= (1 - pol))
         else:
             no_strand_polarity = True
 
@@ -119,7 +129,8 @@ def get_filter2(mut_file, filter2_output,
         show_output(f"{stringency} {len(filter2_df.index)}", time=False)
         dropped_candidates_df = df[~filter_criteria & is_candidate]
         list_len = len(filter2_df.index)
-        return filter2_df, dropped_candidates_df, list_len
+
+        return sort_filter2_df(filter2_df), sort_filter2_df(dropped_candidates_df), list_len
 
     # ################ OUTPUT #############################################################
     excel_file = f"{output_base}.xlsx"

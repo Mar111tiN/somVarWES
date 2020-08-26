@@ -80,9 +80,9 @@ rule merge_HDR:
             # load into dfs dict
             dfs[T_or_N] = HDR_df
         
-        HDR_merge = pd.merge(dfs['Tumor'], dfs['Normal'], on=base_cols).sort_values(base_cols[:3])
+        HDR_merge = pd.merge(dfs['Tumor'], dfs['Normal'], on=base_cols)
         # sort columns
-        HDR_merge = HDR_merge[cols]
+        HDR_merge = sort_df(HDR_merge[cols])
 
         # ###### PILEUP ANALYSIS ##############################
 

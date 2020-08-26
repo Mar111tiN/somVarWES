@@ -3,6 +3,17 @@ import pandas as pd
 from script_utils import show_output
 
 
+def sort_df(df, cols={'Chr': True, 'Start': True}):
+    '''
+    helper for sorting dfs for chromosomes using Chr, Start + cols in cols
+    '''
+    # make Chr column categorical for sorting .. and sort
+    chrom_list = [f"chr{i}" for i in range(23)] + ['chrX', 'chrY']
+
+    df['Chr'] = pd.Categorical(df['Chr'], chrom_list)
+    return df.sort_values(list(cols.keys()), ascending=list(cols.values()))
+
+
 def filter1(mut_file, basic_output, filter1_output,
             filter_file, filter_sheet, filter_name, keep_syn=False):
 
@@ -51,8 +62,11 @@ def filter1(mut_file, basic_output, filter1_output,
         # somatic = df['somatic_status'] != 'Germline'
         return df[exon_func & aa_change & function]
 
+    # filter and sort
     basic_df = filter_basic(anno_df, keep_syn=keep_syn)
+    basic_df = sort_df(basic_df)
 
+    # output
     basic_df.to_csv(basic_output, sep='\t', index=False)
     show_output(
         f"Writing basic filtered list ({len(basic_df.index)} muts) to {basic_output}.")
@@ -96,7 +110,8 @@ def filter1(mut_file, basic_output, filter1_output,
 
         # ## FILTER1 RESCUE ##########
         # per default, rescue all candidate genes
-        is_candidate = (df['isCandidate'] == 1) | (df['isDriver'] == 1) | (df['ChipFreq'] > 0)
+        is_candidate = (df['isCandidate'] == 1) | (
+            df['isDriver'] == 1) | (df['ChipFreq'] > 0)
 
         # ############### AML7 ####################
         # if we are filtering for AML7, we include the 7q genes as interesting
@@ -111,6 +126,11 @@ def filter1(mut_file, basic_output, filter1_output,
 
         return df[filter_criteria].sort_values(['TVAF'], ascending=False)
 
+    # filter and sort
     filter1_df = filter1(basic_df, _filter='filter1')
-    show_output(f"Writing filter1 list ({len(filter1_df.index)} muts) to {filter1_output}")
+    filter1_df = sort_df(filter1_df)
+
+    # write
+    show_output(
+        f"Writing filter1 list ({len(filter1_df.index)} muts) to {filter1_output}")
     filter1_df.to_csv(filter1_output, sep='\t', index=False)

@@ -5,6 +5,7 @@ from multiprocessing import Pool
 from functools import partial
 from script_utils import show_output
 
+
 def file2str(file):
     '''
     returns a string from a text file
@@ -164,13 +165,15 @@ def compute_primers(row, chrom, config):
         'seq': insert_seq
     }
 
-    row['InsertSeq'] = mut2insert(mut=mut_dict, seq=insert_dict, return_none=True)
+    row['InsertSeq'] = mut2insert(
+        mut=mut_dict, seq=insert_dict, return_none=True)
     row['offsetL'] = row['Start'] - insert_start
     row['offsetR'] = insert_end - row['End']
 
     row['fwdPrimer'] = primers['PRIMER_LEFT_0_SEQUENCE']
     row['revPrimer'] = primers['PRIMER_RIGHT_0_SEQUENCE']
-    row['AmpliconSize'] = primers['PRIMER_RIGHT_0'][0] - primers['PRIMER_LEFT_0'][0] + 1
+    row['AmpliconSize'] = primers['PRIMER_RIGHT_0'][0] - \
+        primers['PRIMER_LEFT_0'][0] + 1
     row['Status'] = 'not established'
     row['Note'] = f"(fwd={int(primers['PRIMER_LEFT_0_TM'] * 10) / 10}|rev={int(primers['PRIMER_RIGHT_0_TM'] * 10) / 10})"
     return row
@@ -183,7 +186,8 @@ def get_primer_df(mut_df, primer3_config, chroms_folder, chrom):
     show_output(f"Running primer3 for chrom {chrom}.", multi=True)
     chrom_dict = get_chrom(chrom, chroms_folder)
     chr_df = mut_df.query('Chr == @chrom')
-    primer_df = chr_df.apply(compute_primers, chrom=chrom_dict, config=primer3_config, axis=1)
+    primer_df = chr_df.apply(
+        compute_primers, chrom=chrom_dict, config=primer3_config, axis=1)
     show_output(f"Finished chrom {chrom}.", multi=True)
     return primer_df
 
@@ -191,7 +195,8 @@ def get_primer_df(mut_df, primer3_config, chroms_folder, chrom):
 def run_primer3(mut_df, chroms_folder, pcr_config, primer3_config, threads):
 
     # apply pcr size to primer3_config
-    primer3_config['PRIMER_PRODUCT_SIZE_RANGE'] = [pcr_config['prod_size_min'], pcr_config['prod_size_max']]
+    primer3_config['PRIMER_PRODUCT_SIZE_RANGE'] = [
+        pcr_config['prod_size_min'], pcr_config['prod_size_max']]
     primer3_config.update(pcr_config)
 
     mut_df.loc[:, 'Chr'] = mut_df['Chr'].astype('str')
@@ -207,7 +212,8 @@ def run_primer3(mut_df, chroms_folder, pcr_config, primer3_config, threads):
     chrom_list = mut_df['Chr'].unique()
     show_output(f"Allocating processor pool for {threads} threads.")
     pool = Pool(threads)
-    df_list = pool.map(partial(get_primer_df, mut_df, primer3_config, chroms_folder), chrom_list)
+    df_list = pool.map(partial(get_primer_df, mut_df,
+                               primer3_config, chroms_folder), chrom_list)
 
     primer_df = pd.concat(df_list, sort=True)
     new_cols = [
@@ -235,8 +241,7 @@ def primer3_main(i, o, chroms_folder, threads, PCR_config={
         'mut_pad': 5,
         'prod_size_min': 120,
         'prod_size_max': 220
-        }):
-
+}):
     '''
     wrapper around run_primer3 that allows for injecting with adjusted PCR and Primer3_configs
     and controls input and output

@@ -9,7 +9,7 @@ def QC_output(_):
     '''
     out = ["QC/libraryQC.html", "QC/insertQC.html"]
     if not config['setup']['rerun']:
-        out += "QC/fastQC.html"
+        out += ["QC/fastQC.html"]
     return out
     
 def get_files(folder_list, sample_sheet):

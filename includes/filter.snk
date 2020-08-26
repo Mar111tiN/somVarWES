@@ -43,7 +43,7 @@ rule combine_filter1:
 
         output = str(output)
         show_output(f"Writing merged filter1-list to {output}.", time=False)
-        merge_df.to_csv(output, sep='\t', index = False)
+        sort_df(merge_df).to_csv(output, sep='\t', index = False)
 
 
 rule filter2:

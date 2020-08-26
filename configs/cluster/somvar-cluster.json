@@ -3,7 +3,7 @@
     "t": "00:45",
     "mem": "1000",
     "nodes": 1,
-    "partition": "medium",
+    "partition": "debug",
     "threads": "{threads}",
     "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
   },

@@ -6,7 +6,7 @@ workdir: /fast/users/szyskam_c/scratch/develop/SNAKETEST # here your results are
 snakedir: /fast/users/szyskam_c/snakes/develop/somVarWES
 envs: env # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
-    samplesheet: /fast/users/szyskam_c/snakes/develop/somVarWES/configs/sheets/test_all.csv
+    samplesheet: /fast/users/szyskam_c/snakes/develop/somVarWES/configs/sheets/test_small.csv
     tumor:
         - A  #
         - A1

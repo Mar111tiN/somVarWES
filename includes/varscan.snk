@@ -56,7 +56,7 @@ rule varscan2table:
     input:
         unpack(get_anno_input)
     output:
-        "table/{sample}_{tumor}-{normal}.{chrom}.csv"
+        "varscan/{sample}_{tumor}-{normal}.{chrom}.csv"
     threads: 6
     conda:
         f"../{config['envs']}/vcf-env.yml"
@@ -71,7 +71,7 @@ rule varscan2table:
 
 rule merge_varscan_tables:
     input:
-        expand("table/{{sample}}_{{tumor}}-{{normal}}.{chrom}.csv", chrom=chrom_list)
+        expand("varscan/{{sample}}_{{tumor}}-{{normal}}.{chrom}.csv", chrom=chrom_list)
     output:
         "table/{sample}_{tumor}-{normal}.csv"
     threads: 1
@@ -80,6 +80,8 @@ rule merge_varscan_tables:
         for table_file in input:
             table_df = pd.read_csv(table_file, sep='\t', header=None, names=['Chr', 'Start', 'End', 'Ref', 'Alt', 'somatic_status', 'TR1', 'TR1+', 'TR2', 'TR2+', 'NR1', 'NR1+', 'NR2', 'NR2+', 'somaticP', 'variantP'])
             table_dfs.append(table_df)
-        table_df = pd.concat(table_dfs).sort_values(['Chr', 'Start'])
+        table_df = pd.concat(table_dfs)
+        table_df = sort_df(table_df)
+
         table_df.to_csv(output[0], sep='\t', index=False)
 

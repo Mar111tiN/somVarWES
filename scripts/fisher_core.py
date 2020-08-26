@@ -10,6 +10,16 @@ from script_utils import show_output, show_command
 # ###################### FISHER SCORE ################################
 
 
+def sort_df(df):
+    '''
+    helper for sorting dfs for chromosomes
+    '''
+    # make Chr column categorical for sorting .. and sort
+    chrom_list = [f"chr{i}" for i in range(23)] + ['chrX', 'chrY']
+    df['Chr'] = pd.Categorical(df['Chr'], chrom_list)
+    return df.sort_values(['Chr', 'Start'])
+
+
 def get_fisher_exact(row):
     T1plus = row['TR1+']
     T1min = row['TR1'] - T1plus
@@ -33,7 +43,7 @@ def get_FS_col(df, threads):
     df_chunks = []
     pool = Pool(threads)
     df_chunks = pool.map(compute_FS, split)
-    return pd.concat(df_chunks).sort_values(['Chr', 'Start'])
+    return pd.concat(df_chunks)
 
 
 def fisher(input, output, threads, log):
@@ -47,7 +57,12 @@ def fisher(input, output, threads, log):
     df_fisher = get_FS_col(df_table, threads)
 
     # reduce to important cols
-    cols = list(df_fisher.columns)[:5] + ['FisherScore', 'TR1', 'TR2'] # add TR1 and TR2 to make merge unique
+    # add TR1 and TR2 to make merge unique
+    cols = list(df_fisher.columns)[:5] + ['FisherScore', 'TR1', 'TR2']
+    # select columns and sort
+    df_fisher = sort_df(df_fisher[cols])
+
     # write file to filtered
-    df_fisher[cols].to_csv(output[0], sep='\t', index=False)
-    show_output(f'FisherScore for file {input[0]} written to {output[0]}', color='success')
+    df_fisher.to_csv(output[0], sep='\t', index=False)
+    show_output(
+        f'FisherScore for file {input[0]} written to {output[0]}', color='success')

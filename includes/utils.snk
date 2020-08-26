@@ -187,3 +187,14 @@ def get_mut_bed(_, input, output):
         return output_file
     bed_file = mut2bed(mut_df, padding, output_file)
     return bed_file
+
+
+def sort_df(df, cols={'Chr': True, 'Start': True}):
+    '''
+    helper for sorting dfs for chromosomes using Chr, Start + cols in cols
+    '''
+    # make Chr column categorical for sorting .. and sort
+    chrom_list = [f"chr{i}" for i in range(23)] + ['chrX', 'chrY']
+
+    df['Chr'] = pd.Categorical(df['Chr'], chrom_list)
+    return df.sort_values(list(cols.keys()), ascending=list(cols.values()))

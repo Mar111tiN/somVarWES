@@ -22,9 +22,7 @@
 # Formats are MM:SS, HH:MM:SS, Days-HH, Days-HH:MM, Days-HH:MM:SS
 #SBATCH --time=20:00:00
 
-SNAKE_HOME=$(pwd);
-
-export LOGDIR=${SNAKE_HOME}/slogs/${SLURM_JOB_NAME}-${SLURM_JOB_ID}
+export LOGDIR=${HOME}/scratch/slogs/${SLURM_JOB_NAME}-${SLURM_JOB_ID}
 export TMPDIR=/fast/users/${USER}/scratch/tmp;
 mkdir -p $LOGDIR;
 
