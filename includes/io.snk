@@ -92,8 +92,12 @@ def get_files(folder_list, sample_sheet):
 
         samples_df = samples.apply(get_bam_paths, axis=1, bam_list=bam_list)
         short_df = samples.apply(get_bam_paths, axis=1, bam_list=short_list)
+
+    # remove leading zeros
+    samples_df.index = samples_df.index.str.lstrip('0')
+    short_df.index = short_df.index.str.lstrip('0')
     # ########## DEBUG #################
-    # print(short_df)
+    print(short_df)
     # print(samples_df)
     # ##################################
 
@@ -108,6 +112,8 @@ def get_tumor_normal_pairs(samples):
     samples = samples.reset_index()
     # extract the tumor-normal suffix (Name_A --> sample: "Name", TN: "A")
     samples[['sample', 'TN']] = samples['name'].str.extract('(?P<sample>^[^_]+)_(?P<TN>[^_]+)$')
+    # remove leading zeros
+    samples['sample'] = samples['sample'].str.lstrip('0')
     tumor = config['samples']['tumor']
     normal = config['samples']['normal']
 

@@ -11,6 +11,11 @@ def convert_varscan2table(input_files, o, refgen, isVCF, varscan2table, vcf2csv,
             # print('input:', input)
             out = input.replace('vcf', 'table')
             out_ln = input.replace('vcf', 'ln.vcf')
+            # sometimes, varscan outputs degenerate ref bases like W leading to errors in bcftools
+            # .. here is a dirty fix:
+            mawk_cmd = 'BEGIN {OFS="\t"} $4 == "W" {print $1,$2,$3,"N",$5,$6,$7,$8,$9,$10,$11; next;}{print}'
+            run_cmd(
+                f"cat {input} | mawk '{mawk_cmd}' > {input}.new; mv {input}.new {input}")
             # for indel realignment, files have to be bgzipped and indexed with tabix
             run_cmd(f"bgzip < {input} > {input}.gz")
             run_cmd(f"tabix {input}.gz")
