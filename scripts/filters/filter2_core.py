@@ -112,7 +112,8 @@ def get_filter2(mut_file, filter2_output,
         else:
             no_strand_polarity = True
 
-        strandOK = no_strand_bias | no_strand_polarity
+        # let's check whether and is not too hard
+        strandOK = no_strand_bias & no_strand_polarity
 
         # ########## RESCUE #####################
         # Clin_score is used for rescue of all mutations
