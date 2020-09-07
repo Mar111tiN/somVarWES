@@ -15,7 +15,7 @@ def sort_filter2_df(df, cols={'Chr': True, 'TVAF': False, 'NVAF': False, 'Start'
 
 def get_filter2(mut_file, filter2_output,
                 filter_file, filter_sheet, filter_name, keep_syn=False,
-                filterbam_output=None, filterbam_stringency='moderate'):
+                filterbam_output=None, filterbam_stringency='moderate', excel_output=False):
 
     # ########### LOADING FILTERS
     show_output(f"Running \'{filter_name}'")
@@ -73,7 +73,7 @@ def get_filter2(mut_file, filter2_output,
             df['TVAF'] >= thresh['TVAF'])
         # ##### NVAF
         # NVAF is computed from upper threshold and a max proximity to TVAF (VAFSim)
-        NVAF = (df['TVAF'] > ((1 + thresh['VAFSim']) * df['NVAF'])
+        NVAF = (df['NVAF'] <= (thresh['VAFSim'] * df['TVAF'])
                 ) & (df['NVAF'] <= thresh['NVAF'])
 
         # ##### EB/PoN-Filter ##########
@@ -133,35 +133,40 @@ def get_filter2(mut_file, filter2_output,
         return sort_filter2_df(filter2_df), sort_filter2_df(dropped_candidates_df), list_len
 
     # ################ OUTPUT #############################################################
-    excel_file = f"{output_base}.xlsx"
+    # #CSV ####
 
-    with pd.ExcelWriter(excel_file) as writer:
-        # filter1
-        filter1_df.to_excel(
-            writer, sheet_name='filter1', index=False)
-        filter2_dfs = {}
-        dropped_dfs = {}
-        df_lengths = {}
-        for stringency in ['loose', 'moderate', 'strict']:
-            filter2_dfs[stringency], dropped_dfs[stringency], df_lengths[stringency] = filter2(
-                filter1_df, _filter=stringency)
-            output_file = f"{output_base}.{stringency}.csv"
-            show_output(
-                f"Writing filter2.{stringency} ({df_lengths[stringency]}) to {output_file}")
-            filter2_dfs[stringency].to_csv(output_file, sep='\t', index=False)
-            filter2_dfs[stringency].to_excel(
-                writer, sheet_name=stringency, index=False)
-
-        # write dropped files
-        drop_file = f"{output_base}.dropped.csv"
+    filter2_dfs = {}
+    dropped_dfs = {}
+    df_lengths = {}
+    for stringency in ['loose', 'moderate', 'strict']:
+        filter2_dfs[stringency], dropped_dfs[stringency], df_lengths[stringency] = filter2(
+            filter1_df, _filter=stringency)
+        output_file = f"{output_base}.{stringency}.csv"
         show_output(
-            f"Writing {len(dropped_dfs['loose'].index)} muts to {drop_file}.", time=False)
-        dropped_dfs['loose'].to_csv(drop_file, sep='\t', index=False)
+            f"Writing filter2.{stringency} ({df_lengths[stringency]}) to {output_file}")
+        filter2_dfs[stringency].to_csv(
+            output_file, sep='\t', index=False)
+    # write dropped files
+    drop_file = f"{output_base}.dropped.csv"
+    show_output(
+        f"Writing {len(dropped_dfs['loose'].index)} muts to {drop_file}.", time=False)
+    dropped_dfs['loose'].to_csv(drop_file, sep='\t', index=False)
 
-        show_output(f"Writing combined filters to excel file {excel_file}.")
+    if excel_output:
+        excel_file = f"{output_base}.xlsx"
+        with pd.ExcelWriter(excel_file) as writer:
+            # filter1
+            filter1_df.to_excel(
+                writer, sheet_name='filter1', index=False)
+            for stringency in ['loose', 'moderate', 'strict']:
+                filter2_dfs[stringency].to_excel(
+                    writer, sheet_name=stringency, index=False)
 
-        dropped_dfs['loose'].to_excel(
-            writer, sheet_name='dropped', index=False)
+            show_output(
+                f"Writing combined filters to excel file {excel_file}.")
+            # write dropped files
+            dropped_dfs['loose'].to_excel(
+                writer, sheet_name='dropped', index=False)
 
     # create the filterbam_table for the selected stringency to be used by filterbam
     if filterbam_output:

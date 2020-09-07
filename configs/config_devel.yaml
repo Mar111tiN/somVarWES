@@ -6,7 +6,7 @@ workdir: /fast/users/szyskam_c/scratch/develop/SNAKETEST # here your results are
 snakedir: /fast/users/szyskam_c/snakes/develop/somVarWES
 envs: env # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
-    samplesheet: /fast/users/szyskam_c/snakes/develop/somVarWES/configs/sheets/test_small.csv
+    samplesheet: /fast/users/szyskam_c/snakes/develop/somVarWES/configs/sheets/test_all.csv
     tumor:
         - A  #
         - A1
@@ -56,13 +56,14 @@ EBFilter:
 filter:
     threads: 1
     run: True
-    filter1: filter1 # which custom filter script should be run for filter 1
-    filter2: filter2 # which custom filter script should be run for filter 2
+    excel_output: False
+    filter1: filter1-AML7 # which custom filter script should be run for filter 1
+    filter2: filter2-AML7 # which custom filter script should be run for filter 2
     filter_settings: filter_settings.xlsx # the filter file with the filter params
-    excel_sheet: NHL # the sheet in case filter_settings file is xlsx
+    excel_sheet: AMLMono7 # the sheet in case filter_settings file is xlsx
     edit:
         extended_output: False
-        candidate_list: annotation/damm_lists/NHL_candidates.txt
+        candidate_list: annotation/damm_lists/AML_candidates.txt
         driver_list: annotation/damm_lists/AML_drivers.txt
         hotspot_list: annotation/damm_lists/CHIP_mutations_short_hg38.csv
     keep_syn: True # only applies to the first filter step; in filter2 lists synmuts are always deleted

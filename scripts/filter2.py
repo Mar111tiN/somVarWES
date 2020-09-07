@@ -21,7 +21,8 @@ def main(s):
         filter_name=fconfig['filter2'],
         keep_syn=fconfig['keep_syn'],
         filterbam_output=s.output.filter2_for_filterbam,
-        filterbam_stringency=s.config['filter_bam']['stringency_for_bam']
+        filterbam_stringency=s.config['filter_bam']['stringency_for_bam'],
+        excel_output=fconfig['excel_output']
     )
 
 
