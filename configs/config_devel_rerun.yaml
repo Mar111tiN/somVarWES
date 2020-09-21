@@ -1,6 +1,6 @@
 inputdirs: 
     - /fast/users/szyskam_c/scratch/develop/testbam # source of fastq files (subfolders allowed) [or bam files in case of rerun]
-workdir: /fast/users/szyskam_c/scratch/develop/FDAH1 # here your results are created
+workdir: /fast/users/szyskam_c/scratch/develop/SNAKETEST # here your results are created
 snakedir: /fast/users/szyskam_c/snakes/develop/somVarWES
 envs: env # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
@@ -33,7 +33,8 @@ setup:
     platform_unit: A00643.HKCN3DRXX
     UMI: True  # if UMI information should be used in pipeline
     # if UMI_filter is true: deduplication is substituted with the UMI-filter pipeline
-    # else: umi-aware deduplication is used 
+    # else: umi-aware deduplication is used
+#### CUSTOM TOOLS ############
 EBFilter:
     run: True
     pon_list: PoN/HAEv7_hg38_NovaSeq/Pon_list.txt # path relative to mystatic path

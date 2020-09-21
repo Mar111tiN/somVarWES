@@ -93,9 +93,9 @@ def get_files(folder_list, sample_sheet):
         samples_df = samples.apply(get_bam_paths, axis=1, bam_list=bam_list)
         short_df = samples.apply(get_bam_paths, axis=1, bam_list=short_list)
 
-    # remove leading zeros
-    samples_df.index = samples_df.index.str.lstrip('0')
-    short_df.index = short_df.index.str.lstrip('0')
+    # # remove leading zeros
+    # samples_df.index = samples_df.index.str.lstrip('0')
+    # short_df.index = short_df.index.str.lstrip('0')
     # ########## DEBUG #################
     print(short_df)
     # print(samples_df)
@@ -112,26 +112,23 @@ def get_tumor_normal_pairs(samples):
     samples = samples.reset_index()
     # extract the tumor-normal suffix (Name_A --> sample: "Name", TN: "A")
     samples[['sample', 'TN']] = samples['name'].str.extract('(?P<sample>^[^_]+)_(?P<TN>[^_]+)$')
-    # remove leading zeros
-    samples['sample'] = samples['sample'].str.lstrip('0')
+    
     tumor = config['samples']['tumor']
     normal = config['samples']['normal']
+    
+    def TN_pair(group, l=[]):
 
-    def TN_pair(group):
-        TN_list = []
         for n in normal:
             if n in list(group['TN']):
                 for t in tumor:
                     if t in list(group['TN']):
                         TN_list.append(f"{group['sample'].iloc[0]}_{t}-{n}")
-                return pd.Series(TN_list)
-
-    TN_list = list(samples.groupby('sample').apply(TN_pair).reset_index().iloc[:, -1])
-
+    TN_list = []
+    # append in an apply 
+    samples.groupby('sample').apply(TN_pair, l=TN_list).reset_index()
     ########## DEBUG #################
     # print(TN_list)
     ##################################
-
     return TN_list
 
 
