@@ -6,16 +6,11 @@ workdir: /fast/users/szyskam_c/scratch/develop/SNAKETEST # here your results are
 snakedir: /fast/users/szyskam_c/snakes/develop/somVarWES
 envs: env # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
-    samplesheet: /fast/users/szyskam_c/snakes/develop/somVarWES/configs/sheets/test_all.csv
+    samplesheet: /fast/users/szyskam_c/snakes/develop/somVarWES/configs/sheets/test_small.csv
     tumor:
         - A  #
         - A1
-        - A2 
-        - A3
-        - A12 
-    normal:
         - B  # if more than one, the first normal will be used as default for tumor-sample
-        - B2
     reads:
         - R1
         - R2
@@ -98,8 +93,8 @@ ref:
         dbsnp_common: annotation/gatk/hg38/common_all_20180418.vcf
         gold_standard_indels: annotation/gatk/hg38/Mills_and_1000G_gold_standard.indels.hg38.vcf
         phase1k_indels: annotation/gatk/hg38/1000G_phase1.snps.high_confidence.hg38.vcf # seems to work instead of indels (acc. to GATK blog: https://gatkforums.broadinstitute.org/gatk/discussion/6800/known-sites-for-indel-realignment-and-bqsr-in-hg38-bundle)
-        # bed_file: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Covered.bed
-        # bed_file_pad: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Padded.bed
+        bed_file: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Covered.bed
+        bed_file_pad: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Padded.bed
 #### TOOLS SECTION ##############
 tools:
     gatk: gatk # 
