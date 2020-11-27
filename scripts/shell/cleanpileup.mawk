@@ -8,8 +8,7 @@
 
 mawk '
 {
-    read = $0;
-    
+    read = $5;
     # remove position traces from all read fields
     gsub(/\^[^\t]|\$/,"",read);
     # 
@@ -18,15 +17,16 @@ mawk '
         indel = substr(read,RSTART,1); # + or -
         base = substr(read,RSTART-1,1); # base before the deletion
         l = substr(read,RSTART+1,RLENGTH-1);
+        indel_bases = substr(read,RSTART+RLENGTH,l);
         post = substr(read,RSTART+RLENGTH+l);
         if (indel == "-") {
-            if (match(base,/[ACGT]/)) {
+            if (match(indel_bases,/[ACGT]/)) {
                 base = "D";
             } else {
                 base = "d";
             }
         } else {
-            if (match(base,/[ACGT]/)) {
+            if (match(indel_bases,/[ACGT]/)) {
                 base = "I";
             } else {
                 base = "i";
