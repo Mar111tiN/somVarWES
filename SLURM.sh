@@ -22,7 +22,9 @@
 # Formats are MM:SS, HH:MM:SS, Days-HH, Days-HH:MM, Days-HH:MM:SS
 #SBATCH --time=20:00:00
 
-export LOGDIR=${HOME}/scratch/slogs/${SLURM_JOB_NAME}-${SLURM_JOB_ID}
+SNAKE_HOME=$(pwd);
+
+export LOGDIR=${SNAKE_HOME}/slogs/${SLURM_JOB_NAME}-${SLURM_JOB_ID}
 export TMPDIR=/fast/users/${USER}/scratch/tmp;
 mkdir -p $LOGDIR;
 
@@ -40,8 +42,8 @@ echo $CONDA_PREFIX "activated";
 # !!! leading white space is important
 DRMAA=" -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads}";
 DRMAA="$DRMAA -o ${LOGDIR}/{rule}-%j.log";
-snakemake --unlock --rerun-incomplete;
-snakemake --dag | awk '$0 ~ "digraph" {p=1} p'| dot -Tsvg > dax/dag.svg;
-snakemake --use-conda --rerun-incomplete --cluster-config configs/cluster/somvar-cluster.json --drmaa "$DRMAA" -prk -j 1000;
+snakemake --unlock -s SnakefileRerun --rerun-incomplete;
+snakemake -s SnakefileRerun --dag | awk '$0 ~ "digraph" {p=1} p' | dot -Tsvg > dax/dag.svg;
+snakemake -s SnakefileRerun --use-conda --rerun-incomplete --cluster-config configs/cluster/somvar-cluster.json --drmaa "$DRMAA" -prk -j 1000;
 # -k ..keep going if job fails
 # -p ..print out shell commands
