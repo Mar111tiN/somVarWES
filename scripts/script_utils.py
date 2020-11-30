@@ -51,3 +51,13 @@ def run_cmd(cmd, multi=False):
     show_command(cmd, multi=multi)
     exit = shell(cmd, shell=True)
     return exit == 0
+
+
+def sort_df(df):
+    """
+    helper for sorting dfs for chromosomes
+    """
+    # make Chr column categorical for sorting .. and sort
+    chrom_list = [f"chr{i}" for i in range(23)] + ["chrX", "chrY"]
+    df["Chr"] = pd.Categorical(df["Chr"], chrom_list)
+    return df.sort_values(["Chr", "Start"])

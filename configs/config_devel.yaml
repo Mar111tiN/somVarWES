@@ -81,16 +81,6 @@ tools:
     # annovar: perl /fast/users/szyskam_c/tools/annovar2018
     annovar: perl /fast/users/szyskam_c/tools/annovar2019
 scripts:
-    # fastq
-    split_fastq: shell/split_fastq.mawk
-    # BEDcoverage
-    format_bed_coverage: shell/formatCoverage.sh
-    prettifyBED : shell/prettify_BEDcoverage.awk
-    # varscan2anno
-    vcf2csv: shell/vcf2csv.mawk
-    editcsv: shell/editcsvVarscan.mawk
-    coords2annovar: shell/coords2annovar.mawk
-    varscan2table: shell/varscan2table.mawk
     # annovar
     anno_info: shell/anno_info.mawk
     # EBfilter
@@ -119,7 +109,7 @@ varscan:
     somatic-p-value: 0.05
 annovar:
     threads: 10
-    path_to_humandb: annotation/annovar/humandb
+    humandb: annotation/annovar/humandb # path to humandb
     annofiles:
         # - refGene
         - ensGene34
@@ -127,7 +117,7 @@ annovar:
         - genomicSuperDups
         ##### POPULATIONS ########
         # - esp6500_all
-        - esp6500siv2_all  #
+        # - esp6500siv2_all  #
         # - 1000g2010nov_all
         # - 1000g2014oct_all
         # - snp138
@@ -143,7 +133,7 @@ annovar:
         # - snp131NonFlagged
         ##### CLINICAL DATA ###### 
         - cosmic70
-        - cosmic91
+        - cosmic92
         - icgc29
         # - clinvar_20150629
         # - clinvar_20170905

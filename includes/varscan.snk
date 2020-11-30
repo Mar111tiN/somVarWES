@@ -1,6 +1,6 @@
 rule mpileup:
     input:
-        "bamfinalsplit/{sample}_{type}.{chrom}.bam"
+        "bamfinal/{sample}_{type}.bam"
     output:
         "pileup/{sample}_{type}.{chrom}.pileup"
     log:
@@ -15,7 +15,7 @@ rule mpileup:
         qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}"
     shell:
         # bed file does not have to be padded here, I think
-        "samtools mpileup -f {params.refgen} {params.qual} -l {params.bedfile} {input} > {output} 2>{log}"
+        "samtools mpileup -f {params.refgen} -r {wildtype.chrom} {params.qual} -l {params.bedfile} {input} > {output} 2>{log}"
 
 
 rule varscan:
@@ -61,10 +61,10 @@ rule varscan2table:
     conda:
         f"../{config['envs']}/vcf-env.yml"
     params:
-        vcf2csv = get_script('vcf2csv'),
-        editcsv = get_script('editcsv'),
-        coords2annovar = get_script('coords2annovar'),
-        varscan2table = get_script('varscan2table')
+        vcf2csv = get_shell('vcf2csv.mawk'),
+        editcsv = get_shell('editcsvVarscan.mawk'),
+        coords2annovar = get_shell('coords2annovar.mawk'),
+        varscan2table = get_shell('varscan2table.mawk')
     script:
         "../scripts/varscan2table.py"
 
