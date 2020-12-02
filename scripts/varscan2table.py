@@ -1,22 +1,25 @@
 import os
 from varscan_core import convert_varscan2table
 
+
 def main(s):
-    config = s.config
+    cc = s.config["varscan"]
     p = s.params
 
-    build = config['ref']['build']
-    ref = os.path.join(config['paths']['mystatic'],
-                       config['ref'][build]['genome'])
+    def get_shell(tool):
+        return os.path.join(s.scriptdir, f"shell/{tool}")
 
-    convert_varscan2table(s.input, s.output,
-                  refgen=ref,
-                  isVCF=config['varscan']['vcf'],
-                  vcf2csv=p.vcf2csv,
-                  editcsv=p.editcsv,
-                  coords2annovar=p.coords2annovar,
-                  varscan2table=p.varscan2table
-                  )
+    convert_varscan2table(
+        s.input,
+        s.output,
+        refgen=p.refgen,
+        isVCF=cc["vcf"],
+        vcf2csv=get_shell("vcf2csv.mawk"),
+        editcsv=get_shell("editcsvVarscan.mawk"),
+        coords2annovar=get_shell("coords2annovar.mawk"),
+        varscan2table=get_shell("varscan2table.mawk"),
+    )
+
 
 if __name__ == "__main__":
-    main(snakemake) 
+    main(snakemake)

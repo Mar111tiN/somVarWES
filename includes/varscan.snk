@@ -1,6 +1,6 @@
 rule mpileup:
     input:
-        "bamfinalsplit/{sample}_{type}.{chrom}.bam"
+        get_bam
     output:
         "pileup/{sample}_{type}.{chrom}.pileup"
     log:
@@ -10,7 +10,7 @@ rule mpileup:
     conda:
         f"../{config['envs']}/align-env.yml"
     params:
-        bedfile = get_bed_file('Covered'),
+        bedfile = full_path('bed_file'),
         refgen = full_path('genome'),
         qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}"
     shell:
@@ -42,16 +42,6 @@ rule varscan:
         # " &>{log}"
 
 
-def get_anno_input(_):
-    if config['varscan']['vcf']:
-        indel = "varscan/{sample}_{tumor}-{normal}.{chrom}.indel.vcf"
-        snp = "varscan/{sample}_{tumor}-{normal}.{chrom}.snp.vcf"
-    else:
-        indel = "varscan/{sample}_{tumor}-{normal}.{chrom}.indel"
-        snp = "varscan/{sample}_{tumor}-{normal}.{chrom}.snp"
-    return {'indel': indel, 'snp': snp}
-
-
 rule varscan2table:
     input:
         unpack(get_anno_input)
@@ -61,10 +51,7 @@ rule varscan2table:
     conda:
         f"../{config['envs']}/vcf-env.yml"
     params:
-        vcf2csv = get_script('vcf2csv'),
-        editcsv = get_script('editcsv'),
-        coords2annovar = get_script('coords2annovar'),
-        varscan2table = get_script('varscan2table')
+        refgen = full_path('genome'),
     script:
         "../scripts/varscan2table.py"
 

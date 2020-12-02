@@ -3,15 +3,7 @@ import os
 import re
 
 
-def QC_output(_):
-    '''
-    switch for fastQC output depending on config rerun option
-    '''
-    out = ["QC/libraryQC.html", "QC/insertQC.html"]
-    if not config['setup']['rerun']:
-        out += ["QC/fastQC.html"]
-    return out
-    
+############# SNAKEFILE ###########################
 def get_files(folder_list, sample_sheet):
     '''
     retrieves the path to all the files in the sample_sheet
@@ -22,76 +14,39 @@ def get_files(folder_list, sample_sheet):
     # check whether single folder or folder list
     if len(folder_list[0]) == 1:
         folder_list = [folder_list]
-
+    # check full path or append path to scriptdir
+    if not sample_sheet.startswith('/'):
+        sample_sheet = os.path.join(snakedir, sample_sheet)
     # import the sample sheet
     samples = pd.read_csv(sample_sheet, sep='\t', index_col=0).set_index('name')
-    # for fastq files:
-    if config['setup']['rerun'] == False:
-        fastq_list = []
-        short_list = []
-        # cycle through the input folders and look for matching fastq files
-        for input_folder in folder_list:
-            for folder, _, files in os.walk(input_folder):
-                for file in files:
-                    if '.fastq.' in file and '.md5' not in file and 'trim' not in file and 'sub' not in file:
-                        fastq_list.append(os.path.join(folder, file))
-                        short_list.append(file)
 
-        def get_fastq_paths(row, fastq_list=None):
-            '''
-            go through the sample list and find the respective read and index fastqs in the respective fastq_list
-            '''
 
-            # get the nomenclature for the fastq files from config
-            read1 = config['samples']['reads'][0]
-            read2 = config['samples']['reads'][1]
-            index = config['samples']['umi_barcode']
+    bam_list = []
+    short_list = []
+    # cycle through the input folders and look for matching bam files
+    for input_folder in folder_list:
+        print(f"Looking for bam files in {input_folder}")
+        for folder, _, files in os.walk(input_folder):
+            for file in files:
+                if '.bam' in file and '.md5' not in file and '.bai' not in file:
+                    bam_list.append(os.path.join(folder, file))
+                    short_list.append(file)
 
-            for file in fastq_list:
-                # get the basename
-                base_file = os.path.basename(file)
-                if  base_file.startswith(f"{row['sample']}_"):
-                    if f'_{index}' in base_file:
-                        row['index'] = file
-                    elif 'barcode' in base_file:
-                        row['barcode'] = file
-                    elif f'_{read1}' in base_file:
-                        row['R1'] = file
-                    elif f'_{read2}' in base_file:
-                        row['R2'] = file
-            return row.reindex(['Lane', 'R1', 'R2', 'barcode', 'index'])
+    # include check for empty list
+    def get_bam_paths(row, bam_list=None):
+        '''
+        go through the sample list and find the respective read and index bams in the respective bam_list
+        '''
 
-        samples_df = samples.apply(get_fastq_paths, axis=1, fastq_list=fastq_list)
-        short_df = samples.apply(get_fastq_paths, axis=1, fastq_list=short_list)
+        for file in bam_list:
+            # get the basename
+            base_file = os.path.basename(file)
+            if row.name in base_file and not "chr" in base_file:
+                row['bam_path'] = file
+        return row
 
-    # rerun with preexisting bam files
-    else:
-        bam_list = []
-        short_list = []
-        # cycle through the input folders and look for matching bam files
-        for input_folder in folder_list:
-            print(f"Looking for bam files in {input_folder}")
-            for folder, _, files in os.walk(input_folder):
-                for file in files:
-                    if '.bam' in file and '.md5' not in file and '.bai' not in file:
-                        bam_list.append(os.path.join(folder, file))
-                        short_list.append(file)
-
-        # include check for empty list
-        def get_bam_paths(row, bam_list=None):
-            '''
-            go through the sample list and find the respective read and index bams in the respective bam_list
-            '''
-
-            for file in bam_list:
-                # get the basename
-                base_file = os.path.basename(file)
-                if row.name in base_file and not "chr" in base_file:
-                    row['bam_path'] = file
-            return row
-
-        samples_df = samples.apply(get_bam_paths, axis=1, bam_list=bam_list)
-        short_df = samples.apply(get_bam_paths, axis=1, bam_list=short_list)
+    samples_df = samples.apply(get_bam_paths, axis=1, bam_list=bam_list)
+    short_df = samples.apply(get_bam_paths, axis=1, bam_list=short_list)
 
     # # remove leading zeros
     # samples_df.index = samples_df.index.str.lstrip('0')
@@ -131,153 +86,18 @@ def get_tumor_normal_pairs(samples):
     ##################################
     return TN_list
 
-
-# ########## NOT USED ##########################################
-def get_tumor_samples(samples):
-    '''
-    get only the tumor samples from paired samples
-    '''
-    TN_list = get_tumor_normal_pairs(samples)
-    # re.compile pattern for normal phrase for removal
-    pattern = re.compile(r"-[^_-]+$")
-    tumor_list = [pattern.replace(pair, "") for pair in TN_list]
-    print('Tumor list: ', tumor_list)
-    return tumor_list
-
-
-def get_normal_samples(samples):
-    '''
-    get only the normal samples from paired samples
-    '''
-    TN_list = get_tumor_normal_pairs(samples)
-    # re.compile pattern for normal phrase for removal
-    pattern = re.compile(r"_[^_-]+-")
-    normal_list = [pattern.replace(pair, "") for pair in TN_list]
-    print('Normal list: ', normal_list)
-    return normal_list
-
-
-def get_fastqs(w):
+def get_bam(w):
     sample_name = f"{w.sample}_{w.type}"
-    if config['setup']['rerun']:
-        return "None"
-    fastq_path = sample_df.loc[sample_name][w.read_or_index]
-    return fastq_path
+    return sample_df.loc[sample_name]['bam_path']
 
 
-def get_lane(w):
-    sample_name = f"{w.sample}_{w.type}"
-    lane = sample_df.loc[sample_name]['Lane']
-    return lane
+########### GENERAL ##########################
 
-# ###################### ubamXT #########################################
-
-def get_FastqToSam_input(w):
+def get_shell(script_name):
     '''
-    retrieve either ...fastq or fastq.trim pairs depending on config:trim:trimming value for bwa alignment
+    takes the script_name and returns abspath to shell script located in snakedir/scripts/shell
     '''
-
-    # get the R1 and R2 depending on whether trim or not
-    if config['trim']['run']:
-        trim_suffix = config['trim']['suffix'][0]
-        fastqs = [f"fastq_trimmed/{w.sample}_{w.type}_{read}.{w.split}.{trim_suffix}.fastq.gz" for read in ['R1', 'R2']]
-    else:
-        fastqs = [f"fastq/{w.sample}_{w.type}_{read}.{w.split}.fastq.gz" for read in ['R1', 'R2']]
-
-    # add the umi.fastq if umi = True
-    if config['setup']['UMI']:
-        fastqs.append(f"fastq/{w.sample}_{w.type}_index.{w.split}.fastq.gz")
-    return fastqs
-
-# ###################### FASTQC ###########################
-
-
-def get_fastq_input(w):
-    '''
-    retrieve either ...fastq or fastq.trim for fastQC
-    '''
-
-    trim_suffix = config['trim']['suffix'][0]
-    # readtrim is either R1.trim or R1
-    # and stands for active or disabled trimming
-    if trim_suffix in w.readtrim:
-        return f"fastq_trimmed/{w.sample}_{w.type}_{w.readtrim}.fastq.gz"
-    else:
-        return f"fastq/{w.sample}_{w.type}_{w.readtrim}.fastq.gz"
-
-
-def get_fastqc_list(_):
-    '''
-    returns the complete list of required fastqc files depending on trim option
-    '''
-
-    fastqc_list = []
-    trim_suffix = config['trim']['suffix'][0]
-    # create file list from the included_files tuple list
-    for file_name in sample_df.index:
-        fastqc_list.append(f"fastqc/{file_name}_R1_fastqc.zip")
-        fastqc_list.append(f"fastqc/{file_name}_R2_fastqc.zip")
-        if config['trim']['run']:
-            fastqc_list.append(f"fastqc/{file_name}_R1.{trim_suffix}_fastqc.zip")
-            fastqc_list.append(f"fastqc/{file_name}_R2.{trim_suffix}_fastqc.zip")
-    return fastqc_list
-
-
-# ############## INDEL REALIGNER ######################
-
-def get_IR_input(w):
-    '''
-    complex sample switch depending on pipeline settings
-    !!!! ELABORATE
-    if UMIs are used, do not dedup before the UMI-filtering steps (if active)
-    if UMI-filter is inactive, just dedup using umis
-    if no UMIs are used, just mark_dups before realigning
-    '''
-
-    file_name = f"{w.sample}_{w.type}.{w.chrom}"
-    if config['setup']['UMI']:
-        if config['UMI_filter']['run']:
-            bam = f"bam_merge/{file_name}.bam"
-        else:
-            bam = f"umi_deduped/{file_name}.bam"
-    else:
-        bam = f"deduped/{file_name}.bam"
-    return {'bam': bam}
-
-##########################################################
-
-
-def get_script(script_name):
-    return os.path.join(config['snakedir'], config['paths']['scripts'], config['scripts'][script_name])
-
-
-def get_filter(filter_dict):
-    '''
-    get the full path to the filter script with the name filter_name
-    '''
-    return os.path.join(config['snakedir'], config['paths']['scripts'], 'filters', filter_dict['path'])
-
-
-def get_bed_file(covered_or_padded):
-    '''
-    returns the appropriate bed_file depending on build and library if 
-    '''
-    if covered_or_padded == 'Padded':
-        bed = 'bed_file_pad'
-    else:
-        bed = 'bed_file'
-    bed_file = config['setup'].get(bed, None)
-    if bed_file:
-        return bed_file
-    else:
-        build = config['ref']['build']
-        lib = config['setup']['library']
-        lib_version = config['setup']['library_version']
-        prefix = 'SS' if lib == 'SureSelect' else lib
-        suffix = '_nochr' if build == 'hg19' else ''
-        bed_name = f"{prefix}_{lib_version}_{build}_{covered_or_padded}{suffix}.bed"
-        bed_file = os.path.join(config['paths']['mystatic'], 'bed_files', lib, build, bed_name)
-    return bed_file
+    return os.path.join(scriptdir, f"shell/{script_name}")
 
 
 def full_path(file):
@@ -299,45 +119,69 @@ def static_path(file):
     return os.path.join(config['paths']['mystatic'], file)
 
 
-def get_fastq_origin(w):
+########### VARSCAN ###########################
+
+def get_anno_input(_):
+    if config['varscan']['vcf']:
+        indel = "varscan/{sample}_{tumor}-{normal}.{chrom}.indel.vcf"
+        snp = "varscan/{sample}_{tumor}-{normal}.{chrom}.snp.vcf"
+    else:
+        indel = "varscan/{sample}_{tumor}-{normal}.{chrom}.indel"
+        snp = "varscan/{sample}_{tumor}-{normal}.{chrom}.snp"
+    return {'indel': indel, 'snp': snp}
+
+
+########## ANNOVAR #############################
+# add information to table/{sample}_{tumor_normal}.csv
+def get_anno_params(_):
     '''
-    returns the path to the original fastq file
+    helper function to create full annovar parameters from input_output[1]
     '''
-    path = os.path.join(config['inputdir'], "fastq")
-    return f"{path}/{w.sample}_{w.type}_R{w.read}.fastq"
+
+    # get the full path to humandb
+    humandb = os.path.join(config['paths']['mystatic'], config['annovar']['path_to_humandb'])
+    # get the available anno files
+    file_list = list(os.walk(humandb))[0][-1]
+    # reduce anno files to the files compatible with genome build version
+    build = config['ref']['build']
+    build_files = []
+    for file in file_list:
+        if build in file:
+            build_files.append(file)
+
+    # filter the anno protocol for the available files for that genome build        
+    anno_refs = config['annovar']['annofiles']
+    anno_list = []
+    missing_list = []
+    for anno in anno_refs:
+        for file in build_files:
+            if anno in file:
+                anno_list.append(anno)
+                break
+        # if anno has not been found in file during for-loop
+        else:
+            missing_list.append(anno)
+
+    # create the protocol string
+    protocol = ','.join(anno_list)
+    print(f"{' '.join(missing_list)} not found for {build}! Doing without.. ")
+    # create the operation string 'g,r,f,f,f,f' assuming all but the first three dbs (ref, cytoBand, superDups) in config to be filter-based
+    operation_list = []
+    for anno in anno_list:
+        if "Gene" in anno:
+            operation_list.append('g')
+        elif anno in ['cytoBand', 'genomicSuperDups']:
+            operation_list.append('r')
+        else:
+            operation_list.append('f')
+    operation = ','.join(operation_list)
+
+    options = f'{humandb}/ -buildver {build} -remove -thread {config["annovar"]["threads"]} -protocol {protocol} -operation {operation} -nastring "." -otherinfo'
+    return options
 
 
-def get_fastq_link(w):
+def get_filter(filter_dict):
     '''
-    returns the path to the fastq-symlink in the work directory
+    get the full path to the filter script with the name filter_name
     '''
-    return f"fastq/{w.sample}_{w.type}_R{w.read}.fastq"
-
-
-def get_fastq_pair(w):
-    return [f"fastq/{w.sample}_{w.type}_R{read}.fastq" for read in [1, 2]]
-
-
-####################### BAM FILE SWITCHES ###########################
-
-def get_rerun_bam(w):
-    sample_name = f"{w.sample}_{w.type}"
-    if config['setup']['rerun']:
-        return sample_df.loc[sample_name]['bam_path']
-    return None
-
-
-def get_bamfinalsplit_input(w):
-    '''
-    input switch for splitting bamfinal
-    '''
-    file_name = f"{w.sample}_{w.type}.{w.chrom}"
-
-    # if not rerun, then use the appropriate chrom-split-bams to create symlinks in bamfinalsplit
-    if config['setup']['rerun']:
-        return get_rerun_bam(w)
-    if config['setup']['UMI'] and config['UMI_filter']['run']:
-        return f"umi/{file_name}.UF.bam"
-    elif config['recalib']['run']:
-        return f"recalib/{file_name}.bam"
-    return f"realigned/{file_name}.bam"
+    return os.path.join(config['snakedir'], config['paths']['scripts'], 'filters', filter_dict['path'])

@@ -4,7 +4,7 @@ inputdirs:
 workdir: /fast/users/szyskam_c/scratch/develop/somVarWES # here your results are created
 envs: env # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
-    samplesheet: sheets/test_all.csv
+    samplesheet: sheets/test_small.csv
     tumor:
         - A  #
         - A1
@@ -16,19 +16,18 @@ samples: # here go all your samples
         - B2
 cleanup: false
 #### CUSTOM TOOLS ############
-EBFilter:
+EBscore:
     run: true
+    pon_path: PoN/HAEv7_hg38_NovaSeq # path relative to mystatic path
     pon_list: PoN/HAEv7_hg38_NovaSeq/Pon_list.txt # path relative to mystatic path
     use_cache: false
     cache_folder: PoN/HAEv7_hg38_NovaSeq # path relative to mystatic path
-    full_pon_output: false
     threads:
         pileup: 12
         makeEBcache: 20
         EBscore: 20
         EBsplit_factor: 20 # into how many jobs is makeEBcache divided per chromosome
     params:
-        sep: tab
         MAPQ: 20   # I guess this should be lower than the mapping quality used for mpileup or not?
         Q: 25
         fitting_penalty: 0.5
@@ -42,9 +41,9 @@ filter:
     excel_sheet: AMLMono7 # the sheet in case filter_settings file is xlsx
     edit:
         extended_output: false
-        candidate_list: annotation/damm_lists/AML_candidates.txt
-        driver_list: annotation/damm_lists/AML_drivers.txt
-        hotspot_list: annotation/damm_lists/CHIP_mutations_short_hg38.csv
+        candidate_list: candidates.xlsx   # either full path or relative to snakedir
+        driver_list: info/AML_drivers.txt          # either full path or relative to snakedir
+        hotspot_list: info/CHIP_mutations_short_hg38.csv
     keep_syn: true # only applies to the first filter step; in filter2 lists synmuts are always deleted
 #### ABSOLUTE PATHS ############
 paths:
@@ -74,36 +73,12 @@ ref:
         dbsnp_common: annotation/gatk/hg38/common_all_20180418.vcf
         gold_standard_indels: annotation/gatk/hg38/Mills_and_1000G_gold_standard.indels.hg38.vcf
         phase1k_indels: annotation/gatk/hg38/1000G_phase1.snps.high_confidence.hg38.vcf # seems to work instead of indels (acc. to GATK blog: https://gatkforums.broadinstitute.org/gatk/discussion/6800/known-sites-for-indel-realignment-and-bqsr-in-hg38-bundle)
-        # bed_file: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Covered.bed
-        # bed_file_pad: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Padded.bed
+        bed_file: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Covered.bed
+        bed_file_pad: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Padded.bed
 #### TOOLS SECTION ##############
 tools:
     # annovar: perl /fast/users/szyskam_c/tools/annovar2018
     annovar: perl /fast/users/szyskam_c/tools/annovar2019
-scripts:
-    # fastq
-    split_fastq: shell/split_fastq.mawk
-    # BEDcoverage
-    format_bed_coverage: shell/formatCoverage.sh
-    prettifyBED : shell/prettify_BEDcoverage.awk
-    # varscan2anno
-    vcf2csv: shell/vcf2csv.mawk
-    editcsv: shell/editcsvVarscan.mawk
-    coords2annovar: shell/coords2annovar.mawk
-    varscan2table: shell/varscan2table.mawk
-    # annovar
-    anno_info: shell/anno_info.mawk
-    # EBfilter
-    cleanpileup: shell/cleanpileup.mawk
-    pile2count: shell/pile2count.mawk
-    matrix2EBinput: shell/matrix2EBinput.mawk
-    makeponlist: shell/makeponlist.sh
-    csv2bed: shell/csv2bed.mawk
-    pon2cols: shell/pon2cols.mawk
-    reducematrix: shell/matrix_minus_sample.mawk
-    reordermatrix: shell/reorder_matrix.mawk
-    # legacy?
-    anno_format: shell/anno_format.mawk
 mpileup:
     Q: 25   # base quality
     MAPQ: 20 # -q in pileup
@@ -143,7 +118,7 @@ annovar:
         # - snp131NonFlagged
         ##### CLINICAL DATA ###### 
         - cosmic70
-        - cosmic91
+        - cosmic92
         - icgc29
         # - clinvar_20150629
         # - clinvar_20170905

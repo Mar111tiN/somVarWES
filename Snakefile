@@ -1,7 +1,7 @@
 import yaml
 
 # ############ SETUP ##############################
-configfile: "configs/config_devel_rerun.yaml"
+configfile: "configs/config_devel.yaml"
 # configfile: "configs/config.json"
 workdir: config['workdir']
 # extract the scriptdir for creating shell_paths
@@ -52,7 +52,7 @@ rule all:
 # print out of installed tools
 onstart:
     print("    SOMVARWES PIPELINE STARTING.......")
-    print('Rerun variant calling for existing bam files')
+    print('Variant calling using bam files')
     print('bam:', short_sample_df.loc[:, ['bam_path']])
     path_to_config = os.path.join(config['workdir'], "config.yaml")
     with open(path_to_config, 'w+') as stream:

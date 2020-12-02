@@ -1,0 +1,28 @@
+# ########## NOT USED ##########################################
+def get_tumor_samples(samples):
+    '''
+    get only the tumor samples from paired samples
+    '''
+    TN_list = get_tumor_normal_pairs(samples)
+    # re.compile pattern for normal phrase for removal
+    pattern = re.compile(r"-[^_-]+$")
+    tumor_list = [pattern.replace(pair, "") for pair in TN_list]
+    print('Tumor list: ', tumor_list)
+    return tumor_list
+
+
+def get_normal_samples(samples):
+    '''
+    get only the normal samples from paired samples
+    '''
+    TN_list = get_tumor_normal_pairs(samples)
+    # re.compile pattern for normal phrase for removal
+    pattern = re.compile(r"_[^_-]+-")
+    normal_list = [pattern.replace(pair, "") for pair in TN_list]
+    print('Normal list: ', normal_list)
+    return normal_list
+
+
+def get_bam(w):
+    sample_name = f"{w.sample}_{w.type}"
+    return sample_df.loc[sample_name]['bam_path']

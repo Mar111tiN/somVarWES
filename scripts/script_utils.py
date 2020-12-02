@@ -1,7 +1,7 @@
 import os
 from subprocess import check_call as shell
 from datetime import datetime as dt
-
+import pandas as pd
 
 ansii_colors = {
     "magenta": "[1;35;2m",
@@ -51,3 +51,24 @@ def run_cmd(cmd, multi=False):
     show_command(cmd, multi=multi)
     exit = shell(cmd, shell=True)
     return exit == 0
+
+
+def get_chrom_list(config):
+    """
+    returns a list of all valid chromosomes determined by build version
+    """
+
+    # switch for use of "chr"-prefix
+    chrom = "chr" if config["ref"]["build"] == "hg38" else ""
+    return [f"{chrom}{c+1}" for c in range(22)] + ["chrX", "chrY"]
+
+
+def sort_df(df, cols={"Chr": True, "Start": True}):
+    """
+    helper for sorting dfs for chromosomes using Chr, Start + cols in cols
+    """
+    # make Chr column categorical for sorting .. and sort
+    chrom_list = [f"chr{i}" for i in range(23)] + ["chrX", "chrY"]
+
+    df["Chr"] = pd.Categorical(df["Chr"], chrom_list)
+    return df.sort_values(list(cols.keys()), ascending=list(cols.values()))
