@@ -21,8 +21,3 @@ def get_normal_samples(samples):
     normal_list = [pattern.replace(pair, "") for pair in TN_list]
     print('Normal list: ', normal_list)
     return normal_list
-
-
-def get_bam(w):
-    sample_name = f"{w.sample}_{w.type}"
-    return sample_df.loc[sample_name]['bam_path']
