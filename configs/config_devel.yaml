@@ -1,6 +1,6 @@
 ---
 inputdirs: 
-    - /fast/users/szyskam_c/work/testdata/ # source of fastq files (subfolders allowed) [or bam files in case of rerun]
+    - /fast/users/szyskam_c/work/testdata/testbam # source of fastq files (subfolders allowed) [or bam files in case of rerun]
 workdir: /fast/users/szyskam_c/scratch/develop/somVarWES # here your results are created
 envs: env # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples

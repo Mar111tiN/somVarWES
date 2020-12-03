@@ -30,7 +30,7 @@ def get_files(folder_list, sample_sheet):
             for file in files:
                 if '.bam' in file and '.md5' not in file and '.bai' not in file:
                     bam_list.append(os.path.join(folder, file))
-                    short_list.append(file)git 
+                    short_list.append(file)
 
     # include check for empty list
     def get_bam_paths(row, bam_list=None):
@@ -41,7 +41,7 @@ def get_files(folder_list, sample_sheet):
         for file in bam_list:
             # get the basename
             base_file = os.path.basename(file)
-            if row.name in base_file and not "chr" in base_file:
+            if row['sample'] in base_file and not "chr" in base_file:
                 row['bam_path'] = file
         return row
 
@@ -86,8 +86,13 @@ def get_tumor_normal_pairs(samples):
     ##################################
     return TN_list
 
-def get_bam(w):
-    sample_name = f"{w.sample}_{w.type}"
+
+def get_bam_path(w):
+    wcs = vars(w)['_names'].keys()
+    if 'type' in wcs:
+        sample_name = f"{w.sample}_{w.type}"
+    if 'tumor' in wcs:
+        sample_name = f"{w.sample}_{w.tumor}"
     return sample_df.loc[sample_name]['bam_path']
 
 

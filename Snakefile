@@ -23,7 +23,9 @@ TN_list = get_tumor_normal_pairs(sample_df)
 include: "includes/varscan.snk"
 include: "includes/annotate.snk"
 include: "includes/EB.snk"
+include: "includes/HDR.snk"
 include: "includes/filter.snk"
+
 
 # convenience variables
 ref_gen = full_path('genome')
@@ -31,9 +33,10 @@ ref_gen = full_path('genome')
 wildcard_constraints:
     # eg sample cannot contain _ or / to prevent ambiguous wildcards
     sample = "[^_/.]+",
-    tumor_norm = "[^_/.]+",
+    tumor_normal = "[^_/.]+",
+    type = "[^_/.]+",
     tumor = "[A-Za-z123]+",
-    norm = "[A-Za-z123]+",
+    normal = "[A-Za-z123]+",
     chrom = "(chr)?[0-9XY]+",
     filter = "filter[0-9]+",
 

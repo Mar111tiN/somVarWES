@@ -1,7 +1,7 @@
 rule anno2EB:
     input:
         table = "varscan/{sample}_{tumor}-{normal}.{chrom}.csv",
-        tumor_bam = "bamfinalsplit/{sample}_{tumor}.{chrom}.bam"
+        tumor_bam = get_bam_path
     output:
         "eb/{sample}_{tumor}-{normal}-{chrom}.EB"
     log:

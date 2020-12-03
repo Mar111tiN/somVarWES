@@ -1,6 +1,6 @@
 rule mpileup:
     input:
-        get_bam
+        get_bam_path
     output:
         "pileup/{sample}_{type}.{chrom}.pileup"
     log:
