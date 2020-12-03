@@ -1,9 +1,7 @@
 import os
 from anno_core import run_annovar
 
-###### anno script chains several commands for removing and reusing headers
-
-
+# ##### anno script chains several commands for removing and reusing headers
 def main(s):
     p = s.params
 

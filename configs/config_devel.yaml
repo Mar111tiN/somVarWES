@@ -94,7 +94,7 @@ varscan:
     somatic-p-value: 0.05
 annovar:
     threads: 10
-    path_to_humandb: annotation/annovar/humandb
+    humandb: annotation/annovar/humandb # path to humandb
     annofiles:
         # - refGene
         - ensGene34
@@ -102,7 +102,7 @@ annovar:
         - genomicSuperDups
         ##### POPULATIONS ########
         # - esp6500_all
-        - esp6500siv2_all  #
+        # - esp6500siv2_all  #
         # - 1000g2010nov_all
         # - 1000g2014oct_all
         # - snp138

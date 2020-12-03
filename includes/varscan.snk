@@ -15,7 +15,7 @@ rule mpileup:
         qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}"
     shell:
         # bed file does not have to be padded here, I think
-        "samtools mpileup -f {params.refgen} {params.qual} -l {params.bedfile} {input} > {output} 2>{log}"
+        "samtools mpileup -f {params.refgen} -r {wildtype.chrom} {params.qual} -l {params.bedfile} {input} > {output} 2>{log}"
 
 
 rule varscan:

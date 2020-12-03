@@ -51,10 +51,5 @@ rule edit_table:
         "filter/{sample}_{tumor_normal}.csv"
     threads:
         1
-    params:
-        extended_output = config['filter']['edit']['extended_output'],
-        candidate_list = config['filter']['edit']['candidate_list'],
-        driver_list = config['filter']['edit']['driver_list'],
-        hotspot_list = config['filter']['edit']['hotspot_list']
     script:
         "../scripts/edit_table.py"

@@ -95,7 +95,6 @@ def get_bam_path(w):
         sample_name = f"{w.sample}_{w.tumor}"
     return sample_df.loc[sample_name]['bam_path']
 
-
 ########### GENERAL ##########################
 
 def get_shell(script_name):
