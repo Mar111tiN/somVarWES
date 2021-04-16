@@ -8,7 +8,8 @@
 
 mawk '
 {
-    read = $5;
+    # everything can be tested
+    read = $0;
     # remove position traces from all read fields
     gsub(/\^[^\t]|\$/,"",read);
     # 

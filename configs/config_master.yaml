@@ -39,9 +39,9 @@ setup:
 #### CUSTOM TOOLS ############
 EBFilter:
     run: True
-    pon_list: PoN/HAEv7_hg38_NovaSeq/Pon_list.txt # path relative to mystatic path
+    pon_list: PoN/HAEv7_hg38_NovaSeq/Pon_list.txt # path relative to static path
     use_cache: False
-    cache_folder: PoN/HAEv7_hg38_NovaSeq # path relative to mystatic path
+    cache_folder: PoN/HAEv7_hg38_NovaSeq # path relative to static path
     full_pon_output: False
     threads:
         pileup: 12
@@ -69,7 +69,7 @@ filter:
         #### TOOLS SECTION ##############
 #### ABSOLUTE PATHS ############
 paths:
-    mystatic: /fast/groups/ag_damm/work/ref/
+    static: /fast/groups/ag_damm/work/ref/
     bihstatic: /fast/projects/cubit/current/static_data
     scripts: scripts/ # folder relative to snakedir
     filter_settings: /fast/users/szyskam_c/snakes/projects/somVarWES/info

@@ -1,6 +1,6 @@
 ---
 inputdirs: 
-    - /fast/users/szyskam_c/work/testdata/testbam # source of fastq files (subfolders allowed) [or bam files in case of rerun]
+    - /fast/users/szyskam_c/work/testdata/bam # source of bam files
 workdir: /fast/users/szyskam_c/scratch/develop/somVarWES # here your results are created
 envs: env # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
@@ -15,40 +15,9 @@ samples: # here go all your samples
         - B  # if more than one, the first normal will be used as default for tumor-sample
         - B2
 cleanup: false
-#### CUSTOM TOOLS ############
-EBscore:
-    run: true
-    pon_path: PoN/HAEv7_hg38_NovaSeq # path relative to mystatic path
-    pon_list: PoN/HAEv7_hg38_NovaSeq/Pon_list.txt # path relative to mystatic path
-    use_cache: false
-    cache_folder: PoN/HAEv7_hg38_NovaSeq # path relative to mystatic path
-    threads:
-        pileup: 12
-        makeEBcache: 20
-        EBscore: 20
-        EBsplit_factor: 20 # into how many jobs is makeEBcache divided per chromosome
-    params:
-        MAPQ: 20   # I guess this should be lower than the mapping quality used for mpileup or not?
-        Q: 25
-        fitting_penalty: 0.5
-filter:
-    threads: 1
-    run: true
-    excel_output: false
-    filter1: filter1-AML7 # which custom filter script should be run for filter 1
-    filter2: filter2-AML7 # which custom filter script should be run for filter 2
-    filter_settings: info/filter_settings.xlsx # the filter file with the filter params # either full path or relative to snakedir
-    excel_sheet: AMLMono7 # the sheet in case filter_settings file is xlsx
-    edit:
-        extended_output: false
-        candidate_list: candidates.xlsx   # either full path or relative to snakedir
-        driver_list: info/AML_drivers.txt          # either full path or relative to snakedir
-        hotspot_list: info/CHIP_mutations_short_hg38.csv
-    keep_syn: true # only applies to the first filter step; in filter2 lists synmuts are always deleted
 #### ABSOLUTE PATHS ############
 paths:
-    mystatic: /fast/groups/ag_damm/work/ref/
-    bihstatic: /fast/projects/cubit/current/static_data
+    static: /fast/groups/ag_damm/work/ref/
 #### REF SECTION ###############
 ref:
     build: hg38
@@ -94,7 +63,7 @@ varscan:
     somatic-p-value: 0.05
 annovar:
     threads: 10
-    humandb: annotation/annovar/humandb # path to humandb
+    humandb: annotation/annovar/humandb # path to humandb relative to static
     annofiles:
         # - refGene
         - ensGene34
@@ -129,23 +98,59 @@ annovar:
         # - dbnsfp30a
         - dbnsfp35a_HAEv7  # 70 columns packed with predictions !!
         - spidex
-FisherStrand:
-    threads: 20
-filter_bam:
-    threads: 4
-    stringency_for_bam: loose # from which filter2 should the filter bam be generated
-    stringency_for_IGVnav: moderate
-    padding: 200
-    folder: filterbam
 primer3:  # is applied after filter step 1
     threads: 10
-    min_size: 120
-    max_size: 220
-    center_offSet: 5 #  how much offSet primer pairs can
-    use_primer_list: ''
+    use_primer_list: ''  # not established yet
+    params:
+        size_range: [120, 220] # targeted amplicon size
+        seq_len: 500 # the length of the query sequence to find primers in
+        center_offSet: 5 #  how much offSet primer pairs can have
+FisherStrand:
+    threads: 20
 HDR:
-    threads: 6
-    min_HDR_count: 1 # minimum lanes around mutation to make it a putative HDR
-    min_similarity: .85 # which similarities to consider as HDR
-    padding: 150  # range around mutation to be scanned
-    min_q: 25 # minimum base quality to be used for HDR-calculation
+    threads: 20 
+    params:
+        # initial HDR detection
+        minAltSum: 8  # minimum Alt count to be considered above threshold
+        AltRatio: [0.1, .85] # [min max] Alt Ratio in pileup to be considered above threshold / somatic (and not germline)
+        # filter HDRs for significance
+        MinHDRCount: 1 # minimum lanes around mutation to make it a putative HDR
+        MINSIM: .85 # which similarities to consider as HDR
+        PAD: 150  # range around mutation to be scanned (if filterbam padding is smaller, that will be used)
+        MinAltSupport: 8  # how many mutation reads must be there
+EBscore:
+    run: true
+    pon_path: PoN/HAEv7_hg38_NovaSeq # path relative to static path
+    pon_list: PoN/HAEv7_hg38_NovaSeq/Pon_list.txt # path relative to static path
+    use_cache: false
+    cache_folder: PoN/HAEv7_hg38_NovaSeq # path relative to static path
+    threads:
+        pileup: 12
+        makeEBcache: 20
+        EBscore: 20
+        EBsplit_factor: 20 # into how many jobs is makeEBcache divided per chromosome
+    params:
+        MAPQ: 20   # I guess this should be lower than the mapping quality used for mpileup or not?
+        Q: 25
+        fit_pen: 0.5
+filter:
+    threads: 1
+    run: true
+    excel_output: false
+    filter1: filter1-AML7 # which custom filter script should be run for filter 1
+    filter2: filter2-AML7 # which custom filter script should be run for filter 2
+    filter_settings: info/filter_settings.xlsx # the filter file with the filter params # either full path or relative to snakedir
+    excel_sheet: AMLMono7 # the sheet in case filter_settings file is xlsx
+    edit:
+        extended_output: false
+        candidate_list: candidates.xlsx   # either full path or relative to snakedir
+        driver_list: info/AML_drivers.txt          # either full path or relative to snakedir
+        hotspot_list: info/CHIP_mutations_short_hg38.csv
+    keep_syn: true # only applies to the first filter step; in filter2 lists synmuts are always deleted
+filter_bam:
+    threads: 1
+    stringency_for_bam: all # from which filter2 should the filter bam be generated
+    stringency_for_IGVnav: moderate
+    padding: 200
+
+

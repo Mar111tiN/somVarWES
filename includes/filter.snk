@@ -65,7 +65,7 @@ rule filter2:
 rule filter_bam:
     input:
         filter_file = "table/{sample}_{tumor}-{normal}.filter2.csv",
-        bam = "bamfinal/{sample}_{type}.bam",
+        bam = get_bam_path,
     output: "filterbam/{sample}_{tumor}-{normal}_{type}.bam"
     conda:
         f"../{config['envs']}/align-env.yml"

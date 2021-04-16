@@ -1,7 +1,8 @@
 import os
-from subprocess import check_call as shell
-from datetime import datetime as dt
 import pandas as pd
+from subprocess import check_call as run
+from datetime import datetime as dt
+
 
 ansii_colors = {
     "magenta": "[1;35;2m",
@@ -49,8 +50,26 @@ def show_command(command, list=False, multi=True, **kwargs):
 
 def run_cmd(cmd, multi=False):
     show_command(cmd, multi=multi)
-    exit = shell(cmd, shell=True)
+    exit = run(cmd, shell=True)
     return exit == 0
+
+
+# shell commands
+def make_mawk(s, shell_path="shell"):
+    """
+    mawk factory function returning the path to the mawk tool
+    root_path is the path of the shell folder relative to the calling script
+    """
+    # get the script directory as snakemake attribute, (maybe climb up with dirname)
+    # scriptdir is in code
+    # ## shell_path = os.path.join(os.path.dirname(s.scriptdir), shell_path'
+    shell_path = os.path.join(s.scriptdir, shell_path)
+    print(f"Using HDR shell path: {shell_path}")
+
+    def mawk(tool_name):
+        return os.path.join(shell_path, f"{tool_name}.mawk")
+
+    return mawk
 
 
 def get_chrom_list(config):

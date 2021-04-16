@@ -88,14 +88,22 @@ def get_tumor_normal_pairs(samples):
 
 
 def get_bam_path(w):
+    '''
+    returns the bam path from the wildcards object depending on the context
+    '''
+
+    ## get the wildcard atributes into wcs
     wcs = vars(w)['_names'].keys()
     if 'type' in wcs:
         sample_name = f"{w.sample}_{w.type}"
-    if 'tumor' in wcs:
+    # for filterbam wildcards contain tumor and type but type is needed
+    # elif takes care of that
+    elif 'tumor' in wcs:
         sample_name = f"{w.sample}_{w.tumor}"
     return sample_df.loc[sample_name]['bam_path']
 
 ########### GENERAL ##########################
+
 
 def get_shell(script_name):
     '''
@@ -111,19 +119,44 @@ def full_path(file):
     '''
 
     build = config['ref']['build']
-    full_ref_path = os.path.join(config['paths']['mystatic'], config['ref'][build][file])
+    full_ref_path = os.path.join(config['paths']['static'], config['ref'][build][file])
     return full_ref_path
 
+
+def get_ref(w):
+    '''
+    returns the path to the ref genome
+    if wildcards contains chrom, the genome split version is returned
+    '''
+
+    ## get the wildcard atributes into wcs
+    wcs = vars(w)['_names'].keys()
+    # get genome split
+    if "chrom" in wcs:
+        return os.path.join(full_path("genome_split"), f"{w.chrom}.fa")
+    else:
+        return full_path("genome")
 
 def static_path(file):
     '''
     returns the absolute path when given relative to static folder
     '''
 
-    return os.path.join(config['paths']['mystatic'], file)
+    return os.path.join(config['paths']['static'], file)
 
 
 ########### VARSCAN ###########################
+def get_bam_pair(w):
+    '''
+    returns the tumor_bam-normal_bam pair from the wildcards object depending on the context
+    '''
+    tumor = f"{w.sample}_{w.tumor}"
+    normal = f"{w.sample}_{w.normal}"
+    return dict(
+        tumor_bam=sample_df.loc[tumor]['bam_path'],
+        normal_bam=sample_df.loc[normal]['bam_path']
+    )
+
 
 def get_anno_input(_):
     if config['varscan']['vcf']:
@@ -135,6 +168,8 @@ def get_anno_input(_):
     return {'indel': indel, 'snp': snp}
 
 
+
+
 ########## ANNOVAR #############################
 # add information to table/{sample}_{tumor_normal}.csv
 def get_anno_params(_):
@@ -143,7 +178,7 @@ def get_anno_params(_):
     '''
 
     # get the full path to humandb
-    humandb = os.path.join(config['paths']['mystatic'], config['annovar']['path_to_humandb'])
+    humandb = os.path.join(config['paths']['static'], config['annovar']['humandb'])
     # get the available anno files
     file_list = list(os.walk(humandb))[0][-1]
     # reduce anno files to the files compatible with genome build version

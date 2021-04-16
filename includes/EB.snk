@@ -25,7 +25,7 @@ def get_cache(w):
 
     chrom = w.chrom
     EBcache_path = static_path(config['EBscore']['pon_list'])
-    cache_folder = os.path.join(config['paths']['mystatic'], config['EBscore']['cache_folder'])
+    cache_folder = os.path.join(config['paths']['static'], config['EBscore']['cache_folder'])
     EBcache_folder = os.path.join(cache_folder, "EBcache")
     EB_cache_file = os.path.join(EBcache_folder, f"{chrom}.cache")
     return EB_cache_file

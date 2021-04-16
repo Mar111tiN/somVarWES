@@ -8,17 +8,17 @@
   },
   "mpileup": {
     "t": "00:45",
-    "mem": 400,
+    "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
   },
   "varscan": {
     "t": "00:30",
-    "mem": 200,
+    "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
   },
   "varscan2table": {
     "t": "00:05",
-    "mem": 100,
+    "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
   },
   "merge_varscan_tables": {

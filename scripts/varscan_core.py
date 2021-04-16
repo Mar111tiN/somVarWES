@@ -1,10 +1,14 @@
-from os import system as shell
+from os import system as run
 from script_utils import show_output, run_cmd
 
 
-def convert_varscan2table(
-    input_files, o, refgen, isVCF, varscan2table, vcf2csv, editcsv, coords2annovar
-):
+def convert_varscan2table(input_files, o, refgen, isVCF, mawk):
+
+    # unwrap the mawk tools
+    vcf2csv = mawk("vcf2csv")
+    editcsv = mawk("editcsvVarscan")
+    coords2annovar = mawk("coords2annovar")
+    varscan2table = mawk("varscan2table")
 
     output_files = []
     if isVCF:
@@ -28,7 +32,7 @@ def convert_varscan2table(
             )
             output_files.append(out)
             # cleanup
-            shell(f"rm {input}.gz; rm {input}.gz.tbi; rm {input}; mv {out_ln} {input}")
+            run(f"rm {input}.gz; rm {input}.gz.tbi; rm {input}; mv {out_ln} {input}")
 
     else:
         for input in input_files:
@@ -44,7 +48,7 @@ def convert_varscan2table(
         f"cat {' '.join(output_files)} | sort -V -k1,2 | mawk 'NR > 2 {{ print }}' >  {o}"
     )
 
-    shell(f"rm -f {' '.join(output_files)}")
+    run(f"rm -f {' '.join(output_files)}")
     show_output(
         f"Concated {input_files[0]} and {input_files[1]} into {o} for annotation.",
         color="success",

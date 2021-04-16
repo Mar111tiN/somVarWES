@@ -1,5 +1,6 @@
 import os
 from varscan_core import convert_varscan2table
+from script_utils import make_mawk
 
 
 def main(s):
@@ -10,14 +11,7 @@ def main(s):
         return os.path.join(s.scriptdir, f"shell/{tool}")
 
     convert_varscan2table(
-        s.input,
-        s.output,
-        refgen=p.refgen,
-        isVCF=cc["vcf"],
-        vcf2csv=get_shell("vcf2csv.mawk"),
-        editcsv=get_shell("editcsvVarscan.mawk"),
-        coords2annovar=get_shell("coords2annovar.mawk"),
-        varscan2table=get_shell("varscan2table.mawk"),
+        s.input, s.output, refgen=p.refgen, isVCF=cc["vcf"], mawk=make_mawk(s)
     )
 
 

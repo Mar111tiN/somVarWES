@@ -42,11 +42,11 @@ wildcard_constraints:
 
 
 # ############## MASTER RULE ##############################################
-
 rule all:
     input:
-        expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
-        expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list)
+        expand("table/{tumor_normal_pair}.anno.csv", tumor_normal_pair=TN_list),
+        # expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
+        # expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list)
 
 
 ###########################################################################
@@ -66,9 +66,9 @@ onstart:
 onsuccess:
     # shell("export PATH=$ORG_PATH; unset ORG_PATH")
     print("SOMVARWES workflow finished - everything ran smoothly")
-    if config['cleanup']:
-        split_table_pattern = 'chr[^.]+\.csv'
-        shell("rm -rf pileup varscan")
-        # remove split table/..chr.csv
-        shell("ls table/ egrep '{}' | sed 's_^_table/_' | xargs -r rm -f")
+    # if config['cleanup']:
+    #     split_table_pattern = 'chr[^.]+\.csv'
+    #     shell("rm -rf pileup varscan")
+    #     # remove split table/..chr.csv
+    #     shell("ls table/ egrep '{}' | sed 's_^_table/_' | xargs -r rm -f")
 

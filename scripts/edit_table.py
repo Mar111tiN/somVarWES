@@ -331,7 +331,7 @@ def main(s):
 
         # ## candidate list #########
         list_cols = []
-        STATIC = config["paths"]["mystatic"]
+        STATIC = config["paths"]["static"]
 
         if candidate_list:
             candidate_file = os.path.join(STATIC, candidate_list)

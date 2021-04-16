@@ -1,7 +1,7 @@
 rule filter_pileup:
     input:
         filter_file = "table/{sample}_{tumor}-{normal}.filter1.csv",
-        bam = "bamfinalsplit/{sample}_{type}.{chrom}.bam"
+        bam = get_bam_path
     output: "hdr/{sample}_{tumor}-{normal}_{type}.{chrom}.filter1.pileup"
     threads:
         2
@@ -10,7 +10,7 @@ rule filter_pileup:
     params:
         refgen = full_path('genome'),
         qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}",
-        cleanpileup = get_script('cleanpileup'),
+        cleanpileup = os.path.join(scriptdir, "shell/cleanpileup.mawk"),
         mut_bedfile = get_mut_bed
     shell:
         "samtools mpileup -l {params.mut_bedfile} -f {params.refgen} -r {wildcards.chrom} {params.qual} {input.bam} | {params.cleanpileup} > {output}; "
@@ -19,7 +19,7 @@ rule filter_pileup:
 
 rule detect_HDR:
     input:
-        bam = "bamfinalsplit/{sample}_{type}.{chrom}.bam",
+        bam = get_bam_path,
         filter_file = "table/{sample}_{tumor}-{normal}.filter1.csv",
         pileup = "hdr/{sample}_{tumor}-{normal}_{type}.{chrom}.filter1.pileup"
     output:
@@ -30,12 +30,8 @@ rule detect_HDR:
         config['HDR']['threads']
     params:
         genome_split = full_path('genome_split'),
-        editbam =  get_script('editbam'),
-        pile2hotspot =  get_script('pile2hotspot'),
-        pile2hotspot_chrom =  get_script('pile2hotspot_chrom'),
-        bam2csv = get_script('bam2csv')
     script:
-        "../scripts/HDR.py"
+        "../scripts/HDRdetect/code/HDRsnake.py"
 
 
 rule merge_HDR:

@@ -1,33 +1,15 @@
-rule mpileup:
-    input:
-        get_bam_path
-    output:
-        "pileup/{sample}_{type}.{chrom}.pileup"
-    log:
-        "logs/pileup/{sample}_{type}.{chrom}.log"
-    threads:
-        2
-    conda:
-        f"../{config['envs']}/align-env.yml"
-    params:
-        bedfile = full_path('bed_file'),
-        refgen = full_path('genome'),
-        qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}"
-    shell:
-        # bed file does not have to be padded here, I think
-        "samtools mpileup -f {params.refgen} -r {wildtype.chrom} {params.qual} -l {params.bedfile} {input} > {output} 2>{log}"
-
-
 rule varscan:
     input:
-        tumor = "pileup/{sample}_{tumor}.{chrom}.pileup",
-        normal = "pileup/{sample}_{normal}.{chrom}.pileup"
+        unpack(get_bam_pair)
     output:
         indel = "varscan/{sample}_{tumor}-{normal}.{chrom}.indel.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{normal}.{chrom}.indel",
         snp = "varscan/{sample}_{tumor}-{normal}.{chrom}.snp.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{normal}.{chrom}.snp"
     threads:
         config['varscan']['threads']
     params:
+        bedfile = full_path('bed_file'),
+        refgen = get_ref,
+        qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}",
         vcf = "--output-vcf 1 " if config['varscan']['vcf'] else "", 
         min = f"--min-coverage {config['varscan']['min-coverage']} --min-var-freq {config['varscan']['min-var-freq']} --min-freq-for-hom {config['varscan']['min-freq-for-hom']}",
         p = f"--p-value {config['varscan']['p-value']} --somatic-p-value {config['varscan']['somatic-p-value']}",
@@ -37,7 +19,8 @@ rule varscan:
     log:
         "logs/varscan/{sample}_{tumor}-{normal}.{chrom}.log"
     shell:
-        "varscan somatic {input.normal} {input.tumor} {params.vcf}"
+        "samtools mpileup -f {params.refgen} -r {wildcards.chrom} {params.qual} -l {params.bedfile} {input.tumor_bam} {input.normal_bam} | "
+        "varscan somatic /dev/stdin {params.vcf} --mpileup 1 "
         "--output-snp {output.snp} --output-indel {output.indel} {params.min} {params.p} {params.np}"
         # " &>{log}"
 
