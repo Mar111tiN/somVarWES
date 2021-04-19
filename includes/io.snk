@@ -87,6 +87,19 @@ def get_tumor_normal_pairs(samples):
     return TN_list
 
 
+def get_chrom_list(config):
+    """
+    returns a list of all valid chromosomes determined by build version
+    """
+
+    if "bed_file" in config['ref'][config["ref"]["build"]].keys():
+        bed_df = pd.read_csv(full_path('bed_file'), sep="\t", skiprows=3)
+        return [chrom for chrom in bed_df.iloc[:,0].unique() if not chrom in ["chrY", "Y"]]
+    # switch for use of "chr"-prefix
+    chrom = "chr" if config["ref"]["build"] == "hg38" else ""
+    return [f"{chrom}{c+1}" for c in range(22)] + ["chrX", "chrY"]
+
+
 def get_bam_path(w):
     '''
     returns the bam path from the wildcards object depending on the context
@@ -115,7 +128,7 @@ def get_shell(script_name):
 def full_path(file):
 
     '''
-    returns the full path to a reference
+    returns the full path to a reference if file is relative to ref/hg38|19
     '''
 
     build = config['ref']['build']

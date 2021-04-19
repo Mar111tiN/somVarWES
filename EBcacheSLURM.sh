@@ -32,19 +32,17 @@ set -x;
 
 unset DRMAA_LIBRARY_PATH
 
-# what does this do
-# eval "$($(which conda) shell.bash hook)"  # ??
-# somehow my environments are not set
+# make conda available
+eval "$($(which conda) shell.bash hook)"
 # have to set it explicitly
-conda activate somvar-env;
+conda activate snake-env;
 echo $CONDA_PREFIX "activated";
 
 # !!! leading white space is important
-DRMAA=" -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} --nodes={cluster.nodes} -n {cluster.threads}";
+DRMAA=" -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads}";
 DRMAA="$DRMAA -o ${LOGDIR}/{rule}-%j.log";
 snakemake --snakefile EBcacheSnakefile --unlock --rerun-incomplete
-snakemake --snakefile EBcacheSnakefile --dag | dot -Tsvg > dax/EBcache_dag.svg
-snakemake --snakefile EBcacheSnakefile --cluster-config EBcache-cluster.json --use-conda --restart-times 3 --rerun-incomplete --drmaa "$DRMAA" -j 3000 -p -r -k
+snakemake --snakefile EBcacheSnakefile --cluster-config configs/cluster/EBcache-cluster.json --use-conda --rerun-incomplete --drmaa "$DRMAA" -j 3000 -p -r -k
 # -k ..keep going if job fails
 # -p ..print out shell commands
 # -P medium

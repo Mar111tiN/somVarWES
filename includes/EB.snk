@@ -3,55 +3,24 @@ rule anno2EB:
         table = "varscan/{sample}_{tumor}-{normal}.{chrom}.csv",
         tumor_bam = get_bam_path
     output:
-        "eb/{sample}_{tumor}-{normal}-{chrom}.EB"
+        "eb/{sample}_{tumor}-{normal}.{chrom}.EB"
     log:
-        "logs/eb/{sample}_{tumor}-{normal}-{chrom}.log"
+        "logs/eb/{sample}_{tumor}-{normal}.{chrom}.log"
     threads:
         config['EBscore']['threads']['EBscore']
     conda:
         f"../{config['envs']}/eb-env.yml"
     params:
-        pon_path = static_path('pon_path'),
-        pon_list = static_path(config['EBscore']['pon_list']),
+        pon_path = static_path(config['EBscore']['pon_path']),
+        pon_list = config['EBscore']['pon_list'],
         genome_split = full_path('genome_split')
     script:
-        "../scripts/ebscore/code/ebsnake.py"
-
-
-def get_cache(w):
-    '''
-    retrieves path to chrom.cache from the wildcards.chrom
-    '''
-
-    chrom = w.chrom
-    EBcache_path = static_path(config['EBscore']['pon_list'])
-    cache_folder = os.path.join(config['paths']['static'], config['EBscore']['cache_folder'])
-    EBcache_folder = os.path.join(cache_folder, "EBcache")
-    EB_cache_file = os.path.join(EBcache_folder, f"{chrom}.cache")
-    return EB_cache_file
-
-
-# ######################## MERGE ####################################################
-
-def get_mergeEBscore_input(w):
-    '''
-    performs the input switch for mergeEBscore
-    '''
-
-    if config['EBscore']['use_cache']:
-        input_list = [f"eb/{w.sample}_{w.tumor}-{w.normal}-{chrom}.cachedEB" for chrom in chrom_list]
-    else:
-        input_list = [f"eb/{w.sample}_{w.tumor}-{w.normal}-{chrom}.EB" for chrom in chrom_list]
-    val_list = []
-    for _input in input_list:
-        val_list.append(_input)
-    return val_list
+        "../scripts/ebsnake.py"
 
 
 rule mergeEBscore:
     input:
-        get_mergeEBscore_input
-        # input switch for cached eb-files
+        expand("eb/{{sample}}_{{tumor}}-{{normal}}.{chrom}.EB", chrom=chrom_list)
     output:
         "table/{sample}_{tumor}-{normal}.EB.csv"
     threads:
@@ -71,11 +40,9 @@ rule mergeEBscore:
 
         EB_merge = sort_df(EB_merge)
         # sort nicely
-        cols = ['Chr', 'Start', 'End', 'Ref', 'Alt', 'EBscore', 'PoN-Ref', 'PoN-Alt']
-        if config['EBscore']['full_pon_output']:
-            base_cols = list("AaGgCcTtIiDd")
-            col_name = "|".join(base_cols)
-            cols.append(col_name)
-        EB_merge = EB_merge[cols]
+        cols = ['Chr', 'Start', 'End', 'Ref', 'Alt', 'EB']
+        if config['EBscore']['PON_output']:
+            cols.append("PON")
+        EB_merge = EB_merge.loc[:, cols]
         EB_merge.to_csv(output[0], sep='\t', index=False)
         show_output(f"Written EB-annotated file to {output[0]}", color='success')

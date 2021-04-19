@@ -37,16 +37,10 @@ ref:
         genome_path: genome/gatk/hg38/
         genome: genome/gatk/hg38/hg38.fasta
         genome_split: genome/gatk/hg38/split
-        dbsnp: annotation/gatk/hg38/dbsnp_138.hg38.vcf
-        dbsnp_all: annotation/gatk/hg38/All_20180418.vcf
-        dbsnp_common: annotation/gatk/hg38/common_all_20180418.vcf
-        gold_standard_indels: annotation/gatk/hg38/Mills_and_1000G_gold_standard.indels.hg38.vcf
-        phase1k_indels: annotation/gatk/hg38/1000G_phase1.snps.high_confidence.hg38.vcf # seems to work instead of indels (acc. to GATK blog: https://gatkforums.broadinstitute.org/gatk/discussion/6800/known-sites-for-indel-realignment-and-bqsr-in-hg38-bundle)
         bed_file: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Covered.bed
         bed_file_pad: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Padded.bed
 #### TOOLS SECTION ##############
 tools:
-    # annovar: perl /fast/users/szyskam_c/tools/annovar2018
     annovar: perl /fast/users/szyskam_c/tools/annovar2019
 mpileup:
     Q: 25   # base quality
@@ -120,19 +114,23 @@ HDR:
         MinAltSupport: 8  # how many mutation reads must be there
 EBscore:
     run: true
-    pon_path: PoN/HAEv7_hg38_NovaSeq # path relative to static path
-    pon_list: PoN/HAEv7_hg38_NovaSeq/Pon_list.txt # path relative to static path
+    pon_path: PON/HAEv7_hg38_NovaSeq # path relative to static path
+    pon_list: PON_full.txt # path relative to static path
     use_cache: false
-    cache_folder: PoN/HAEv7_hg38_NovaSeq # path relative to static path
+    debug: false
+    PON_output: true
+    AB_chunk_size:  # size of AB_df splits for multithreaded computation 
+        EBscore: 500
+        EBcache: 500000
     threads:
-        pileup: 12
-        makeEBcache: 20
+        EBcacheMatrix: 10
+        EBcacheAB: 30
         EBscore: 20
-        EBsplit_factor: 20 # into how many jobs is makeEBcache divided per chromosome
     params:
         MAPQ: 20   # I guess this should be lower than the mapping quality used for mpileup or not?
         Q: 25
         fit_pen: 0.5
+        zero_condense_factor: 13
 filter:
     threads: 1
     run: true

@@ -6,11 +6,6 @@
     "partition": "debug",
     "threads": "{threads}"
   },
-  "mpileup": {
-    "t": "00:45",
-    "mem": 500,
-    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
-  },
   "varscan": {
     "t": "00:30",
     "mem": 500,
@@ -40,14 +35,9 @@
     "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
   },
-  "anno2EBcache": {
-    "t": "00:30",
-    "mem": 250,
-    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
-  },
   "mergeEBscore": {
     "t": "00:05",
-    "mem": 200
+    "mem": 500
   },
   "merge_annos": {
     "t": "00:05",

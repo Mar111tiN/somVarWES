@@ -38,7 +38,6 @@ def show_command(command, list=False, multi=True, **kwargs):
     prints the command line if debugging is active
     """
 
-    proc = f"\033[92mProcess {os.getpid()}\033[0m : " if multi else ""
     if list:
         command = f"\033[1m$ {' '.join(command)}\033[0m"
     else:
@@ -50,17 +49,6 @@ def show_command(command, list=False, multi=True, **kwargs):
 def run_cmd(cmd, multi=False):
     show_command(cmd, multi=multi)
     exit = run(cmd, shell=True)
-    return exit == 0
-
-
-def get_chrom_list(config):
-    """
-    returns a list of all valid chromosomes determined by build version
-    """
-
-    # switch for use of "chr"-prefix
-    chrom = "chr" if config["ref"]["build"] == "hg38" else ""
-    return [f"{chrom}{c+1}" for c in range(22)] + ["chrX", "chrY"]
 
 
 def sort_df(df, cols={"Chr": True, "Start": True}):

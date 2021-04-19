@@ -1,0 +1,39 @@
+import os
+import re
+import yaml
+import argparse
+import math
+
+# ############ SETUP ##############################
+configfile: "configs/config_devel.yaml"
+# configfile: "configs/config.json"
+# include helper functions
+include: "includes/io.snk"
+include: "includes/utils.snk"
+work_dir = static_path(config['EBscore']['pon_path'])
+workdir: work_dir
+
+# ############ GLOBALS ############################
+chrom_list = get_chrom_list(config)
+
+# ############ INCLUDES ###########################
+include: "includes/EBcache.snk"
+
+# specified wildcards have to match the regex
+wildcard_constraints:
+    # eg sample cannot contain _ or / to prevent ambiguous wildcards
+    chrom = "[^_/.]+",
+
+
+rule all:
+    input:
+        expand("matrix/{chrom}.pon.gz", chrom=chrom_list),
+        # expand("{chrom}.AB.gz", chrom=chrom_list),
+        # "AB/chr22.AB.gz"
+	"PONcache.done"
+
+onstart:
+    print(f" Generating Cache files in {work_dir}.......")
+
+onsuccess:
+    print(f"Workflow finished - EBcache has been generated and stored in {work_dir}")

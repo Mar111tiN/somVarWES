@@ -72,16 +72,6 @@ def make_mawk(s, shell_path="shell"):
     return mawk
 
 
-def get_chrom_list(config):
-    """
-    returns a list of all valid chromosomes determined by build version
-    """
-
-    # switch for use of "chr"-prefix
-    chrom = "chr" if config["ref"]["build"] == "hg38" else ""
-    return [f"{chrom}{c+1}" for c in range(22)] + ["chrX", "chrY"]
-
-
 def sort_df(df, cols={"Chr": True, "Start": True}):
     """
     helper for sorting dfs for chromosomes using Chr, Start + cols in cols

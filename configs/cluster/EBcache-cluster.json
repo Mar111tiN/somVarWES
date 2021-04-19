@@ -1,19 +1,19 @@
 {
   "__default__": {
-    "t": "00:10",
     "mem": "200",
     "nodes": 1,
-    "partition": "debug",
+    "partition": "medium",
     "threads": "{threads}",
-    "name": "{rule}:{wildcards.sample}"
+    "name": "{rule}:{wildcards.chrom}"
   },
-  "filter2": {
-    "t": "00:05"
+  "EBcacheMatrix": {
+    "t": "12:00"
   },
-  "filterbam": {
-    "t": "00:05"
+  "EBcacheAB": {
+    "t": "24:00",
+    "mem": "3000"
   },
-  "IGVnav": {
+  "EBcacheDone": {
     "t": "00:05"
   }
 }
