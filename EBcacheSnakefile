@@ -29,8 +29,8 @@ rule all:
     input:
         expand("matrix/{chrom}.pon.gz", chrom=chrom_list),
         # expand("{chrom}.AB.gz", chrom=chrom_list),
-        # "AB/chr22.AB.gz"
-	"PONcache.done"
+        "splitAB/chr11.5.AB.gz"
+	    # "PONcache.done"
 
 onstart:
     print(f" Generating Cache files in {work_dir}.......")

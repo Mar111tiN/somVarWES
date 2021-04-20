@@ -20,7 +20,7 @@ rule EBcacheAB:
     input:
         "matrix/{chrom}.pon.gz"
     output:
-        "AB/{chrom}.AB.gz"
+        "splitAB/{chrom}.{split}.AB.gz"
     threads:
         config['EBscore']['threads']['EBcacheAB']
     conda:
@@ -29,7 +29,25 @@ rule EBcacheAB:
         pon_path = static_path(config['EBscore']['pon_path'])
     script:
         "../scripts/EBcache_ABsnake.py"
-        
+
+
+
+
+rule combineEBcacheAB:
+    input:
+        expand("splitAB/{{chrom}}.{split}.AB.gz", split=list(range(config['EBscore']['ABcache_split'])))
+    output:
+        "AB/{chrom}.AB.gz"
+    threads:
+        2
+    run:
+        dfs = []
+        for file in input:
+            df = pd.read_csv(file, sep="\t", compression="gzip")
+            dfs.append(file)
+        AB_df = pd.concat(dfs).sort_values("Start")
+        AB_df.to_csv(output, sep="\t", index=False, compression="gzip")
+
 
 rule EBcacheDone:
     input:
@@ -37,7 +55,8 @@ rule EBcacheDone:
     output:
         touch("PONcache.done")
     params:
-        zero_path = os.path.join(static_path(config['EBscore']['pon_list']), "zero"),
+        pon_path = static_path(config['EBscore']['pon_path']),
+        pon_list = config['EBscore']['pon_list']
     threads:
         2
     conda:

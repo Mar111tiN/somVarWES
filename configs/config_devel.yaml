@@ -119,12 +119,13 @@ EBscore:
     use_cache: false
     debug: false
     PON_output: true
+    ABcache_split: 20
     AB_chunk_size:  # size of AB_df splits for multithreaded computation 
         EBscore: 500
-        EBcache: 500000
+        EBcache: 1000
     threads:
         EBcacheMatrix: 10
-        EBcacheAB: 30
+        EBcacheAB: 26
         EBscore: 20
     params:
         MAPQ: 20   # I guess this should be lower than the mapping quality used for mpileup or not?
