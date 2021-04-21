@@ -1,6 +1,6 @@
 import os
 import sys
-import pandas
+import pandas as pd
 
 # add ebscore package to sys.path
 sys.path.append(os.path.join(snakemake.scriptdir, "ebscore/code"))
@@ -19,12 +19,11 @@ def main(s):
     # get the pon_size from the PONlist
 
     pon_file = os.path.join(p.pon_path, p.pon_list)
-    pon_size = len(pd.read_csv(pon_file, sep="\t").index)
+    pon_size = len(pd.read_csv(pon_file, sep="\t", header=None).index)
 
-    zdf = collapse_zeros(
-        os.path.join(pon_path, "zero"),
-        pon_size=pon_size,
-        zero_condense_factor=cc["params"]["zero_condense_factor"],
+    collapse_zeros(
+        os.path.join(p.pon_path, "zero"),
+        pon_size=pon_size
     )
 
 

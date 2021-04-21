@@ -6,14 +6,26 @@
     "threads": "{threads}",
     "name": "{rule}:{wildcards.chrom}"
   },
+  "EBcacheZeros": {
+    "t": "00:30",
+    "mem": "3500",
+    "name": "{rule}"
+  },
   "EBcacheMatrix": {
     "t": "12:00"
   },
   "EBcacheAB": {
-    "t": "24:00",
-    "mem": "3500"
+    "t": "10:00",
+    "mem": "3500",
+    "name": "{rule}:{wildcards.chrom}.{wildcards.split}"
+  },
+  "combineEBcacheAB": {
+    "t": "00:25",
+    "mem": "2500"
   },
   "EBcacheDone": {
-    "t": "00:05"
+    "t": "00:30",
+    "mem": "3500",
+    "name": "{rule}"
   }
 }

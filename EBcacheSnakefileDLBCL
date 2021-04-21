@@ -43,6 +43,13 @@ rule all:
 
 onstart:
     print(f" Generating Cache files in {work_dir}.......")
+    pon_path = static_path(config['EBscore']['pon_path'])
+    pon_file = os.path.join(pon_path, config['EBscore']['pon_list'])
+    pon_size = len(pd.read_csv(pon_file, sep="\t", header=None).index)
+    collapse_zeros(
+        os.path.join(pon_path, "zero"),
+        pon_size=pon_size
+    )
 
 onsuccess:
     print(f"Workflow finished - EBcache has been generated and stored in {work_dir}")

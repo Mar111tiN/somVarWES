@@ -13,12 +13,26 @@ rule EBcacheMatrix:
         genome_split = full_path('genome_split'),
         bedfile = full_path('bed_file')
     script:
-        "../scripts/EBcache_matrixsnake.py"
+        "../scripts/EBcache_matrix.py"
 
+
+rule collapseZeros:
+    output:
+        touch("zero/done")
+    threads:
+        4
+    conda:
+        f"../{config['envs']}/eb-env.yml"
+    params:
+        pon_path = static_path(config['EBscore']['pon_path']),
+        pon_list = config['EBscore']['pon_list']
+    script:
+        "../scripts/EBcache_zeros.py"
 
 rule EBcacheAB:
     input:
-        "matrix/{chrom}.pon.gz"
+        zero="zero/done",
+        matrix="matrix/{chrom}.pon.gz"
     output:
         "splitAB/{chrom}.{split}.AB.gz"
     threads:
@@ -28,9 +42,7 @@ rule EBcacheAB:
     params:
         pon_path = static_path(config['EBscore']['pon_path'])
     script:
-        "../scripts/EBcache_ABsnake.py"
-
-
+        "../scripts/EBcache_AB.py"
 
 
 rule combineEBcacheAB:
@@ -58,8 +70,8 @@ rule EBcacheDone:
         pon_path = static_path(config['EBscore']['pon_path']),
         pon_list = config['EBscore']['pon_list']
     threads:
-        2
+        6
     conda:
         f"../{config['envs']}/eb-env.yml"
     script:
-        "../scripts/EBcache_done.py"
+        "../scripts/EBcache_zeros.py"
