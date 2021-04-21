@@ -26,7 +26,7 @@ rule fisher_strand:
     threads:
         config["FisherStrand"]["threads"]
     conda:
-        f"../{config['envs']}/fisher-env.yml"
+        f"../{config['envs']}/eb-env.yml"
     script:
         "../scripts/fisher_strand.py"
 

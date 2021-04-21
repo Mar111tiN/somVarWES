@@ -68,14 +68,14 @@ rule filter_bam:
         bam = get_bam_path,
     output: "filterbam/{sample}_{tumor}-{normal}_{type}.bam"
     conda:
-        f"../{config['envs']}/align-env.yml"
+        f"../{config['envs']}/eb-env.yml"
     threads:
         config['filter_bam']['threads']
     params:
         mut_bedfile = get_mut_bed
     shell:
         "samtools view -bhL {params.mut_bedfile} {input.bam} > {output}; "
-        "picard BuildBamIndex INPUT={output}; "
+        "samtools index {output}; "
         "rm -f {params.mut_bedfile}"
 
 

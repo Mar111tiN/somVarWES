@@ -44,6 +44,11 @@ rule all:
 
 onstart:
     print(f" Generating Cache files in {work_dir}.......")
+    try:
+        os.remove("zero/done")
+        print("Removing zero/done")
+    except OSError:
+        pass
 
 onsuccess:
     print(f"Workflow finished - EBcache has been generated and stored in {work_dir}")

@@ -12,9 +12,7 @@ def main(s):
     anno = i.annovar
     fisher = i.fisher
     eb = i.eb_score
-    output = s.output
-    threads = s.threads
-    log = s.log
+    output = str(s.output)
 
     # ############## ANNOVAR FILE ########################################
     # ####################################################################
@@ -38,7 +36,6 @@ def main(s):
     anno_df["NVAF"] = (anno_df["NR2"] / (anno_df["NR1"] + anno_df["NR2"])).round(3)
 
     # RENAMING ##################################
-
     # get rename dict for .refGene annotation
     refgen_dict = {
         col: col.replace(".refGene", "") for col in anno_df.columns if ".refGene" in col
@@ -52,18 +49,19 @@ def main(s):
     # rename the columns
     anno_df = anno_df.rename(columns=refgen_dict)
 
-    # resort the columns
-    cols = list(anno_df.columns)
-    start_cols = cols[:11]
-    quant_cols = cols[-15:]
-    anno_cols = cols[11:-15]
+
+    # # resort the columns
+    # cols = list(anno_df.columns)
+    # start_cols = cols[:11]
+    # quant_cols = cols[-15:]
+    # anno_cols = cols[11:-15]
 
     # MERGE Func into ExonicFunc ##################################
     # merge ExonFunc from Func, if ExonFunc not available
     anno_df.loc[anno_df["ExonicFunc"] == ".", "ExonicFunc"] = anno_df["Func"]
 
     # ############ -->COLS #####################################
-    new_cols = start_cols + quant_cols
+    # new_cols = start_cols + quant_cols
 
     # ############## MERGE WITH EB AND FISHER ############################
     #####################################################################
@@ -96,11 +94,22 @@ def main(s):
 
     # ############## REARRANGE COLUMNS ###################################
     #####################################################################
+    # write column list to snakepath/info
+    snakedir = os.path.dirname(workflow.snakefile)
+    col_file = os.path.join(snakedir, "info/anno_cols.txt")
+    # make a dataframe from cols and write to file for inspection
+    pd.DataFrame({"cols":list(df.columns)}).to_csv(col_file, index=False, header=False)
+    
+    # if an edited file list exists, use that for sorting
+    new_col_file = os.path.join(snakedir, "info/anno_cols_edit.txt")
+    try:
+        new_cols = list(pd.read_csv(new_col_file).iloc[:,0])
+        anno_df = anno_df.loc[:, new_cols])
 
-    new_cols += anno_cols
-    anno_df = sort_df(anno_df[new_cols])
-    anno_df.to_csv(output[0], sep="\t", index=False)
-    print(f"Writing combined annotation to {output[0]}.")
+    anno_df = sort_df(anno_df)
+
+    anno_df.to_csv(output, sep="\t", index=False)
+    print(f"Writing combined annotation to {output.")
 
 
 if __name__ == "__main__":
