@@ -34,22 +34,24 @@ def show_output(text, color="normal", multi=False, time=True, **kwargs):
     print(time + proc + text, **kwargs)
 
 
-def show_command(command, list=False, multi=True, **kwargs):
+def show_command(command, list=False, time=False, multi=True, **kwargs):
     """
     prints the command line if debugging is active
     """
-
+    time = (
+        f"\033{colors['time']}{dt.now().strftime('%H:%M:%S')}\033[0m : " if time else ""
+    )
     proc = f"\033[92mProcess {os.getpid()}\033[0m : " if multi else ""
     if list:
         command = f"\033[1m$ {' '.join(command)}\033[0m"
     else:
         command = f"\033[1m$ {command}\033[0m"
-    print(proc + command, **kwargs)
+    print(time + proc + command, **kwargs)
     return
 
 
-def run_cmd(cmd, multi=False):
-    show_command(cmd, multi=multi)
+def run_cmd(cmd, **kwargs):
+    show_command(cmd, **kwargs)
     exit = run(cmd, shell=True)
     return exit == 0
 

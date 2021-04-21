@@ -118,6 +118,7 @@ EBscore:
     pon_list: PON_full.txt # path relative to static path
     use_cache: false
     debug: false
+    reflat: false  # reapply flattening procedure to zero file at startup
     PON_output: true
     ABcache_split: 25
     AB_chunk_size:  # size of AB_df splits for multithreaded computation 
@@ -125,13 +126,13 @@ EBscore:
         EBcache: 100000
     threads:
         EBcacheMatrix: 10
-        EBcacheAB: 26
+        EBcacheAB: 22
         EBscore: 20
     params:
         MAPQ: 20   # I guess this should be lower than the mapping quality used for mpileup or not?
         Q: 25
         fit_pen: 0.5
-        zero_condense_factor: 13
+        zero_condense_factor: 9
 filter:
     threads: 1
     run: true

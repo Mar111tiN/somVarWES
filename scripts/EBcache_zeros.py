@@ -23,7 +23,9 @@ def main(s):
 
     collapse_zeros(
         os.path.join(p.pon_path, "zero"),
-        pon_size=pon_size
+        pon_size=pon_size,
+        zero_condense_factor=cc['params']['zero_condense_factor'],
+        reflat=p.reflat
     )
 
 

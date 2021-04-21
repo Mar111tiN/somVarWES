@@ -17,7 +17,7 @@
   "EBcacheAB": {
     "t": "10:00",
     "mem": "3500",
-    "name": "{rule}:{wildcards.chrom}.{wildcards.split}"
+    "name": "{rule}:{wildcards.chrom}.split{wildcards.split}"
   },
   "combineEBcacheAB": {
     "t": "00:25",

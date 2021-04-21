@@ -16,7 +16,7 @@ rule EBcacheMatrix:
         "../scripts/EBcache_matrix.py"
 
 
-rule collapseZeros:
+rule EBcacheZeros:
     output:
         touch("zero/done")
     threads:
@@ -25,7 +25,8 @@ rule collapseZeros:
         f"../{config['envs']}/eb-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path']),
-        pon_list = config['EBscore']['pon_list']
+        pon_list = config['EBscore']['pon_list'],
+        reflat = config['EBscore']['reflat']
     script:
         "../scripts/EBcache_zeros.py"
 
@@ -68,7 +69,8 @@ rule EBcacheDone:
         touch("PONcache.done")
     params:
         pon_path = static_path(config['EBscore']['pon_path']),
-        pon_list = config['EBscore']['pon_list']
+        pon_list = config['EBscore']['pon_list'],
+        reflat = False
     threads:
         6
     conda:

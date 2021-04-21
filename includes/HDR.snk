@@ -10,10 +10,9 @@ rule filter_pileup:
     params:
         refgen = full_path('genome'),
         qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}",
-        cleanpileup = os.path.join(scriptdir, "shell/cleanpileup.mawk"),
         mut_bedfile = get_mut_bed
     shell:
-        "samtools mpileup -l {params.mut_bedfile} -f {params.refgen} -r {wildcards.chrom} {params.qual} {input.bam} | {params.cleanpileup} > {output}; "
+        "samtools mpileup -l {params.mut_bedfile} -f {params.refgen} -r {wildcards.chrom} {params.qual} {input.bam} > {output}; "
         "rm -f {params.mut_bedfile} "
 
 
@@ -31,7 +30,7 @@ rule detect_HDR:
     params:
         genome_split = full_path('genome_split'),
     script:
-        "../scripts/HDRdetect/code/HDRsnake.py"
+        "../scripts/runHDR.py"
 
 
 rule merge_HDR:

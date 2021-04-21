@@ -38,6 +38,7 @@ def main(s):
     split = int(w.split)
     # get the split pon_matrix_df for that split
     split_pon_matrix_df = np.array_split(pon_matrix_df, cc["ABcache_split"])[split]
+    del pon_matrix_df
     matrix_len = len(split_pon_matrix_df.index)
     show_output(
         f"Finished. Computing ABcache for {matrix_len} positions ({matrix_len * 12} lines).",
