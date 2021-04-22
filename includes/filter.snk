@@ -6,6 +6,8 @@ rule filter1:
         basic = "filter/{sample}_{tumor}-{normal}.basic.csv"
     wildcard_constraints:
         sample = "[^_]+"
+    params:
+        snakedir=snakedir
     threads:
         config['filter']['threads']
     script:

@@ -1,14 +1,18 @@
-import yaml
-
-
+from yaml import CLoader as Loader, load, dump
 # ############ SETUP ##############################
 configfile: "configs/config_devel.yaml"
 # configfile: "configs/config.json"
+
 workdir: config['workdir']
 # extract the scriptdir for creating shell_paths
 snakedir = os.path.dirname(workflow.snakefile)
 scriptdir = os.path.join(snakedir, "scripts")
 
+# load the sample independent config file
+general_config_file = os.path.join(snakedir, config['config'])
+with open(general_config_file, "r") as stream:
+    general_config = load(stream, Loader=Loader)
+config.update(general_config)
 
 # include helper functions
 include: "includes/io.snk"
@@ -62,7 +66,7 @@ onstart:
     print('bam:', short_sample_df.loc[:, ['bam_path']])
     path_to_config = os.path.join(config['workdir'], "config.yaml")
     with open(path_to_config, 'w+') as stream:
-        yaml.dump(config, stream, default_flow_style=False)
+        dump(config, stream, default_flow_style=False)
     # create logs folder
 
 

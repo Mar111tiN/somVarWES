@@ -14,7 +14,7 @@ from zerocache import collapse_zeros
 
 
 # ############ SETUP ##############################
-configfile: "configs/config_devel.yaml"
+configfile: "configs/config_DLBCL.yaml"
 # configfile: "configs/config.json"
 # include helper functions
 include: "includes/io.snk"
@@ -38,7 +38,7 @@ rule all:
     input:
         expand("matrix/{chrom}.pon.gz", chrom=chrom_list),
         # expand("{chrom}.AB.gz", chrom=chrom_list),
-        "splitAB/chr1.0.AB.gz"
+        # "splitAB/chr1.0.AB.gz"
         # "AB/chr1.AB.gz"
 	    # "PONcache.done"
 

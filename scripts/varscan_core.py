@@ -1,17 +1,19 @@
+import os
 from os import system as run
 from script_utils import show_output, run_cmd
 
 
-def convert_varscan2table(input_files, o, refgen, isVCF, mawk):
-
-    # unwrap the mawk tools
-    vcf2csv = mawk("vcf2csv")
-    editcsv = mawk("editcsvVarscan")
-    coords2annovar = mawk("coords2annovar")
-    varscan2table = mawk("varscan2table")
+def convert_varscan2table(input_files, o, config={}):
+    """
+    converts the vcf output from varscan into readable tab-sep data
+    """
+    # unwrapper for the mawk tools
+    def mawk(tool):
+        return os.path.join(config["mawk_path"], f"{tool}.mawk")
 
     output_files = []
-    if isVCF:
+
+    if config["isVCF"]:
         for input in input_files:
             # standard output
             # print('input:', input)
@@ -26,9 +28,9 @@ def convert_varscan2table(input_files, o, refgen, isVCF, mawk):
             # for indel realignment, files have to be bgzipped and indexed with tabix
             run_cmd(f"bgzip < {input} > {input}.gz")
             run_cmd(f"tabix {input}.gz")
-            run_cmd(f"bcftools norm -f {refgen} -o {out_ln} {input}.gz")
+            run_cmd(f"bcftools norm -f {config['refgen']} -o {out_ln} {input}.gz")
             run_cmd(
-                f"cat {out_ln} | sed 's/SOMATIC;//' | {vcf2csv} | {editcsv} | {coords2annovar} > {out}"
+                f"cat {out_ln} | sed 's/SOMATIC;//' | {mawk('vcf2csv')} | {mawk('editcsvVarscan')} | {mawk('coords2annovar')} > {out}"
             )
             output_files.append(out)
             # cleanup
@@ -40,7 +42,7 @@ def convert_varscan2table(input_files, o, refgen, isVCF, mawk):
             out = f"{input}.table"
             output_files.append(out)
             # varscan output has to be converted to avinput file format
-            run_cmd(f"{varscan2table} < {input} > {out}")
+            run_cmd(f"{mawk('varscan2table')} < {input} > {out}")
 
     # CONCAT THE FILES
     # rm first two lines (the headers of both files)

@@ -11,7 +11,7 @@ rule annovar:
     params:
         anno = get_anno_params,
     conda:
-        f"../{config['envs']}/anno-env.yml"
+        f"../{config['envs']}/eb-env.yml"
     script:
         "../scripts/anno.py"
 
@@ -40,6 +40,8 @@ rule merge_annos:
         "table/{sample}_{tumor_normal}.raw.csv"
     threads:
         1
+    params:
+        info_folder=os.path.join(snakedir, "info")
     script:
         "../scripts/merge_annos.py"
 
@@ -51,5 +53,7 @@ rule edit_table:
         "filter/{sample}_{tumor_normal}.csv"
     threads:
         1
+    params:
+        snake_folder=snakedir
     script:
         "../scripts/edit_table.py"

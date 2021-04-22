@@ -1,6 +1,8 @@
 import pandas as pd
+import os
 import re
 from script_utils import sort_df
+from derive_cols import rearrange_cols
 
 # ############## SNAKEMAKE ################################
 
@@ -9,10 +11,12 @@ def main(s):
     config = s.config
 
     i = s.input
+    p = s.params
     anno = i.annovar
     fisher = i.fisher
     eb = i.eb_score
     output = str(s.output)
+    info_folder = p.info_folder
 
     # ############## ANNOVAR FILE ########################################
     # ####################################################################
@@ -40,15 +44,14 @@ def main(s):
     refgen_dict = {
         col: col.replace(".refGene", "") for col in anno_df.columns if ".refGene" in col
     }
-    # get rename dict for .ensGene annotation
-    refgen_dict = {
-        col: re.sub(".ensGene[0-9]*", "", col)
-        for col in anno_df.columns
-        if ".ensGene" in col
-    }
+    # # get rename dict for .ensGene annotation
+    # refgen_dict = {
+    #     col: re.sub(".ensGene[0-9]*", "", col)
+    #     for col in anno_df.columns
+    #     if ".ensGene" in col
+    # }
     # rename the columns
     anno_df = anno_df.rename(columns=refgen_dict)
-
 
     # # resort the columns
     # cols = list(anno_df.columns)
@@ -76,40 +79,32 @@ def main(s):
     anno_df = anno_df.merge(
         fisher_df, on=["Chr", "Start", "End", "Ref", "Alt", "TR1", "TR2"]
     )
-    fisher_cols = list(fisher_df.columns[5:6])
-    new_cols += fisher_cols  # -->COLS
-    if config["EBFilter"]["run"]:
+
+    # fisher_cols = list(fisher_df.columns[5:6])
+    # new_cols += fisher_cols  # -->COLS
+
+    if config["EBscore"]["run"]:
         print(f"Loading EBScore from file {eb} and merging into annotation.")
         eb_df = (
             pd.read_csv(eb, sep="\t", dtype={"Chr": str, "Start": int, "End": int})
             .fillna(".")
             .sort_values(["Chr", "Start"])
         )
-        eb_cols = list(eb_df.columns[5:])
+        # eb_cols = list(eb_df.columns[5:])
         # avoid duplication of duplicate varscan calls
-        anno_df = anno_df.merge(
-            eb_df, on=["Chr", "Start", "End", "Ref", "Alt"]
-        ).drop_duplicates()
-        new_cols += eb_cols  # -->COLS
+        anno_df = (
+            anno_df.merge(eb_df, on=["Chr", "Start", "End", "Ref", "Alt"])
+            .drop_duplicates()
+            .rename({"EB": "EBscore"}, axis=1)
+        )
 
-    # ############## REARRANGE COLUMNS ###################################
-    #####################################################################
-    # write column list to snakepath/info
-    snakedir = os.path.dirname(workflow.snakefile)
-    col_file = os.path.join(snakedir, "info/anno_cols.txt")
-    # make a dataframe from cols and write to file for inspection
-    pd.DataFrame({"cols":list(df.columns)}).to_csv(col_file, index=False, header=False)
-    
-    # if an edited file list exists, use that for sorting
-    new_col_file = os.path.join(snakedir, "info/anno_cols_edit.txt")
-    try:
-        new_cols = list(pd.read_csv(new_col_file).iloc[:,0])
-        anno_df = anno_df.loc[:, new_cols])
-
+    # ############## REARRANGE COLUMNS  and sort rows ###################################
+    anno_df = rearrange_cols(anno_df, file_name="raw_cols", folder=info_folder)
     anno_df = sort_df(anno_df)
 
+    # ############# WRITE OUTPUT ########################################################
     anno_df.to_csv(output, sep="\t", index=False)
-    print(f"Writing combined annotation to {output.")
+    print(f"Writing combined annotation to {output}.")
 
 
 if __name__ == "__main__":
