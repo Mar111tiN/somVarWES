@@ -1,9 +1,7 @@
-import yaml
-import re
 import pandas as pd
 import numpy as np
 import os
-import openpyxl
+from yaml import CLoader as Loader, load
 
 
 def get_PON_info(df):
@@ -12,14 +10,14 @@ def get_PON_info(df):
     """
     org_cols = list(df.columns)
 
-    df.loc[:, ["PON+"]] = df["PON"].str.split("-").str[0]
-    df.loc[:, ["PON-"]] = df["PON"].str.split("-").str[1]
-    df.loc[:, ["PONA+"]] = df["PON+"].str.split("=").str[0]
-    df.loc[:, ["POND+"]] = df["PON+"].str.split("=").str[1]
-    df.loc[:, ["PONA-"]] = df["PON-"].str.split("=").str[0]
-    df.loc[:, ["POND-"]] = df["PON-"].str.split("=").str[1]
-    df.loc[:, ["PONA"]] = df["PONA+"] + "|" + df["PONA-"]
-    df.loc[:, ["POND"]] = df["POND+"] + "|" + df["POND-"]
+    df.loc[:, "PON+"] = df["PON"].str.split("-").str[0]
+    df.loc[:, "PON-"] = df["PON"].str.split("-").str[1]
+    df.loc[:, "PONA+"] = df["PON+"].str.split("=").str[0]
+    df.loc[:, "POND+"] = df["PON+"].str.split("=").str[1]
+    df.loc[:, "PONA-"] = df["PON-"].str.split("=").str[0]
+    df.loc[:, "POND-"] = df["PON-"].str.split("=").str[1]
+    df.loc[:, "PONA"] = df["PONA+"] + "|" + df["PONA-"]
+    df.loc[:, "POND"] = df["POND+"] + "|" + df["POND-"]
     df.loc[:, "PONSum"] = (
         df["POND"].str.split("|").apply(lambda s: np.array(s).astype(int).sum())
     )
@@ -47,7 +45,7 @@ def apply_clinscore(df, clinscore_file):
     # LOAD YAML
 
     with open(clinscore_file, "r") as stream:
-        clinscore_dict = yaml.load(stream)
+        clinscore_dict = load(stream, Loader=Loader)
 
     # ##################################################################
     # ############## ICGC29 ###########
