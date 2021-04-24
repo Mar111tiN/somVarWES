@@ -13,7 +13,7 @@
 #SBATCH --nodes=1
 
 # Set the memory per CPU. Units can be given in T|G|M|K.
-#SBATCH --mem-per-cpu=500M
+#SBATCH --mem-per-cpu=2500M
 
 # Set the partition to be used (-p or --partition).
 #SBATCH --partition=long
