@@ -27,12 +27,12 @@ cosmic90:
         chronic_lymphocytic_leukaemia-small_lymphocytic_lymphoma: 5
         chronic_myeloid_leukaemia: 3
         chronic_myelomonocytic_leukaemia: 3
-        diffuse_large_B_cell_lymphoma: 7
-        follicular_lymphoma: 7
+        diffuse_large_B_cell_lymphoma: 8
+        follicular_lymphoma: 6
         juvenile_myelomonocytic_leukaemia: 6
         lymphoid_neoplasm: 2
-        marginal_zone_lymphoma: 7
-        mast_cell_neoplasm: 7
+        marginal_zone_lymphoma: 6
+        mast_cell_neoplasm: 6
         myelodysplastic_syndrome: 5
         normal: -1
         plasma_cell_myeloma: 3
