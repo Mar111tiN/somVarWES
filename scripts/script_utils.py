@@ -10,13 +10,14 @@ ansii_colors = {
     "red": "[1;31;1m",
     "cyan": "[1;36;1m",
     "gray": "[1;30;1m",
+    "orange": "[1;33;1m",
     "black": "[0m",
 }
 
 colors = {
     "process": ansii_colors["green"],
     "time": ansii_colors["magenta"],
-    "normal": ansii_colors["gray"],
+    "normal": ansii_colors["orange"],
     "warning": ansii_colors["red"],
     "success": ansii_colors["cyan"],
 }
