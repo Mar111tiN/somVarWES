@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from script_utils import show_output, sort_df
 
+
 #  ############## BASIC FILTER ####################################
 def filter_basic(df, config={}):
     """
@@ -49,8 +50,6 @@ def filter_basic(df, config={}):
 def filter1(df, thresh={}, config={}):
 
     # ##### TUMOR DEPTH ############
-
-    print(thresh)
     tumor_depth = (df["TR2"] > thresh["variantT"]) & (df["Tdepth"] > thresh["Tdepth"])
 
     # ##### VAF ##################
@@ -82,12 +81,12 @@ def filter1(df, thresh={}, config={}):
     # ## FILTER1 RESCUE ##########
     # per default, rescue all candidate genes
     is_candidate = (
-        (df["isCandidate"] == 1) | (df["isDriver"] == 1) | (df["ChipFreq"] > 0)
+        (df["isCandidate"] == 1) | (df["AMLDriver"] == 1) | (df["ChipFreq"] > 0)
     )
 
     # ############### AML7 ####################
     # if we are filtering for AML7, we include the 7q genes as interesting
-    if config["filter_name"] == "filter1-AML7":
+    if "AML7" in config["filter_name"]:
         is7q = df["cytoBand"].str.contains("^7q")
         rescue = is7q | is_candidate
     else:
@@ -101,7 +100,7 @@ def filter1(df, thresh={}, config={}):
 
 def filter_basic_filter1(mut_file, basic_output, filter1_output, config={}):
 
-    show_output(f'Running filter1 {config["filter_name"]}')
+    show_output(f'Running {config["filter_name"]}')
     show_output(f"Loading mutation file {mut_file}.")
     anno_df = pd.read_csv(mut_file, sep="\t")
 

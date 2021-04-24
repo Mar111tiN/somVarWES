@@ -24,7 +24,7 @@ rule primer3:
     params:
         genome_split = full_path('genome_split')
     script:
-        "../scripts/primer.py"
+        "../scripts/primer3.py"
 
 
 rule combine_filter1:
@@ -40,8 +40,8 @@ rule combine_filter1:
         filter1_df = pd.read_csv(input.filter1, sep='\t')
         HDR_df = pd.read_csv(input.HDR, sep='\t')
         primer_df = pd.read_csv(input.primer, sep='\t')
-        merge = pd.merge(filter1_df, HDR_df, how='inner', on=['Chr', 'Start', 'End', 'Ref', 'Alt', 'Gene'])
-        merge_df = pd.merge(merge, primer_df, how='inner', on=['Chr', 'Start', 'End', 'Ref', 'Alt', 'Gene'])
+        merge = pd.merge(filter1_df, HDR_df, how='inner', on=['Chr', 'Start', 'End', 'Ref', 'Alt'])
+        merge_df = pd.merge(merge, primer_df, how='inner', on=['Chr', 'Start', 'End', 'Ref', 'Alt'])
 
         output = str(output)
         show_output(f"Writing merged filter1-list to {output}.", time=False)
@@ -58,6 +58,8 @@ rule filter2:
         #  strict.csv
         filter2 = "filter/{sample}_{tumor}-{normal}.filter2.loose.csv",
         filter2_for_filterbam = "table/{sample}_{tumor}-{normal}.filter2.csv"  # contains mutations at stringency defined in "filter_bam->stringency_for_bam"
+    params:
+        snakedir=snakedir
     threads: 
         1
     script:
