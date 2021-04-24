@@ -16,7 +16,7 @@ def main(s):
 
     # populate an input dict for better looping
     input_list = {'Tumor': i.tumor, 'Normal': i.normal}
-    base_cols = ['Chr', 'Start', 'End', 'Ref', 'Alt', 'Gene']
+    base_cols = ['Chr', 'Start', 'End', 'Ref', 'Alt']
     cols = base_cols.copy()
     dfs = {}
     for T_or_N in ['Tumor', 'Normal']:
@@ -31,7 +31,10 @@ def main(s):
                 except:
                     show_output(f"{HDR_file} could not be loaded")
         # concat
-        HDR_df = pd.concat(HDR_dfs).sort_values(['Chr', 'Start'])
+        if len(HDR_dfs):
+            HDR_df = pd.concat(HDR_dfs).sort_values(['Chr', 'Start'])
+        else:
+            HDR_df = pd.DataFrame(columns=base_cols + ['HDRcand', 'HDRcount', 'HDRinfo'])
         # change columns
         new_cols = {
             'HDRcand': f'{T_or_N}HDRcand',

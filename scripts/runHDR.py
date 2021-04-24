@@ -1,10 +1,9 @@
 import os
 import sys
-
-# add ebscore package to sys.path
-sys.path.append(os.path.join(snakemake.scriptdir, "HDRdetect/code"))
-from HDR_run import HDR_master
 from script_utils import show_output
+# add ebscore package to sys.path
+sys.path.insert(0, os.path.join(snakemake.scriptdir, "HDRdetect/code"))
+from HDR_run import HDR_master
 
 
 def main(s):
