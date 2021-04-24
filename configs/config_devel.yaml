@@ -4,7 +4,7 @@ inputdirs:
 workdir: /fast/users/szyskam_c/scratch/develop/somVarWES # here your results are created
 envs: env # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
-    samplesheet: sheets/test_small.csv
+    samplesheet: sheets/test_all.csv
     tumor:
         - A  #
         - A1
@@ -16,4 +16,4 @@ samples: # here go all your samples
         - B2
 cleanup: false
 config: 
-    configs/general/config_NHL.yaml
+    configs/general/config_AML.yaml
