@@ -19,3 +19,5 @@ scripts/filters/filter1-*
 scripts/filters/filter2-*
 *Snakefile*
 !Snakefile
+!Snakefile_devel
+

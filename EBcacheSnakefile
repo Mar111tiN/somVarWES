@@ -1,24 +1,25 @@
+from yaml import CLoader as Loader, load, dump
 import os
-import re
-import yaml
-import argparse
-import math
-
-import sys
-import pandas as pd
-
-# add ebscore package to sys.path
-snakedir = os.path.dirname(workflow.snakefile)
-sys.path.append(os.path.join(snakedir, "scripts/ebscore/code"))
-from zerocache import collapse_zeros
-
 
 # ############ SETUP ##############################
-configfile: "configs/config_DLBCL.yaml"
+configfile: "configs/config_DLBCL_Japan_cache.yaml"
 # configfile: "configs/config.json"
+
 # include helper functions
 include: "includes/io.snk"
 include: "includes/utils.snk"
+
+
+# extract the scriptdir for creating shell_paths
+snakedir = os.path.dirname(workflow.snakefile)
+scriptdir = os.path.join(snakedir, "scripts")
+
+# load the sample independent config file
+general_config_file = os.path.join(snakedir, config['config'])
+with open(general_config_file, "r") as stream:
+    general_config = load(stream, Loader=Loader)
+config.update(general_config)
+
 work_dir = static_path(config['EBscore']['pon_path'])
 workdir: work_dir
 
@@ -37,7 +38,7 @@ wildcard_constraints:
 rule all:
     input:
         expand("matrix/{chrom}.pon.gz", chrom=chrom_list),
-        # expand("{chrom}.AB.gz", chrom=chrom_list),
+        expand("AB/{chrom}.AB.gz", chrom=chrom_list),
         # "splitAB/chr1.0.AB.gz"
         # "AB/chr1.AB.gz"
 	    # "PONcache.done"
