@@ -1,6 +1,6 @@
 rule anno2EB:
     input:
-        table = "varscan/{sample}_{tumor}-{normal}.{chrom}.csv",
+        table = "table/{sample}_{tumor}-{normal}.csv",
         tumor_bam = get_bam_path
     output:
         "eb/{sample}_{tumor}-{normal}.{chrom}.EB"
