@@ -3,11 +3,11 @@ Start
 End
 Ref
 Alt
-Func
-Gene
-GeneDetail
-ExonicFunc
-AAChange
+Func.refGene
+Gene.refGene
+GeneDetail.refGene
+ExonicFunc.refGene
+AAChange.refGene
 Func.ensGene34
 Gene.ensGene34
 GeneDetail.ensGene34
