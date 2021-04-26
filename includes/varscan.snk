@@ -19,7 +19,7 @@ rule varscan:
     log:
         "logs/varscan/{sample}_{tumor}-{normal}.{chrom}.log"
     shell:
-        "samtools mpileup -f {params.refgen} -r {wildcards.chrom} {params.qual} -l {params.bedfile} {input.tumor_bam} {input.normal_bam} | "
+        "samtools mpileup -f {params.refgen} -r {wildcards.chrom} {params.qual} -l {params.bedfile} {input.normal_bam} {input.tumor_bam} | "
         "varscan somatic /dev/stdin {params.vcf} --mpileup 1 "
         "--output-snp {output.snp} --output-indel {output.indel} {params.min} {params.p} {params.np}"
         # " &>{log}"
