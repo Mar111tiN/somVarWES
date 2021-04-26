@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # can be overruled on CLI with -J <NAME>
-#SBATCH --job-name=somVar
+#SBATCH --job-name=somVars
 
 # Set the file to write the stdout and stderr to (if -e is not set; -o or --output).
 #SBATCH --output=slogs/%x-%j.log
@@ -35,14 +35,14 @@ unset DRMAA_LIBRARY_PATH
 # make conda available
 eval "$($(which conda) shell.bash hook)"
 # activate snakemake env
-conda activate WES-env;
+conda activate snake-env;
 echo $CONDA_PREFIX "activated";
 
 
 # !!! leading white space is important
 DRMAA=" -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads}";
 DRMAA="$DRMAA -o ${LOGDIR}/{rule}-%j.log";
-snakemake --unlock -s SnakefileRerun --rerun-incomplete;
+snakemake --unlock --rerun-incomplete;
 snakemake --dag | awk '$0 ~ "digraph" {p=1} p' | dot -Tsvg > dax/dag.svg;
 snakemake --use-conda --rerun-incomplete --cluster-config configs/cluster/somvar-cluster.json --drmaa "$DRMAA" -prk -j 1000;
 # -k ..keep going if job fails
