@@ -1,6 +1,4 @@
 import pandas as pd
-import os
-import re
 from script_utils import sort_df
 from derive_cols import rearrange_cols
 
@@ -38,33 +36,6 @@ def main(s):
     # anno_df = anno_df.query('TVAF = TR1 / (TR1+TR2)')
     anno_df["Ndepth"] = anno_df["NR1"] + anno_df["NR2"]
     anno_df["NVAF"] = (anno_df["NR2"] / (anno_df["NR1"] + anno_df["NR2"])).round(3)
-
-    # RENAMING ##################################
-    # get rename dict for .refGene annotation
-    refgen_dict = {
-        col: col.replace(".refGene", "") for col in anno_df.columns if ".refGene" in col
-    }
-    # # get rename dict for .ensGene annotation
-    # refgen_dict = {
-    #     col: re.sub(".ensGene[0-9]*", "", col)
-    #     for col in anno_df.columns
-    #     if ".ensGene" in col
-    # }
-    # rename the columns
-    anno_df = anno_df.rename(columns=refgen_dict)
-
-    # # resort the columns
-    # cols = list(anno_df.columns)
-    # start_cols = cols[:11]
-    # quant_cols = cols[-15:]
-    # anno_cols = cols[11:-15]
-
-    # MERGE Func into ExonicFunc ##################################
-    # merge ExonFunc from Func, if ExonFunc not available
-    anno_df.loc[anno_df["ExonicFunc"] == ".", "ExonicFunc"] = anno_df["Func"]
-
-    # ############ -->COLS #####################################
-    # new_cols = start_cols + quant_cols
 
     # ############## MERGE WITH EB AND FISHER ############################
     #####################################################################

@@ -20,6 +20,24 @@ def main(s):
     print(f"Started editing and basic filtering for {input}.")
     anno_df = pd.read_csv(input, sep="\t")
 
+    # ########### change refGene COLUMNS ######################
+    # RENAMING ##################################
+    # get rename dict for .refGene annotation
+    refgen_dict = {
+        col: col.replace(".refGene", "") for col in anno_df.columns if ".refGene" in col
+    }
+    # rename the columns
+    anno_df = anno_df.rename(columns=refgen_dict)
+    # merge ExonFunc from Func, if ExonFunc not available
+    anno_df.loc[anno_df["ExonicFunc"] == ".", "ExonicFunc"] = anno_df["Func"]
+
+    # get the ensGene version from first col containing ".ensgene"
+    ensgene_cols = [col for col in anno_df.columns if ".ensGene" in col]
+    if len(ensgene_cols):
+        ensgene = ensgene_cols[0].split(".")[1]
+    # do the ExonFunc conversion for ensgene as well
+    anno_df.loc[anno_df[f"ExonicFunc.{ensgene}"] == ".", f"ExonicFunc.{ensgene}"] = anno_df[f"Func.{ensgene}"]
+
     # ########### DERIVE PON COLUMNS ##########################
     anno_df = get_PON_info(anno_df)
 
