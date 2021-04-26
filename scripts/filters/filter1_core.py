@@ -9,42 +9,33 @@ def filter_basic(df, config={}):
     basic cutoff based on gene function
     """
 
-    # get all the refGene cols (including ensgene)
-    exon_cols = [col for col in df.columns if col.startswith("ExonicFunc")]
-
-    # set to True
+    # set to False pd.Series with cheat
     exon_func = df["Start"] < 0
-    for exon_col in exon_cols:
-        exon_func = exon_func | (
-            df[exon_col] != "unknown"
-            if config["keep_syn"]
-            else ~df[exon_col].isin(["unknown", "synonymous SNV"])
-        )
+
+    exon_type = ["exonic", "exonic;splicing"]
+    # add allowed Funcs UTR if enabled
+    if config["keep_UTR"]:
+        exon_type += ["UTR3", "UTR5", "UTR5;UTR3"]
+
+    # go through all the refGene "Func" cols (including ensgene)
+    for func_col in [col for col in df.columns if col.startswith("Func")]:
+        # set exonic_func to True when AT LEAST one refgene says "exonic"
+        exon_func = exon_func | df[func_col].isin(exon_type)
+
+    if config["keep_syn"]:
+        isSynonymous = False
+    else:
+        # set to True pd.Series with cheat
+        isSynonymous = df["Start"] > 0
+
+        # go through all the refGene "ExonicFunc" cols (including ensgene)
+        for exonic_col in [col for col in df.columns if col.startswith("ExonicFunc")]:
+            # set isSynonymous to TRUE if ALL refgene say "synonymous SNV"
+            isSynonymous = isSynonymous & (df[exonic_col] == "synonymous SNV")
+
     # (df['AAChange'] != "UNKNOWN") & df['AAChange'].notna()  # keep for splicing
     aa_change = True
-
-    func_exclude_list = [
-        "downstream",
-        "intergenic",
-        "intronic",
-        "ncRNA_exonic",
-        "ncRNA_exonic;splicing",
-        "ncRNA_intronic",
-        "ncRNA_splicing",
-        "upstream",
-        "upstream;downstream",
-    ]
-    if not config["keep_UTR"]:
-        func_exclude_list += ["UTR3", "UTR5", "UTR5;UTR3"]
-
-    # get all the refGene cols (including ensgene)
-    func_cols = [col for col in df.columns if col.startswith("Func")]
-    # set to False
-    function = df["Start"] < 0
-    for func_col in func_cols:
-        function = function | ~df[func_col].isin(func_exclude_list)
-    # somatic = df['somatic_status'] != 'Germline'
-    return df.loc[exon_func & aa_change & function, :]
+    return df.loc[exon_func & aa_change & ~isSynonymous, :]
 
 
 def filter1(df, thresh={}, config={}):
