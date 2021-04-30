@@ -64,10 +64,7 @@ def main(s):
         # eb_cols = list(eb_df.columns[5:])
         # avoid duplication of duplicate varscan calls
         anno_df = (
-            #
-            ## !!! quick fix for bad indel coords in
-            #
-            anno_df.merge(eb_df.drop("Start", axis=1), on=["Chr", "End", "Ref", "Alt"])
+            anno_df.merge(eb_df, axis=1), on=["Chr", "Start", "End", "Ref", "Alt"])
             .drop_duplicates()
             .rename({"EB": "EBscore"}, axis=1)
         )
