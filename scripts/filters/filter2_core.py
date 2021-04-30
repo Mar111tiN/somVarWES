@@ -71,7 +71,7 @@ def filter2(df, stringency="", thresh={}, config={}):
         for col in config["pop_cols"]:
             # reformat population columns for filtering
             df.loc[df[col] == ".", col] = 0
-            df[col] = df[col].fillna(0).astype(float)
+            df.loc[:, col] = df[col].fillna(0).astype(float)
             # combine the looped noSNP with the columns PopFreq checks
             noSNP = noSNP & (df[col] <= thresh["PopFreq"])
     else:
