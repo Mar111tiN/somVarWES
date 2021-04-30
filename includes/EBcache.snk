@@ -6,7 +6,7 @@ rule EBcacheMatrix:
     threads:
         config['EBscore']['threads']['EBcacheMatrix']
     conda:
-        f"../{config['envs']}/eb-env.yml"
+        "../env/eb-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path']),
         pon_list = config['EBscore']['pon_list'],
@@ -15,14 +15,28 @@ rule EBcacheMatrix:
     script:
         "../scripts/EBcache_matrix.py"
 
+rule splitEBcacheMatrix:
+    input: 
+        matrix="matrix/{chrom}.pon.gz"
+    output:
+        expand("split/{{chrom}}.{split}.pon.gz", split=list(range(config['EBscore']['ABcache_split'])))
+    threads:
+        10
+    params:
+        split = config['EBscore']['ABcache_split']
+    conda:
+        "../env/eb-env.yml"
+    script:
+        "../scripts/EBcache_splitmatrix.py"
+
 
 rule EBcacheZeros:
     output:
         touch("zero/done")
     threads:
-        4
+        10
     conda:
-        f"../{config['envs']}/eb-env.yml"
+        "../env/eb-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path']),
         pon_list = config['EBscore']['pon_list'],
@@ -33,13 +47,13 @@ rule EBcacheZeros:
 rule EBcacheAB:
     input:
         zero="zero/done",
-        matrix="matrix/{chrom}.pon.gz"
+        matrix="split/{chrom}.pon.{split}.gz"
     output:
-        "splitAB/{chrom}.{split}.AB.gz"
+        "split/{chrom}.{split}.AB.gz"
     threads:
         config['EBscore']['threads']['EBcacheAB']
     conda:
-        f"../{config['envs']}/eb-env.yml"
+        "../env/eb-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path'])
     script:
@@ -48,7 +62,7 @@ rule EBcacheAB:
 
 rule combineEBcacheAB:
     input:
-        expand("splitAB/{{chrom}}.{split}.AB.gz", split=list(range(config['EBscore']['ABcache_split'])))
+        expand("split/{{chrom}}.{split}.AB.gz", split=list(range(config['EBscore']['ABcache_split'])))
     output:
         "AB/{chrom}.AB.gz"
     threads:
@@ -74,6 +88,6 @@ rule EBcacheDone:
     threads:
         6
     conda:
-        f"../{config['envs']}/eb-env.yml"
+        "../env/eb-env.yml"
     script:
         "../scripts/EBcache_zeros.py"

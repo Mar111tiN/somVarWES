@@ -2,7 +2,7 @@ from yaml import CLoader as Loader, load, dump
 import os
 
 # ############ SETUP ##############################
-configfile: "configs/config_DLBCL_Japan_cache.yaml"
+configfile: "configs/general/config_NHL.yaml"
 # configfile: "configs/config.json"
 
 # include helper functions
@@ -14,11 +14,6 @@ include: "includes/utils.snk"
 snakedir = os.path.dirname(workflow.snakefile)
 scriptdir = os.path.join(snakedir, "scripts")
 
-# load the sample independent config file
-general_config_file = os.path.join(snakedir, config['config'])
-with open(general_config_file, "r") as stream:
-    general_config = load(stream, Loader=Loader)
-config.update(general_config)
 
 work_dir = static_path(config['EBscore']['pon_path'])
 workdir: work_dir
@@ -38,8 +33,9 @@ wildcard_constraints:
 rule all:
     input:
         expand("matrix/{chrom}.pon.gz", chrom=chrom_list),
-        expand("AB/{chrom}.AB.gz", chrom=chrom_list),
-        # "splitAB/chr1.0.AB.gz"
+        "split/chr1.0.pon.gz"
+        # expand("AB/{chrom}.AB.gz", chrom=chrom_list),
+        # "split/chr1.0.AB.gz"
         # "AB/chr1.AB.gz"
 	    # "PONcache.done"
 

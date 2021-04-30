@@ -15,8 +15,8 @@ def filter2(df, stringency="", thresh={}, config={}):
     # set to True pd.Series with cheat
 
     if config["keep_syn"]:
-        is_exonic = ~filter1_df["ExonicFunc"].isin(["unknown", "synonymous SNV"])
-        filter1_df = filter1_df[is_exonic]
+        is_exonic = ~df["ExonicFunc"].isin(["unknown", "synonymous SNV"])
+        filter1_df = df[is_exonic]
         isSynonymous = df["Start"] > 0
         # go through all the refGene "ExonicFunc" cols (including ensgene)
         for exonic_col in [col for col in df.columns if col.startswith("ExonicFunc")]:
