@@ -1,6 +1,6 @@
 from yaml import CLoader as Loader, load, dump
 # ############ SETUP ##############################
-configfile: "configs/config_DLBCL_Japan.yaml"
+configfile: "configs/config_NHL.yaml"
 # configfile: "configs/config.json"
 
 workdir: config['workdir']
