@@ -14,8 +14,12 @@
   "EBcacheMatrix": {
     "t": "12:00"
   },
+  "splitEBcacheMatrix": {
+    "t": "00:20",
+    "mem": "3000"
+  },
   "EBcacheAB": {
-    "t": "10:00",
+    "t": "06:00",
     "mem": "3500",
     "name": "{rule}:{wildcards.chrom}.split{wildcards.split}"
   },

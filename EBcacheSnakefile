@@ -33,19 +33,17 @@ wildcard_constraints:
 rule all:
     input:
         expand("matrix/{chrom}.pon.gz", chrom=chrom_list),
-        "split/chr1.0.pon.gz"
         # expand("AB/{chrom}.AB.gz", chrom=chrom_list),
-        # "split/chr1.0.AB.gz"
-        # "AB/chr1.AB.gz"
+        "AB/chr1.AB.gz"
 	    # "PONcache.done"
 
 onstart:
     print(f" Generating Cache files in {work_dir}.......")
-    try:
-        os.remove("zero/done")
-        print("Removing zero/done")
-    except OSError:
-        pass
+    # try:
+    #     os.remove("zero/done")
+    #     print("Removing zero/done")
+    # except OSError:
+    #     pass
 
 onsuccess:
     print(f"Workflow finished - EBcache has been generated and stored in {work_dir}")

@@ -24,7 +24,6 @@ def main(s):
     zero_path = os.path.join(p.pon_path, cc["zero_path"])
 
     for ps in [ponsize, ponsize - 1]:
-        show_output(f"Collapsing zeros for in {zero_path} for ponsize {ps}.")
         collapse_zeros(
             zero_path,
             ponsize=ps,

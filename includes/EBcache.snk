@@ -47,7 +47,7 @@ rule EBcacheZeros:
 rule EBcacheAB:
     input:
         zero="zero/done",
-        matrix="split/{chrom}.pon.{split}.gz"
+        matrix="split/{chrom}.{split}.pon.gz"
     output:
         "split/{chrom}.{split}.AB.gz"
     threads:
