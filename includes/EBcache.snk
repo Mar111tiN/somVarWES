@@ -86,7 +86,7 @@ rule EBcacheDone:
         pon_list = config['EBscore']['pon_list'],
         reflat = False
     threads:
-        6
+        24
     conda:
         "../env/eb-env.yml"
     script:
