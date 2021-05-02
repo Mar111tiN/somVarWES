@@ -6,36 +6,19 @@ from script_utils import show_output, sort_df
 #  ############## BASIC FILTER ####################################
 def filter_basic(df, config={}):
     """
-    basic cutoff based on gene function
+    basic cutoff based on gene function in Func col
     """
 
-    # set to False pd.Series with cheat
-    exon_func = df["Start"] < 0
-
-    exon_type = ["exonic", "exonic;splicing"]
+    exon_func = ["deletion", "insertion", "splicing", "stop", "nonsynSNV"]
     # add allowed Funcs UTR if enabled
-    if config["keep_UTR"]:
-        exon_type += ["UTR3", "UTR5", "UTR5;UTR3"]
+    if config['keep_UTR']:
+        exon_func += ["UTR"]
+    if config['keep_syn']:
+        exon_func += ['synSNV']
 
-    # go through all the refGene "Func" cols (including ensgene)
-    for func_col in [col for col in df.columns if col.startswith("Func")]:
-        # set exonic_func to True when AT LEAST one refgene says "exonic"
-        exon_func = exon_func | df[func_col].isin(exon_type)
+    df = df.loc[df['Func'].str.replace("_splicing", "").str.contains("|".join(exon_func)), :]
 
-    if config["keep_syn"]:
-        isSynonymous = False
-    else:
-        # set to True pd.Series with cheat
-        isSynonymous = df["Start"] > 0
-
-        # go through all the refGene "ExonicFunc" cols (including ensgene)
-        for exonic_col in [col for col in df.columns if col.startswith("ExonicFunc")]:
-            # set isSynonymous to TRUE if ALL refgene say "synonymous SNV"
-            isSynonymous = isSynonymous & (df[exonic_col] == "synonymous SNV")
-
-    # (df['AAChange'] != "UNKNOWN") & df['AAChange'].notna()  # keep for splicing
-    aa_change = True
-    return df.loc[exon_func & aa_change & ~isSynonymous, :]
+    return df
 
 
 def filter1(df, thresh={}, config={}):

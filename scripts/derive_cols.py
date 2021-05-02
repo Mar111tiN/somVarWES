@@ -1,7 +1,56 @@
 import pandas as pd
 import numpy as np
 import os
+import re
 from yaml import CLoader as Loader, load
+
+
+def get_refgene(df, config):
+    '''
+    reduce the different gene-ref columns to usable data
+    collapse to one Func column for filtering
+    '''
+
+    # RENAMING ##################################
+    # # get the ensGene version from first col containing ".ensgene"
+    # ensgene_cols = [col for col in df.columns if ".ensGene" in col]
+    # if len(ensgene_cols):
+    #     ensgene = ensgene_cols[0].split(".")[1]
+
+    # get rename dict for .refGene annotation
+    pat = re.compile(r"(.*)\..*Gene.*")
+
+    refgen_dict = {col: col.replace(".", "_") for col in df.columns if re.match(pat, col)}
+
+    # rename the columns
+    df = df.rename(refgen_dict, axis=1)
+    # init the collapsed Func column
+    df.loc[:, "Func"] = ""
+    for func in [col for col in df.columns if col.startswith("Func_")]:
+        # get exonicFunc column from Func col
+        exonic_func = "Exonic" + func
+        # shorten nonsynonymous SNV to nonsynSNV etc
+        df.loc[:, exonic_func] = df[exonic_func].str.replace("synonymous ", "syn")
+
+        # Func == "exonic"  --> Func = ExonicFunc
+        df.loc[df[func] == "exonic", func] = df[exonic_func]
+
+        # Func=exonic;splicing --> Func = ExonicFunc;splicing
+        df.loc[df[func] == "exonic;splicing", func] = df[exonic_func] + ";splicing"
+        # rename double genes
+        gene_col = func.replace("Func", "Gene")
+        df.loc[:, gene_col] = df[gene_col].str.replace(r"([-a-zA-Z0-9]+);\1", r"\1")
+
+        # drop the func
+        df = df.drop(exonic_func, axis=1)
+
+        df.loc[:, "Func"] = df['Func'] + ";" + df[func]
+    # merge Func cols into one
+    df.loc[:, 'Func'] = df['Func'].str.split(";").apply(lambda x: ";".join(set(x))).str.lstrip(";")
+    # merge ExonFunc from Func, if ExonFunc not available
+    # df.loc[df["ExonicFunc"] == ".", "ExonicFunc"] = df["Func"]
+
+    return df
 
 
 def get_PON_info(df):
@@ -124,12 +173,8 @@ def apply_clinscore(df, clinscore_file):
 
         return (
             (
-                1
-                + cosmic90_type_score.get(row["types"], 0)
-                + cosmic90_location_score.get(row["location"], 0)
-            )
-            * (row["types"] != ".")
-            * int(row["count"])
+                1 + cosmic90_type_score.get(row["types"], 0) + cosmic90_location_score.get(row["location"], 0)
+            ) * (row["types"] != ".") * int(row["count"])
         )
 
     df[f"{cosmic90_version}_score"] = (
@@ -167,9 +212,7 @@ def apply_clinscore(df, clinscore_file):
         if row["CLNDN"] == ".":
             return 0
         return (
-            1
-            + CLNDN2score(row["CLNDN"])
-            + CLNSIG_score.get(row["CLNSIG"].split(",")[0], 0)
+            1 + CLNDN2score(row["CLNDN"]) + CLNSIG_score.get(row["CLNSIG"].split(",")[0], 0)
         )
 
     df["clinvar_score"] = df.apply(get_CLINVARscore, axis=1)
@@ -202,7 +245,7 @@ def get_gene_lists(df, candidate_excel=""):
 
     # get the candidate scores
     candidates = [
-        sheet for sheet in sheets if not "Driver" in sheet and not "CHIP" in sheet
+        sheet for sheet in sheets if "Driver" not in sheet and "CHIP" not in sheet
     ]
     df.loc[:, "isCandidate"] = 0
     for cand in candidates:
