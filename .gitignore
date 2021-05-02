@@ -17,7 +17,6 @@ config_*.yaml
 oldconfigs
 scripts/filters/filter1-*
 scripts/filters/filter2-*
-*Snakefile*
-!Snakefile
+Snakefile*
 !Snakefile_devel
 !configs/general/*
