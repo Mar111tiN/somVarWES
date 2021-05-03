@@ -41,7 +41,7 @@ def main(s):
         config=EBconfig,
     )
 
-    AB_df.to_csv(output, sep="\t", compression="gzip")
+    AB_df.to_csv(output, sep="\t", compression="gzip", index=False)
     show_output(
         f"Finished! Written ABcache split {split} for chrom {w.chrom} to {os.path.join(p.pon_path, output)}",
         color="success",
