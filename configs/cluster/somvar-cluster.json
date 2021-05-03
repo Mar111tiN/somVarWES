@@ -8,7 +8,7 @@
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
   "varscan": {
-    "t": "00:30",
+    "t": "00:45",
     "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
   },
