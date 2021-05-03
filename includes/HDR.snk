@@ -35,8 +35,8 @@ rule detect_HDR:
 
 rule merge_HDR:
     input:
-        tumor = expand("hdr/{{sample}}_{{tumor}}-{{normal}}_{{normal}}.{chrom}.filter1.HDR.csv", chrom=chrom_list),
-        normal = expand("hdr/{{sample}}_{{tumor}}-{{normal}}_{{tumor}}.{chrom}.filter1.HDR.csv", chrom=chrom_list)
+        tumor = expand("hdr/{{sample}}_{{tumor}}-{{normal}}_{{tumor}}.{chrom}.filter1.HDR.csv", chrom=chrom_list),
+        normal = expand("hdr/{{sample}}_{{tumor}}-{{normal}}_{{normal}}.{chrom}.filter1.HDR.csv", chrom=chrom_list)
     output:
         "table/{sample}_{tumor}-{normal}.filter1.HDR.csv"
     threads:
