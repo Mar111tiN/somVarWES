@@ -108,7 +108,7 @@ EBscore:
     PON_output: true
     ABcache_split: 25
     chunksize:  
-        EBscore: 5000 # size of zero splits for zerocaching 
+        EBscore: 500000 # size of zero splits for zerocaching 
         EBcache: 500000  # size of zero splits for zerocaching + size of ponmatrix chunks for stacking
     threads:
         EBcacheMatrix: 10
