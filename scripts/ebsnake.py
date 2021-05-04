@@ -23,7 +23,7 @@ def main(s):
         pon_path=p.pon_path,
         zero_path=os.path.join(p.pon_path, cc["zero_path"]),
         debug=cc["debug"],
-        AB_chunk_size=cc["chunksize"]["EBscore"],
+        chunksize=cc["chunksize"]["EBscore"],
         threads=s.threads,
         use_cache=cc["use_cache"],
     )
