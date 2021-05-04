@@ -77,6 +77,10 @@ def get_PON_info(df):
     """
     computes values from the PON column
     """
+    
+    STRANDSEP = "="
+    ADSEP = "<"
+    
     org_cols = list(df.columns)
 
     # cheat a bad PON for EB = 0 (|1|1|1|1|1|1|1|1|1|1|1|1|1<1|1|1|1|1|1|1|1|1|1|1()

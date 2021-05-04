@@ -22,8 +22,7 @@ Ndepth
 NVAF
 FisherScore
 EBscore
-PON+
-PON-
+PON
 TR1
 TR1+
 TR2
