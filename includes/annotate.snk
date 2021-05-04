@@ -1,4 +1,4 @@
-#################################
+       #################################
 rule annovar:
     input:
         "table/{sample}_{tumor_normal}.csv"

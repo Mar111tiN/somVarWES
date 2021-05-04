@@ -5,11 +5,11 @@ import re
 from yaml import CLoader as Loader, load
 
 
-def get_refgene(df, config):
-    '''
+def get_refgene(df, config={}):
+    """
     reduce the different gene-ref columns to usable data
     collapse to one Func column for filtering
-    '''
+    """
 
     # RENAMING ##################################
     # # get the ensGene version from first col containing ".ensgene"
@@ -20,13 +20,30 @@ def get_refgene(df, config):
     # get rename dict for .refGene annotation
     pat = re.compile(r"(.*)\..*Gene.*")
 
-    refgen_dict = {col: col.replace(".", "_") for col in df.columns if re.match(pat, col)}
+    refgen_dict = {
+        col: col.replace(".", "_") for col in df.columns if re.match(pat, col)
+    }
 
     # rename the columns
     df = df.rename(refgen_dict, axis=1)
-    # init the collapsed Func column
+    # init the collapsed Func and Gene columns
     df.loc[:, "Func"] = ""
+    df.loc[:, "Gene"] = ""
+
+    exonic_types = ["exonic", "splicing", "exonic;splicing"]
+    if config["keep_UTR"]:
+        exonic_types += ["UTR5", "UTR3", "UTR5;UTR3"]
+
     for func in [col for col in df.columns if col.startswith("Func_")]:
+        isExonic = df[func].isin(exonic_types)
+        # rename double genes
+        gene_col = func.replace("Func", "Gene")
+        df.loc[:, gene_col] = df[gene_col].str.replace(r"([-a-zA-Z0-9]+);\1", r"\1")
+        # fuse Gene cols into one
+        df.loc[isExonic, "Gene"] = df["Gene"] + ";" + df[gene_col]
+
+        # only exonic and exonic;splicing have ExonicFunc values
+        # transfer these values to Func and all is save
         # get exonicFunc column from Func col
         exonic_func = "Exonic" + func
         # shorten nonsynonymous SNV to nonsynSNV etc
@@ -37,18 +54,21 @@ def get_refgene(df, config):
 
         # Func=exonic;splicing --> Func = ExonicFunc;splicing
         df.loc[df[func] == "exonic;splicing", func] = df[exonic_func] + ";splicing"
-        # rename double genes
-        gene_col = func.replace("Func", "Gene")
-        df.loc[:, gene_col] = df[gene_col].str.replace(r"([-a-zA-Z0-9]+);\1", r"\1")
 
         # drop the func
         df = df.drop(exonic_func, axis=1)
+        # fuse Func cols into one
+        df.loc[:, "Func"] = df["Func"] + ";" + df[func]
 
-        df.loc[:, "Func"] = df['Func'] + ";" + df[func]
     # merge Func cols into one
-    df.loc[:, 'Func'] = df['Func'].str.split(";").apply(lambda x: ";".join(set(x))).str.lstrip(";")
-    # merge ExonFunc from Func, if ExonFunc not available
-    # df.loc[df["ExonicFunc"] == ".", "ExonicFunc"] = df["Func"]
+    df.loc[:, "Func"] = (
+        df["Func"].str.lstrip(";").str.split(";").apply(lambda x: ";".join(set(x)))
+    )
+    # merge Gene cols into one
+    # gene list (gl) into lambda and reduce via set
+    df.loc[:, "Gene"] = (
+        df["Gene"].str.lstrip(";").str.split(";").apply(lambda gl: ";".join(set(gl)))
+    )
 
     return df
 
@@ -59,14 +79,17 @@ def get_PON_info(df):
     """
     org_cols = list(df.columns)
 
-    df.loc[:, "PON+"] = df["PON"].str.split("-").str[0]
-    df.loc[:, "PON-"] = df["PON"].str.split("-").str[1]
-    df.loc[:, "PONA+"] = df["PON+"].str.split("=").str[0]
-    df.loc[:, "POND+"] = df["PON+"].str.split("=").str[1]
-    df.loc[:, "PONA-"] = df["PON-"].str.split("=").str[0]
-    df.loc[:, "POND-"] = df["PON-"].str.split("=").str[1]
+    # cheat a bad PON for EB = 0 (|1|1|1|1|1|1|1|1|1|1|1|1|1<1|1|1|1|1|1|1|1|1|1|1()
+    bad_pon = "<".join(["|".join(["1"] * 30) for i in range(2)])
+
+    df.loc[df["PON+"] == ".", ["PON+", "PON-"]] = [bad_pon, bad_pon]
+    df.loc[:, "PONA+"] = df["PON+"].str.split("<").str[0]
+    df.loc[:, "POND+"] = df["PON+"].str.split("<").str[1]
+    df.loc[:, "PONA-"] = df["PON-"].str.split("<").str[0]
+    df.loc[:, "POND-"] = df["PON-"].str.split("<").str[1]
     df.loc[:, "PONA"] = df["PONA+"] + "|" + df["PONA-"]
     df.loc[:, "POND"] = df["POND+"] + "|" + df["POND-"]
+
     df.loc[:, "PONSum"] = (
         df["POND"].str.split("|").apply(lambda s: np.array(s).astype(int).sum())
     )
@@ -75,14 +98,12 @@ def get_PON_info(df):
     )
     df.loc[:, "PONRatio"] = df.loc[:, "PONAltSum"] / df.loc[:, "PONSum"]
     df.loc[:, "PONAltNonZeros"] = (
+        # count 1 as zero in this scenario
         df["PONA"]
         .str.split("|")
-        .apply(
-            lambda s: np.unique(np.array(s).astype(int), return_counts=True)[1][
-                1:
-            ].sum()
-        )
+        .apply(lambda s: len(s) - s.count("0") - s.count("1"))
     )
+
     return df.loc[:, org_cols + ["PONAltSum", "PONRatio", "PONAltNonZeros"]]
 
 
@@ -173,8 +194,12 @@ def apply_clinscore(df, clinscore_file):
 
         return (
             (
-                1 + cosmic90_type_score.get(row["types"], 0) + cosmic90_location_score.get(row["location"], 0)
-            ) * (row["types"] != ".") * int(row["count"])
+                1
+                + cosmic90_type_score.get(row["types"], 0)
+                + cosmic90_location_score.get(row["location"], 0)
+            )
+            * (row["types"] != ".")
+            * int(row["count"])
         )
 
     df[f"{cosmic90_version}_score"] = (
@@ -212,7 +237,9 @@ def apply_clinscore(df, clinscore_file):
         if row["CLNDN"] == ".":
             return 0
         return (
-            1 + CLNDN2score(row["CLNDN"]) + CLNSIG_score.get(row["CLNSIG"].split(",")[0], 0)
+            1
+            + CLNDN2score(row["CLNDN"])
+            + CLNSIG_score.get(row["CLNSIG"].split(",")[0], 0)
         )
 
     df["clinvar_score"] = df.apply(get_CLINVARscore, axis=1)

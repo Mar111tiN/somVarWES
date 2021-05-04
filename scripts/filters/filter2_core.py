@@ -10,19 +10,16 @@ def filter2(df, stringency="", thresh={}, config={}):
 
     # get thresholds
     show_output(f"filter: filter2-{stringency}")
-    # remove syngeneic mutations if keep_syn is active (only applied to filter1
-    # .. must be removed now)
-    # set to True pd.Series with cheat
 
-    if config["keep_syn"]:
-        is_exonic = ~df["ExonicFunc"].isin(["unknown", "synonymous SNV"])
-        filter1_df = df[is_exonic]
-        isSynonymous = df["Start"] > 0
-        # go through all the refGene "ExonicFunc" cols (including ensgene)
-        for exonic_col in [col for col in df.columns if col.startswith("ExonicFunc")]:
-            # set isSynonymous to TRUE if ALL refgene say "synonymous SNV"
-            isSynonymous = isSynonymous & (df[exonic_col] == "synonymous SNV")
-        df = df.loc[~isSynonymous]
+    # syngeneic mutations are not allowed from this point on
+    exon_func = ["deletion", "insertion", "splicing", "stop", "nonsynSNV"]
+    # add allowed Funcs UTR if enabled
+    if config["keep_UTR"]:
+        exon_func += ["UTR"]
+
+    df = df.loc[
+        df["Func"].str.replace("_splicing", "").str.contains("|".join(exon_func)), :
+    ]
 
     # DEFINE CANDIDATE
     # used for rescue and special thresholds

@@ -3,9 +3,9 @@ from filters.filter2_core import get_filter2
 
 
 def main(s):
-    '''
+    """
     snakemake wrapper for calling the filter functions
-    '''
+    """
 
     p = s.params
     cc = s.config["filter"]
@@ -14,10 +14,10 @@ def main(s):
         filter_file=os.path.join(p.snakedir, cc["filter_settings"]),
         filter_sheet=cc["excel_sheet"],
         filter_name=cc["filter1"],
-        filterbam_stringency=s.config['filter_bam']['stringency_for_bam'],
-        excel_output=cc['excel_output'],
-        keep_syn=cc['keep_syn'],
-        pop_cols=cc["pop_cols"]
+        filterbam_stringency=s.config["filter_bam"]["stringency_for_bam"],
+        excel_output=cc["excel_output"],
+        keep_UTR=cc["keep_UTR"],
+        pop_cols=cc["pop_cols"],
     )
 
     get_filter2(

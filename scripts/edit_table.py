@@ -1,7 +1,13 @@
 import os
 import pandas as pd
 from script_utils import sort_df
-from derive_cols import get_PON_info, apply_clinscore, get_gene_lists, rearrange_cols, get_refgene
+from derive_cols import (
+    get_PON_info,
+    apply_clinscore,
+    get_gene_lists,
+    rearrange_cols,
+    get_refgene,
+)
 
 
 def main(s):
@@ -16,13 +22,15 @@ def main(s):
     cc = config["editList"]
     snake_folder = p.snake_folder
 
+    cc["keep_syn"] = config["filter"]["keep_syn"]
+    cc["keep_UTR"] = config["filter"]["keep_UTR"]
+
     # ## LOAD MUT FILE #####################################
     print(f"Started editing and basic filtering for {input}.")
     anno_df = pd.read_csv(input, sep="\t")
 
-
     # ########### change refGene COLUMNS ######################
-    anno_df = get_refgene(anno_df, config)
+    anno_df = get_refgene(anno_df, config=cc)
 
     # ########### DERIVE PON COLUMNS ##########################
     anno_df = get_PON_info(anno_df)
@@ -34,7 +42,6 @@ def main(s):
         clinscore_file = os.path.join(snake_folder, clinscore_file)
 
     anno_df = apply_clinscore(anno_df, clinscore_file)
-
     # ########### APPLY GENE LISTS ##########################
     candidate_excel = os.path.join(snake_folder, cc["candidate_list"])
     anno_df = get_gene_lists(anno_df, candidate_excel=candidate_excel)

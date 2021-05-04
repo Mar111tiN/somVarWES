@@ -11,13 +11,17 @@ def filter_basic(df, config={}):
 
     exon_func = ["deletion", "insertion", "splicing", "stop", "nonsynSNV"]
     # add allowed Funcs UTR if enabled
-    if config['keep_UTR']:
+    if config["keep_UTR"]:
         exon_func += ["UTR"]
-    if config['keep_syn']:
-        exon_func += ['synSNV']
+    if config["keep_syn"]:
+        exon_func += ["synSNV"]
 
-    df = df.loc[df['Func'].str.replace("_splicing", "").str.contains("|".join(exon_func)), :]
+    df = df.loc[
+        df["Func"].str.replace("_splicing", "").str.contains("|".join(exon_func)), :
+    ]
 
+    # basic cutoff for WES-data
+    df = df.loc[df["Tdepth"] > 10, :]
     return df
 
 

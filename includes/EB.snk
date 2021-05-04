@@ -42,7 +42,7 @@ rule mergeEBscore:
         # sort nicely
         cols = ['Chr', 'Start', 'End', 'Ref', 'Alt', 'EB']
         if config['EBscore']['PON_output']:
-            cols.append("PON")
+            cols += ["PON+", "PON-"]
         EB_merge = EB_merge.loc[:, cols]
         EB_merge.to_csv(output[0], sep='\t', index=False)
         show_output(f"Written EB-annotated file to {output[0]}", color='success')
