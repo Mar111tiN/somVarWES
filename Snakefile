@@ -1,6 +1,6 @@
 from yaml import CLoader as Loader, load, dump
 # ############ SETUP ##############################
-configfile: "configs/config_DLBCL_Japan.yaml"
+configfile: "configs/config_devel.yaml"
 # configfile: "configs/config.json"
 
 workdir: config['workdir']
@@ -8,19 +8,23 @@ workdir: config['workdir']
 snakedir = os.path.dirname(workflow.snakefile)
 scriptdir = os.path.join(snakedir, "scripts")
 
+
 # include helper functions
 include: "includes/io.snk"
 include: "includes/utils.snk"
+
 
 # load the sample independent config file
 config = add_config(config, config_name="general")
 # load the CNV config
 config = add_config(config, config_name="CNV")
 
+
 # retrieve the file_df with all the file paths from the samplesheet
 sample_df, short_sample_df = get_files(config['inputdirs'], config['samples']['samplesheet'])
 chrom_list = get_chrom_list(config)
 TN_list = get_tumor_normal_pairs(sample_df)
+print(short_sample_df)
 
 # ############ INCLUDES ##############################  
 include: "includes/varscan.snk"
@@ -48,12 +52,15 @@ wildcard_constraints:
 # ############## MASTER RULE ##############################################
 rule all:
     input:
-        expand("filter/{tumor_normal_pair}.filter1.csv", tumor_normal_pair=TN_list),
-        expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
-        expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list),
-        expand("CNV/{sample}.cov", sample=sample_df.index),
-        expand("plots/CNV/{sample}.jpg", sample=sample_df.index),
-        expand("plots/SNP/{tumor_normal_pair}.jpg",tumor_normal_pair=TN_list)
+        expand("pileup/{tumor_normal_pair}.chr7.gz", tumor_normal_pair=TN_list)
+        # expand("filter/{tumor_normal_pair}.filter1.csv", tumor_normal_pair=TN_list)
+        # expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
+        # expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list)
+        # expand("CNV/{sample}.cov", sample=sample_df.index),g
+        # expand("CNV/{sample}.snp", sample=sample_df.index),
+        # expand("plots/CNV/{sample}.jpg", sample=sample_df.index),
+        # expand("plots/SNP/{tumor_normal_pair}.jpg",tumor_normal_pair=TN_list)
+
 ###########################################################################
 
 
