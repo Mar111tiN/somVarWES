@@ -1,10 +1,8 @@
 #!/bin/sh
 
-#v1.1.0
+#v1.1.1
 ### cleans samtools mpileup output
 # first any end-of-read markers like ^I or ^[ will be removed
-# cleanpileup takes extra care not to change any of the quality fields 
-# .. which might accidentally contain such traces
 # next, the A+12T for inserts and the T-12A for deletions will be converted to I/i and D/d
 
 # creates headers
