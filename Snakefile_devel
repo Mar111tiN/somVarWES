@@ -8,27 +8,32 @@ workdir: config['workdir']
 snakedir = os.path.dirname(workflow.snakefile)
 scriptdir = os.path.join(snakedir, "scripts")
 
-# load the sample independent config file
-general_config_file = os.path.join(snakedir, config['config'])
-with open(general_config_file, "r") as stream:
-    general_config = load(stream, Loader=Loader)
-config.update(general_config)
 
 # include helper functions
 include: "includes/io.snk"
 include: "includes/utils.snk"
+
+
+# load the sample independent config file
+config = add_config(config, config_name="general")
+# load the CNV config
+config = add_config(config, config_name="CNV")
+
 
 # retrieve the file_df with all the file paths from the samplesheet
 sample_df, short_sample_df = get_files(config['inputdirs'], config['samples']['samplesheet'])
 chrom_list = get_chrom_list(config)
 TN_list = get_tumor_normal_pairs(sample_df)
 print(short_sample_df)
+
 # ############ INCLUDES ##############################  
 include: "includes/varscan.snk"
 include: "includes/annotate.snk"
 include: "includes/EB.snk"
 include: "includes/HDR.snk"
 include: "includes/filter.snk"
+include: "includes/CNV_utils.snk"
+include: "includes/CNV.snk"
 
 
 # convenience variables
@@ -48,13 +53,13 @@ wildcard_constraints:
 # ############## MASTER RULE ##############################################
 rule all:
     input:
-        # expand("table/{tumor_normal_pair}.anno.csv", tumor_normal_pair=TN_list),
-        # expand("table/{tumor_normal_pair}.EB.csv", tumor_normal_pair=TN_list),
-        "hdr/03_A-B_A.chr1.filter1.HDR.csv"
         # expand("filter/{tumor_normal_pair}.filter1.csv", tumor_normal_pair=TN_list)
         # expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
         # expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list)
-
+        expand("CNV/{sample}.cov", sample=sample_df.index),
+        expand("CNV/{sample}.snp", sample=sample_df.index),
+        expand("plots/CNV/{sample}.jpg", sample=sample_df.index),
+        expand("plots/SNP/{tumor_normal_pair}.jpg",tumor_normal_pair=TN_list)
 
 ###########################################################################
 

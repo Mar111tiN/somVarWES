@@ -1,0 +1,29 @@
+rule chrom_coverage:
+    input:
+        bam = get_pon_bam
+    output: 
+        bedCov = "bedCov/{sample}.{chrom}.bedCov"
+    params:
+        pon_path = static_path(config['EBscore']['pon_path']),
+        pon_list = static_path(config['EBscore']['pon_list']),
+        bedfile = full_path('bed_file')
+    threads:
+        config['CNV']['coverage']['threads']
+    conda:
+        f"../{config['envs']}/eb-env.yml"
+    script: 
+        "../scripts/CNV_coverage.py"
+
+
+rule combine_PON_coverage:
+    input: 
+        expand("bedCov/{sample}.{chrom}.bedCov", chrom=chrom_list, sample=pon_df['sample'])
+    output: 
+        fullCov = expand("chromCov/{chrom}.full.csv.gz", chrom=chrom_list),
+        filterCov = expand("chromCov/{chrom}.filtered.csv.gz", chrom=chrom_list)
+    params:
+        pon_path = static_path(config['EBscore']['pon_path'])
+    threads:
+        1
+    script: 
+        "../scripts/CNV_cache.py"

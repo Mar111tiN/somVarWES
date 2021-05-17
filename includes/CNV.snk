@@ -1,0 +1,90 @@
+rule chrom_coverage:
+    input:
+        bam = get_bam_path
+    output: 
+        bedCov = "cnv/{sample}_{type}.{chrom}.cov"
+    params:
+        pon_path = static_path(config['EBscore']['pon_path']),
+        pon_list = static_path(config['EBscore']['pon_list']),
+        bedfile = full_path('bed_file')
+    threads:
+        config['CNV']['coverage']['threads']
+    conda:
+        f"../{config['envs']}/eb-env.yml"
+    script:
+        "../scripts/CNV_coverage.py"
+
+rule hetero_SNP:
+    input:
+        bam = get_bam_path
+    output: 
+        snp = "cnv/{sample}_{type}.{chrom}.snp"
+    params:
+        bedfile = full_path('bed_file'),
+        genome_split = full_path('genome_split'),
+        SNPdb_path = full_path('dbsnp_split')
+    threads:
+        config['CNV']['hetSNP']['threads']
+    conda:
+        f"../{config['envs']}/eb-env.yml"
+    script:
+        "../scripts/CNV_snp.py"
+
+
+rule combine_CNV:
+    input:
+        snp = expand("cnv/{{sample}}_{{type}}.{chrom}.snp", chrom=chrom_list),
+        cov = expand("cnv/{{sample}}_{{type}}.{chrom}.cov", chrom=chrom_list)
+    output:
+        snp = "tmp/{sample}_{type}.snp",
+        cov = "CNV/{sample}_{type}.cov",
+    params:
+        pon_path = static_path(config['EBscore']['pon_path']),
+    threads:
+        config['CNV']['combine']['threads']
+    conda:
+        f"../{config['envs']}/eb-env.yml"
+    script:
+        "../scripts/CNV_combine.py"
+
+
+rule rolling_cov:
+    input:
+        snp = "tmp/{sample}_{type}.snp",
+        cov = "CNV/{sample}_{type}.cov"
+    output:
+        snp = "CNV/{sample}_{type}.snp",
+        rcov = "CNV/{sample}_{type}.roll.cov" 
+    threads:
+        config['CNV']['combine']['threads']
+    conda:
+        f"../{config['envs']}/eb-env.yml"
+    script:
+        "../scripts/CNV_rolling.py"
+
+
+rule CNV_plot:
+    input:
+        snp = "CNV/{sample}_{type}.snp"
+    output:
+        plot="plots/CNV/{sample}_{type}.jpg"
+    threads:
+        1
+    conda:
+        f"../{config['envs']}/plot-env.yml"
+    script:
+        "../scripts/CNV_plot.py"
+
+
+rule SNP_plot:
+    input:
+        tumor_snp = "CNV/{sample}_{tumor}.snp",
+        normal_snp = "CNV/{sample}_{normal}.snp"
+    output:
+        plot="plots/SNP/{sample}_{tumor}-{normal}.jpg",
+    threads:
+        1
+    conda:
+        f"../{config['envs']}/plot-env.yml"
+    script:
+        "../scripts/plot_SNP.py"

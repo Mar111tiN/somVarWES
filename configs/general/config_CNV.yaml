@@ -1,0 +1,86 @@
+---
+CNV:
+    coverage:
+        threads: 6
+        MAPQ: 20
+        rollingWindowSize: 100  # size of the averager for the coverage tool
+        drop_duplicates: true
+    PONcoverage:
+        normCov: 100 # to what value are coverages normalized#
+        stdFactor: 2  # only exonPositions straighing within std_factor * std around meanCoverage are kept
+        verbose_output: false
+    hetSNP:
+        threads: 6
+        MAPQ: 20
+        Q: 25
+        minVAF: 0.0001
+        minDepth: 10
+        SNPdb: dbsnp153
+    combine:
+        threads: 1
+        debug: false # also export the left and right rolling window values (L/R)
+        na_remove: true
+        diff_exp: 4  # the exponent for the diff function --> higher values make steeper peaks
+        ddof: 0     # set the degree of freedom (0 seems better)
+        cov:
+            filter:
+                min_cov: 30
+                min_PON_cov: 50
+                max_PON_std: 50
+            normalize: false
+            center: true
+            expand: 0.25   # after interpolation of rolling data from filtered df into full df, interpolate missing data within this fraction of window size, set 0 if no interpolation is wanted
+            rolling_data:
+                log2ratio:
+                    mean: 250
+                covLLH:
+                    sum: 250
+            LLH:    # parameters for llh computation
+                center_range: [-0.6, 0.4]   # the mean of the gaussian is taken from log2ratios within center range
+                sigma_factor: 1     # determines the spread of the center gaussian - sigma of center gaussian is std * sigma_factor
+            LLH_cutoff:  # data with LLH below threshold are used for L2R-absVAF clustering
+                cnv: 0.4   # covLLH
+                center: 0.6
+                max_diff: 0.1 # the cutoff for the diff used for block collapsing
+                min_block_size: 100  # the number of contiguous data to make a block
+        snp:
+            filter:
+                VAF: [0.05,.98]
+                minDepth: 15
+            fallSNP:
+                run: true
+                maxFallSNP: 0.4 # after computation, filter out "falling SNPs" with fallSNP > 0.4"
+                offVAFwindow: 20
+            normalize: true
+            center: false
+            expand: 0.5
+            rolling_data:
+                absVAF:
+                    mean: 20
+                VAF:
+                    std: 30
+                snpLLH: 
+                    sum: 20
+                hsnpLLH:
+                    sum: 40
+
+            LLH:    # parameters for llh computation
+                center_range: [0.4, 0.6]   # the mean of the gaussian is taken from log2ratios within center range
+                sigma_factor: 0.5     # determines the spread of the center gaussian - sigma of center gaussian is std * sigma_factor
+            LLH_cutoff:  # data with LLH below threshold are used for L2R-absVAF clustering
+                    cnv: 0.15
+                    center: 0.4
+                    max_diff: 0.1
+                    min_block_size: 10  # the number of contiguous data to make a block
+    cluster:
+        LLH_cutoff:  # data with LLH below threshold are used for L2R-absVAF clustering
+            covLLH: 
+                cnv: 0.45
+                center: 0.6
+                diff: 0.1
+
+        thresholds: 
+            log2ratiomean: [0.55, 0.35, True] # lower and upper threshold for filter_df, if True: value is absolute
+            deltaVAFvar: [0.075, 0.025, True]
+        cleanup_density: 0.4
+        centers: 2

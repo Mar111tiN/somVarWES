@@ -1,0 +1,27 @@
+import pandas as pd
+import os
+
+########### PON COVERAGE ######################################
+def get_pon_df(pon_list, pon_path=""):
+    """
+    complete the pon_list to a full_path pon_list
+    """
+    if pon_path and not pon_path.endswith("/"):
+        pon_path += "/"
+    # load the pon_list into df
+    pon_df = pd.read_csv(os.path.join(pon_path, pon_list), header=None, names=["bam"])
+    # add the pon_path to all relative paths (not starting with /)
+    pon_df.loc[~pon_df["bam"].str.startswith("/"), "bam"] = (
+        f"{pon_path}" + pon_df["bam"]
+    )
+    pon_df['sample'] = pon_df['bam'].str.split('/', expand=True).iloc[:,-1].str.replace('.bam','')
+    return pon_df
+
+
+def get_pon_bam(w):
+    '''
+    returns the path to the pon bam from the pon_df (global var)
+    '''
+    sample = w.sample
+    bam_path = pon_df.query('sample == @sample')
+    return bam_path.loc[:,'bam'].iloc[0]

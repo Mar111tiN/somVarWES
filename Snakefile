@@ -8,15 +8,14 @@ workdir: config['workdir']
 snakedir = os.path.dirname(workflow.snakefile)
 scriptdir = os.path.join(snakedir, "scripts")
 
-# load the sample independent config file
-general_config_file = os.path.join(snakedir, config['config'])
-with open(general_config_file, "r") as stream:
-    general_config = load(stream, Loader=Loader)
-config.update(general_config)
-
 # include helper functions
 include: "includes/io.snk"
 include: "includes/utils.snk"
+
+# load the sample independent config file
+config = add_config(config, config_name="general")
+# load the CNV config
+config = add_config(config, config_name="CNV")
 
 # retrieve the file_df with all the file paths from the samplesheet
 sample_df, short_sample_df = get_files(config['inputdirs'], config['samples']['samplesheet'])
@@ -29,7 +28,8 @@ include: "includes/annotate.snk"
 include: "includes/EB.snk"
 include: "includes/HDR.snk"
 include: "includes/filter.snk"
-
+include: "includes/CNV_utils.snk"
+include: "includes/CNV.snk"
 
 # convenience variables
 ref_gen = full_path('genome')
@@ -48,13 +48,12 @@ wildcard_constraints:
 # ############## MASTER RULE ##############################################
 rule all:
     input:
-        expand("table/{tumor_normal_pair}.anno.csv", tumor_normal_pair=TN_list),
-        expand("table/{tumor_normal_pair}.EB.csv", tumor_normal_pair=TN_list),
         expand("filter/{tumor_normal_pair}.filter1.csv", tumor_normal_pair=TN_list),
         expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
-        expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list)
-
-
+        expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list),
+        expand("CNV/{sample}.cov", sample=sample_df.index),
+        expand("plots/CNV/{sample}.jpg", sample=sample_df.index),
+        expand("plots/SNP/{tumor_normal_pair}.jpg",tumor_normal_pair=TN_list)
 ###########################################################################
 
 
