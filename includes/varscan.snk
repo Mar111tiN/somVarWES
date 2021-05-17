@@ -3,7 +3,8 @@ rule varscan:
         unpack(get_bam_pair)
     output:
         indel = "varscan/{sample}_{tumor}-{normal}.{chrom}.indel.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{normal}.{chrom}.indel",
-        snp = "varscan/{sample}_{tumor}-{normal}.{chrom}.snp.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{normal}.{chrom}.snp"
+        snp = "varscan/{sample}_{tumor}-{normal}.{chrom}.snp.vcf" if config['varscan']['vcf'] else "varscan/{sample}_{tumor}-{normal}.{chrom}.snp",
+        pileup = "pileup/{sample}_{tumor}-{normal}.{chrom}.gz"
     threads:
         config['varscan']['threads']
     params:
@@ -14,15 +15,16 @@ rule varscan:
         min = f"--min-coverage {config['varscan']['min-coverage']} --min-var-freq {config['varscan']['min-var-freq']} --min-freq-for-hom {config['varscan']['min-freq-for-hom']}",
         p = f"--p-value {config['varscan']['p-value']} --somatic-p-value {config['varscan']['somatic-p-value']}",
         np = f"--normal-purity {config['varscan']['normal-purity']} --tumor-purity {config['varscan']['tumor-purity']}",
+        cleanpileup = os.path.join(scriptdir, "shell/cleanpileup.mawk")
     conda:
         f"../{config['envs']}/varscan-env.yml"
     log:
         "logs/varscan/{sample}_{tumor}-{normal}.{chrom}.log"
     shell:
         "samtools mpileup -f {params.refgen} -r {wildcards.chrom} {params.qual} -l {params.bedfile} {input.normal_bam} {input.tumor_bam} | "
-        "varscan somatic /dev/stdin {params.vcf}--mpileup 1 "
+        "tee >({params.cleanpileup} -d | gzip > {output.pileup}) | "
+        "varscan somatic /dev/stdin {params.vcf} --mpileup 1 "
         "--output-snp {output.snp} --output-indel {output.indel} {params.min} {params.p} {params.np}"
-        # " &>{log}"
 
 
 rule varscan2table:
