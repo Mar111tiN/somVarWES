@@ -1,18 +1,20 @@
 from yaml import CLoader as Loader, load, dump
-import os
-
 # ############ SETUP ##############################
-configfile: "configs/general/config_NHL.yaml"
+configfile: "configs/general/config_DLBCL.yaml"
 # configfile: "configs/config.json"
 
 # include helper functions
 include: "includes/io.snk"
 include: "includes/utils.snk"
+include: "includes/CNV_utils.snk"
 
 
 # extract the scriptdir for creating shell_paths
 snakedir = os.path.dirname(workflow.snakefile)
 scriptdir = os.path.join(snakedir, "scripts")
+
+# load the CNV config
+config = add_config(config, path="configs/general/config_CNV.yaml")
 
 
 work_dir = static_path(config['EBscore']['pon_path'])
@@ -20,9 +22,16 @@ workdir: work_dir
 
 # ############ GLOBALS ############################
 chrom_list = get_chrom_list(config)
+pon_list = config['EBscore']['pon_list']
+
+pon_df = get_pon_df(pon_list, pon_path=work_dir)
+print(pon_df)
+
 
 # ############ INCLUDES ###########################
 include: "includes/EBcache.snk"
+include: "includes/CNVcache.snk"
+
 
 # specified wildcards have to match the regex
 wildcard_constraints:
@@ -30,12 +39,19 @@ wildcard_constraints:
     chrom = "[^_/.]+",
 
 
+# ############## MASTER RULE ##############################################
 rule all:
     input:
         expand("matrix/{chrom}.pon.gz", chrom=chrom_list),
+        expand("chromCov/{chrom}.full.csv.gz", chrom=chrom_list),
+        expand("chromCov/{chrom}.filtered.csv.gz", chrom=chrom_list),
         # expand("AB/{chrom}.AB.gz", chrom=chrom_list),
-        # "AB/chr1.AB.gz",
-	    "PONcache.done"
+        # "AB/chr1.AB.gz"
+	    # "PONcache.done"
+
+
+###########################################################################
+
 
 onstart:
     print(f" Generating Cache files in {work_dir}.......")
@@ -45,5 +61,6 @@ onstart:
     # except OSError:
     #     pass
 
+
 onsuccess:
-    print(f"Workflow finished - EBcache has been generated and stored in {work_dir}")
+    print(f"Workflow finished - cache for EBscore and CNV has been generated and stored in {work_dir}")

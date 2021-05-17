@@ -2,7 +2,6 @@
 inputdirs: 
     - /fast/users/szyskam_c/work/testdata/bam # source of bam files
 workdir: /fast/users/szyskam_c/scratch/develop/somVarWES # here your results are created
-envs: env # the folder of the env-files (MacOS requires different environments)
 samples: # here go all your samples
     samplesheet: sheets/test_all.csv
     tumor:
@@ -15,5 +14,6 @@ samples: # here go all your samples
         - B  # if more than one, the first normal will be used as default for tumor-sample
         - B2
 cleanup: false
-config: 
-    configs/general/config_AML.yaml
+configs: 
+    general: configs/general/config_AML.yaml
+    CNV: configs/general/config_CNV.yaml

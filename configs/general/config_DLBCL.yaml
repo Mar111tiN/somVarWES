@@ -2,6 +2,7 @@
 #### ABSOLUTE PATHS ############
 paths:
     static: /fast/groups/ag_damm/work/ref/
+envs: env # the folder of the env-files (MacOS requires different environments)
 #### REF SECTION ###############
 ref:
     build: hg38
@@ -22,7 +23,8 @@ ref:
         genome: genome/gatk/hg38/hg38.fasta
         genome_split: genome/gatk/hg38/split
         bed_file: bed_files/SureSelect/hg38/SS_HAEv6r2UTR_hg38_Covered.bed
-        bed_file_pad: bed_files/SureSelect/hg38/SS_HAEv6r2UTR_hg38_Padded.bed 
+        bed_file_pad: bed_files/SureSelect/hg38/SS_HAEv6r2UTR_hg38_Padded.bed
+        dbsnp_split: annotation/gatk/hg38/HAEv6split
 #### TOOLS SECTION ##############
 tools:
     annovar: perl /fast/users/szyskam_c/tools/annovar2019
@@ -142,4 +144,3 @@ filter_bam:
     stringency_for_bam: all # from which filter2 should the filter bam be generated
     stringency_for_IGVnav: moderate
     padding: 200
-

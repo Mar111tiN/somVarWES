@@ -113,6 +113,8 @@ def get_bam_path(w):
     # elif takes care of that
     elif 'tumor' in wcs:
         sample_name = f"{w.sample}_{w.tumor}"
+    elif 'tumor' not in wcs:
+        sample_name = w.sample
     return sample_df.loc[sample_name]['bam_path']
 
 ########### GENERAL ##########################

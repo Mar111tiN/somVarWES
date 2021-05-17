@@ -1,6 +1,6 @@
 {
   "__default__": {
-    "mem": "200",
+    "mem": "1000",
     "nodes": 1,
     "partition": "medium",
     "threads": "{threads}",
@@ -30,6 +30,16 @@
   "EBcacheDone": {
     "t": "00:30",
     "mem": "3500",
+    "name": "{rule}"
+  },
+  "chrom_coverage": {
+    "t": "00:15",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}.{wildcards.chrom}"
+  },
+  "combine_PON_coverage": {
+    "t": "00:10",
+    "mem": 2000,
     "name": "{rule}"
   }
 }

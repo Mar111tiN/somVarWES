@@ -118,3 +118,20 @@ def get_mut_bed(_, input, output):
         return output_file
     bed_file = mut2bed(mut_df, padding, output_file)
     return bed_file
+
+
+def add_config(config, path="", config_name=""):
+    '''
+    update the config file with a config either 
+    - from a path relative to snakedir
+    - from a config name listed in the configs list
+    '''
+    if config_name:
+        config_file = os.path.join(snakedir, config['configs'][config_name])
+    else:
+        config_file = os.path.join(snakedir, path)
+
+    with open(config_file, "r") as stream:
+        added_config = load(stream, Loader=Loader)
+        config.update(added_config)
+    return config

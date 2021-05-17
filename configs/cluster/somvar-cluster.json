@@ -89,5 +89,33 @@
   "IGVnav": {
     "t": "00:05",
     "mem": 500
+  },
+  "get_coverage": {
+    "t": "00:35",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
+  },
+  "chrom_coverage": {
+    "t": "00:15",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
+  },
+  "hetero_SNP": {
+    "t": "02:45",
+    "mem": 500,
+    "partition": "short",
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
+  },
+  "combine_CNV": {
+    "t": "00:05",
+    "mem": 2500,
+    "partition": "debug",
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}"
+  },
+  "rolling_cov": {
+    "t": "00:10",
+    "mem": 2500,
+    "partition": "debug",
+    "name": "{rule}:{wildcards.sample}_{wildcards.type}"
   }
 }

@@ -41,8 +41,8 @@ echo $CONDA_PREFIX "activated";
 # !!! leading white space is important
 DRMAA=" -p {cluster.partition} -t {cluster.t} --mem-per-cpu={cluster.mem} -J {cluster.name} --nodes={cluster.nodes} -n {cluster.threads}";
 DRMAA="$DRMAA -o ${LOGDIR}/{rule}-%j.log";
-snakemake --snakefile EBcacheSnakefile --unlock --rerun-incomplete
-snakemake --snakefile EBcacheSnakefile --cluster-config configs/cluster/EBcache-cluster.json --use-conda --rerun-incomplete --drmaa "$DRMAA" -j 3000 -p -r -k
+snakemake --snakefile cacheSnakefile --unlock --rerun-incomplete
+snakemake --snakefile cacheSnakefile --cluster-config configs/cluster/PONcache-cluster.json --use-conda --rerun-incomplete --drmaa "$DRMAA" -j 3000 -p -r -k
 # -k ..keep going if job fails
 # -p ..print out shell commands
 # -P medium

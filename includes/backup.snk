@@ -21,3 +21,18 @@ def get_normal_samples(samples):
     normal_list = [pattern.replace(pair, "") for pair in TN_list]
     print('Normal list: ', normal_list)
     return normal_list
+
+
+# is it better to do a EB analysis of the SNPs? Do not think so
+rule SNP2EB:
+    input:
+        table = "cnv/{sample}.{chrom}.snp",
+        tumor_bam = get_bam_path
+    output:
+        "cnv/{sample}.{chrom}.snpEB"
+    threads:
+        config['EBFilter']['threads']['EBscore']
+    conda:
+        f"../env/eb-env.yml"
+    script:
+        "../scripts/ebsnake.py"
