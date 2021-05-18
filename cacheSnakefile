@@ -1,6 +1,6 @@
 from yaml import CLoader as Loader, load, dump
 # ############ SETUP ##############################
-configfile: "configs/general/config_DLBCL.yaml"
+configfile: "configs/general/config_NHL.yaml"
 # configfile: "configs/config.json"
 
 # include helper functions
