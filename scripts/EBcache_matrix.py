@@ -2,7 +2,7 @@ import os
 import sys
 # add ebscore package to sys.path
 sys.path.append(os.path.join(snakemake.scriptdir, "ebscore/code"))
-from ebcache import PON2matrix
+from file2matrix import PON2matrix
 
 
 def main(s):

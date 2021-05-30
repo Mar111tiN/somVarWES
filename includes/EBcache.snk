@@ -11,7 +11,7 @@ rule EBcacheMatrix:
         pon_path = static_path(config['EBscore']['pon_path']),
         pon_list = config['EBscore']['pon_list'],
         genome_split = full_path('genome_split'),
-        bedfile = full_path('bed_file')
+        bedfile = full_path('bed_file_pad')
     script:
         "../scripts/EBcache_matrix.py"
 
