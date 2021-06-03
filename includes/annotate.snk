@@ -52,8 +52,10 @@ rule edit_table:
     output:
         "filter/{sample}_{tumor_normal}.csv"
     threads:
-        1
+        4
     params:
-        snake_folder=snakedir
+        snake_folder=snakedir,
+        genmap_folder=full_path('genmap_split'),
+        gc_folder=full_path('gcratio_split')
     script:
         "../scripts/edit_table.py"

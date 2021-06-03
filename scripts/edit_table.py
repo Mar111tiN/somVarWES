@@ -1,12 +1,14 @@
 import os
 import pandas as pd
-from script_utils import sort_df
+from script_utils import sort_df, show_output
 from derive_cols import (
     get_PON_info,
     apply_clinscore,
     get_gene_lists,
     rearrange_cols,
     get_refgene,
+    addGenmap,
+    addGCratio,
 )
 
 
@@ -21,12 +23,14 @@ def main(s):
     config = s.config
     cc = config["editList"]
     snake_folder = p.snake_folder
+    genmap_folder = p.genmap_folder
+    gc_folder = p.gc_folder
 
     cc["keep_syn"] = config["filter"]["keep_syn"]
     cc["keep_UTR"] = config["filter"]["keep_UTR"]
 
     # ## LOAD MUT FILE #####################################
-    print(f"Started editing and basic filtering for {input}.")
+    show_output(f"Started editing and basic filtering for {input}.")
     anno_df = pd.read_csv(input, sep="\t")
 
     # ########### change refGene COLUMNS ######################
@@ -46,13 +50,19 @@ def main(s):
     candidate_excel = os.path.join(snake_folder, cc["candidate_list"])
     anno_df = get_gene_lists(anno_df, candidate_excel=candidate_excel)
 
+    # ########### ADD MAPPABILITY + GCratio ###########################
+    anno_df = addGenmap(anno_df, genmap_path=genmap_folder)
+    anno_df = addGCratio(anno_df, gc_path=gc_folder)
+
     # ############## REARRANGE COLUMNS  and sort rows ###################################
     info_folder = os.path.join(snake_folder, "info")
     anno_df = rearrange_cols(anno_df, file_name="filter_cols", folder=info_folder)
     anno_df = sort_df(anno_df)
 
     anno_df.to_csv(output, sep="\t", index=False)
-    print(f"Writing edited mutation list with added columns to {output}.")
+    show_output(
+        f"Writing edited mutation list with added columns to {output}.", color="success"
+    )
 
 
 if __name__ == "__main__":

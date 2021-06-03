@@ -13,6 +13,11 @@ Func_ensGene34
 Gene_ensGene34
 GeneDetail_ensGene34
 AAChange_ensGene34
+map30_0
+map50_0
+map75_1
+map100_2
+GCratio
 isCandidate
 DLBCLcandidate
 NHLcandidate
@@ -45,9 +50,9 @@ ClinScore
 cosmic70_ID
 cosmic70_type
 cosmic70_score
-cosmic92_score
-cosmic92_ID
-cosmic92_type
+cosmic94_score
+cosmic94_ID
+cosmic94_type
 icgc29_Affected
 clinvar_score
 CLNALLELEID

@@ -3,6 +3,7 @@ import numpy as np
 import os
 import re
 from yaml import CLoader as Loader, load
+from script_utils import show_output
 
 
 def get_refgene(df, config={}):
@@ -77,10 +78,10 @@ def get_PON_info(df):
     """
     computes values from the PON column
     """
-    
+
     STRANDSEP = "="
     ADSEP = "<"
-    
+
     org_cols = list(df.columns)
 
     # cheat a bad PON for EB = 0 (|1|1|1|1|1|1|1|1|1|1|1|1|1<1|1|1|1|1|1|1|1|1|1|1()
@@ -125,7 +126,7 @@ def apply_clinscore(df, clinscore_file):
     # ############## ICGC29 ###########
     # get icgc version
     icgc = [c for c in df.columns if c.startswith("icgc")][0].split("_")[0]
-    print(f"Add ICGC derived columns and compute {icgc}_freq")
+    show_output(f"Add ICGC derived columns and compute {icgc}_freq", time=False)
     ICGC = (
         df[f"{icgc}_Affected"]
         .str.extract(r"^([0-9]+)/([0-9]+)$")
@@ -138,7 +139,7 @@ def apply_clinscore(df, clinscore_file):
     # ############## COSMIC70 #########
     # get the score dict
     cosmic70_location = clinscore_dict["cosmic70"]["location"]
-    print("Add Cosmic70 derived columns and compute cosmic70_score")
+    show_output("Add Cosmic70 derived columns and compute cosmic70_score", time=False)
     cosmic70_pattern = r"(?:ID=(?P<cosmID>COSM[0-9]+(?:,COSM[0-9]+)?);OCCURENCE=)?(?P<freq>[0-9]+)\((?P<organ>[A-Z_a-z]+)\)"
     df[["cosmic70_ID", "cosmic70_freq", "cosmic70_type"]] = (
         df["cosmic70"]
@@ -189,7 +190,10 @@ def apply_clinscore(df, clinscore_file):
     cosmic90_version = [c for c in df.columns if c.startswith("cosmic9")][0].split("_")[
         0
     ]
-    print(f"Add {cosmic90_version} derived columns and compute {cosmic90_version}_freq")
+    show_output(
+        f"Add {cosmic90_version} derived columns and compute {cosmic90_version}_freq",
+        time=False,
+    )
 
     def cosmic90_score(row):
         """
@@ -260,9 +264,9 @@ def apply_clinscore(df, clinscore_file):
     CLINSCORE.pop("cosmic90_score", None)
     # GET COMBINED ClinScore
     df["ClinScore"] = 0
-    print("      Combining clinical scores into ClinScore")
+    show_output("      Combining clinical scores into ClinScore", time=False)
     for col in CLINSCORE.keys():
-        print("            ", col)
+        show_output(f"            {col}", time=False)
         df.loc[df[col] != ".", "ClinScore"] += CLINSCORE[col] * df[df[col] != "."][col]
     return df
 
@@ -311,7 +315,130 @@ def get_gene_lists(df, candidate_excel=""):
     return df
 
 
+def addGenmap(df, genmap_path="", modes=["30_0", "50_0", "75_1", "100_2"]):
+    """
+    adds the genmap data to the coverage data
+    selects only the columns that are given in modes
+    choose from [
+        '30_0', '30_1', '30_2',
+        '50_0', '50_1', '50_2',
+        '75_0','75_1', '75_2', '75_3',
+        '100_0', '100_1', '100_2', '100_4',
+        '150_0','150_1', '150_2', '150_4']
+
+    """
+
+    show_output("Adding genmap data.", time=True)
+    chrom_list = [f"chr{i}" for i in range(1, 23)] + ["chrX", "chrY"]
+    # sorting for categorical chrom should not be needed as the for loop enforces chrom order
+    # df["Chr"] = pd.Categorical(df["Chr"], chrom_list)
+
+    # save cols
+    cols = df.columns
+    # cycle through chroms
+    map_dfs = []
+    for chrom in chrom_list:
+        # load genmap data for that chromosome
+        genmap_file = os.path.join(genmap_path, f"hg38_genmap.HAEv7.{chrom}.txt.gz")
+        chrom_df = df.query("Chr == @chrom")
+        # check
+        if not os.path.isfile(genmap_file):
+            show_output(f"Could not find genmap file {genmap_file}", color="warning")
+            return
+
+        try:
+            cols = ["Chr", "Pos"] + modes
+            genmap_df = (
+                pd.read_csv(genmap_file, sep="\t", compression="gzip")
+                .loc[:, cols]
+                .fillna(method="ffill")
+            )
+            # rename the mappability cols
+            mode_rename = {mode: "map" + mode for mode in modes}
+            genmap_df = genmap_df.rename(mode_rename, axis=1)
+            show_output(
+                f"Loading mappability data for {chrom} from {genmap_file}", time=False
+            )
+        except Exception as e:
+            show_output(
+                f"{e}: Could not load mappability data for {chrom} from {genmap_file}",
+                color="warning",
+            )
+            return
+        # merge the chrom_df with genmap file
+        chrom_df = chrom_df.merge(
+            genmap_df, left_on=["Chr", "Start"], right_on=["Chr", "Pos"], how="left"
+        ).drop("Pos", axis=1)
+        map_dfs.append(chrom_df)
+        del chrom_df
+    map_df = pd.concat(map_dfs)
+    del map_dfs
+    show_output("Genmap data added.", time=True, color="success")
+    return map_df
+
+
+def interpolate(df, data_col, ref_col="Start", expand_limit=20):
+    """
+    interpolates missing values in data_col using linear interpolation based on ref_col
+    """
+    cols = list(df.columns)
+    # set FullExonPos as index for the interpolation method to work on proper intervals
+    df = df.reset_index(drop=False).set_index(ref_col, drop=False)
+    df.loc[:, data_col] = df[data_col].interpolate(
+        method="values", limit=expand_limit, limit_direction="both"
+    )
+    return df.set_index("index")[cols]
+
+
+def addGCratio(df, gc_path="", mode="100-10"):
+    """
+    adds the GCdata to the coverage data
+    gc_path is path to chrom-split gc-data
+    """
+
+    chrom_list = [f"chr{i}" for i in range(1, 23)] + ["chrX", "chrY"]
+    show_output("Adding GCratio data")
+    # cycle through chroms
+    gc_dfs = []
+    for chrom in chrom_list:
+        chrom_df = df.query("Chr == @chrom")
+
+        # load gc data for that chromosome
+        gc_file = os.path.join(gc_path, f"{chrom}.gc{mode}.gz")
+        if not os.path.isfile(gc_file):
+            show_output(f"Could not find GC file {gc_file}", color="warning")
+            return
+
+        try:
+            show_output(f"Loading GC data for {chrom} from {gc_file}", time=False)
+            gc_df = pd.read_csv(gc_file, sep="\t", compression="gzip").rename(
+                {"GC/AT": "GCratio"}, axis=1
+            )
+        except Exception as e:
+            show_output(
+                f"{e}: Could not load GC data for {chrom} from {gc_file}",
+                color="warning",
+            )
+            return
+        # gc data has columns Start -> GC/AT
+        chrom_df = chrom_df.merge(gc_df, on=["Chr", "Start"], how="outer")
+        del gc_df
+        # # interpolate and remove GCdata rows
+        chrom_df = interpolate(chrom_df, "GCratio", ref_col="Start").query("End == End")
+        gc_dfs.append(chrom_df)
+        del chrom_df
+    # concat chrom_dfs
+    df = pd.concat(gc_dfs)
+    del gc_dfs
+    show_output("GCratio data added!", color="success")
+    return df
+
+
 def rearrange_cols(df, file_name="cols", folder=""):
+    """
+    use an edit file to filter and rearrange the output columns
+    """
+
     # write column list to snakepath/info
     col_file = os.path.join(folder, f"{file_name}.txt")
     # make a dataframe from cols and write to file for inspection

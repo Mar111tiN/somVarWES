@@ -22,11 +22,11 @@ dbSNP153_AltFreq
 dbSNP153_DB
 dbSNP153_VariantClass
 cosmic70
-cosmic92_ID
-cosmic92_Mut_ID_old
-cosmic92_count
-cosmic92_type
-cosmic92_MutStatus
+cosmic94_ID
+cosmic94_Mut_ID_old
+cosmic94_count
+cosmic94_type
+cosmic94_MutStatus
 icgc29_ID
 icgc29_Affected
 CLNALLELEID
