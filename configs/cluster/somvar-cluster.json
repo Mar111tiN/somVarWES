@@ -48,7 +48,7 @@
   },
   "edit_table": {
     "t": "00:15",
-    "mem": 2500,
+    "mem": 3500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
   },
   "filter1": {
@@ -56,8 +56,9 @@
     "mem": 1500
   },
   "primer3": {
-    "t": "00:45",
-    "mem": 1500
+    "t": "03:15",
+    "mem": 1500,
+    "partition": "short"
   },
   "filter_bam": {
     "t": "00:45",
@@ -66,7 +67,7 @@
   },
   "filter_pileup": {
     "t": "00:30",
-    "mem": 200,
+    "mem": 500,
     "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
   },
   "detect_HDR": {
