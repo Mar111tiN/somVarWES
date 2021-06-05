@@ -58,7 +58,7 @@ def main(s):
     info_folder = os.path.join(snake_folder, "info")
     anno_df = rearrange_cols(anno_df, file_name="filter_cols", folder=info_folder)
     anno_df = sort_df(anno_df)
-
+    anno_df.loc[:, "End"] = anno_df["End"].astype(int)
     anno_df.to_csv(output, sep="\t", index=False)
     show_output(
         f"Writing edited mutation list with added columns to {output}.", color="success"
