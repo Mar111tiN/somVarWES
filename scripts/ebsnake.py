@@ -32,7 +32,8 @@ def main(s):
 
     run_ebscore(
         mut_file=s.input.table,
-        tumor_bam=s.input.tumor_bam,
+        tumor_bam=getattr(s.input, "tumor_bam", ""),
+        cleanpileup=getattr(s.input, "cleanpileup", ""),
         output_file=str(s.output),
         pon_list=p.pon_list,
         chrom=w.chrom,

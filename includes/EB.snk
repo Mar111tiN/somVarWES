@@ -1,7 +1,7 @@
 rule anno2EB:
     input:
         table = "table/{sample}_{tumor}-{normal}.csv",
-        tumor_bam = get_bam_path
+        cleanpileup = "pileup/{sample}_{tumor}-{normal}.{chrom}.gz"
     output:
         "eb/{sample}_{tumor}-{normal}.{chrom}.EB"
     log:
