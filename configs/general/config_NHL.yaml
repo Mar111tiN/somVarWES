@@ -95,7 +95,7 @@ HDR:
         MinAltSupport: 8  # how many mutation reads must be there
 EBscore:
     run: true
-    pon_path: PON/PONDEVEL # path relative to static path
+    pon_path: PON/HAEv7_hg38_NovaSeq # path relative to static path
     pon_list: PON_full.txt # path relative to static path
     zero_path: zero  # path relative to pon_path
     use_cache: true

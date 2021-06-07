@@ -1,26 +1,25 @@
-import pandas as pd
 import os
 import sys
+import pandas as pd
+
 # add myCNV package to sys.path
 sys.path.append(os.path.join(snakemake.scriptdir, "myCNV/code"))
-from plot import make_SNP_plot
-from script_utils import show_output
+
+from script_utils_CNV import show_output
+from convert import write_ASCAT
 
 
 def main(s):
     """
-    ############## snakemake wrapper ################################
+    snakemake wrapper for writing ASCAT output
     """
-
     w = s.wildcards
     i = s.input
-    o = s.output
 
     sample = f"{w.sample}_{w.tumor}-{w.normal}"
-    show_output(f"Plotting SNP plot for {sample} and saving to")
+    show_output(f"Loading {i.CNV} of sample {sample} for ASCAT conversion")
     cnv_df = pd.read_csv(i.CNV, sep="\t", compression="gzip")
-    fig, _ = make_SNP_plot(sample, cnv_df)
-    fig.savefig(o.plot)
+    write_ASCAT(cnv_df, sample=sample, outpath=f"CNV/{w.sample}/pre")
 
 
 if __name__ == "__main__":

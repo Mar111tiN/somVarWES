@@ -43,10 +43,10 @@ wildcard_constraints:
 rule all:
     input:
         expand("matrix/{chrom}.pon.gz", chrom=chrom_list),
-        # expand("chromCov/{chrom}.full.csv.gz", chrom=chrom_list),
-        # expand("chromCov/{chrom}.filtered.csv.gz", chrom=chrom_list),
-        # expand("AB/{chrom}.AB.gz", chrom=chrom_list),
-	"PONcache.done"
+        expand("cov/{chrom}.cov.gz", chrom=chrom_list),
+        "CNV/pon.cov.filter.gz",
+        "CNV/pon.snp.gz",
+	    "EBcache.done"
 
 
 ###########################################################################

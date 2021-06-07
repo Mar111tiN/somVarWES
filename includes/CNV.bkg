@@ -23,7 +23,7 @@ rule combineCNV:
     output:
         cov = "CNV/{sample}_{tumor}-{normal}.cov.gz",
         snp = "CNV/{sample}_{tumor}-{normal}.snp",
-        plot = "CNV/plots/{sample}/{sample}_{tumor}-{normal}_{tumor}.snp.raw.jpg",
+        plot = "CNV/{sample}/plots/{sample}_{tumor}-{normal}_{tumor}.snp.raw.jpg",
         CNV = "CNV/{sample}/data/{sample}_{tumor}-{normal}.cnv.snp.gz",
         fullCNV = "CNV/{sample}/data/{sample}_{tumor}-{normal}.cnv.gz"
     params:
@@ -40,10 +40,12 @@ rule prepareASCAT:
     input:
         CNV = "CNV/{sample}/data/{sample}_{tumor}-{normal}.cnv.snp.gz"
     output:
-        bafN = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{normal}_baf.tsv",
-        bafT = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_baf.tsv",
-        logrN = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{normal}_logr.tsv",
-        logrT = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_logr.tsv"
+        bafT = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_baf_tumor.tsv",
+        bafN = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{normal}_baf_tumor.tsv",
+        bafGerm = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_baf_normal.tsv",
+        logrT = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_logr_tumor.tsv",
+        logrN = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{normal}_logr_tumor.tsv",
+        logrGerm = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_logr_normal.tsv"
     threads:
         1
     script:
@@ -51,20 +53,19 @@ rule prepareASCAT:
 
 
 rule runASCAT:
-    input: 
-        normal_baf = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{normal}_baf.tsv",
-        tumor_baf = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_baf.tsv",
-        normal_log = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{normal}_logr.tsv",
-        tumor_log = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_logr.tsv"
+    input:
+        bafT = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{type}_baf_tumor.tsv",
+        bafGerm = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_baf_normal.tsv",
+        logrT = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{type}_logr_tumor.tsv",
+        logrGerm = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_logr_normal.tsv"
     output: 
-        tumor = "CNV/{sample}/ASCAT/{sample}_{tumor}-{normal}.tumor.png"
+        cnv = "CNV/{sample}/{sample}_{tumor}-{normal}_{type}.ASCATprofile.png"
     conda:
         "../env/R-env.yaml"
     threads:
         1
     script:
         "../scripts/ascat.R" 
-
 
 
 rule SNPlot:

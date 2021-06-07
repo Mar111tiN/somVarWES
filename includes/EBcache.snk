@@ -6,7 +6,7 @@ rule EBcacheMatrix:
     threads:
         config['EBscore']['threads']['EBcacheMatrix']
     conda:
-        "../env/eb-env.yml"
+        "../env/sampy-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path']),
         pon_list = config['EBscore']['pon_list'],
@@ -25,7 +25,7 @@ rule splitEBcacheMatrix:
     params:
         split = config['EBscore']['ABcache_split']
     conda:
-        "../env/eb-env.yml"
+        "../env/sampy-env.yml"
     script:
         "../scripts/EBcache_splitmatrix.py"
 
@@ -36,7 +36,7 @@ rule EBcacheZeros:
     threads:
         10
     conda:
-        "../env/eb-env.yml"
+        "../env/sampy-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path']),
         pon_list = config['EBscore']['pon_list'],
@@ -53,7 +53,7 @@ rule EBcacheAB:
     threads:
         config['EBscore']['threads']['EBcacheAB']
     conda:
-        "../env/eb-env.yml"
+        "../env/sampy-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path'])
     script:
@@ -80,7 +80,7 @@ rule EBcacheDone:
     input:
         expand("AB/{chrom}.AB.gz", chrom=chrom_list)
     output:
-        touch("PONcache.done")
+        touch("EBcache.done")
     params:
         pon_path = static_path(config['EBscore']['pon_path']),
         pon_list = config['EBscore']['pon_list'],
@@ -88,6 +88,6 @@ rule EBcacheDone:
     threads:
         24
     conda:
-        "../env/eb-env.yml"
+        "../env/sampy-env.yml"
     script:
         "../scripts/EBcache_zeros.py"

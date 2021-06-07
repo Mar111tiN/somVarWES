@@ -32,14 +32,14 @@
     "mem": "3500",
     "name": "{rule}"
   },
-  "chrom_coverage": {
-    "t": "00:15",
-    "mem": 500,
-    "name": "{rule}:{wildcards.sample}.{wildcards.chrom}"
+  "PON2CNV": {
+    "t": "00:25",
+    "mem": 1500,
+    "name": "{rule}:{wildcards.chrom}"
   },
-  "combine_PON_coverage": {
-    "t": "00:10",
-    "mem": 2000,
+  "combine_PON": {
+    "t": "00:20",
+    "mem": 2500,
     "name": "{rule}"
   }
 }

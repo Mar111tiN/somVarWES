@@ -1,4 +1,5 @@
 from yaml import CLoader as Loader, load, dump
+from subprocess import run
 # ############ SETUP ##############################
 configfile: "configs/active_config.yaml"
 # configfile: "configs/config.json"
@@ -32,7 +33,6 @@ include: "includes/annotate.snk"
 include: "includes/EB.snk"
 include: "includes/HDR.snk"
 include: "includes/filter.snk"
-include: "includes/CNV_utils.snk"
 include: "includes/CNV.snk"
 
 # convenience variables
@@ -53,19 +53,17 @@ wildcard_constraints:
 rule all:
     input:
         expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
-        expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list)
-        # expand("CNV/{sample}.cov", sample=sample_df.index),g
-        # expand("CNV/{sample}.snp", sample=sample_df.index),
-        # expand("plots/CNV/{sample}.jpg", sample=sample_df.index),
-        # expand("plots/SNP/{tumor_normal_pair}.jpg",tumor_normal_pair=TN_list)
+        expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list),
+        # expand("CNV/{s_tn}.cnv.snp.gz", s_tn=get_STN(TN_list)),
+        expand("CNV/{s_tn_t}.tumour.png", s_tn_t=get_ASCAT_list(TN_list))
 
 ###########################################################################
 
 
 # print out of installed tools
 onstart:
-    print("    SOMVARWES PIPELINE STARTING.......")
-    print('Variant calling using bam files')
+    show_output("    SOMVARWES PIPELINE STARTING.......", time=True)
+
     print('bam:', short_sample_df.loc[:, ['bam_path']])
     path_to_config = os.path.join(config['workdir'], "config.yaml")
     with open(path_to_config, 'w+') as stream:
@@ -74,8 +72,9 @@ onstart:
 
 
 onsuccess:
-    # shell("export PATH=$ORG_PATH; unset ORG_PATH")
-    print("SOMVARWES workflow finished - everything ran smoothly")
+    # # touch all conda env files in the workdir so the scratch-cleanup does not clean them (BIH-cluster specific workaround)
+    # run(f"find {config['workdir']}/.snakemake -type f -exec touch {{}} +", shell=True)
+    show_output("SOMVARWES workflow finished - everything ran smoothly", time=True, color="success")
     # if config['cleanup']:
     #     split_table_pattern = 'chr[^.]+\.csv'
     #     shell("rm -rf pileup varscan")

@@ -77,6 +77,7 @@ onstart:
 
 onsuccess:
     # shell("export PATH=$ORG_PATH; unset ORG_PATH")
+    shell("find {config['workdir']}/.snakemake -type f -exec touch {} +")
     print("SOMVARWES workflow finished - everything ran smoothly")
     # if config['cleanup']:
     #     split_table_pattern = 'chr[^.]+\.csv'

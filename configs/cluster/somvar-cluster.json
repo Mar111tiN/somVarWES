@@ -71,7 +71,7 @@
     "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
   },
   "detect_HDR": {
-    "t": "00:30",
+    "t": "00:45",
     "mem": 2500,
     "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
   },
@@ -85,38 +85,35 @@
   },
   "filter2": {
     "t": "00:15",
-    "mem": 500
+    "mem": 1500
   },
   "IGVnav": {
     "t": "00:05",
     "mem": 500
   },
-  "get_coverage": {
-    "t": "00:35",
-    "mem": 500,
-    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
-  },
-  "chrom_coverage": {
-    "t": "00:15",
-    "mem": 500,
-    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
-  },
-  "hetero_SNP": {
-    "t": "02:45",
-    "mem": 500,
-    "partition": "short",
-    "name": "{rule}:{wildcards.sample}_{wildcards.type}.{wildcards.chrom}"
-  },
-  "combine_CNV": {
+  "TCN2CNV": {
     "t": "00:05",
-    "mem": 2500,
-    "partition": "debug",
-    "name": "{rule}:{wildcards.sample}_{wildcards.type}"
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
   },
-  "rolling_cov": {
-    "t": "00:10",
+  "combineCNV": {
+    "t": "00:35",
     "mem": 2500,
-    "partition": "debug",
-    "name": "{rule}:{wildcards.sample}_{wildcards.type}"
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
+  },
+  "prepareASCAT": {
+    "t": "00:05",
+    "mem": 500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
+  },
+  "runASCAT": {
+    "t": "00:25",
+    "mem": 2500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
+  },
+  "SNPlot": {
+    "t": "00:05",
+    "mem": 1000,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   }
 }

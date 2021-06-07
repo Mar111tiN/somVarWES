@@ -6,7 +6,7 @@ rule filter_pileup:
     threads:
         2
     conda:
-        f"../{config['envs']}/eb-env.yml"
+        f"../{config['envs']}/sampy-env.yml"
     params:
         refgen = full_path('genome'),
         qual = f"-q {config['mpileup']['MAPQ']} -Q {config['mpileup']['Q']}",
@@ -24,7 +24,7 @@ rule detect_HDR:
     output:
         HDR_table = "hdr/{sample}_{tumor}-{normal}_{type}.{chrom}.filter1.HDR.csv"
     conda:
-        f"../{config['envs']}/eb-env.yml"
+        f"../{config['envs']}/sampy-env.yml"
     threads:
         config['HDR']['threads']
     params:

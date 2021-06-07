@@ -87,6 +87,22 @@ def get_tumor_normal_pairs(samples):
     return TN_list
 
 
+
+def get_ASCAT_list(TN_list, folder="ASCAT"):
+    '''
+    returns for every Tumor normal pair a string list
+        sample/sample_tumor-normal
+    '''
+
+    TNS_list = [f"{tn.split('_')[0]}/{folder}/{tn}" for tn in TN_list]
+
+    # sample/sample_tumor-normal_tumor
+    # sample/sample_tumor-normal_normal
+    # TNS_list = [f"{tn.split('_')[0]}/{folder}/{tn}_{t}" for tn in TN_list for t in tn.split("_")[1].split("-")]
+
+    return TNS_list
+
+
 def get_chrom_list(config):
     """
     returns a list of all valid chromosomes determined by build version

@@ -3,7 +3,7 @@ inputdirs:
     - /fast/users/szyskam_c/work/testdata/bam # source of bam files
 workdir: /fast/users/szyskam_c/scratch/develop/somVarWES # here your results are created
 samples: # here go all your samples
-    samplesheet: sheets/test_all.csv
+    samplesheet: sheets/test_large.csv
     tumor:
         - A  #
         - A1

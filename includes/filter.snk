@@ -72,7 +72,7 @@ rule filter_bam:
         bam = get_bam_path,
     output: "filterbam/{sample}_{tumor}-{normal}_{type}.bam"
     conda:
-        f"../{config['envs']}/eb-env.yml"
+        f"../{config['envs']}/sampy-env.yml"
     threads:
         config['filter_bam']['threads']
     params:
