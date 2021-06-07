@@ -111,6 +111,11 @@
     "mem": 2500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
   },
+  "runASCAT2": {
+    "t": "00:25",
+    "mem": 2500,
+    "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}"
+  },
   "SNPlot": {
     "t": "00:05",
     "mem": 1000,

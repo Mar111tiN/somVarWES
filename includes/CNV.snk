@@ -43,7 +43,9 @@ rule prepareASCAT:
         bafN = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{normal}_baf.tsv",
         bafT = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_baf.tsv",
         logrN = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{normal}_logr.tsv",
-        logrT = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_logr.tsv"
+        logrT = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_logr.tsv",
+        germ_baf = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_germline_baf.tsv",
+        germ_log = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_germline_logr.tsv"
     threads:
         1
     script:
@@ -56,8 +58,6 @@ rule runASCAT:
         tumor_baf = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_baf.tsv",
         normal_log = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{normal}_logr.tsv",
         tumor_log = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_logr.tsv",
-        germ_baf = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_germline_baf.tsv",
-        germ_log = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_germline_logr.tsv"
     output: 
         tumor = "CNV/{sample}/ASCAT/{sample}_{tumor}-{normal}.tumour.png"
     conda:
