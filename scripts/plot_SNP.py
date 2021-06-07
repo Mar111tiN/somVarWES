@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import sys
+
 # add myCNV package to sys.path
 sys.path.append(os.path.join(snakemake.scriptdir, "myCNV/code"))
 from plot import make_SNP_plot
