@@ -70,3 +70,37 @@ run.ascat <- function(
     }
 }
 
+run.ascat2 <- function(
+    sample="",
+    type="tumor",
+    sample.dir=".",
+    output.dir="."
+    ) {
+        germline.base <- glue(sample, "_", "germline")
+        sample.base <- glue(sample, "_", type)
+
+    ascat.bc <- ascat.load(normal.base=germline.base, tumor.base=sample.base, input.dir=sample.dir)
+    
+    ascat.plotRawData(ascat.bc, img.dir=output.dir)
+
+
+    for (pen in ascat.penalty) {
+        out.path <- glue(output.dir, "/", pen)
+        dir.create(out.path, showWarnings = FALSE)
+        ascat.bc <- ascat.aspcf(ascat.bc, penalty = pen, out.dir=out.path)
+    
+        ascat.plotSegmentedData(ascat.bc, img.dir=out.path)
+    
+        ascat.output <- ascat.runAscat(
+            ascat.bc, 
+            gamma = 1.0,    # actual log-diff between n=1 and n=2 --> 1 for NGS
+            img.dir=out.path
+        )
+        # write the segment file from ascat output
+        ascat.output$segments %>% 
+        dplyr::rename(chrom=chr, start=startpos, end=endpos, cn_major=nMajor, cn_minor=nMinor) %>% 
+        drop_na() %>% 
+        select(-c(sample)) %>% 
+        write_tsv(glue(output.dir, "/", sample.base, "_", pen, "_ascat_segs.tsv"))
+    }
+}

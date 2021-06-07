@@ -55,9 +55,11 @@ rule runASCAT:
         normal_baf = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{normal}_baf.tsv",
         tumor_baf = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_baf.tsv",
         normal_log = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{normal}_logr.tsv",
-        tumor_log = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_logr.tsv"
+        tumor_log = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{tumor}_logr.tsv",
+        germ_baf = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_germline_baf.tsv",
+        germ_log = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_germline_logr.tsv"
     output: 
-        tumor = "CNV/{sample}/ASCAT/{sample}_{tumor}-{normal}.tumor.png"
+        tumor = "CNV/{sample}/ASCAT/{sample}_{tumor}-{normal}.tumour.png"
     conda:
         "../env/R-env.yaml"
     threads:
@@ -65,13 +67,27 @@ rule runASCAT:
     script:
         "../scripts/ascat.R" 
 
+# rule runASCAT2:
+#     input: 
+#         sample_baf = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{type}_baf.tsv",
+#         sample_log = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_{type}_logr.tsv",
+#         germ_baf = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_germline_baf.tsv",
+#         germ_log = "CNV/{sample}/pre/{sample}_{tumor}-{normal}_germline_logr.tsv"
+#     output: 
+#         tumor = "CNV/{sample}/ASCAT/{sample}_{tumor}-{normal}_{type}.tumour.png"
+#     conda:
+#         "../env/R-env.yaml"
+#     threads:
+#         1
+#     script:
+#         "../scripts/ascat2.R" 
 
 
 rule SNPlot:
     input:
-        CNV = "CNV/{sample}/{sample}_{tumor}-{normal}.cnv.snp.gz"
+        CNV = "CNV/{sample}/data/{sample}_{tumor}-{normal}.cnv.snp.gz"
     output:
-        plot="CNV/{sample}/{sample}_{tumor}-{normal}.SNPmatch.jpg",
+        plot="SNPlot/{sample}_{tumor}-{normal}.SNPmatch.jpg",
     threads:
         1
     conda:
