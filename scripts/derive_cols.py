@@ -339,7 +339,7 @@ def addGenmap(df, genmap_path="", modes=["30_0", "50_0", "75_1", "100_2"]):
     map_dfs = []
     for chrom in chrom_list:
         # load genmap data for that chromosome
-        genmap_file = os.path.join(genmap_path, f"hg38_genmap.HAEv7.{chrom}.txt.gz")
+        genmap_file = os.path.join(genmap_path, f"hg38_genmap.{chrom}.txt.gz")
         chrom_df = df.query("Chr == @chrom")
         # check
         if not os.path.isfile(genmap_file):
