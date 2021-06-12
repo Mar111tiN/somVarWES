@@ -21,8 +21,8 @@ rule combineCNV:
         cov = expand("cnv/{{sample}}_{{tumor}}-{{normal}}.{chrom}.cov.gz", chrom=chrom_list),
         snp = expand("cnv/{{sample}}_{{tumor}}-{{normal}}.{chrom}.snp", chrom=chrom_list)
     output:
-        cov = "CNV/{sample}_{tumor}-{normal}.cov.gz",
-        snp = "CNV/{sample}_{tumor}-{normal}.snp",
+        cov = "CNV/{sample}/raw/{sample}_{tumor}-{normal}.cov.gz",
+        snp = "CNV/{sample}/raw/{sample}_{tumor}-{normal}.snp",
         plot = "CNV/{sample}/plots/{sample}_{tumor}-{normal}_{tumor}.snp.raw.jpg",
         CNV = "CNV/{sample}/data/{sample}_{tumor}-{normal}.cnv.snp.gz",
         fullCNV = "CNV/{sample}/data/{sample}_{tumor}-{normal}.cnv.gz"
