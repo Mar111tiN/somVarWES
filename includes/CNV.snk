@@ -23,7 +23,7 @@ rule combineCNV:
     output:
         cov = "CNV/{sample}_{tumor}-{normal}.cov.gz",
         snp = "CNV/{sample}_{tumor}-{normal}.snp",
-        plot = "CNV/plots/{sample}/{sample}_{tumor}-{normal}_{tumor}.snp.raw.jpg",
+        plot = "CNV/{sample}/plots/{sample}_{tumor}-{normal}_{tumor}.snp.raw.jpg",
         CNV = "CNV/{sample}/data/{sample}_{tumor}-{normal}.cnv.snp.gz",
         fullCNV = "CNV/{sample}/data/{sample}_{tumor}-{normal}.cnv.gz"
     params:
