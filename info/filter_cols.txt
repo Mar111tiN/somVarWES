@@ -38,10 +38,9 @@ icgc29_Affected
 CLNALLELEID
 CLNDN
 CLNSIG
-avsnp150_HAEv7
 gnomAD_exome_ALL
-dbSNP153_ID
-dbSNP153_AltFreq
+dbSNP154_ID
+dbSNP154_AltFreq
 SIFT_pred
 Polyphen2_HDIV_pred
 Polyphen2_HVAR_pred

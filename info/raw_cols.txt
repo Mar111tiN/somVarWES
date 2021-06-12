@@ -14,13 +14,11 @@ GeneDetail.ensGene34
 ExonicFunc.ensGene34
 AAChange.ensGene34
 cytoBand
-avsnp150_HAEv7
+avsnp150
 gnomAD_exome_ALL
-dbSNP153_ID
-dbSNP153_RefFreq
-dbSNP153_AltFreq
-dbSNP153_DB
-dbSNP153_VariantClass
+dbSNP154_ID
+dbSNP154_AltFreq
+dbSNP154_DB
 cosmic70
 cosmic94_ID
 cosmic94_Mut_ID_old

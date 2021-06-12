@@ -43,33 +43,16 @@ annovar:
         - cytoBand
         - genomicSuperDups
         ##### POPULATIONS ########
-        # - esp6500_all
-        # - esp6500siv2_all  #
-        # - 1000g2010nov_all
-        # - 1000g2014oct_all
-        # - snp138
-        # - snp138NonFlagged
-        - avsnp150_HAEv7
-        # - gnomad_exome_all
-        - gnomad30_HAEv7
-        - dbsnp153_HAEv7
-        # - gnomad_af.lna # not indexed
-        # - exac03_all
-        # - dbscsnv11
-        # - snp131
-        # - snp131NonFlagged
+        - avsnp150
+        - gnomad30
+        - dbSNP154
         ##### CLINICAL DATA ###### 
         - cosmic70
         - cosmic94
         - icgc29
-        # - clinvar_20150629
-        # - clinvar_20170905
-        # - clinvar2019_short
-        - clinvar2020_short
+        - clinvar2021
         ##### PREDICTIONS ########
-        # - ljb26_all
-        # - dbnsfp30a
-        - dbnsfp35a_HAEv7  # 70 columns packed with predictions !!
+        - dbnsfp35a  # 70 columns packed with predictions !!
         - spidex
 primer3:  # is applied after filter step 1
     threads: 10
@@ -131,7 +114,7 @@ filter:
     keep_UTR: false # only applies to first filter step
     pop_cols:
         - gnomAD_exome_ALL
-        - dbSNP153_AltFreq
+        - dbSNP154_AltFreq
 filter_bam:
     threads: 1
     stringency_for_bam: all # from which filter2 should the filter bam be generated
