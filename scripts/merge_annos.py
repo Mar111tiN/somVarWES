@@ -1,5 +1,5 @@
 import pandas as pd
-from script_utils import sort_df
+from script_utils import sort_df, show_output
 from derive_cols import rearrange_cols
 
 # ############## SNAKEMAKE ################################
@@ -19,7 +19,7 @@ def main(s):
     # ############## ANNOVAR FILE ########################################
     # ####################################################################
 
-    print(f"Loading annovar file and adjusting columns {anno}.")
+    show_output(f"Loading annovar file and adjusting columns {anno}.")
     anno_df = (
         pd.read_csv(
             anno,
@@ -40,7 +40,10 @@ def main(s):
     # ############## MERGE WITH EB AND FISHER ############################
     #####################################################################
 
-    print(f"Loading FisherScore from file {fisher} and merging into annotation.")
+    show_output(
+        f"Loading FisherScore from file {fisher} and merging into annotation.",
+        time=False,
+    )
     fisher_df = (
         pd.read_csv(fisher, sep="\t", dtype={"Chr": str, "Start": int, "End": int})
         .fillna(".")
@@ -55,7 +58,9 @@ def main(s):
     # new_cols += fisher_cols  # -->COLS
 
     if config["EBscore"]["run"]:
-        print(f"Loading EBScore from file {eb} and merging into annotation.")
+        show_output(
+            f"Loading EBScore from file {eb} and merging into annotation.", time=False
+        )
         eb_df = (
             pd.read_csv(eb, sep="\t", dtype={"Chr": str, "Start": int, "End": int})
             .fillna(".")
@@ -75,7 +80,7 @@ def main(s):
 
     # ############# WRITE OUTPUT ########################################################
     anno_df.to_csv(output, sep="\t", index=False)
-    print(f"Writing combined annotation to {output}.")
+    show_output(f"Writing combined annotation to {output}.", color="success")
 
 
 if __name__ == "__main__":
