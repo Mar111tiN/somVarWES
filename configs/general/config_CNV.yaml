@@ -13,7 +13,7 @@ CNV:
         maxPONstd: 50
         GCnormalize: True
     combine:
-        threads: 4
+        threads: 6
     PONcoverage:
         threads: 4
         minCov: 0 # start with no coverage to 

@@ -28,7 +28,7 @@
     "mem": "2500"
   },
   "EBcacheDone": {
-    "t": "00:30",
+    "t": "02:30",
     "mem": "3500",
     "name": "{rule}"
   },
@@ -38,8 +38,8 @@
     "name": "{rule}:{wildcards.chrom}"
   },
   "combine_PON": {
-    "t": "00:20",
-    "mem": 2500,
+    "t": "01:00",
+    "mem": 3500,
     "name": "{rule}"
   }
 }

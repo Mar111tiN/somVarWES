@@ -1,6 +1,8 @@
-# GATK Best Practices - Somatic Variant Calling for human Whole Exom Data
+# Somatic Variant & CNA Calling Pipeline for human Whole Exom/targeted NGS data
 
-trim > map(BWA) > dedup(picard) > indelRealign(gatk) > baseRecalibrate(gatk) > variantCalling(varscan/muTect2) > annotation(annovar) > filter(custom)
+* Fully customizable pipeline for calling of somatic variants and copy number alterations 
+* Runs on SGE / SLURM cluster environments
+
 ## Setup
 
 ### Setup local

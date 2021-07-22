@@ -66,7 +66,7 @@ rule combineEBcacheAB:
     output:
         AB="AB/{chrom}.AB.gz"
     threads:
-        2
+        6
     run:
         dfs = []
         for file in input:
@@ -84,7 +84,7 @@ rule EBcacheDone:
     params:
         pon_path = static_path(config['EBscore']['pon_path']),
         pon_list = config['EBscore']['pon_list'],
-        reflat = False
+        reflat = True
     threads:
         24
     conda:

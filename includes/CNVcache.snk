@@ -24,7 +24,7 @@ rule combine_PON:
         PONcov = "CNV/pon.cov.filter.gz",
         PONsnp = "CNV/pon.snp.gz"
     threads:
-        4
+        10
     script: 
         "../scripts/CNVcache_combine.py"
 

@@ -66,7 +66,14 @@ run.ascat <- function(
         dplyr::rename(chrom=chr, start=startpos, end=endpos, cn_major=nMajor, cn_minor=nMinor) %>% 
         drop_na() %>% 
         select(-c(sample)) %>% 
-        write_tsv(glue(output.dir, "/", sample.name, "_", pen, "_ascat_segs.tsv"))
+        write_tsv(glue(out.path, "/", sample.name, "_", pen, "_ascat_segs.tsv"))
+        rphase_sample_data <- data.frame(sample_id = sample.name, 
+                                 segmentation = toString(glue(sample.file, "_ascat_segs.tsv.gz")), 
+                                 snps = toString(glue(sample.file, "_snps.tsv.gz")), 
+                                 purity = ascat.output$aberrantcellfraction[[1]],
+                                 ploidy = ascat.output$ploidy[[1]]
+                                 ) %>% 
+        write_tsv(get.path(out.path, "rphase_sample_data.tsv"))
     }
 }
 

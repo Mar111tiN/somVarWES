@@ -5,11 +5,7 @@ workdir: /fast/users/szyskam_c/scratch/develop/somVarWES # here your results are
 samples: # here go all your samples
     samplesheet: sheets/test_large.csv
     tumor:
-        - A  #
-        - A1
-        - A2 
-        - A3
-        - A12
+        - A  # how are your tumor samples named (like D/R Diagnosis/Relapse)
     normal:
         - B  # if more than one, the first normal will be used as default for tumor-sample
 cleanup: false

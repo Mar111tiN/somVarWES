@@ -26,7 +26,6 @@ sample_df, short_sample_df = get_files(config['inputdirs'], config['samples']['s
 chrom_list = get_chrom_list(config)
 TN_list = get_tumor_normal_pairs(sample_df)
 print(short_sample_df)
-print(get_ASCAT_list(TN_list))
 # ############ INCLUDES ##############################  
 include: "includes/varscan.snk"
 include: "includes/annotate.snk"
@@ -54,7 +53,6 @@ rule all:
     input:
         expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
         expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list),
-        # expand("CNV/{s_tn}.cnv.snp.gz", s_tn=get_STN(TN_list)),
         expand("CNV/{s_tn_t}.tumour.png", s_tn_t=get_ASCAT_list(TN_list)),
         expand("SNPlot/{tumor_normal_pair}.SNPmatch.jpg", tumor_normal_pair=TN_list)
 

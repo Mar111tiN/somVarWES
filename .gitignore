@@ -10,9 +10,9 @@ sheets/*
 slogs/
 logs
 config_*.yaml
+SLURM2.sh
 !active_config*.yaml
 !active_config.yaml
-!config_devel_rerun.yaml
 !config_*master.yaml
 !test.csv
 !testMac.csv
