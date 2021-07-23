@@ -5,74 +5,50 @@
 
 ## Setup
 
-### Setup local
-* copy files from setup/local into your local setup 
-* copy stuff into your own .bash*
-* adjust for OS dialect
-* produce your .ssh folder following the BIH guideline
-enter the BIH server directly to computation node
+### Prerequisites
+* linux environment
+* package manager conda is installed (see [official conda documentation](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html) for instructions)
+
+### Install pipeline
+You need access to a cluster environment (documentation and updates only for SLURM workload management system!)
+
+* enter cluster environment and move to folder you want to install the pipeline code into
+* clone the somVarWES code from github and run the init.sh to install packages and conda environment
 
 ```
-$ ssh bihcluster qrsh
-```
-* provide password
-* ready
-* copy .bash_profile .bashrc .condarc to your $HOME
-
-### SETUP Conda
-* install miniconda:
-```
-$ wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-```
-* set to your path
-```
-$ bash Miniconda3-latest-Linux-x86_64.sh -b -f -p $HOME/work/miniconda
-```
-* add $HOME/work/miniconda/bin to PATH:
-```
-$ 'export PATH=$PATH:$HOME/work/miniconda/bin' >> ~/.bashrc
-```
-* refresh bash:
-```
-$ source ~/.bashrc
-```
-* activate conda base environment:
-```
-$ . activate base # or conda activate base
+$ git clone https://github.com/Mar111tiN/somVarWES.git && cd somVarWES && source setup/init.sh
 ```
 
-### Create Runtime Environment
-* create or move to project folder <folder/> for cloning pipeline repository into
-* git clone this repo into that folder:
-```
-$ git clone https://github.com/Mar111tiN/somVarGATK.git
-```
-* use env-file (hwes.yml) to create new environment (rename in first line to <your_env>)
-```
-$ conda env create -f setup/hwes.yml
-$ . activate <your_env>
-$ . deactivate
-```
-* env is stored centrally in ../miniconda/envs/<your_env>
-* executables are stored/symlinked in ../miniconda/envs/<your_env>/bin
-
-### INSTALL execs to your ENV
-!! while in that environment!!!:
-* add missing conda channels to ~.condarc file
-* install what you want using conda install ...
-* [ place symlinks to your files into .../miniconda/envs/<your_env> ]
-    ( = $CONDA_PREFIX/envs/<your_env>)
+## Test the Pipeline
+* for testing, I provide testdata as dropbox links for you to download by running simple scripts
+* the downloaded bam folder contains bam files of AML tumor normal pairs in three different sizes (500MB to 25GB)
 * 
-* add shell-scripts to PATH:
+* the bam files are derived from exom-sequenced samples that have been prepped using the Agilent SureSelect XT-HS kit with HumanAllExome_v7 baits
+
+### download bam files of test samples
+* prepare a data folder with appr. 70GB of space and run the download_testbams.sh with the folder path as first argument
 ```
-export $PATH:<folder>/scripts
+$ . setup/download_testbams.sh <path-to-data-folder>
 ```
-* ready to go
+* adjust \<TESTDATA\> and provide a working directory (\<WKDIR\>) in the yaml config file configs/config_test.yaml
 
-## Configure Pipeline Configuration
-* a sample config_blueprint.yaml is provided to guide you through the configuration of the tools
-* make sure all reference and annotation files are existing (snakemake will tell you if not)
+### download static files
+* for the pipeline to work for bam files created with this specific exom prep, several database files and other accessory data has to be prepared
+* for testing (and for general use with SureSelect HAEv7 data), static data is provided
+* run the script download_static.sh with the path to the desired static folder (50GB of space is required) as argument:
+```
+$ . setup/download_static.sh <path-to-static-folder>
+```
+* adjust \<STATIC\> to the desired path and provide a working directory (\<WKDIR\>) in the yaml config file configs/general/config_testgeneral.yaml
 
+### get the annovar executables
+* most tools used by the pipeline are provided as packages and are installed via the init.sh script
+* However, the tool annovar is used for populating mutation lists with data from multiple databases has to be downloaded [here](https://www.openbioinformatics.org/annovar/annovar_download_form.php) upon signing a user agreement
+* after downloading the annovar executables, provide the path to the folder containing the annovar perl scripts (\<ANNOPATH\>) in the TOOLS section of configs/general/config_testgeneral.yaml 
 
-
-
+### run the test
+* for testing all bam files (small to large) make the config/config_test.yaml the active config which is used by the pipeline masterfile Snakefile:
+```
+$ cp configs/config_test.yaml configs/active_config.yaml
+```
+* now, you can test the pipeline locally 

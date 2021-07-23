@@ -12,8 +12,9 @@ logs
 config_*.yaml
 SLURM2.sh
 !active_config*.yaml
-!active_config.yaml
 !config_*master.yaml
+!configs/general/*
+!configs/config_test.yaml
 !test.csv
 !testMac.csv
 oldconfigs
@@ -22,4 +23,3 @@ scripts/filters/filter2-*
 Snakefile*
 !Snakefile
 !Snakefile_devel
-!configs/general/*

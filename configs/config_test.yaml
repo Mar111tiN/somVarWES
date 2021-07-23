@@ -1,0 +1,14 @@
+---
+inputdirs: 
+    - <TESTDATA>/bam # source of bam files
+workdir: <WKDIR> # here your results are created
+samples: # here go all your samples
+    samplesheet: sheets/test_large.csv
+    tumor:
+        - A  # how are your tumor samples named (like D/R Diagnosis/Relapse)
+    normal:
+        - B  # if more than one, the first normal will be used as default for tumor-sample
+cleanup: false
+configs: 
+    general: configs/general/config_testgeneral.yaml
+    CNV: configs/general/config_CNV.yaml
