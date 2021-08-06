@@ -58,7 +58,7 @@ $ cp configs/config_test.yaml configs/active_config.yaml
     ```
   + as batch job from the somVarWES root folder:
     ```
-    sbatch -J testing SLURM.sh
+    $ sbatch -J testing SLURM.sh
     ```
 * either way, the pipeline will first install all conda environments into your workdir in .snakemake folder and then start the pipeline
 * depending on cluster traffic, this can initially take 30 min or more!
