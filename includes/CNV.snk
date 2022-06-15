@@ -31,7 +31,7 @@ rule combineCNV:
     threads:
         config['CNV']['combine']['threads']
     conda:
-        f"../{config['envs']}/plot-env.yml"
+        f"../{config['envs']}/plot-env2.yml"
     script:
         "../scripts/CNV_combine.py"
 
@@ -61,7 +61,7 @@ rule runASCAT:
     output: 
         tumor = "CNV/{sample}/ASCAT/{sample}_{tumor}-{normal}.tumour.png"
     conda:
-        "../env/R-env.yaml"
+        "../env/R-env2.yaml"
     threads:
         1
     script:
@@ -91,6 +91,6 @@ rule SNPlot:
     threads:
         1
     conda:
-        f"../{config['envs']}/plot-env.yml"
+        f"../{config['envs']}/plot-env2.yml"
     script:
         "../scripts/plot_SNP.py"
