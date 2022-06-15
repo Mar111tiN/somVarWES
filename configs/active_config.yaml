@@ -1,17 +1,14 @@
 ---
 inputdirs: 
-    - /fast/users/szyskam_c/work/results/AMLMono7/bamfinal   # source of bam files
-workdir: /fast/users/szyskam_c/scratch/projects/AMLMono7 # here your results are created
+    - /fast/users/szyskam_c/scratch/projects/AllenCell/bamfinal   # source of bam files
+workdir: /fast/users/szyskam_c/scratch/projects/AllenCell # here your results are created
 samples: # here go all your samples
-    samplesheet: sheets/AMLM7_sheet2.csv
+    samplesheet: sheets/Allen_sheet.csv
     tumor:
-        - A  #
-        - A1
-        - A2
-        - R
+        - A
     normal:
-        - B  # if more than one, the first normal will be used as default for tumor-sample
+        - AICS11_B  # if more than one, the first normal will be used as default for tumor-sample
 cleanup: false
 configs: 
-    general: configs/general/config_AML.yaml
+    general: configs/general/config_Allen.yaml
     CNV: configs/general/config_CNV.yaml

@@ -47,8 +47,9 @@
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
   },
   "edit_table": {
-    "t": "00:15",
+    "t": "01:35",
     "mem": 3500,
+    "partition": "short",
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor_normal}"
   },
   "filter1": {
