@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 import re
+import sys
 from yaml import CLoader as Loader, load
 from script_utils import show_output
 
@@ -39,7 +40,7 @@ def get_refgene(df, config={}):
         isExonic = df[func].isin(exonic_types)
         # rename double genes
         gene_col = func.replace("Func", "Gene")
-        df.loc[:, gene_col] = df[gene_col].str.replace(r"([-a-zA-Z0-9]+);\1", r"\1")
+        df.loc[:, gene_col] = df[gene_col].str.replace(r"([-a-zA-Z0-9]+);\1", r"\1", regex=True)
         # fuse Gene cols into one
         df.loc[isExonic, "Gene"] = df["Gene"] + ";" + df[gene_col]
 
@@ -414,6 +415,8 @@ def addGCratio(df, gc_path="", mode="100-10"):
             gc_df = pd.read_csv(gc_file, sep="\t", compression="gzip").rename(
                 {"GC/AT": "GCratio"}, axis=1
             )
+            # add the Chr column for the correct merge
+            gc_df.loc[:, "Chr"] = chrom
         except Exception as e:
             show_output(
                 f"{e}: Could not load GC data for {chrom} from {gc_file}",
@@ -422,10 +425,13 @@ def addGCratio(df, gc_path="", mode="100-10"):
             return
         # gc data has columns Start -> GC/AT
         chrom_df = chrom_df.merge(gc_df, on=["Chr", "Start"], how="outer")
+        
+        # print("chrom_df", round(sys.getsizeof(chrom_df)/1024**2), "MB")
         del gc_df
         # # interpolate and remove GCdata rows
         chrom_df = interpolate(chrom_df, "GCratio", ref_col="Start").query("End == End")
         gc_dfs.append(chrom_df)
+        # print("gc_dfs", sys.getsizeof(gc_dfs))
         del chrom_df
     # concat chrom_dfs
     df = pd.concat(gc_dfs)
