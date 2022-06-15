@@ -1,6 +1,6 @@
 from yaml import CLoader as Loader, load, dump
 # ############ SETUP ##############################
-configfile: "configs/general/config_NHL.yaml"
+configfile: "configs/general/config_Allen.yaml"
 # configfile: "configs/config.json"
 
 # include helper functions
@@ -15,7 +15,6 @@ scriptdir = os.path.join(snakedir, "scripts")
 
 # load the CNV config
 config = add_config(config, path="configs/general/config_CNV.yaml")
-
 
 work_dir = static_path(config['EBscore']['pon_path'])
 workdir: work_dir
@@ -46,7 +45,7 @@ rule all:
         expand("cov/{chrom}.cov.gz", chrom=chrom_list),
         "CNV/pon.cov.filter.gz",
         "CNV/pon.snp.gz",
-	    "EBcache.done"
+        "EBcache.done"
 
 
 ###########################################################################

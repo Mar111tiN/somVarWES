@@ -24,8 +24,8 @@ config = add_config(config, config_name="CNV")
 # retrieve the file_df with all the file paths from the samplesheet
 sample_df, short_sample_df = get_files(config['inputdirs'], config['samples']['samplesheet'])
 chrom_list = get_chrom_list(config)
-TN_list = get_tumor_normal_pairs(sample_df)
-print(short_sample_df)
+TN_list = get_tumor_normal_pairs(sample_df, config)
+# print(short_sample_df)
 # ############ INCLUDES ##############################  
 include: "includes/varscan.snk"
 include: "includes/annotate.snk"
@@ -40,7 +40,7 @@ ref_gen = full_path('genome')
 wildcard_constraints:
     # eg sample cannot contain _ or / to prevent ambiguous wildcards
     sample = "[^_/.]+",
-    tumor_normal = "[^_/.]+",
+    tumor_normal = "[^_/.]+-[^_/.]+",
     type = "[^_/.]+",
     tumor = "[A-Za-z123]+",
     normal = "[A-Za-z123]+",
