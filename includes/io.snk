@@ -58,10 +58,26 @@ def get_files(folder_list, sample_sheet):
 
     return samples_df, short_df
 
-
-def get_tumor_normal_pairs(samples):
+def get_normal(verbose=False):
+    '''
+    boolean check for a fixed normal
+    also exits if there are more then one normal in combination with a fixed one
+    '''
+    normal = config['samples']['normal']
+    
+    if (is_fixed:= "_" in normal[0]):
+        if len(normal) > 1:
+            print("Cannot have more than one fixed normal!")
+            exit
+        if verbose:
+            print(f"Using fixed normal {normal[0]}")
+    
+    return normal[0], is_fixed
+    
+def get_tumor_normal_pairs(samples, config):
     '''
     turns valid_file_info into tuples of valid tumor normal pairs
+    for a single normal file it returns 
     '''
 
     samples = samples.reset_index()
@@ -69,7 +85,12 @@ def get_tumor_normal_pairs(samples):
     samples[['sample', 'TN']] = samples['name'].str.extract('(?P<sample>^[^_]+)_(?P<TN>[^_]+)$')
     
     tumor = config['samples']['tumor']
-    normal = config['samples']['normal']
+    normal, is_fixed = get_normal(verbose=True)
+    
+    if is_fixed:
+        # select only the A samples and concat with B
+        TN_list = samples.query('TN == @tumor')['name'] + "-B"
+        return list(TN_list)
     
     def TN_pair(group, l=[]):
 
@@ -85,7 +106,6 @@ def get_tumor_normal_pairs(samples):
     # print(TN_list)
     ##################################
     return TN_list
-
 
 
 def get_ASCAT_list(TN_list, folder="ASCAT"):
@@ -131,6 +151,12 @@ def get_bam_path(w):
         sample_name = f"{w.sample}_{w.tumor}"
     elif 'tumor' not in wcs:
         sample_name = w.sample
+        
+    # checking for fixed normals 
+    fixed_normal, normal_is_fixed = get_normal()
+    if normal_is_fixed and sample_name.endswith("_B"):
+        return sample_df.loc[fixed_normal]['bam_path']
+            
     return sample_df.loc[sample_name]['bam_path']
 
 ########### GENERAL ##########################
@@ -150,7 +176,8 @@ def full_path(file):
     '''
 
     build = config['ref']['build']
-    full_ref_path = os.path.join(config['paths']['static'], config['ref'][build][file])
+    ref_path = os.path.join(config['paths']['static'], build)
+    full_ref_path = os.path.join(ref_path, config['ref'][build][file])
     return full_ref_path
 
 
@@ -183,6 +210,13 @@ def get_bam_pair(w):
     '''
     tumor = f"{w.sample}_{w.tumor}"
     normal = f"{w.sample}_{w.normal}"
+    fixed_normal, normal_is_fixed = get_normal()
+    if normal_is_fixed:
+        bam_dict = dict(
+            tumor_bam=sample_df.loc[tumor]['bam_path'],
+            normal_bam=sample_df.loc[fixed_normal]['bam_path']
+        )
+        return bam_dict
     return dict(
         tumor_bam=sample_df.loc[tumor]['bam_path'],
         normal_bam=sample_df.loc[normal]['bam_path']
@@ -209,9 +243,17 @@ def get_anno_params(_):
     '''
 
     # get the full path to humandb
-    humandb = os.path.join(config['paths']['static'], config['annovar']['humandb'])
+    ref_path = os.path.join(config['paths']['static'], config['ref']['build'])
+    humandb = os.path.join(ref_path, config['annovar']['humandb'])
+    if not os.path.isdir(humandb):
+        show_output(f"Annovar folder {humandb} not found!", color="warning")
+        exit
     # get the available anno files
     file_list = list(os.walk(humandb))[0][-1]
+    if not len(file_list):
+        show_output(f"No annovar files found at {humandb}", color="warning")
+        exit
+
     # reduce anno files to the files compatible with genome build version
     build = config['ref']['build']
     build_files = []
