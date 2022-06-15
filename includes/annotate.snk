@@ -52,7 +52,7 @@ rule edit_table:
     output:
         "filter/{sample}_{tumor_normal}.csv"
     threads:
-        4
+        20
     params:
         snake_folder=snakedir,
         genmap_folder=full_path('genmap_split'),
