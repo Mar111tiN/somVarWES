@@ -29,4 +29,4 @@ Snakefile*
 info/*cols_edit.txt
 info/clinscore*
 !info/clinscore.yaml
-~$*
+info/~$*

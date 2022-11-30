@@ -18,8 +18,8 @@ def get_files(folder_list, sample_sheet):
     if not sample_sheet.startswith('/'):
         sample_sheet = os.path.join(snakedir, sample_sheet)
     # import the sample sheet
-    samples = pd.read_csv(sample_sheet, sep='\t', index_col=0).set_index('name')
-
+    samples = pd.read_csv(sample_sheet, sep='\t').set_index('name')
+    print(samples)
 
     bam_list = []
     short_list = []
@@ -169,15 +169,15 @@ def get_shell(script_name):
     return os.path.join(scriptdir, f"shell/{script_name}")
 
 
-def full_path(file):
+def full_path(file_key):
 
     '''
-    returns the full path to a reference if file is relative to ref/hg38|19
+    returns the full path to a reference if file_key is relative to ref/hg38|19
     '''
 
     build = config['ref']['build']
     ref_path = os.path.join(config['paths']['static'], build)
-    full_ref_path = os.path.join(ref_path, config['ref'][build][file])
+    full_ref_path = os.path.join(ref_path, config['ref'][build][file_key])
     return full_ref_path
 
 
@@ -199,8 +199,9 @@ def static_path(file):
     '''
     returns the absolute path when given relative to static folder
     '''
-
-    return os.path.join(config['paths']['static'], file)
+    build = config['ref']['build']
+    ref_path = os.path.join(config['paths']['static'], build)
+    return os.path.join(ref_path, file)
 
 
 ########### VARSCAN ###########################
