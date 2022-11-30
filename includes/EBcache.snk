@@ -6,7 +6,7 @@ rule EBcacheMatrix:
     threads:
         config['EBscore']['threads']['EBcacheMatrix']
     conda:
-        "../env/sampy-env.yml"
+        f"../{config['envs']}/sampy-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path']),
         pon_list = config['EBscore']['pon_list'],
@@ -25,7 +25,7 @@ rule splitEBcacheMatrix:
     params:
         split = config['EBscore']['ABcache_split']
     conda:
-        "../env/sampy-env.yml"
+        f"../{config['envs']}/sampy-env.yml"
     script:
         "../scripts/EBcache_splitmatrix.py"
 
@@ -36,7 +36,7 @@ rule EBcacheZeros:
     threads:
         10
     conda:
-        "../env/eb-env.yml"
+        f"../{config['envs']}/samscipy-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path']),
         pon_list = config['EBscore']['pon_list'],
@@ -52,7 +52,7 @@ rule EBcacheAB:
     threads:
         config['EBscore']['threads']['EBcacheAB']
     conda:
-        "../env/eb-env.yml"
+        "../env/samscipy-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path'])
     script:
@@ -87,6 +87,6 @@ rule EBcacheDone:
     threads:
         24
     conda:
-        "../env/sampy-env.yml"
+        f"../{config['envs']}/sampy-env.yml"
     script:
         "../scripts/EBcache_zeros.py"

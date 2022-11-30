@@ -11,7 +11,7 @@ rule TN2CNV:
     threads:
         config['CNV']['coverage']['threads']
     conda:
-        f"../{config['envs']}/sampy-env.yml"
+        f"../{config['envs']}/samscipy-env.yml"
     script:
         "../scripts/CNV_snake.py"
 
@@ -23,7 +23,7 @@ rule combineCNV:
     output:
         cov = "CNV/{sample}/raw/{sample}_{tumor}-{normal}.cov.gz",
         snp = "CNV/{sample}/raw/{sample}_{tumor}-{normal}.snp",
-        # plot = "CNV/{sample}/plots/{sample}_{tumor}-{normal}_{tumor}.snp.raw.jpg",
+        plot = "CNV/{sample}/plots/{sample}_{tumor}-{normal}_{tumor}.snp.raw.jpg",
         CNV = "CNV/{sample}/data/{sample}_{tumor}-{normal}.cnv.snp.gz",
         fullCNV = "CNV/{sample}/data/{sample}_{tumor}-{normal}.cnv.gz"
     params:
@@ -62,7 +62,7 @@ rule runASCAT:
     output: 
         tumor = "CNV/{sample}/ASCAT/{sample}_{tumor}-{normal}.tumour.png"
     conda:
-        "../env/R-env2.yaml"
+        f"../{config['envs']}/R-env.yaml"
     threads:
         1
     script:
@@ -77,7 +77,7 @@ rule runASCAT:
 #     output: 
 #         tumor = "CNV/{sample}/ASCAT/{sample}_{tumor}-{normal}_{type}.tumour.png"
 #     conda:
-#         "../env/R-env.yaml"
+#         f"../{config['envs']}/env/R-env.yaml"
 #     threads:
 #         1
 #     script:

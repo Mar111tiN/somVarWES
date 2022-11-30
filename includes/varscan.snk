@@ -34,7 +34,7 @@ rule varscan2table:
         "varscan/{sample}_{tumor}-{normal}.{chrom}.csv"
     threads: 6
     conda:
-        f"../{config['envs']}/vcf-env2.yml"
+        f"../{config['envs']}/vcf-env.yml"
     params:
         refgen = full_path('genome'),
     script:
