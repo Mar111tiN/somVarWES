@@ -5,7 +5,6 @@ import pandas as pd
 # add ebscore package to sys.path
 sys.path.append(os.path.join(snakemake.scriptdir, "ebscore/code"))
 from zerocache import collapse_zeros
-from script_utils import show_output
 
 
 def main(s):

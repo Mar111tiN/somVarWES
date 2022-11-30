@@ -7,7 +7,6 @@ from functools import partial
 
 # add ebscore package to sys.path
 sys.path.append(os.path.join(snakemake.scriptdir, "ebscore/code"))
-from ebcache import PONmatrix2AB_multi
 from script_utils import show_output
 
 
