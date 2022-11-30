@@ -27,3 +27,6 @@ Snakefile*
 !Snakefile
 !Snakefile_devel
 info/*cols_edit.txt
+info/clinscore*
+!info/clinscore.yaml
+~$*
