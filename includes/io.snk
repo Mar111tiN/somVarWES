@@ -108,12 +108,12 @@ def get_tumor_normal_pairs(samples, config):
     return TN_list
 
 
-def get_ASCAT_list(TN_list, folder="ASCAT"):
+def get_SSSTN_list(TN_list, folder="ASCAT"):
     '''
     returns for every Tumor normal pair a string list
-        sample/sample_tumor-normal
+        sample/data/sample_tumor-normal
     '''
-
+    
     TNS_list = [f"{tn.split('_')[0]}/{folder}/{tn}" for tn in TN_list]
 
     # sample/sample_tumor-normal_tumor

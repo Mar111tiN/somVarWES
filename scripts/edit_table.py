@@ -51,8 +51,8 @@ def main(s):
     anno_df = get_gene_lists(anno_df, candidate_excel=candidate_excel)
 
     # ########### ADD MAPPABILITY + GCratio ###########################
-    anno_df = addGenmap(anno_df, genmap_path=genmap_folder)
-    anno_df = addGCratio(anno_df, gc_path=gc_folder)
+    anno_df = addGenmap(anno_df, genmap_path=genmap_folder, chrom_list=p.chrom_list)
+    anno_df = addGCratio(anno_df, gc_path=gc_folder, chrom_list=p.chrom_list)
 
     # ############## REARRANGE COLUMNS  and sort rows ###################################
     info_folder = os.path.join(snake_folder, "info")

@@ -317,7 +317,7 @@ def get_gene_lists(df, candidate_excel=""):
     return df
 
 
-def addGenmap(df, genmap_path="", modes=["30_0", "50_0", "75_1", "100_2"]):
+def addGenmap(df, genmap_path="", modes=["30_0", "50_0", "75_1", "100_2"], chrom_list = [f"chr{i}" for i in range(1, 23)] + ["chrX", "chrY"]):
     """
     adds the genmap data to the coverage data
     selects only the columns that are given in modes
@@ -331,7 +331,7 @@ def addGenmap(df, genmap_path="", modes=["30_0", "50_0", "75_1", "100_2"]):
     """
 
     show_output("Adding genmap data.", time=True)
-    chrom_list = [f"chr{i}" for i in range(1, 23)] + ["chrX", "chrY"]
+    
     # sorting for categorical chrom should not be needed as the for loop enforces chrom order
     # df["Chr"] = pd.Categorical(df["Chr"], chrom_list)
 
@@ -353,7 +353,7 @@ def addGenmap(df, genmap_path="", modes=["30_0", "50_0", "75_1", "100_2"]):
             genmap_df = (
                 pd.read_csv(genmap_file, sep="\t", compression="gzip")
                 .loc[:, cols]
-                .fillna(method="ffill")
+                .fillna(method="ffill").fillna(method="bfill")
             )
             # rename the mappability cols
             mode_rename = {mode: "map" + mode for mode in modes}
@@ -392,13 +392,12 @@ def interpolate(df, data_col, ref_col="Start", expand_limit=20):
     return df.set_index("index")[cols]
 
 
-def addGCratio(df, gc_path="", mode="100-10"):
+def addGCratio(df, gc_path="", mode="100-10", chrom_list=[f"chr{i}" for i in range(1, 23)] + ["chrX", "chrY"]):
     """
     adds the GCdata to the coverage data
     gc_path is path to chrom-split gc-data
     """
 
-    chrom_list = [f"chr{i}" for i in range(1, 23)] + ["chrX", "chrY"]
     show_output("Adding GCratio data")
     # cycle through chroms
     gc_dfs = []
