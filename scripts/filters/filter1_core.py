@@ -58,10 +58,14 @@ def filter1(df, thresh={}, config={}):
 
     # ## FILTER1 RESCUE ##########
     # per default, rescue all candidate genes
-    is_candidate = (
-        (df["isCandidate"] == 1) | (df["AMLDriver"] == 1) | (df["ChipFreq"] > 0)
-    )
-
+    if "AMLDriver" in list(df.columns):
+        is_candidate = (
+            (df["isCandidate"] == 1) | (df["AMLDriver"] == 1) | (df["ChipFreq"] > 0)
+        )
+    else:
+        is_candidate = (
+            (df["isCandidate"] == 1) | (df["ChipFreq"] > 0)
+        )
     # ############### AML7 ####################
     # if we are filtering for AML7, we include the 7q genes as interesting
     if "AML7" in config["filter_name"]:

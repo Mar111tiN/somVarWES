@@ -23,9 +23,14 @@ def filter2(df, stringency="", thresh={}, config={}):
 
     # DEFINE CANDIDATE
     # used for rescue and special thresholds
-    is_candidate = (
-        (df["isCandidate"] == 1) | (df["AMLDriver"] == 1) | (df["ChipFreq"] > 0)
-    )
+    if "AMLDriver" in list(df.columns):
+        is_candidate = (
+            (df["isCandidate"] == 1) | (df["AMLDriver"] == 1) | (df["ChipFreq"] > 0)
+        )
+    else:
+        is_candidate = (
+            (df["isCandidate"] == 1) | (df["ChipFreq"] > 0)
+        )
 
     # #### SWITCH FOR AML7
     if "AML7" in config["filter_name"]:
