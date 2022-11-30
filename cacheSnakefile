@@ -1,6 +1,6 @@
 from yaml import CLoader as Loader, load, dump
 # ############ SETUP ##############################
-configfile: "configs/general/config_Allen.yaml"
+configfile: "configs/general/config_LungPanel.yaml"
 # configfile: "configs/config.json"
 
 # include helper functions
@@ -41,11 +41,13 @@ wildcard_constraints:
 # ############## MASTER RULE ##############################################
 rule all:
     input:
+        "zero/done",
         expand("matrix/{chrom}.pon.gz", chrom=chrom_list),
         expand("cov/{chrom}.cov.gz", chrom=chrom_list),
         "CNV/pon.cov.filter.gz",
         "CNV/pon.snp.gz",
-        "EBcache.done"
+        "EBcache.done",
+        "zero/"
 
 
 ###########################################################################

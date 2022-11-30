@@ -1,8 +1,7 @@
 from yaml import CLoader as Loader, load, dump
 from subprocess import run
 # ############ SETUP ##############################
-configfile: "configs/active_config.yaml"
-# configfile: "configs/config.json"
+configfile: "configs/config_221117_LungPanel.yaml"
 
 workdir: config['workdir']
 # extract the scriptdir for creating shell_paths
@@ -47,14 +46,17 @@ wildcard_constraints:
     chrom = "(chr)?[0-9XY]+",
     filter = "filter[0-9]+",
 
+# helper list for ruinnng
+sTN_list = [f"{t.split('_')[0]}/raw/{t}" for t in TN_list]
 
 # ############## MASTER RULE ##############################################
 rule all:
     input:
         expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
         expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list),
-        expand("CNV/{s_tn_t}.tumour.png", s_tn_t=get_ASCAT_list(TN_list)),
-        expand("SNPlot/{tumor_normal_pair}.SNPmatch.jpg", tumor_normal_pair=TN_list)
+        expand("CNV/{tumor_normal_pair}.cov.gz", tumor_normal_pair=sTN_list),
+        # expand("CNV/{s_tn_t}.tumour.png", s_tn_t=get_ASCAT_list(TN_list)),
+        # expand("SNPlot/{tumor_normal_pair}.SNPmatch.jpg", tumor_normal_pair=TN_list)
 
 ###########################################################################
 

@@ -23,15 +23,16 @@ rule combineCNV:
     output:
         cov = "CNV/{sample}/raw/{sample}_{tumor}-{normal}.cov.gz",
         snp = "CNV/{sample}/raw/{sample}_{tumor}-{normal}.snp",
-        plot = "CNV/{sample}/plots/{sample}_{tumor}-{normal}_{tumor}.snp.raw.jpg",
+        # plot = "CNV/{sample}/plots/{sample}_{tumor}-{normal}_{tumor}.snp.raw.jpg",
         CNV = "CNV/{sample}/data/{sample}_{tumor}-{normal}.cnv.snp.gz",
         fullCNV = "CNV/{sample}/data/{sample}_{tumor}-{normal}.cnv.gz"
     params:
-        PON_path = static_path(config['EBscore']['pon_path']),
+        pon_path = static_path(config['EBscore']['pon_path']),
+        chrom_list=chrom_list
     threads:
         config['CNV']['combine']['threads']
     conda:
-        f"../{config['envs']}/plot-env2.yml"
+        f"../{config['envs']}/plot-env.yml"
     script:
         "../scripts/CNV_combine.py"
 
@@ -91,6 +92,6 @@ rule SNPlot:
     threads:
         1
     conda:
-        f"../{config['envs']}/plot-env2.yml"
+        f"../{config['envs']}/plot-env.yml"
     script:
         "../scripts/plot_SNP.py"

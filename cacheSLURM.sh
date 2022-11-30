@@ -20,7 +20,7 @@
 
 # Set the expected running time of your job (-t or --time).
 # Formats are MM:SS, HH:MM:SS, Days-HH, Days-HH:MM, Days-HH:MM:SS
-#SBATCH --time=20:00:00
+#SBATCH --time=01:00:00
 
 SNAKE_HOME=$(pwd);
 
