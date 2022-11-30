@@ -4,7 +4,6 @@ import sys
 # add ebscore package to sys.path
 sys.path.append(os.path.join(snakemake.scriptdir, "myCNV/code"))
 from CNV_raw import PON2CNV
-from script_utils_CNV import show_output
 
 
 def main(s):

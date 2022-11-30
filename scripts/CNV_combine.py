@@ -37,10 +37,11 @@ def main(s):
     CNVconfig = dict(
         cov_path="cnv",  # path containing cov.gz files for this sample
         snp_path="cnv",  # path containing snp files for this sample
-        PON_path=p.PON_path,
+        PON_path=p.pon_path,
+        chrom_list=p.chrom_list
     )
 
-    # add the CNV params to CNVconfig
+    # add the CNV params to CNVconfigc
     CNVconfig.update(cc)
 
     # run the function
@@ -57,7 +58,7 @@ def main(s):
     cov_df.to_csv(o.cov, sep="\t", index=False)
     snp_df.to_csv(o.snp, sep="\t", index=False)
 
-    # ########## raw figures ###################
+    # # ########## raw figures ###################
     plot_base = o.plot.replace(f"_{w.tumor}.", "_type.")
     fig, _, _, _ = plot_snp(
         snp_df, plots=[vaf2], chroms="all", region="", **snpfig_params
