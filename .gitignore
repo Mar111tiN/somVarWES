@@ -13,8 +13,11 @@ config_*.yaml
 SLURM2.sh
 !active_config*.yaml
 !config_*master.yaml
-!configs/general/*
+configs/general/*
+!configs/general/config_CNV.yaml
+!configs/general/config_testgeneral.yaml
 !configs/config_test.yaml
+!config/config_devel.yaml
 !test.csv
 !testMac.csv
 oldconfigs
