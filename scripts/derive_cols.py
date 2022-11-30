@@ -306,12 +306,13 @@ def get_gene_lists(df, candidate_excel=""):
         df.loc[:, driver] = df[driver].fillna(0).astype(int)
 
     # get the CHIP mutations
-    hotspots = xl.parse("CHIP")
-    df = df.merge(
-        hotspots.drop("Protein", axis=1),
-        how="left",
-        on=["Chr", "Start", "Ref", "Alt", "Gene"],
-    )
+    if "CHIP" in sheets:
+        hotspots = xl.parse("CHIP")
+        df = df.merge(
+            hotspots.drop("Protein", axis=1),
+            how="left",
+            on=["Chr", "Start", "Ref", "Alt", "Gene"],
+        )
 
     return df
 
