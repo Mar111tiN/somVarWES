@@ -10,14 +10,13 @@ ref:
         genome: genome/gatk/b37/human_g1k_v37.fasta
         genome_split: genome/gatk/b37/split
     hg38:
-        genome_path: genome/gatk/hg38/
-        genome: genome/gatk/hg38/hg38.fasta
-        genome_split: genome/gatk/hg38/split
-        gcratio_split: genome/gatk/hg38/GCsplitHAEv7
-        genmap_split: annotation/genmap/hg38/HAEv7split
-        bed_file: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Covered.bed
-        bed_file_pad: bed_files/SureSelect/hg38/SS_HAEv7_hg38_Padded.bed
-        dbsnp_split: annotation/gatk/hg38/HAEv7split
+        genome_path: genome/
+        genome: genome/hg38.fasta
+        genome_split: genome/split
+        gcratio_split: genome/split
+        genmap_split: annotation/genmap/split
+        bed_file: bed_files/SureSelect/SS_HAEv7_hg38_Covered.bed
+        bed_file_pad: bed_files/SureSelect/SS_HAEv7_hg38_Padded.bed
 #### TOOLS SECTION ##############
 tools:
     annovar: perl /fast/users/szyskam_c/tools/annovar2019
@@ -48,7 +47,7 @@ annovar:
         - dbSNP154
         ##### CLINICAL DATA ###### 
         - cosmic70
-        - cosmic94
+        - cosmic95
         - icgc29
         - clinvar2021
         ##### PREDICTIONS ########

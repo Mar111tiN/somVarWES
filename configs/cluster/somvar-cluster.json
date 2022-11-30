@@ -92,7 +92,7 @@
     "t": "00:05",
     "mem": 500
   },
-  "TCN2CNV": {
+  "TN2CNV": {
     "t": "00:15",
     "mem": 1500,
     "name": "{rule}:{wildcards.sample}_{wildcards.tumor}-{wildcards.normal}.{wildcards.chrom}"
