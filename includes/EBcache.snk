@@ -36,7 +36,7 @@ rule EBcacheZeros:
     threads:
         10
     conda:
-        "../env/sampy-env.yml"
+        "../env/eb-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path']),
         pon_list = config['EBscore']['pon_list'],
@@ -46,14 +46,13 @@ rule EBcacheZeros:
 
 rule EBcacheAB:
     input:
-        zero="zero/done",
         matrix="split/{chrom}.{split}.pon.gz"
     output:
         "split/{chrom}.{split}.AB.gz"
     threads:
         config['EBscore']['threads']['EBcacheAB']
     conda:
-        "../env/sampy-env.yml"
+        "../env/eb-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path'])
     script:

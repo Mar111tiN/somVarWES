@@ -9,7 +9,7 @@ rule anno2EB:
     threads:
         config['EBscore']['threads']['EBscore']
     conda:
-        f"../{config['envs']}/sampy-env.yml"
+        f"../{config['envs']}/eb-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path']),
         pon_list = config['EBscore']['pon_list'],
