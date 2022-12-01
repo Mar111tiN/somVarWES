@@ -30,9 +30,9 @@ NR1
 NR1+
 NR2
 NR2+
-cosmic95_ID
-cosmic95_count
-cosmic95_type
+cosmic97_ID
+cosmic97_count
+cosmic97_type
 icgc29_ID
 icgc29_Affected
 CLNALLELEID
@@ -57,11 +57,7 @@ PONAltSum
 PONRatio
 PONAltNonZeros
 icgc29_freq
-cosmic70_ID
-cosmic70_freq
-cosmic70_type
-cosmic70_score
-cosmic95_score
+cosmic97_score
 clinvar_score
 ClinScore
 isCandidate
@@ -70,10 +66,6 @@ ChipID
 ChipPub
 ChipFreq
 map30_0
-map50_0
-map75_1
-map100_2
-GCratio
 map50_0
 map75_1
 map100_2

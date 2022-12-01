@@ -19,12 +19,11 @@ gnomAD_exome_ALL
 dbSNP154_ID
 dbSNP154_AltFreq
 dbSNP154_DB
-cosmic70
-cosmic95_ID
-cosmic95_Mut_ID_old
-cosmic95_count
-cosmic95_type
-cosmic95_MutStatus
+cosmic97_ID
+cosmic97_Mut_ID_old
+cosmic97_count
+cosmic97_type
+cosmic97_MutStatus
 icgc29_ID
 icgc29_Affected
 CLNALLELEID

@@ -137,47 +137,6 @@ def apply_clinscore(df, clinscore_file):
     df[f"{icgc}_freq"] = (ICGC[0] / ICGC[1]).round(4).fillna(".")
 
     # ##################################################################
-    # ############## COSMIC70 #########
-    # get the score dict
-    cosmic70_location = clinscore_dict["cosmic70"]["location"]
-    show_output("Add Cosmic70 derived columns and compute cosmic70_score", time=False)
-    cosmic70_pattern = r"(?:ID=(?P<cosmID>COSM[0-9]+(?:,COSM[0-9]+)?);OCCURENCE=)?(?P<freq>[0-9]+)\((?P<organ>[A-Z_a-z]+)\)"
-    df[["cosmic70_ID", "cosmic70_freq", "cosmic70_type"]] = (
-        df["cosmic70"]
-        .str.extractall(cosmic70_pattern)
-        .astype({"cosmID": "str", "freq": "int", "organ": "str"})
-        .reset_index("match")
-        .drop(columns="match")
-        .reset_index()
-        .groupby("index")
-        .aggregate(
-            {
-                "cosmID": "min",
-                "freq": "sum",
-                "organ": lambda col: col.str.cat(sep="+"),
-            }
-        )
-    )
-    df.loc[:, "cosmic70_freq"] = df["cosmic70_freq"].fillna(0).astype("int")
-    df.loc[:, "cosmic70_ID"] = df["cosmic70_ID"].fillna(".")
-    df.loc[:, "cosmic70_type"] = df["cosmic70_type"].fillna(".")
-    # drop org column automatically
-    df = df.drop(columns="cosmic70")
-
-    def cosmic70score(row):
-        """
-        row-wise computation of cosmic70 scores
-        """
-        if row["cosmic70_type"] != ".":
-            score = 1
-            for location in cosmic70_location.keys():
-                if location in row["cosmic70_type"]:
-                    score += cosmic70_location[location]
-            return row["cosmic70_freq"] * score
-        else:
-            return 0
-
-    df["cosmic70_score"] = df.apply(cosmic70score, axis=1)
 
     # ##################################################################
     # ############## COSMIC90-9? #########
@@ -255,8 +214,7 @@ def apply_clinscore(df, clinscore_file):
 
     # ############## ====> CLINSCORE #################
     # {
-    #     "cosmic70_score": 2,  # derived score
-    #     "cosmic91_score": 2,  # derived score
+    #     "cosmic90_score": 2,  # derived score
     #     "clinvar_score": 2,  # derived score
     #     "icgc29_freq": 2000,  # derived score --> adjust
     # }

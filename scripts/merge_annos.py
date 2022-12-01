@@ -30,9 +30,9 @@ def main(s):
         )
         .fillna(".")
         .sort_values(["Chr", "Start"])
-    )
-    anno_df["Tdepth"] = anno_df["TR1"] + anno_df["TR2"]
-    anno_df["TVAF"] = (anno_df["TR2"] / (anno_df["TR1"] + anno_df["TR2"])).round(3)
+    ).copy()
+    anno_df.loc[:,"Tdepth"] = anno_df["TR1"] + anno_df["TR2"]
+    anno_df.loc[:,"TVAF"] = (anno_df["TR2"] / (anno_df["TR1"] + anno_df["TR2"])).round(3)
     # anno_df = anno_df.query('TVAF = TR1 / (TR1+TR2)')
     anno_df["Ndepth"] = anno_df["NR1"] + anno_df["NR2"]
     anno_df["NVAF"] = (anno_df["NR2"] / (anno_df["NR1"] + anno_df["NR2"])).round(3)

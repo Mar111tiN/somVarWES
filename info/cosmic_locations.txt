@@ -1,4 +1,5 @@
 location
+Fallopian_tube
 abdomen
 acetabulum
 acral
@@ -21,6 +22,7 @@ brain
 brainstem
 breast
 breast_inframammary
+broad_ligament
 bronchus
 buttock
 caecum
@@ -37,6 +39,7 @@ chest
 chest_wall
 choroid_plexus
 chronically_sun_exposed_site
+cingulate_gyrus
 colon
 conjunctiva
 corpus_callosum
@@ -48,6 +51,7 @@ ear
 ear_canal
 elbow
 endometrium
+ethmoid_sinus
 extraadrenal
 extragonadal
 extramammary
@@ -78,6 +82,7 @@ gastroesophageal_junction
 gastrointestinal_tract_(site_indeterminate)
 genital
 genital_tract
+gonad
 groin
 haematopoietic_and_lymphoid_tissue
 hand
@@ -139,9 +144,11 @@ mouth_floor
 mouth_roof
 mucosal
 muscle
+nasopharynx
 neck
 nerve_sheath
 nipple
+non-salivary_gland
 non_chronically_sun_exposed_site
 occipital_lobe
 ocular_adnexa
@@ -159,6 +166,7 @@ paratesticular_tissues
 parathyroid
 parietal_lobe
 parietooccipital
+parietotemporal
 parotid
 patella
 pelvis
@@ -193,6 +201,7 @@ scalp
 scapula
 scrotum
 sella_turcica
+septum_pellucidum
 shoulder
 sinonasal_and_nasal_cavity
 skin
@@ -240,6 +249,7 @@ upper_urinary_tract
 ureter
 urethra
 urinary_tract
+uterine_adnexa
 uterus
 uveal_tract
 vagina

@@ -64,5 +64,5 @@ def sort_df(df, cols={"Chr": True, "Start": True}):
     # make Chr column categorical for sorting .. and sort
     chrom_list = [f"chr{i}" for i in range(23)] + ["chrX", "chrY"]
 
-    df.loc[:, "Chr"] = pd.Categorical(df["Chr"], chrom_list)
+    df["Chr"] = pd.Categorical(df["Chr"], chrom_list)
     return df.sort_values(list(cols.keys()), ascending=list(cols.values()))
