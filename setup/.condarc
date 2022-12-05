@@ -1,11 +1,10 @@
 channels:
   - conda-forge
   - bioconda
-  - default
+  - r
   - defaults
 
-show_channel_urls: True
-
-auto_update_conda: True
-
-always_yes: True
+show_channel_urls: true
+auto_update_conda: true
+always_yes: true
+channel_priority: strict

@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import os
 import re
-import sys
 from yaml import CLoader as Loader, load
 from script_utils import show_output
 
@@ -80,19 +79,18 @@ def get_PON_info(df):
     computes values from the PON column
     """
 
-    STRANDSEP = "="
     ADSEP = "<"
 
     org_cols = list(df.columns)
 
     # cheat a bad PON for EB = 0 (|1|1|1|1|1|1|1|1|1|1|1|1|1<1|1|1|1|1|1|1|1|1|1|1()
-    bad_pon = "<".join(["|".join(["1"] * 30) for i in range(2)])
+    bad_pon = ADSEP.join(["|".join(["1"] * 30) for i in range(2)])
 
     df.loc[df["PON+"] == ".", ["PON+", "PON-"]] = [bad_pon, bad_pon]
-    df.loc[:, "PONA+"] = df["PON+"].str.split("<").str[0]
-    df.loc[:, "POND+"] = df["PON+"].str.split("<").str[1]
-    df.loc[:, "PONA-"] = df["PON-"].str.split("<").str[0]
-    df.loc[:, "POND-"] = df["PON-"].str.split("<").str[1]
+    df.loc[:, "PONA+"] = df["PON+"].str.split(ADSEP).str[0]
+    df.loc[:, "POND+"] = df["PON+"].str.split(ADSEP).str[1]
+    df.loc[:, "PONA-"] = df["PON-"].str.split(ADSEP).str[0]
+    df.loc[:, "POND-"] = df["PON-"].str.split(ADSEP).str[1]
     df.loc[:, "PONA"] = df["PONA+"] + "|" + df["PONA-"]
     df.loc[:, "POND"] = df["POND+"] + "|" + df["POND-"]
 
@@ -186,29 +184,31 @@ def apply_clinscore(df, clinscore_file):
     CLNDN_factorial = clinscore_dict["clinvar"]["factorial"]
     CLNSIG_score = clinscore_dict["clinvar"]["significance"]
 
+    def CLNDN2score(clndn):
+        """
+        accumulates a factor for multiplication with CLNSIG_score
+        """
+
+        factor = 1
+        for key in CLNDN_factorial:
+            if key in clndn:
+                factor *= CLNDN_factorial[key]
+        return factor
+
+
     def get_CLINVARscore(row):
         """
         converts the CLINVAR info into scalar clinvar_score
         """
 
-        def CLNDN2score(clndn):
-            """
-            accumulates a factor for multiplication with CLNSIG_score
-            """
-
-            factor = 1
-            for key in CLNDN_factorial:
-                if key in clndn:
-                    factor *= CLNDN_factorial[key]
-            return factor
-
-        if row["CLNDN"] == ".":
-            return 0
-        return (
-            1
-            + CLNDN2score(row["CLNDN"])
-            + CLNSIG_score.get(row["CLNSIG"].split(",")[0], 0)
-        )
+        # check if row is not empty
+        if row["CLNDN"]:
+            return (
+                1
+                + CLNDN2score(row["CLNDN"])
+                + CLNSIG_score.get(row["CLNSIG"].split(",")[0], 0)
+            )
+        return 0
 
     df["clinvar_score"] = df.apply(get_CLINVARscore, axis=1)
 
@@ -245,6 +245,8 @@ def get_gene_lists(df, candidate_excel=""):
     for cand in candidates:
         # get the dataframe
         cand_df = xl.parse(cand)
+        # fix duplicates by aggregating score of duplicate entries
+        cand_df = cand_df.groupby("Gene").agg({"score":"sum"}).reset_index()
         col_name = f"{cand}candidate"
         df = df.merge(cand_df.loc[:, ["Gene", "score"]], on="Gene", how="left").rename(
             {"score": col_name}, axis=1
@@ -275,7 +277,7 @@ def get_gene_lists(df, candidate_excel=""):
     return df
 
 
-def addGenmap(df, genmap_path="", modes=["30_0", "50_0", "75_1", "100_2"], chrom_list = [f"chr{i}" for i in range(1, 23)] + ["chrX", "chrY"]):
+def addGenmap(df, genmap_path="", modes=["30_0", "50_0", "75_1", "100_2"], chrom_list=[f"chr{i}" for i in range(1, 23)] + ["chrX", "chrY"]):
     """
     adds the genmap data to the coverage data
     selects only the columns that are given in modes
@@ -289,7 +291,7 @@ def addGenmap(df, genmap_path="", modes=["30_0", "50_0", "75_1", "100_2"], chrom
     """
 
     show_output("Adding genmap data.", time=True)
-    
+
     # sorting for categorical chrom should not be needed as the for loop enforces chrom order
     # df["Chr"] = pd.Categorical(df["Chr"], chrom_list)
 
@@ -383,7 +385,7 @@ def addGCratio(df, gc_path="", mode="100-10", chrom_list=[f"chr{i}" for i in ran
             return
         # gc data has columns Start -> GC/AT
         chrom_df = chrom_df.merge(gc_df, on=["Chr", "Start"], how="outer")
-        
+
         # print("chrom_df", round(sys.getsizeof(chrom_df)/1024**2), "MB")
         del gc_df
         # # interpolate and remove GCdata rows

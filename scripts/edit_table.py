@@ -35,10 +35,8 @@ def main(s):
 
     # ########### change refGene COLUMNS ######################
     anno_df = get_refgene(anno_df, config=cc)
-
     # ########### DERIVE PON COLUMNS ##########################
     anno_df = get_PON_info(anno_df)
-
     # ########### APPLY CLINSCORE ##########################
     clinscore_file = cc["clinscore_yaml"]
     # get the clinscore dicts from yaml file
@@ -49,17 +47,16 @@ def main(s):
     # ########### APPLY GENE LISTS ##########################
     candidate_excel = os.path.join(snake_folder, cc["candidate_list"])
     anno_df = get_gene_lists(anno_df, candidate_excel=candidate_excel)
-
     # ########### ADD MAPPABILITY + GCratio ###########################
     anno_df = addGenmap(anno_df, genmap_path=genmap_folder, chrom_list=p.chrom_list)
     anno_df = addGCratio(anno_df, gc_path=gc_folder, chrom_list=p.chrom_list)
-
     # ############## REARRANGE COLUMNS  and sort rows ###################################
     info_folder = os.path.join(snake_folder, "info")
     anno_df = rearrange_cols(anno_df, file_name="filter_cols", folder=info_folder)
     anno_df = sort_df(anno_df)
     anno_df.loc[:, "End"] = anno_df["End"].astype(int)
-    anno_df.to_csv(output, sep="\t", index=False)
+
+    anno_df.drop_duplicates().to_csv(output, sep="\t", index=False)
     show_output(
         f"Writing edited mutation list with added columns to {output}.", color="success"
     )

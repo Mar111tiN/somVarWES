@@ -120,4 +120,4 @@ def filter_basic_filter1(mut_file, basic_output, filter1_output, config={}):
     show_output(
         f"Writing filter1 list ({len(filter1_df.index)} muts) to {filter1_output}"
     )
-    filter1_df.to_csv(filter1_output, sep="\t", index=False)
+    filter1_df.drop_duplicates().to_csv(filter1_output, sep="\t", index=False)

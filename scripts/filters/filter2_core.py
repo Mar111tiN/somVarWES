@@ -183,7 +183,7 @@ def get_filter2(mut_file, filter2_output, filterbam_output=None, config={}):
     # create the filterbam_table for the selected stringency to be used by filterbam
     if filterbam_output:
         if config["filterbam_stringency"] in filter2_dfs:
-            filter2_dfs[config["filterbam_stringency"]].to_csv(
+            filter2_dfs[config["filterbam_stringency"]].drop_duplicates().to_csv(
                 filterbam_output, sep="\t", index=False
             )
         # if stringency is all or any other, use combination of loose and dropped for filterbam

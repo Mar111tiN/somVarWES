@@ -52,10 +52,11 @@ sTN_list = [f"{t.split('_')[0]}/raw/{t}" for t in TN_list]
 # ############## MASTER RULE ##############################################
 rule all:
     input:
+        expand("filter/{tumor_normal_pair}.csv", tumor_normal_pair=TN_list),
         expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
         expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list),
         expand("CNV/{sstn}.cnv.gz", sstn=get_SSSTN_list(TN_list, folder="data")),
-        expand("CNV/{sstn}.tumour.png", sstn=get_SSSTN_list(TN_list, folder="ASCAT")),
+        # expand("CNV/{sstn}.tumour.png", sstn=get_SSSTN_list(TN_list, folder="ASCAT")),
         expand("SNPlot/{tumor_normal_pair}.SNPmatch.jpg", tumor_normal_pair=TN_list)
 
 ###########################################################################
