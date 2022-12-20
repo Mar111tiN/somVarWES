@@ -1,7 +1,7 @@
 from yaml import CLoader as Loader, load, dump
 from subprocess import run
 # ############ SETUP ##############################
-configfile: "configs/config_221117_LungPanel.yaml"
+configfile: "configs/config_221204_LungWES.yaml"
 
 workdir: config['workdir']
 # extract the scriptdir for creating shell_paths
@@ -19,11 +19,12 @@ config = add_config(config, config_name="general")
 # load the CNV config
 config = add_config(config, config_name="CNV")
 
-
 # retrieve the file_df with all the file paths from the samplesheet
 sample_df, short_sample_df = get_files(config['inputdirs'], config['samples']['samplesheet'])
+
 chrom_list = get_chrom_list(config)
 TN_list = get_tumor_normal_pairs(sample_df, config)
+
 # print(short_sample_df)
 # ############ INCLUDES ##############################  
 include: "includes/varscan.snk"

@@ -52,7 +52,7 @@ rule EBcacheAB:
     threads:
         config['EBscore']['threads']['EBcacheAB']
     conda:
-        "../env/samscipy-env.yml"
+        f"../{config['envs']}/sampy-env.yml"
     params:
         pon_path = static_path(config['EBscore']['pon_path'])
     script:

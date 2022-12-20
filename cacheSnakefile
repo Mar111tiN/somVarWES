@@ -1,6 +1,6 @@
 from yaml import CLoader as Loader, load, dump
 # ############ SETUP ##############################
-configfile: "configs/general/config_LungPanel.yaml"
+configfile: "configs/general/config_LungWES.yaml"
 # configfile: "configs/config.json"
 
 # include helper functions
@@ -47,7 +47,7 @@ rule all:
         "CNV/pon.cov.filter.gz",
         "CNV/pon.snp.gz",
         "EBcache.done",
-        "zero/"
+        "zero/done"
 
 
 ###########################################################################

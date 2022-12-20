@@ -130,7 +130,9 @@ def get_chrom_list(config):
 
     if "bed_file" in config['ref'][config["ref"]["build"]].keys():
         bed_df = pd.read_csv(full_path('bed_file'), sep="\t", skiprows=3)
-        return [chrom for chrom in bed_df.iloc[:,0].unique() if not chrom in ["chrY", "Y"]]
+        # find all standard chroms in bedfile
+        bed_chr = bed_df.loc[bed_df.iloc[:,0].str.match("^(chr)?[0-9XY]+$")].iloc[:,0].unique()
+        return bed_chr
     # switch for use of "chr"-prefix
     chrom = "chr" if config["ref"]["build"] == "hg38" else ""
     return [f"{chrom}{c+1}" for c in range(22)] + ["chrX", "chrY"]
@@ -217,11 +219,13 @@ def get_bam_pair(w):
             tumor_bam=sample_df.loc[tumor]['bam_path'],
             normal_bam=sample_df.loc[fixed_normal]['bam_path']
         )
+        
         return bam_dict
-    return dict(
+    d = dict(
         tumor_bam=sample_df.loc[tumor]['bam_path'],
         normal_bam=sample_df.loc[normal]['bam_path']
     )
+    return d
 
 
 def get_anno_input(_):
