@@ -7,38 +7,38 @@
     "name": "{rule}:{wildcards.chrom}"
   },
   "EBcacheZeros": {
-    "t": "00:30",
+    "t": "00:30:00",
     "mem": "3500",
     "name": "{rule}"
   },
   "EBcacheMatrix": {
-    "t": "12:00"
+    "t": "12:00:00"
   },
   "splitEBcacheMatrix": {
-    "t": "00:20",
+    "t": "00:20:00",
     "mem": "3000"
   },
   "EBcacheAB": {
-    "t": "06:00",
+    "t": "06:00:00",
     "mem": "3500",
     "name": "{rule}:{wildcards.chrom}.split{wildcards.split}"
   },
   "combineEBcacheAB": {
-    "t": "00:25",
+    "t": "00:25:00",
     "mem": "2500"
   },
   "EBcacheDone": {
-    "t": "02:30",
+    "t": "02:30:00",
     "mem": "3500",
     "name": "{rule}"
   },
   "PON2CNV": {
-    "t": "00:25",
+    "t": "00:25:00",
     "mem": 1500,
     "name": "{rule}:{wildcards.chrom}"
   },
   "combine_PON": {
-    "t": "01:00",
+    "t": "01:00:00",
     "mem": 3500,
     "name": "{rule}"
   }
