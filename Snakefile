@@ -21,9 +21,11 @@ config = add_config(config, config_name="CNV")
 
 # retrieve the file_df with all the file paths from the samplesheet
 sample_df, short_sample_df = get_files(config['inputdirs'], config['samples']['samplesheet'])
-
 chrom_list = get_chrom_list(config)
+# print(sample_df)
+# print(short_sample_df)
 TN_list = get_tumor_normal_pairs(sample_df, config)
+# print(TN_list)
 
 # print(short_sample_df)
 # ############ INCLUDES ##############################  
@@ -53,11 +55,12 @@ sTN_list = [f"{t.split('_')[0]}/raw/{t}" for t in TN_list]
 # ############## MASTER RULE ##############################################
 rule all:
     input:
+        expand("table/{tumor_normal_pair}.EB.csv", tumor_normal_pair=TN_list),
         expand("filter/{tumor_normal_pair}.csv", tumor_normal_pair=TN_list),
         expand("filter/{tumor_normal_pair}.filter2.loose.csv", tumor_normal_pair=TN_list),
         expand("filterbam/{tumor_normal_pair}.filter2.IGVnav.txt", tumor_normal_pair=TN_list),
         expand("CNV/{sstn}.cnv.gz", sstn=get_SSSTN_list(TN_list, folder="data")),
-        # expand("CNV/{sstn}.tumour.png", sstn=get_SSSTN_list(TN_list, folder="ASCAT")),
+        expand("CNV/{sstn}.tumour.png", sstn=get_SSSTN_list(TN_list, folder="ASCAT")),
         expand("SNPlot/{tumor_normal_pair}.SNPmatch.jpg", tumor_normal_pair=TN_list)
 
 ###########################################################################
