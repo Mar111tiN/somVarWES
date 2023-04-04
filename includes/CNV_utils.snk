@@ -14,7 +14,7 @@ def get_pon_df(pon_list, pon_path=""):
     pon_df.loc[~pon_df["bam"].str.startswith("/"), "bam"] = (
         f"{pon_path}" + pon_df["bam"]
     )
-    pon_df['sample'] = pon_df['bam'].str.split('/', expand=True).iloc[:,-1].str.replace('.bam','', regex=False)
+    pon_df['sample'] = pon_df['bam'].str.split('/').str[-1].str.replace('.bam','', regex=False)
     return pon_df
 
 

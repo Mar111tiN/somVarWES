@@ -1,7 +1,7 @@
 from yaml import CLoader as Loader, load, dump
 # ############ SETUP ##############################
-configfile: "configs/general/config_LungWES.yaml"
-# configfile: "configs/config.json"
+# configfile: "configs/general/config_LungWES.yaml"
+configfile: "configs/general/config_LungPanel.yaml"
 
 # include helper functions
 include: "includes/io.snk"
@@ -24,6 +24,7 @@ chrom_list = get_chrom_list(config)
 pon_list = config['EBscore']['pon_list']
 
 pon_df = get_pon_df(pon_list, pon_path=work_dir)
+print('HELLO')
 print(pon_df)
 
 
@@ -46,7 +47,7 @@ rule all:
         expand("cov/{chrom}.cov.gz", chrom=chrom_list),
         "CNV/pon.cov.filter.gz",
         "CNV/pon.snp.gz",
-        "EBcache.done",
+        "EBcache.done",#
         "zero/done"
 
 
